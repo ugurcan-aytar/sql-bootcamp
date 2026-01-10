@@ -1,0 +1,131 @@
+/* Custom Bootstrap Styles with MEXT Colors */
+
+/* Override Bootstrap variables (requires Sass compilation, difficult here) */
+/* Alternative: Define custom classes or override existing ones */
+
+:root {
+  --mext-dark-blue: #0b132b;
+  --mext-teal: #4dd0e1;
+  --mext-link-blue: #1e88e5;
+}
+
+body {
+  padding-top: 56px; /* Adjust based on navbar height if fixed */
+  background-color: #f8f9fa;
+}
+
+/* Navbar */
+.navbar-mext {
+  background-color: var(--mext-dark-blue) !important;
+}
+
+.navbar-mext .navbar-brand img {
+  height: 30px; /* Adjust logo height */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--mext-dark-blue);
+}
+
+h1 {
+  border-bottom: 2px solid var(--mext-teal);
+  padding-bottom: 0.3em;
+  margin-bottom: 1em;
+}
+
+/* Code Blocks */
+pre {
+  background-color: #0a192f; /* Dark Navy for code blocks */
+  color: #e0e0e0; /* Light grey text */
+  padding: 1rem;
+  border-radius: 0.3rem;
+  overflow-x: auto;
+  font-size: 0.9em;
+}
+
+/* Inline Code */
+code:not(pre code) {
+  background-color: #e9ecef;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid var(--mext-teal);
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #5a5a5a;
+  background-color: #f1f8ff;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Tables */
+.table {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.table thead th {
+  background-color: #e9ecef;
+  color: var(--mext-dark-blue);
+}
+
+/* Index Page Specific */
+.index-container {
+    margin-top: 2rem;
+}
+
+.day-section {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.day-section h2 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--mext-teal);
+    padding-bottom: 0.3em;
+    color: var(--mext-dark-blue);
+}
+
+.day-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.day-section li {
+    margin-bottom: 0.5rem;
+    font-size: 1.1em;
+}
+
+.day-section a {
+    color: var(--mext-link-blue);
+}
+
+.day-section a:hover {
+    color: var(--mext-dark-blue);
+}
+
+/* Visual placeholder */
+.visual-placeholder {
+    border: 2px dashed var(--mext-teal);
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+    color: #666;
+    font-style: italic;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

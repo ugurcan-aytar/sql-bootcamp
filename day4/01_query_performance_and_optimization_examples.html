@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 4: Query Performance and Optimization - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .exercise-box h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .solution {
+            background-color: #e7f3ff;
+            border: 1px solid #b6d4fe;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .solution.show {
+            display: block;
+        }
+
+        .btn-solution {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-solution:hover {
+            background-color: #0b5ed7;
+        }
+
+        .hint-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .hint-box strong {
+            color: #664d03;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box strong {
+            color: #842029;
+        }
+
+        .concept-box {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box strong {
+            color: #0f5132;
+        }
+
+        .dataset-table {
+            font-size: 0.9em;
+            margin: 15px 0;
+        }
+
+        .dataset-table th {
+            background-color: #e9ecef;
+        }
+
+        .badge-operation {
+            font-size: 0.75em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        .badge-scan {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .badge-index {
+            background-color: #198754;
+            color: white;
+        }
+
+        .badge-join {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .badge-sort {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .badge-aggregate {
+            background-color: #6f42c1;
+            color: white;
+        }
+
+        .plan-output {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .plan-good {
+            border-left: 4px solid #198754;
+        }
+
+        .plan-bad {
+            border-left: 4px solid #dc3545;
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .comparison-table td {
+            vertical-align: top;
+            padding: 10px;
+        }
+
+        .comparison-table .slow {
+            background-color: #f8d7da;
+        }
+
+        .comparison-table .fast {
+            background-color: #d1e7dd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1>Query Performance and Optimization - Practical Examples</h1>
+                <p class="lead">Master execution plans, indexing strategies, and query optimization techniques through
+                    hands-on exercises.</p>
+
+                <div class="hint-box">
+                    <strong>Learning Objectives:</strong>
+                    <ul class="mb-0">
+                        <li>Read and interpret EXPLAIN output</li>
+                        <li>Identify performance bottlenecks in execution plans</li>
+                        <li>Design effective indexes for different query patterns</li>
+                        <li>Rewrite slow queries for better performance</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sample Dataset -->
+            <section>
+                <h3>Sample Database Schema</h3>
+                <p>We'll use an e-commerce database with the following tables:</p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>customers</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>customer_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                    <td>Primary Key</td>
+                                </tr>
+                                <tr>
+                                    <td>email</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(100)</span></td>
+                                    <td>Unique</td>
+                                </tr>
+                                <tr>
+                                    <td>first_name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>last_name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>country</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td>~50 distinct values</td>
+                                </tr>
+                                <tr>
+                                    <td>is_active</td>
+                                    <td><span class="badge bg-info">BOOLEAN</span></td>
+                                    <td>90% TRUE</td>
+                                </tr>
+                                <tr>
+                                    <td>created_at</td>
+                                    <td><span class="badge bg-warning text-dark">TIMESTAMP</span></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>~500,000 rows</strong></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>orders</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>order_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                    <td>Primary Key</td>
+                                </tr>
+                                <tr>
+                                    <td>customer_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                    <td>Foreign Key</td>
+                                </tr>
+                                <tr>
+                                    <td>order_date</td>
+                                    <td><span class="badge bg-warning text-dark">DATE</span></td>
+                                    <td>2020-2024</td>
+                                </tr>
+                                <tr>
+                                    <td>status</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
+                                    <td>5 values</td>
+                                </tr>
+                                <tr>
+                                    <td>total_amount</td>
+                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>shipping_country</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>~2,000,000 rows</strong></p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>order_items</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>item_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                    <td>Primary Key</td>
+                                </tr>
+                                <tr>
+                                    <td>order_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                    <td>Foreign Key</td>
+                                </tr>
+                                <tr>
+                                    <td>product_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                    <td>Foreign Key</td>
+                                </tr>
+                                <tr>
+                                    <td>quantity</td>
+                                    <td><span class="badge bg-info">INTEGER</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>unit_price</td>
+                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>~6,000,000 rows</strong></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>products</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>product_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                    <td>Primary Key</td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(200)</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>category</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td>~20 categories</td>
+                                </tr>
+                                <tr>
+                                    <td>price</td>
+                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>is_available</td>
+                                    <td><span class="badge bg-info">BOOLEAN</span></td>
+                                    <td>95% TRUE</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>~10,000 rows</strong></p>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <strong>Initial Indexes (Primary Keys Only):</strong><br>
+                    The database starts with only primary key indexes. Foreign key columns don't have indexes yet.
+                </div>
+            </section>
+
+            <!-- Part 1: Reading Execution Plans -->
+            <section>
+                <h2>Part 1: Reading Execution Plans</h2>
+                <p>Learn to interpret EXPLAIN output and identify performance issues.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Understanding Basic Plan Operations</h4>
+                    <p>Given the following PostgreSQL EXPLAIN output, identify the operations and estimate
+                        performance characteristics:</p>
+
+                    <div class="plan-output plan-bad">
+<pre>EXPLAIN SELECT * FROM orders WHERE status = 'pending';
+
+Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
+  Filter: ((status)::text = 'pending'::text)
+</pre>
+                    </div>
+
+                    <p><strong>Questions:</strong></p>
+                    <ol>
+                        <li>What operation is being performed?</li>
+                        <li>Why might this be inefficient for a table with 2 million rows?</li>
+                        <li>What does the cost estimate (0.00..45123.00) represent?</li>
+                    </ol>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
+                    <div id="sol1_1" class="solution">
+                        <p><strong>Answers:</strong></p>
+                        <ol>
+                            <li><span class="badge badge-operation badge-scan">Seq Scan</span> - A <strong>Sequential
+                                    Scan</strong> (full table scan) reads every row in the table.</li>
+                            <li>The query only needs ~150,000 rows (7.5% of 2M), but it reads ALL 2 million rows. This
+                                wastes I/O and CPU.</li>
+                            <li>The cost has two numbers:
+                                <ul>
+                                    <li><strong>0.00</strong> = startup cost (work before returning first row)</li>
+                                    <li><strong>45123.00</strong> = total cost in arbitrary units (higher = slower)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p><strong>Optimization:</strong> Create an index on the <code>status</code> column:</p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_status <span class="kw">ON</span> orders (status);</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Comparing Plan Operations</h4>
+                    <p>Compare these two execution plans for the same query after adding an index:</p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Before Index:</h6>
+                            <div class="plan-output plan-bad">
+<pre>Seq Scan on orders
+  (cost=0.00..45123.00 rows=150000)
+  Filter: status = 'pending'
+
+Actual Time: 892.45ms
+Rows Returned: 148,532</pre>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>After Index:</h6>
+                            <div class="plan-output plan-good">
+<pre>Bitmap Heap Scan on orders
+  (cost=1523.00..28456.00 rows=150000)
+  Recheck Cond: status = 'pending'
+  -> Bitmap Index Scan on idx_orders_status
+       (cost=0.00..1485.00 rows=150000)
+
+Actual Time: 124.32ms
+Rows Returned: 148,532</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p><strong>Questions:</strong></p>
+                    <ol>
+                        <li>What new operations appear in the optimized plan?</li>
+                        <li>Calculate the performance improvement.</li>
+                        <li>Why does PostgreSQL use a Bitmap scan instead of a simple Index Scan?</li>
+                    </ol>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
+                    <div id="sol1_2" class="solution">
+                        <p><strong>Answers:</strong></p>
+                        <ol>
+                            <li>
+                                <span class="badge badge-operation badge-index">Bitmap Index Scan</span> - Scans the
+                                index to build a bitmap of matching rows<br>
+                                <span class="badge badge-operation badge-scan">Bitmap Heap Scan</span> - Uses the
+                                bitmap to fetch actual rows from the table
+                            </li>
+                            <li>Performance improvement: <strong>892.45ms → 124.32ms = 7.2x faster</strong><br>
+                                Cost reduction: 45123 → 28456 = 37% lower estimated cost</li>
+                            <li>PostgreSQL uses Bitmap Scan when retrieving many rows (7.5% of table). It's more
+                                efficient than Index Scan for large result sets because:
+                                <ul>
+                                    <li>It reduces random I/O by sorting row locations</li>
+                                    <li>It can combine multiple index conditions efficiently</li>
+                                    <li>A simple Index Scan would cause too many random disk seeks</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: Identifying Join Operations</h4>
+                    <p>Analyze this execution plan for a join query:</p>
+
+                    <pre><code class="sourceCode sql"><span class="kw">SELECT</span> c.email, o.order_date, o.total_amount
+<span class="kw">FROM</span> customers c
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">WHERE</span> c.country = <span class="st">'Germany'</span>
+  <span class="kw">AND</span> o.order_date >= <span class="st">'2024-01-01'</span>;</code></pre>
+
+                    <div class="plan-output plan-bad">
+<pre>Hash Join  (cost=15234.00..98765.00 rows=25000 width=48)
+  Hash Cond: (o.customer_id = c.customer_id)
+  ->  Seq Scan on orders o  (cost=0.00..45123.00 rows=500000 width=20)
+        Filter: (order_date >= '2024-01-01')
+  ->  Hash  (cost=12456.00..12456.00 rows=12500 width=36)
+        ->  Seq Scan on customers c  (cost=0.00..12456.00 rows=12500 width=36)
+              Filter: (country = 'Germany')
+</pre>
+                    </div>
+
+                    <p><strong>Questions:</strong></p>
+                    <ol>
+                        <li>What join algorithm is being used?</li>
+                        <li>Identify all sequential scans - which ones could benefit from indexes?</li>
+                        <li>What indexes would you create to optimize this query?</li>
+                    </ol>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
+                    <div id="sol1_3" class="solution">
+                        <p><strong>Answers:</strong></p>
+                        <ol>
+                            <li><span class="badge badge-operation badge-join">Hash Join</span> - Builds a hash table
+                                from the smaller result (customers from Germany) and probes it with the larger result
+                                (orders).</li>
+                            <li>Two sequential scans identified:
+                                <ul>
+                                    <li><code>customers</code> filtered by <code>country = 'Germany'</code> - Would
+                                        benefit from index</li>
+                                    <li><code>orders</code> filtered by <code>order_date >= '2024-01-01'</code> - Would
+                                        benefit from index</li>
+                                </ul>
+                            </li>
+                            <li>Recommended indexes:
+                                <pre><code class="sourceCode sql"><span class="co">-- Index for customer country filter</span>
+<span class="kw">CREATE INDEX</span> idx_customers_country <span class="kw">ON</span> customers (country);
+
+<span class="co">-- Index for order date range filter</span>
+<span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);
+
+<span class="co">-- Index for join condition (critical!)</span>
+<span class="kw">CREATE INDEX</span> idx_orders_customer_id <span class="kw">ON</span> orders (customer_id);</code></pre>
+                            </li>
+                        </ol>
+                        <p>After indexes, the plan might use Nested Loop with Index Scans for much better performance.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 2: Index Design -->
+            <section>
+                <h2>Part 2: Index Design Exercises</h2>
+                <p>Practice designing optimal indexes for different query patterns.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Single-Column vs Composite Index</h4>
+                    <p>You have these two frequently executed queries:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Query A: Find orders by status</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = <span class="st">'shipped'</span>;
+
+<span class="co">-- Query B: Find shipped orders in a date range</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'shipped'</span>
+  <span class="kw">AND</span> order_date <span class="kw">BETWEEN</span> <span class="st">'2024-01-01'</span> <span class="kw">AND</span> <span class="st">'2024-03-31'</span>;</code></pre>
+
+                    <p><strong>Task:</strong> Design the optimal index(es) to support both queries efficiently.</p>
+
+                    <div class="hint-box">
+                        <strong>Hint:</strong> Consider the column order in composite indexes. Equality predicates
+                        should come before range predicates.
+                    </div>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
+                    <div id="sol2_1" class="solution">
+                        <p><strong>Optimal Solution:</strong> Create ONE composite index:</p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_status_date <span class="kw">ON</span> orders (status, order_date);</code></pre>
+
+                        <p><strong>Why this works:</strong></p>
+                        <ul>
+                            <li><strong>Query A</strong>: Uses the leftmost column (status) - index is used</li>
+                            <li><strong>Query B</strong>: Uses both columns - status equality first, then date range
+                            </li>
+                        </ul>
+
+                        <p><strong>Why NOT separate indexes?</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Less optimal approach:</span>
+<span class="kw">CREATE INDEX</span> idx_orders_status <span class="kw">ON</span> orders (status);
+<span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
+                        <ul>
+                            <li>Query B would need to combine two indexes (Bitmap AND) or pick only one</li>
+                            <li>More indexes = more storage and slower writes</li>
+                        </ul>
+
+                        <div class="warning-box">
+                            <strong>Column Order Matters!</strong><br>
+                            An index on <code>(order_date, status)</code> would NOT efficiently support Query A
+                            because the leftmost column is not used.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Partial Index Design</h4>
+                    <p>Your application frequently runs this query:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Find pending orders for follow-up</span>
+<span class="kw">SELECT</span> order_id, customer_id, order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'pending'</span>
+<span class="kw">ORDER BY</span> order_date;</code></pre>
+
+                    <p>Data distribution: Only 2% of orders have status = 'pending' (40,000 out of 2,000,000).</p>
+
+                    <p><strong>Task:</strong> Design the most efficient index for this query.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+                    <div id="sol2_2" class="solution">
+                        <p><strong>Optimal Solution:</strong> Create a partial index:</p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL partial index</span>
+<span class="kw">CREATE INDEX</span> idx_orders_pending_date
+<span class="kw">ON</span> orders (order_date)
+<span class="kw">WHERE</span> status = <span class="st">'pending'</span>;</code></pre>
+
+                        <p><strong>Benefits:</strong></p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Metric</th>
+                                <th>Full Index</th>
+                                <th>Partial Index</th>
+                            </tr>
+                            <tr>
+                                <td>Rows indexed</td>
+                                <td>2,000,000</td>
+                                <td>40,000 (2%)</td>
+                            </tr>
+                            <tr>
+                                <td>Index size (approx)</td>
+                                <td>~60 MB</td>
+                                <td>~1.2 MB</td>
+                            </tr>
+                            <tr>
+                                <td>Insert overhead</td>
+                                <td>Every insert</td>
+                                <td>Only pending orders</td>
+                            </tr>
+                        </table>
+
+                        <p><strong>SQL Server equivalent (Filtered Index):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_pending_date
+<span class="kw">ON</span> orders (order_date)
+<span class="kw">WHERE</span> status = <span class="st">'pending'</span>;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.3: Covering Index Design</h4>
+                    <p>This query runs thousands of times per minute in your dashboard:</p>
+
+                    <pre><code class="sourceCode sql"><span class="kw">SELECT</span> order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre>
+
+                    <p><strong>Task:</strong> Design an index that allows this query to be answered entirely from the
+                        index (Index-Only Scan).</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
+                    <div id="sol2_3" class="solution">
+                        <p><strong>Solution - Covering Index:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL (include non-key columns)</span>
+<span class="kw">CREATE INDEX</span> idx_orders_customer_covering
+<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>)
+<span class="kw">INCLUDE</span> (total_amount);
+
+<span class="co">-- Alternative: All columns in index key</span>
+<span class="kw">CREATE INDEX</span> idx_orders_customer_covering_alt
+<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, total_amount);</code></pre>
+
+                        <p><strong>Why this works:</strong></p>
+                        <ul>
+                            <li><code>customer_id</code> - First key for equality filter</li>
+                            <li><code>order_date DESC</code> - Second key for sorting (already in order!)</li>
+                            <li><code>total_amount</code> - Included so no table access needed</li>
+                        </ul>
+
+                        <div class="plan-output plan-good">
+<pre>Index Only Scan using idx_orders_customer_covering
+  (cost=0.43..12.56 rows=10 width=16)
+  Index Cond: (customer_id = 12345)
+  Heap Fetches: 0  <-- No table access!</pre>
+                        </div>
+
+                        <div class="concept-box">
+                            <strong>INCLUDE vs Key Columns:</strong><br>
+                            Use <code>INCLUDE</code> for columns only needed in SELECT (not used in WHERE/ORDER BY).
+                            This keeps the index tree smaller and faster to traverse.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.4: Expression Index</h4>
+                    <p>Users search for customers by email, but the search is case-insensitive:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Current slow query</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> <span class="fu">LOWER</span>(email) = <span class="st">'john.doe@example.com'</span>;</code></pre>
+
+                    <p>A regular index on <code>email</code> won't help because of the <code>LOWER()</code>
+                        function.</p>
+
+                    <p><strong>Task:</strong> Create an index that supports this case-insensitive search.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Show Solution</button>
+                    <div id="sol2_4" class="solution">
+                        <p><strong>Solution - Expression Index:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL expression index</span>
+<span class="kw">CREATE INDEX</span> idx_customers_email_lower
+<span class="kw">ON</span> customers (<span class="fu">LOWER</span>(email));
+
+<span class="co">-- Query must use the same expression:</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> <span class="fu">LOWER</span>(email) = <span class="fu">LOWER</span>(<span class="st">'John.Doe@Example.com'</span>);</code></pre>
+
+                        <p><strong>Alternative approaches:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL: Use citext extension for case-insensitive text</span>
+<span class="kw">CREATE EXTENSION IF NOT EXISTS</span> citext;
+<span class="kw">ALTER TABLE</span> customers <span class="kw">ALTER COLUMN</span> email <span class="kw">TYPE</span> citext;
+<span class="co">-- Now regular index works: WHERE email = 'John.Doe@Example.com'</span>
+
+<span class="co">-- SQL Server: Use case-insensitive collation</span>
+<span class="kw">CREATE INDEX</span> idx_customers_email <span class="kw">ON</span> customers (email);
+<span class="co">-- Default collation is usually case-insensitive</span></code></pre>
+
+                        <div class="warning-box">
+                            <strong>Important:</strong> The query must use the EXACT same expression as the index.
+                            <code>WHERE UPPER(email) = ...</code> would NOT use this index!
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 3: Query Rewriting -->
+            <section>
+                <h2>Part 3: Query Rewriting for Performance</h2>
+                <p>Transform slow queries into optimized versions.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Avoiding Functions on Indexed Columns</h4>
+                    <p>This query runs slowly despite having an index on <code>order_date</code>:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Slow query (cannot use index)</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> <span class="fu">YEAR</span>(order_date) = <span class="dv">2024</span>;</code></pre>
+
+                    <p><strong>Task:</strong> Rewrite the query to use the index on <code>order_date</code>.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
+                    <div id="sol3_1" class="solution">
+                        <p><strong>Optimized Query:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Use range condition instead of function</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> order_date >= <span class="st">'2024-01-01'</span>
+  <span class="kw">AND</span> order_date < <span class="st">'2025-01-01'</span>;</code></pre>
+
+                        <table class="comparison-table">
+                            <tr>
+                                <td class="slow" style="width: 50%;">
+                                    <strong>Before (Slow):</strong>
+                                    <div class="plan-output plan-bad">
+<pre>Seq Scan on orders
+cost=0.00..55123.00
+Filter: YEAR(order_date) = 2024</pre>
+                                    </div>
+                                </td>
+                                <td class="fast" style="width: 50%;">
+                                    <strong>After (Fast):</strong>
+                                    <div class="plan-output plan-good">
+<pre>Index Scan using idx_orders_date
+cost=0.43..8456.00
+Index Cond: (order_date >= ... AND ...)</pre>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p><strong>More examples:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Bad: Function on column</span>
+<span class="kw">WHERE</span> <span class="fu">DATE</span>(created_at) = <span class="st">'2024-06-15'</span>
+<span class="co">-- Good: Range condition</span>
+<span class="kw">WHERE</span> created_at >= <span class="st">'2024-06-15'</span> <span class="kw">AND</span> created_at < <span class="st">'2024-06-16'</span>
+
+<span class="co">-- Bad: Calculation on column</span>
+<span class="kw">WHERE</span> total_amount * <span class="fl">1.1</span> > <span class="dv">100</span>
+<span class="co">-- Good: Move calculation to constant</span>
+<span class="kw">WHERE</span> total_amount > <span class="dv">100</span> / <span class="fl">1.1</span>
+
+<span class="co">-- Bad: String function</span>
+<span class="kw">WHERE</span> <span class="fu">SUBSTRING</span>(code, <span class="dv">1</span>, <span class="dv">3</span>) = <span class="st">'ABC'</span>
+<span class="co">-- Good: Use LIKE with prefix</span>
+<span class="kw">WHERE</span> code <span class="kw">LIKE</span> <span class="st">'ABC%'</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Replacing Correlated Subquery with JOIN</h4>
+                    <p>This query finds customers with their most recent order, but runs very slowly:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Slow: Correlated subquery (runs once per customer)</span>
+<span class="kw">SELECT</span>
+    c.customer_id,
+    c.email,
+    (
+        <span class="kw">SELECT</span> <span class="fu">MAX</span>(o.order_date)
+        <span class="kw">FROM</span> orders o
+        <span class="kw">WHERE</span> o.customer_id = c.customer_id
+    ) <span class="kw">AS</span> last_order_date
+<span class="kw">FROM</span> customers c
+<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
+
+                    <p><strong>Task:</strong> Rewrite using a JOIN for better performance.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
+                    <div id="sol3_2" class="solution">
+                        <p><strong>Optimized Query using JOIN:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Fast: Single aggregation with JOIN</span>
+<span class="kw">SELECT</span>
+    c.customer_id,
+    c.email,
+    <span class="fu">MAX</span>(o.order_date) <span class="kw">AS</span> last_order_date
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>
+<span class="kw">GROUP BY</span> c.customer_id, c.email;</code></pre>
+
+                        <p><strong>Alternative using Window Function (get full order details):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Get the actual most recent order, not just the date</span>
+<span class="kw">WITH</span> ranked_orders <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        o.*,
+        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
+            <span class="kw">PARTITION BY</span> o.customer_id
+            <span class="kw">ORDER BY</span> o.order_date <span class="kw">DESC</span>
+        ) <span class="kw">AS</span> rn
+    <span class="kw">FROM</span> orders o
+)
+<span class="kw">SELECT</span>
+    c.customer_id,
+    c.email,
+    ro.order_date <span class="kw">AS</span> last_order_date,
+    ro.total_amount <span class="kw">AS</span> last_order_amount
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> ranked_orders ro
+    <span class="kw">ON</span> c.customer_id = ro.customer_id <span class="kw">AND</span> ro.rn = <span class="dv">1</span>
+<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
+
+                        <div class="concept-box">
+                            <strong>Performance Comparison:</strong><br>
+                            <ul class="mb-0">
+                                <li>Correlated subquery: O(customers × orders) - executes subquery for EACH customer
+                                </li>
+                                <li>JOIN approach: O(customers + orders) - single pass through each table</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.3: EXISTS vs IN vs JOIN</h4>
+                    <p>Find all customers who have placed at least one order. Compare three approaches:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Approach 1: IN subquery</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> orders);
+
+<span class="co">-- Approach 2: EXISTS subquery</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
+<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.customer_id);
+
+<span class="co">-- Approach 3: JOIN with DISTINCT</span>
+<span class="kw">SELECT DISTINCT</span> c.* <span class="kw">FROM</span> customers c
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+
+                    <p><strong>Task:</strong> Analyze which approach is best and when.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
+                    <div id="sol3_3" class="solution">
+                        <p><strong>Analysis:</strong></p>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Approach</th>
+                                    <th>Best When</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>EXISTS</code></td>
+                                    <td>Large orders table, just checking existence</td>
+                                    <td>Stops at first match (early termination)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>IN</code></td>
+                                    <td>Small subquery result set</td>
+                                    <td>Must build complete list first</td>
+                                </tr>
+                                <tr>
+                                    <td><code>JOIN + DISTINCT</code></td>
+                                    <td>When you need columns from both tables</td>
+                                    <td>Extra work for deduplication</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Recommendation for this specific case:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- EXISTS is typically best for existence checks</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
+<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (
+    <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o
+    <span class="kw">WHERE</span> o.customer_id = c.customer_id
+);</code></pre>
+
+                        <p><strong>Required index for all approaches:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer_id <span class="kw">ON</span> orders (customer_id);</code></pre>
+
+                        <div class="hint-box">
+                            <strong>Modern Optimizers:</strong> Most modern databases (PostgreSQL 12+, SQL Server 2019+)
+                            can often optimize IN and EXISTS to produce similar plans. Always verify with EXPLAIN.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.4: UNION ALL vs UNION</h4>
+                    <p>You need to combine active and VIP customers (VIP is a separate flag):</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Current slow query</span>
+<span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_active = <span class="kw">TRUE</span>
+<span class="kw">UNION</span>
+<span class="kw">SELECT</span> customer_id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_vip = <span class="kw">TRUE</span>;</code></pre>
+
+                    <p><strong>Task:</strong> Optimize this query knowing that the same customer can be both active
+                        AND VIP (and you want to see both rows in that case).</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_4')">Show Solution</button>
+                    <div id="sol3_4" class="solution">
+                        <p><strong>Optimized Query:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Use UNION ALL since duplicates are intentional</span>
+<span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_active = <span class="kw">TRUE</span>
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> customer_id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_vip = <span class="kw">TRUE</span>;</code></pre>
+
+                        <table class="comparison-table">
+                            <tr>
+                                <td class="slow">
+                                    <strong>UNION (Slow):</strong>
+                                    <ul>
+                                        <li>Combines results</li>
+                                        <li>Sorts all rows</li>
+                                        <li>Removes duplicates</li>
+                                    </ul>
+                                </td>
+                                <td class="fast">
+                                    <strong>UNION ALL (Fast):</strong>
+                                    <ul>
+                                        <li>Combines results</li>
+                                        <li>Done!</li>
+                                        <li>&nbsp;</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="warning-box">
+                            <strong>When to use UNION (not ALL):</strong><br>
+                            Only use UNION when you specifically need to remove duplicates and the queries might
+                            return the same rows. If queries are mutually exclusive or you want all rows, use UNION
+                            ALL.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 4: Challenge Exercises -->
+            <section>
+                <h2>Part 4: Challenge Exercises</h2>
+                <p>Complex scenarios combining multiple optimization techniques.</p>
+
+                <div class="exercise-box">
+                    <h4>Challenge 4.1: Optimize a Reporting Query</h4>
+                    <p>This monthly sales report runs for 45 seconds. Optimize it:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Current slow query</span>
+<span class="kw">SELECT</span>
+    p.category,
+    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(oi.quantity * oi.unit_price) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
+<span class="kw">WHERE</span> o.order_date >= <span class="st">'2024-01-01'</span>
+  <span class="kw">AND</span> o.status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>)
+<span class="kw">GROUP BY</span> p.category, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
+<span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
+
+                    <p><strong>Task:</strong> Identify optimizations (indexes, query rewrites) to reduce execution
+                        time.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
+                    <div id="sol4_1" class="solution">
+                        <p><strong>Step 1: Create Supporting Indexes</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Index for orders filtering and joining</span>
+<span class="kw">CREATE INDEX</span> idx_orders_date_status
+<span class="kw">ON</span> orders (order_date, status)
+<span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>);
+
+<span class="co">-- Index for order_items join</span>
+<span class="kw">CREATE INDEX</span> idx_order_items_order_id
+<span class="kw">ON</span> order_items (order_id)
+<span class="kw">INCLUDE</span> (product_id, quantity, unit_price);
+
+<span class="co">-- Index for products join</span>
+<span class="kw">CREATE INDEX</span> idx_products_id_category
+<span class="kw">ON</span> products (product_id)
+<span class="kw">INCLUDE</span> (category);</code></pre>
+
+                        <p><strong>Step 2: Query Optimization</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Optimized query using CTE for better plan</span>
+<span class="kw">WITH</span> filtered_orders <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> order_id, order_date
+    <span class="kw">FROM</span> orders
+    <span class="kw">WHERE</span> order_date >= <span class="st">'2024-01-01'</span>
+      <span class="kw">AND</span> status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>)
+)
+<span class="kw">SELECT</span>
+    p.category,
+    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date) <span class="kw">AS</span> month,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> fo.order_id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(oi.quantity * oi.unit_price) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> filtered_orders fo
+<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> fo.order_id = oi.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
+<span class="kw">GROUP BY</span> p.category, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date)
+<span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
+
+                        <p><strong>Step 3: Consider Materialized View for Frequent Reports</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- If this report runs frequently, pre-compute it</span>
+<span class="kw">CREATE MATERIALIZED VIEW</span> mv_monthly_sales <span class="kw">AS</span>
+<span class="kw">SELECT</span>
+    p.category,
+    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(oi.quantity * oi.unit_price) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
+<span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>)
+<span class="kw">GROUP BY</span> p.category, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
+
+<span class="co">-- Refresh daily</span>
+<span class="kw">REFRESH MATERIALIZED VIEW</span> mv_monthly_sales;</code></pre>
+
+                        <div class="concept-box">
+                            <strong>Expected Improvement:</strong> 45 seconds → 2-5 seconds with indexes, or
+                            sub-second with materialized view.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Challenge 4.2: Pagination Performance</h4>
+                    <p>This pagination query gets slower as users go to later pages:</p>
+
+                    <pre><code class="sourceCode sql"><span class="co">-- Slow for large offsets (e.g., page 1000)</span>
+<span class="kw">SELECT</span> order_id, order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">19980</span>;  <span class="co">-- Page 1000 × 20 per page</span></code></pre>
+
+                    <p><strong>Task:</strong> Implement keyset (cursor-based) pagination as an alternative.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol4_2')">Show Solution</button>
+                    <div id="sol4_2" class="solution">
+                        <p><strong>Problem with OFFSET:</strong></p>
+                        <ul>
+                            <li>Database must scan and discard 19,980 rows before returning 20</li>
+                            <li>Performance degrades linearly with page number</li>
+                        </ul>
+
+                        <p><strong>Solution: Keyset Pagination</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- First page</span>
+<span class="kw">SELECT</span> order_id, order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span>;
+
+<span class="co">-- Subsequent pages: use the last row's values as cursor</span>
+<span class="co">-- If last row was: order_date='2024-03-15', order_id=98765</span>
+<span class="kw">SELECT</span> order_id, order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+  <span class="kw">AND</span> (order_date, order_id) < (<span class="st">'2024-03-15'</span>, <span class="dv">98765</span>)
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span>;</code></pre>
+
+                        <p><strong>Supporting Index:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer_date_id
+<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>);</code></pre>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>OFFSET (Page 1000)</th>
+                                    <th>Keyset</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Rows scanned</td>
+                                    <td>~20,000</td>
+                                    <td>~20</td>
+                                </tr>
+                                <tr>
+                                    <td>Execution time</td>
+                                    <td>~500ms</td>
+                                    <td>~1ms</td>
+                                </tr>
+                                <tr>
+                                    <td>Consistency</td>
+                                    <td>Can miss/duplicate if data changes</td>
+                                    <td>Stable cursor position</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="warning-box">
+                            <strong>Trade-off:</strong> Keyset pagination doesn't support "jump to page N" directly.
+                            It's best for infinite scroll or "load more" patterns.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Challenge 4.3: Query Plan Analysis</h4>
+                    <p>Analyze this EXPLAIN ANALYZE output and identify all issues:</p>
+
+                    <div class="plan-output plan-bad">
+<pre>EXPLAIN ANALYZE
+SELECT c.email, COUNT(o.order_id) as order_count, SUM(o.total_amount) as total_spent
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE LOWER(c.email) LIKE '%gmail.com'
+  AND o.order_date >= '2024-01-01'
+GROUP BY c.email
+HAVING SUM(o.total_amount) > 1000;
+
+HashAggregate  (cost=125678.00..125789.00 rows=1000 width=48) (actual time=8234.567..8236.789 rows=156 loops=1)
+  Group Key: c.email
+  Filter: (sum(o.total_amount) > 1000)
+  Rows Removed by Filter: 12456
+  ->  Hash Join  (cost=15234.00..98765.00 rows=250000 width=48) (actual time=1234.567..7890.123 rows=456789 loops=1)
+        Hash Cond: (o.customer_id = c.customer_id)
+        ->  Seq Scan on orders o  (cost=0.00..45123.00 rows=500000 width=20) (actual time=0.012..2345.678 rows=485632 loops=1)
+              Filter: (order_date >= '2024-01-01')
+              Rows Removed by Filter: 1514368
+        ->  Hash  (cost=12456.00..12456.00 rows=50000 width=36) (actual time=1234.123..1234.123 rows=48765 loops=1)
+              ->  Seq Scan on customers c  (cost=0.00..12456.00 rows=50000 width=36) (actual time=0.023..1123.456 rows=48765 loops=1)
+                    Filter: (lower((email)::text) ~~ '%gmail.com'::text)
+                    Rows Removed by Filter: 451235
+
+Planning Time: 0.456 ms
+Execution Time: 8237.890 ms</pre>
+                    </div>
+
+                    <p><strong>Task:</strong> List all performance issues and provide solutions.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol4_3')">Show Solution</button>
+                    <div id="sol4_3" class="solution">
+                        <p><strong>Issues Identified:</strong></p>
+
+                        <ol>
+                            <li>
+                                <strong>Leading wildcard LIKE on email</strong>
+                                <br><code>LOWER(c.email) LIKE '%gmail.com'</code>
+                                <br>Cannot use index due to leading % and function
+                                <br><em>Solution:</em> If searching for domain, restructure data or use full-text
+                                search
+                                <pre><code class="sourceCode sql"><span class="co">-- Add domain column or use pg_trgm</span>
+<span class="kw">CREATE EXTENSION</span> pg_trgm;
+<span class="kw">CREATE INDEX</span> idx_customers_email_trgm
+<span class="kw">ON</span> customers <span class="kw">USING</span> gin (email gin_trgm_ops);</code></pre>
+                            </li>
+
+                            <li>
+                                <strong>Sequential scan on orders</strong>
+                                <br>Scanning 2M rows, filtering to 485K
+                                <br><em>Solution:</em> Index on order_date
+                                <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
+                            </li>
+
+                            <li>
+                                <strong>Missing index for join</strong>
+                                <br>Hash join is reasonable but index could help
+                                <br><em>Solution:</em> Index on customer_id
+                                <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer <span class="kw">ON</span> orders (customer_id);</code></pre>
+                            </li>
+
+                            <li>
+                                <strong>Late filtering with HAVING</strong>
+                                <br>Processes 456K rows, groups to 12K, then filters to 156
+                                <br><em>Solution:</em> No direct fix, but pre-aggregating high-value customers could
+                                help
+                            </li>
+
+                            <li>
+                                <strong>LEFT JOIN with WHERE on right table</strong>
+                                <br><code>LEFT JOIN ... WHERE o.order_date >= ...</code> converts to INNER JOIN
+                                <br><em>Solution:</em> Be explicit - use INNER JOIN or move filter to ON clause
+                            </li>
+                        </ol>
+
+                        <p><strong>Optimized Query:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- After creating necessary indexes</span>
+<span class="kw">SELECT</span> c.email, <span class="fu">COUNT</span>(o.order_id), <span class="fu">SUM</span>(o.total_amount)
+<span class="kw">FROM</span> customers c
+<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
+<span class="kw">WHERE</span> c.email <span class="kw">LIKE</span> <span class="st">'%@gmail.com'</span>  <span class="co">-- or use trigram index</span>
+  <span class="kw">AND</span> o.order_date >= <span class="st">'2024-01-01'</span>
+<span class="kw">GROUP BY</span> c.email
+<span class="kw">HAVING</span> <span class="fu">SUM</span>(o.total_amount) > <span class="dv">1000</span>;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h3>Key Takeaways</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Key Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Execution Plans</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Use EXPLAIN ANALYZE to see actual vs estimated rows</li>
+                                    <li>Watch for Seq Scans on large tables</li>
+                                    <li>Large estimate/actual discrepancies indicate stale statistics</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Index Design</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Composite indexes: equality columns first, then range</li>
+                                    <li>Use partial indexes for frequently filtered subsets</li>
+                                    <li>Covering indexes eliminate table lookups</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Query Writing</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Avoid functions on indexed columns in WHERE</li>
+                                    <li>Replace correlated subqueries with JOINs</li>
+                                    <li>Use UNION ALL when duplicates don't matter</li>
+                                    <li>Use keyset pagination for large result sets</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Optimization Process</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Measure first with EXPLAIN ANALYZE</li>
+                                    <li>Identify the slowest operation</li>
+                                    <li>Apply targeted fix (index or rewrite)</li>
+                                    <li>Verify improvement with EXPLAIN ANALYZE</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <div class="d-flex justify-content-between">
+                    <a href="01_query_performance_and_optimization.html" class="btn btn-outline-primary">&larr; Back
+                        to Lesson</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+                event.target.textContent = 'Show Solution';
+            } else {
+                element.classList.add('show');
+                event.target.textContent = 'Hide Solution';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/01_database_design_principles.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Database Design Principles</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-database-design-principles">Day 3: Database Design Principles</h1>
+                <h2 id="session-1-database-design-principles-2-hours">Session 1: Database Design Principles (2 hours)
+                </h2>
+                <p>Effective database design is crucial for building scalable, maintainable, and efficient applications.
+                    This session covers fundamental principles like normalization, Entity-Relationship (ER) modeling,
+                    and
+                    the use of keys and constraints to ensure data integrity, applicable across most relational database
+                    management systems (RDBMS).</p>
+                <h3 id="normalization-and-denormalization">Normalization and Denormalization</h3>
+                <p><strong>Normalization</strong> is the process of organizing data in a database to reduce redundancy
+                    and
+                    improve data integrity. It involves structuring tables and their relationships according to formal
+                    rules
+                    called normal forms.</p>
+                <p><strong>Key Goals of Normalization</strong>: * Minimize data duplication. * Reduce data modification
+                    anomalies (issues during insert, update, delete). * Simplify queries. * Make the database structure
+                    more
+                    flexible and easier to maintain.</p>
+            </section>
+            <section>
+                <p><strong>Common Normal Forms</strong>:</p>
+                <ol type="1">
+                    <li><strong>First Normal Form (1NF)</strong>:
+                        <ul>
+                            <li><strong>Rule</strong>: Each table cell must contain a single, atomic value. No repeating
+                                groups or multi-valued attributes within a single cell. Each row must be unique.</li>
+                            <li><strong>Example (Not 1NF)</strong>: A <code>Customer</code> table with a
+                                <code>PhoneNumbers</code> column containing “555-1234, 555-5678”.
+                            </li>
+                            <li><strong>Fix</strong>: Create a separate <code>CustomerPhoneNumbers</code> table with
+                                <code>CustomerID</code> and <code>PhoneNumber</code> columns, allowing multiple rows per
+                                customer.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Second Normal Form (2NF)</strong>:
+                        <ul>
+                            <li><strong>Rule</strong>: Must be in 1NF. All non-key attributes must depend fully on the
+                                <em>entire</em> primary key. Applies mainly to tables with composite primary keys.
+                            </li>
+                            <li><strong>Example (Not 2NF)</strong>: An <code>OrderItems</code> table with
+                                <code>(OrderID, ProductID)</code> as the primary key, but also containing
+                                <code>ProductName</code> which depends only on <code>ProductID</code>.
+                            </li>
+                            <li><strong>Fix</strong>: Move <code>ProductName</code> to a separate <code>Products</code>
+                                table keyed by <code>ProductID</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Third Normal Form (3NF)</strong>:
+                        <ul>
+                            <li><strong>Rule</strong>: Must be in 2NF. No non-key attribute should depend on another
+                                non-key
+                                attribute (no transitive dependencies).</li>
+                            <li><strong>Example (Not 3NF)</strong>: An <code>Employees</code> table with
+                                <code>EmployeeID</code> (key), <code>DepartmentID</code>, and
+                                <code>DepartmentLocation</code>. Here, <code>DepartmentLocation</code> depends on
+                                <code>DepartmentID</code> (a non-key attribute), not directly on
+                                <code>EmployeeID</code>.
+                            </li>
+                            <li><strong>Fix</strong>: Move <code>DepartmentLocation</code> to a separate
+                                <code>Departments</code> table keyed by <code>DepartmentID</code>.
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><strong>Higher Normal Forms (BCNF, 4NF, 5NF)</strong> exist but 3NF is often sufficient for most
+                    practical applications.</p>
+                <p><strong>Benefits of Normalization</strong>: * Improved Data Integrity: Reduces inconsistencies. *
+                    Reduced
+                    Storage Space: Eliminates redundant data. * Easier Updates: Changes need to be made in only one
+                    place. *
+                    Increased Flexibility: Easier to modify the schema later.</p>
+            </section>
+            <section>
+                <p><strong>Denormalization</strong>:</p>
+                <p>Denormalization is the <em>intentional</em> introduction of redundancy into a database design to
+                    improve
+                    read performance. It’s often done after normalization by adding back duplicate data or grouping data
+                    to
+                    avoid costly joins in frequently executed queries.</p>
+                <p><strong>Common Denormalization Techniques</strong>: * Storing derived values (e.g., calculating
+                    <code>order_total</code> and storing it instead of calculating it from <code>order_items</code>
+                    every
+                    time). * Adding redundant columns from related tables (e.g., storing <code>customer_name</code> in
+                    the
+                    <code>orders</code> table even though it’s available via a join to <code>customers</code>). *
+                    Creating
+                    summary tables (e.g., <code>monthly_sales_summary</code>).
+                </p>
+                <p><strong>When to Consider Denormalization</strong>: * When read performance is critical and joins are
+                    bottlenecks. * In data warehousing and reporting scenarios (OLAP). * When data is updated
+                    infrequently
+                    but read very often.</p>
+                <p><strong>Trade-offs</strong>: Denormalization improves read speed but increases storage requirements,
+                    complicates data updates (redundant data must be kept consistent), and can decrease data integrity
+                    if
+                    not managed carefully.</p>
+                <p><strong>Best Practice</strong>: Start with a normalized design (typically aiming for 3NF). Identify
+                    performance issues through profiling. Apply denormalization selectively and strategically where the
+                    performance benefits outweigh the drawbacks. Document all denormalization decisions.</p>
+            </section>
+            <section>
+                <h3 id="entity-relationship-er-modeling">Entity-Relationship (ER) Modeling</h3>
+                <p>ER modeling is a conceptual design technique used to visualize the structure of a database. It
+                    defines
+                    entities (things we store data about), their attributes (properties), and the relationships between
+                    them.</p>
+                <p><strong>Core Components</strong>:</p>
+                <ol type="1">
+                    <li><strong>Entities</strong>: Represent real-world objects or concepts (e.g.,
+                        <code>Customer</code>,
+                        <code>Product</code>, <code>Order</code>). Often correspond to tables.
+                    </li>
+                    <li><strong>Attributes</strong>: Properties describing an entity (e.g., <code>CustomerName</code>,
+                        <code>ProductPrice</code>, <code>OrderDate</code>). Often correspond to columns.
+                        <ul>
+                            <li><strong>Key Attributes</strong>: Uniquely identify an entity instance (Primary Key).
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Relationships</strong>: Associations between two or more entities (e.g., a
+                        <code>Customer</code> <em>places</em> an <code>Order</code>; an <code>Order</code>
+                        <em>contains</em>
+                        <code>Products</code>). Often implemented using foreign keys or junction tables.
+                    </li>
+                </ol>
+                <p><strong>Cardinality</strong>: Describes the number of instances of one entity that can relate to
+                    instances of another entity. * <strong>One-to-One (1:1)</strong>: Each instance in Entity A relates
+                    to
+                    exactly one instance in Entity B, and vice versa (e.g., <code>User</code> and
+                    <code>UserProfile</code>).
+                    Often implemented by placing the foreign key in one table or merging the tables. *
+                    <strong>One-to-Many
+                        (1:N)</strong>: One instance in Entity A relates to zero or more instances in Entity B, but each
+                    instance in B relates to exactly one in A (e.g., <code>Author</code> and <code>Books</code>).
+                    Implemented by placing a foreign key in the “many” side table (<code>Books</code> table gets
+                    <code>author_id</code>). * <strong>Many-to-Many (M:N)</strong>: One instance in Entity A relates to
+                    zero
+                    or more instances in Entity B, and vice versa (e.g., <code>Students</code> and
+                    <code>Courses</code>).
+                    Implemented using a separate <strong>junction table</strong> (or linking/associative table)
+                    containing
+                    foreign keys to both related tables (e.g., <code>Enrollments</code> table with
+                    <code>student_id</code>
+                    and <code>course_id</code>).
+                </p>
+                <p><strong>ER Diagrams</strong>: Visual representations using standard notations (e.g., Chen, Crow’s
+                    Foot)
+                    to depict entities (rectangles), attributes (ovals), and relationships (diamonds or lines with
+                    cardinality symbols).</p>
+                <p><strong>Process</strong>: ER modeling helps translate business requirements into a logical database
+                    structure before writing any <code>CREATE TABLE</code> statements.</p>
+            </section>
+            <section>
+                <h3 id="primary-and-foreign-keys">Primary and Foreign Keys</h3>
+                <p>Keys are fundamental for establishing relationships and ensuring data integrity in relational
+                    databases.
+                </p>
+                <p><strong>Primary Keys (PK)</strong>: * A column (or set of columns) whose value uniquely identifies
+                    each
+                    row in a table. * <strong>Properties</strong>: Must be UNIQUE, must NOT be NULL. *
+                    <strong>Types</strong>: * <strong>Natural Key</strong>: A key using attributes that already exist
+                    and
+                    have meaning in the real world (e.g., ISBN for books, email address for users). Can be problematic
+                    if
+                    the real-world value changes or isn’t truly unique/stable. * <strong>Surrogate Key</strong>: An
+                    artificial key with no business meaning, created solely for identification (e.g., an
+                    auto-incrementing
+                    integer ID, a UUID). <strong>Generally preferred</strong> for stability and simplicity. *
+                    <strong>Implementation</strong>: Defined using the <code>PRIMARY KEY</code> constraint. ```sql –
+                    Using a
+                    surrogate key (syntax varies for auto-increment) CREATE TABLE Products ( product_id INTEGER PRIMARY
+                    KEY,
+                    – Or SERIAL, AUTO_INCREMENT, GENERATED AS IDENTITY… product_name VARCHAR(200) NOT NULL );
+                </p>
+                <div class="sourceCode" id="cb1">
+                    <pre><code><span class="co">-- Using a natural key</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> Countries (
+    country_code <span class="kw">CHAR(2)</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    country_name <span class="kw">VARCHAR(100)</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
+);
+
+<span class="co">-- Composite primary key</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> OrderItems (
+    order_id <span class="kw">INTEGER</span>, 
+    product_id <span class="kw">INTEGER</span>,
+    quantity <span class="kw">INTEGER</span>,
+    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">order_id</span>, <span class="kw">product_id</span>) -- Both columns together must be unique
+);
+</code></pre>
+                </div>
+            </section>
+            <section>
+                <p><strong>Foreign Keys (FK)</strong>: * A column (or set of columns) in one table that refers to the
+                    Primary Key of another table. * Establishes a link between tables and enforces <strong>referential
+                        integrity</strong> (ensures that a value in the FK column must match an existing value in the
+                    referenced PK column, or be NULL). * <strong>Implementation</strong>: Defined using the
+                    <code>FOREIGN KEY (...) REFERENCES ...</code> constraint.
+                <div class="sourceCode" id="cb1">
+                    <pre><code><span class="co">-- Example</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> Orders (
+    order_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,        
+    customer_id <span class="kw">INTEGER</span>,          
+    order_date <span class="kw">DATE</span>,         
+    -- Foreign key constraint         
+    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (<span class="kw">customer_id</span>) <span class="kw">REFERENCES</span> Customers(<span class="kw">customer_id</span>)
+);</code></pre>
+                </div>
+                * <strong>Referential Actions</strong>: Specify what happens in the referencing table
+                (<code>Orders</code>) if the referenced row in the parent table (<code>Customers</code>) is deleted
+                or
+                updated. Common options (syntax/defaults may vary slightly): * <code>ON DELETE RESTRICT</code> /
+                <code>ON UPDATE RESTRICT</code> (or <code>NO ACTION</code>): Prevent deletion/update of the parent
+                row
+                if child rows exist (often the default). * <code>ON DELETE CASCADE</code> /
+                <code>ON UPDATE CASCADE</code>: Automatically delete/update child rows when the parent row is
+                deleted/updated. * <code>ON DELETE SET NULL</code> / <code>ON UPDATE SET NULL</code>: Set the
+                foreign
+                key column(s) in child rows to NULL. * <code>ON DELETE SET DEFAULT</code> /
+                <code>ON UPDATE SET DEFAULT</code>: Set the foreign key column(s) to their default value.
+                <div class="sourceCode" id="cb1">
+                    <pre><code><span class="co">-- Example with CASCADE</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> OrderItems (
+    order_item_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,        
+    order_id <span class="kw">INTEGER</span>,        
+    product_id <span class="kw">INTEGER</span>,         
+    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (<span class="kw">order_id</span>) <span class="kw">REFERENCES</span> Orders(<span class="kw">order_id</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span>
+);</code></pre>
+                </div>
+                </p>
+            </section>
+            <section>
+                <h3 id="constraints-and-data-integrity">Constraints and Data Integrity</h3>
+                <p>Constraints are rules applied to table columns to enforce data accuracy and consistency.</p>
+                <p><strong>Common Constraint Types</strong>:</p>
+                <ol type="1">
+                    <li>
+                        <p><strong><code>NOT NULL</code></strong>: Ensures a column cannot contain NULL values.
+                        <pre><code><span class="kw">CREATE</span> <span class="kw">TABLE</span> Users (
+    user_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    email <span class="kw">VARCHAR(100)</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
+);</code></pre>
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong><code>UNIQUE</code></strong>: Ensures all values in a column (or combination of
+                            columns)
+                            are distinct across all rows. Allows NULLs (though typically only one NULL is permitted,
+                            behavior can vary).
+                        <pre><code><span class="kw">CREATE</span> <span class="kw">TABLE</span> Users (
+    user_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    email <span class="kw">VARCHAR(100)</span> <span class="kw">UNIQUE</span>
+);</code></pre>
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong><code>PRIMARY KEY</code></strong>: Combines <code>NOT NULL</code> and
+                            <code>UNIQUE</code>. Uniquely identifies each row.
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong><code>FOREIGN KEY</code></strong>: Enforces referential integrity between tables.</p>
+                    </li>
+                    <li>
+                        <p><strong><code>CHECK</code></strong>: Specifies a condition that must be true for any value
+                            inserted or updated in a column.
+                        <pre><code><span class="kw">CREATE</span> <span class="kw">TABLE</span> Products (
+    product_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    price <span class="kw">DECIMAL(10, 2)</span> <span class="kw">CHECK</span> (<span class="kw">price</span> &gt;= 0),
+    status <span class="kw">VARCHAR(10)</span> <span class="kw">CHECK</span> (<span class="kw">status</span> IN ("active", "inactive", "discontinued"))
+);</code></pre>
+                        </p>
+                    </li>
+                </ol>
+                <p><strong>Benefits of Constraints</strong>: * Enforce business rules at the database level. * Prevent
+                    invalid data from being entered. * Ensure consistency across related tables. * Improve data quality
+                    and
+                    reliability.</p>
+                <p><strong>Implementation</strong>: Constraints can be defined when the table is created
+                    (<code>CREATE TABLE</code>) or added later (<code>ALTER TABLE ... ADD CONSTRAINT ...</code>). Naming
+                    constraints explicitly (<code>CONSTRAINT constraint_name CHECK(...)</code>) is good practice for
+                    easier
+                    management.</p>
+                <p>Good database design, incorporating normalization, clear ER modeling, and appropriate use of keys and
+                    constraints, forms the foundation for robust and reliable database applications.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Practice What You Learned</h3>
+                <p>Ready to master database design? Practice with hands-on exercises covering normalization, ER modeling, key implementation, and constraint design.</p>
+                <p><a href="01_database_design_principles_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/01_database_design_principles.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style_bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: PostgreSQL Extensions - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .exercise-box h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .solution-box {
+            background-color: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .toggle-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .hint-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .hint-box::before {
+            content: "Hint: ";
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box::before {
+            content: "Warning: ";
+            font-weight: bold;
+        }
+
+        .concept-box {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box::before {
+            content: "Concept: ";
+            font-weight: bold;
+        }
+
+        .extension-box {
+            background-color: #e2d5f1;
+            border: 1px solid #c5b3d9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .extension-box::before {
+            content: "Extension: ";
+            font-weight: bold;
+            color: #563d7c;
+        }
+
+        .challenge-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .challenge-box h4 {
+            color: #155724;
+        }
+
+        .challenge-box::before {
+            content: "";
+        }
+
+        .dataset-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .dataset-table th,
+        .dataset-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .dataset-table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .dataset-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .result-box {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .ext-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+            background-color: #336791;
+            color: white;
+        }
+
+        .use-case-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .use-case-box::before {
+            content: "Use Case: ";
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .output-display {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .ext-category {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .cat-search {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .cat-security {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .cat-data {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .cat-analytics {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .cat-spatial {
+            background-color: #6f42c1;
+            color: white;
+        }
+
+        .tree-visual {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="extensions-practical-examples">PostgreSQL Extensions - Practical Examples</h1>
+                <p><a href="03_database_extensibility_and_postgresql_extensions.html">&larr; Back to PostgreSQL Extensions Lesson</a></p>
+                <p>This page provides hands-on exercises to master PostgreSQL extensions. Practice using extensions
+                    for cryptography, fuzzy search, UUIDs, hierarchical data, and more.</p>
+
+                <div class="warning-box">
+                    Extensions must be installed on the PostgreSQL server before they can be used.
+                    Use <code>CREATE EXTENSION IF NOT EXISTS extension_name;</code> to install.
+                </div>
+            </section>
+
+            <!-- Extensions Quick Reference -->
+            <section>
+                <h2 id="extensions-reference">Extensions Quick Reference</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Extension</th>
+                            <th>Category</th>
+                            <th>Purpose</th>
+                            <th>Key Functions/Types</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="ext-badge">pgcrypto</span></td>
+                            <td><span class="ext-category cat-security">Security</span></td>
+                            <td>Cryptographic functions</td>
+                            <td><code>crypt()</code>, <code>gen_salt()</code>, <code>encrypt()</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">uuid-ossp</span></td>
+                            <td><span class="ext-category cat-data">Data</span></td>
+                            <td>UUID generation</td>
+                            <td><code>uuid_generate_v4()</code>, <code>uuid_generate_v1()</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">pg_trgm</span></td>
+                            <td><span class="ext-category cat-search">Search</span></td>
+                            <td>Fuzzy text matching</td>
+                            <td><code>similarity()</code>, <code>%</code> operator</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">ltree</span></td>
+                            <td><span class="ext-category cat-data">Data</span></td>
+                            <td>Hierarchical trees</td>
+                            <td><code>LTREE</code> type, <code>@></code>, <code><@</code> operators</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">hstore</span></td>
+                            <td><span class="ext-category cat-data">Data</span></td>
+                            <td>Key-value storage</td>
+                            <td><code>HSTORE</code> type, <code>-></code> operator</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">tablefunc</span></td>
+                            <td><span class="ext-category cat-analytics">Analytics</span></td>
+                            <td>Pivot tables</td>
+                            <td><code>crosstab()</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">intarray</span></td>
+                            <td><span class="ext-category cat-data">Data</span></td>
+                            <td>Integer array ops</td>
+                            <td><code>@></code>, <code>&&</code>, <code>idx()</code></td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">pg_stat_statements</span></td>
+                            <td><span class="ext-category cat-analytics">Analytics</span></td>
+                            <td>Query statistics</td>
+                            <td><code>pg_stat_statements</code> view</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">PostGIS</span></td>
+                            <td><span class="ext-category cat-spatial">Spatial</span></td>
+                            <td>Geographic data</td>
+                            <td><code>GEOMETRY</code>, <code>ST_Distance()</code>, <code>ST_Within()</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Exercise 1: pgcrypto for Security -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Cryptography with pgcrypto</h2>
+                <p>Learn to use pgcrypto for password hashing, encryption, and generating secure random data.</p>
+
+                <div class="extension-box">
+                    <code>pgcrypto</code> provides cryptographic functions for hashing (MD5, SHA, bcrypt)
+                    and symmetric encryption (AES, 3DES, Blowfish).
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Password Hashing</h4>
+                    <p>Create a secure user authentication system with properly hashed passwords.</p>
+
+                    <div class="use-case-box">
+                        Store passwords using bcrypt hashing with automatic salting.
+                        Never store plain-text passwords!
+                    </div>
+
+                    <p><strong>Tasks:</strong></p>
+                    <ol>
+                        <li>Create a users table with hashed passwords</li>
+                        <li>Insert a user with a hashed password</li>
+                        <li>Write a function to verify passwords</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable pgcrypto extension
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- Create users table
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert a user with bcrypt-hashed password
+-- gen_salt('bf') generates a blowfish salt with default cost (8)
+-- gen_salt('bf', 12) uses cost factor 12 (slower but more secure)
+INSERT INTO users (username, email, password_hash)
+VALUES (
+    'john_doe',
+    'john@example.com',
+    crypt('MySecureP@ssw0rd', gen_salt('bf', 10))
+);
+
+-- Verify password (returns the user if password matches)
+SELECT user_id, username, email
+FROM users
+WHERE username = 'john_doe'
+  AND password_hash = crypt('MySecureP@ssw0rd', password_hash);
+
+-- Create a function for authentication
+CREATE OR REPLACE FUNCTION authenticate_user(
+    p_username VARCHAR,
+    p_password VARCHAR
+)
+RETURNS TABLE(user_id INTEGER, username VARCHAR, email VARCHAR) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT u.user_id, u.username, u.email
+    FROM users u
+    WHERE u.username = p_username
+      AND u.password_hash = crypt(p_password, u.password_hash);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Usage
+SELECT * FROM authenticate_user('john_doe', 'MySecureP@ssw0rd');
+-- Returns user info if password matches, empty if not
+
+-- Create function to register new user
+CREATE OR REPLACE FUNCTION register_user(
+    p_username VARCHAR,
+    p_email VARCHAR,
+    p_password VARCHAR
+)
+RETURNS INTEGER AS $$
+DECLARE
+    new_user_id INTEGER;
+BEGIN
+    INSERT INTO users (username, email, password_hash)
+    VALUES (p_username, p_email, crypt(p_password, gen_salt('bf', 10)))
+    RETURNING user_id INTO new_user_id;
+
+    RETURN new_user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Register a new user
+SELECT register_user('jane_doe', 'jane@example.com', 'AnotherP@ss123');</code></pre>
+
+                        <div class="output-display">
+user_id | username | email
+--------+----------+------------------
+      1 | john_doe | john@example.com
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Data Encryption</h4>
+                    <p>Encrypt sensitive data like credit card numbers or personal information.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">-- Symmetric encryption with AES
+CREATE TABLE sensitive_data (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id),
+    encrypted_ssn BYTEA,
+    encrypted_credit_card BYTEA,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Encryption key (in real systems, store securely, not in code!)
+-- This is just for demonstration
+CREATE OR REPLACE FUNCTION get_encryption_key()
+RETURNS BYTEA AS $$
+    SELECT decode('0123456789abcdef0123456789abcdef', 'hex');
+$$ LANGUAGE SQL IMMUTABLE;
+
+-- Encrypt and store sensitive data
+INSERT INTO sensitive_data (user_id, encrypted_ssn, encrypted_credit_card)
+VALUES (
+    1,
+    pgp_sym_encrypt('123-45-6789', 'my_secret_passphrase'),
+    pgp_sym_encrypt('4111-1111-1111-1111', 'my_secret_passphrase')
+);
+
+-- Decrypt data
+SELECT
+    id,
+    user_id,
+    pgp_sym_decrypt(encrypted_ssn, 'my_secret_passphrase') AS ssn,
+    pgp_sym_decrypt(encrypted_credit_card, 'my_secret_passphrase') AS credit_card
+FROM sensitive_data
+WHERE user_id = 1;
+
+-- Using raw AES encryption (for smaller data)
+-- encrypt(data, key, 'aes') / decrypt(data, key, 'aes')
+INSERT INTO sensitive_data (user_id, encrypted_ssn)
+VALUES (
+    1,
+    encrypt('123-45-6789'::bytea, get_encryption_key(), 'aes')
+);
+
+-- Decrypt AES
+SELECT
+    convert_from(
+        decrypt(encrypted_ssn, get_encryption_key(), 'aes'),
+        'UTF8'
+    ) AS ssn
+FROM sensitive_data;
+
+-- Generate random tokens/keys
+SELECT encode(gen_random_bytes(32), 'hex') AS api_key;
+SELECT encode(gen_random_bytes(16), 'base64') AS session_token;</code></pre>
+
+                        <div class="warning-box">
+                            Never store encryption keys in your database or code.
+                            Use environment variables or a secrets management system.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: uuid-ossp -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: UUID Generation with uuid-ossp</h2>
+                <p>Use UUIDs for distributed-system-friendly unique identifiers.</p>
+
+                <div class="extension-box">
+                    <code>uuid-ossp</code> generates various UUID versions. V4 (random) is most common.
+                    V1 includes timestamp and MAC address.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: UUID Primary Keys</h4>
+                    <p>Design tables using UUIDs instead of serial integers for primary keys.</p>
+
+                    <div class="use-case-box">
+                        UUIDs are ideal for distributed systems, API-exposed IDs, and preventing
+                        ID enumeration attacks.
+                    </div>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable uuid-ossp extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Alternative: PostgreSQL 13+ has gen_random_uuid() built-in
+-- No extension needed for basic random UUIDs
+
+-- Table with UUID primary key
+CREATE TABLE documents (
+    document_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    owner_id UUID,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table with UUID and references
+CREATE TABLE document_versions (
+    version_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    document_id UUID NOT NULL REFERENCES documents(document_id),
+    version_number INTEGER NOT NULL,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID
+);
+
+-- Insert documents (IDs auto-generated)
+INSERT INTO documents (title, content)
+VALUES
+    ('Project Proposal', 'This is the project proposal content...'),
+    ('Meeting Notes', 'Meeting held on 2024-03-15...');
+
+-- Check generated UUIDs
+SELECT document_id, title FROM documents;
+
+-- Different UUID versions
+SELECT
+    uuid_generate_v1() AS v1_timestamp_mac,
+    uuid_generate_v1mc() AS v1_random_mac,
+    uuid_generate_v4() AS v4_random,
+    uuid_nil() AS nil_uuid;
+
+-- Generate UUID from namespace (v5 - SHA1-based)
+-- Useful for deterministic UUIDs based on input
+SELECT uuid_generate_v5(uuid_ns_url(), 'https://example.com/users/john');
+
+-- Create API tokens table with UUIDs
+CREATE TABLE api_tokens (
+    token_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id INTEGER REFERENCES users(user_id),
+    token UUID UNIQUE DEFAULT uuid_generate_v4(),
+    name VARCHAR(100),
+    expires_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Generate a new API token for a user
+INSERT INTO api_tokens (user_id, name, expires_at)
+VALUES (1, 'My API Token', CURRENT_TIMESTAMP + INTERVAL '30 days')
+RETURNING token;</code></pre>
+
+                        <div class="output-display">
+document_id                          | title
+-------------------------------------+------------------
+a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d | Project Proposal
+f6e5d4c3-b2a1-4987-6543-210fedcba987 | Meeting Notes
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: pg_trgm for Fuzzy Search -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: Fuzzy Text Search with pg_trgm</h2>
+                <p>Implement typo-tolerant search using trigram similarity.</p>
+
+                <div class="extension-box">
+                    <code>pg_trgm</code> breaks text into 3-character sequences (trigrams) for
+                    similarity comparison. Great for "did you mean?" features and autocomplete.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Similar Name Search</h4>
+                    <p>Build a search that finds matches even with typos or slight variations.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable pg_trgm extension
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+-- Sample products table
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    category VARCHAR(100)
+);
+
+-- Insert sample data
+INSERT INTO products (name, description, category) VALUES
+    ('PostgreSQL Database', 'Open source relational database', 'Software'),
+    ('MySQL Server', 'Popular open source database', 'Software'),
+    ('Microsoft SQL Server', 'Enterprise database from Microsoft', 'Software'),
+    ('MongoDB Atlas', 'Cloud document database', 'Software'),
+    ('Apple MacBook Pro', 'Professional laptop computer', 'Hardware'),
+    ('Apple iPhone 15', 'Latest smartphone from Apple', 'Hardware'),
+    ('Samsung Galaxy S24', 'Android flagship phone', 'Hardware'),
+    ('Dell XPS Laptop', 'High-performance Windows laptop', 'Hardware');
+
+-- Create trigram index for fast similarity search
+CREATE INDEX idx_products_name_trgm ON products USING gin (name gin_trgm_ops);
+
+-- Basic similarity search (typo in "PostgresQL")
+SELECT
+    name,
+    similarity(name, 'PostgresQL') AS sim_score
+FROM products
+WHERE similarity(name, 'PostgresQL') > 0.3
+ORDER BY sim_score DESC;
+
+-- Using % operator (requires similarity threshold)
+-- Set threshold (default is 0.3)
+SET pg_trgm.similarity_threshold = 0.3;
+
+SELECT name
+FROM products
+WHERE name % 'Postgre SQL';
+
+-- "Did you mean?" functionality
+CREATE OR REPLACE FUNCTION suggest_product(search_term VARCHAR)
+RETURNS TABLE(suggestion VARCHAR, similarity_score REAL) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT p.name, similarity(p.name, search_term)
+    FROM products p
+    WHERE similarity(p.name, search_term) > 0.2
+    ORDER BY similarity(p.name, search_term) DESC
+    LIMIT 5;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test suggestions
+SELECT * FROM suggest_product('Appel Macbook');
+SELECT * FROM suggest_product('Samsong Galaxy');
+
+-- Word similarity (word_similarity for phrase matching)
+SELECT
+    name,
+    word_similarity('iPhone', name) AS word_sim
+FROM products
+WHERE 'iPhone' <% name  -- word_similarity operator
+ORDER BY word_sim DESC;
+
+-- Autocomplete with trigram LIKE
+SELECT name
+FROM products
+WHERE name ILIKE '%macb%'
+ORDER BY similarity(name, 'macb') DESC
+LIMIT 10;</code></pre>
+
+                        <div class="output-display">
+-- Results for 'PostgresQL' search:
+name                | sim_score
+--------------------+-----------
+PostgreSQL Database | 0.5714286
+
+-- Results for 'Appel Macbook':
+suggestion        | similarity_score
+------------------+-----------------
+Apple MacBook Pro | 0.35
+Apple iPhone 15   | 0.15
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Full-Text Search Enhancement</h4>
+                    <p>Combine pg_trgm with PostgreSQL's full-text search for powerful search capabilities.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">-- Add full-text search column
+ALTER TABLE products ADD COLUMN search_vector tsvector;
+
+-- Update search vector
+UPDATE products SET search_vector =
+    setweight(to_tsvector('english', name), 'A') ||
+    setweight(to_tsvector('english', COALESCE(description, '')), 'B') ||
+    setweight(to_tsvector('english', COALESCE(category, '')), 'C');
+
+-- Create GIN indexes for both search types
+CREATE INDEX idx_products_fts ON products USING gin(search_vector);
+CREATE INDEX idx_products_desc_trgm ON products USING gin(description gin_trgm_ops);
+
+-- Combined search function
+CREATE OR REPLACE FUNCTION search_products(
+    search_query VARCHAR,
+    use_fuzzy BOOLEAN DEFAULT FALSE
+)
+RETURNS TABLE(
+    product_id INTEGER,
+    name VARCHAR,
+    description TEXT,
+    rank REAL
+) AS $$
+BEGIN
+    IF use_fuzzy THEN
+        -- Fuzzy search with trigrams
+        RETURN QUERY
+        SELECT
+            p.product_id,
+            p.name,
+            p.description,
+            similarity(p.name || ' ' || COALESCE(p.description, ''), search_query) AS rank
+        FROM products p
+        WHERE (p.name || ' ' || COALESCE(p.description, '')) % search_query
+        ORDER BY rank DESC
+        LIMIT 20;
+    ELSE
+        -- Exact full-text search
+        RETURN QUERY
+        SELECT
+            p.product_id,
+            p.name,
+            p.description,
+            ts_rank(p.search_vector, plainto_tsquery('english', search_query)) AS rank
+        FROM products p
+        WHERE p.search_vector @@ plainto_tsquery('english', search_query)
+        ORDER BY rank DESC
+        LIMIT 20;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test exact search
+SELECT * FROM search_products('database server');
+
+-- Test fuzzy search (tolerates typos)
+SELECT * FROM search_products('databse servr', TRUE);</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: ltree for Hierarchies -->
+            <section>
+                <h2 id="exercise-4">Exercise 4: Hierarchical Data with ltree</h2>
+                <p>Efficiently store and query tree-structured data like categories, org charts, or file paths.</p>
+
+                <div class="extension-box">
+                    <code>ltree</code> provides a data type for label paths (like "A.B.C") with
+                    specialized operators for ancestor/descendant queries.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Category Hierarchy</h4>
+                    <p>Build a product category system with efficient hierarchy queries.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable ltree extension
+CREATE EXTENSION IF NOT EXISTS ltree;
+
+-- Categories with hierarchical paths
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    path LTREE NOT NULL,
+    description TEXT
+);
+
+-- Create indexes for ltree queries
+CREATE INDEX idx_categories_path_gist ON categories USING gist(path);
+CREATE INDEX idx_categories_path_btree ON categories USING btree(path);
+
+-- Insert hierarchical categories
+INSERT INTO categories (name, path, description) VALUES
+    ('Root', 'root', 'Top-level category'),
+    ('Electronics', 'root.electronics', 'Electronic devices'),
+    ('Computers', 'root.electronics.computers', 'Computing devices'),
+    ('Laptops', 'root.electronics.computers.laptops', 'Portable computers'),
+    ('Desktops', 'root.electronics.computers.desktops', 'Desktop computers'),
+    ('Phones', 'root.electronics.phones', 'Mobile phones'),
+    ('Smartphones', 'root.electronics.phones.smartphones', 'Smart mobile phones'),
+    ('Clothing', 'root.clothing', 'Apparel and accessories'),
+    ('Men', 'root.clothing.men', 'Men clothing'),
+    ('Shirts', 'root.clothing.men.shirts', 'Men shirts'),
+    ('Pants', 'root.clothing.men.pants', 'Men pants'),
+    ('Women', 'root.clothing.women', 'Women clothing');
+
+-- Find all descendants of Electronics
+SELECT name, path
+FROM categories
+WHERE path <@ 'root.electronics'
+ORDER BY path;
+
+-- Find all ancestors of Laptops
+SELECT name, path
+FROM categories
+WHERE path @> 'root.electronics.computers.laptops'
+ORDER BY path;
+
+-- Find direct children of a category
+SELECT name, path
+FROM categories
+WHERE path ~ 'root.electronics.*{1}'  -- Exactly 1 level below
+ORDER BY path;
+
+-- Find siblings (same parent)
+SELECT name, path
+FROM categories
+WHERE path ~ 'root.electronics.computers.*{1}'
+ORDER BY path;
+
+-- Get category depth
+SELECT name, path, nlevel(path) AS depth
+FROM categories
+ORDER BY path;
+
+-- Find common ancestor
+SELECT lca('root.electronics.computers.laptops', 'root.electronics.phones.smartphones');
+-- Returns: root.electronics</code></pre>
+
+                        <div class="tree-visual">
+root
+├── electronics
+│   ├── computers
+│   │   ├── laptops
+│   │   └── desktops
+│   └── phones
+│       └── smartphones
+└── clothing
+    ├── men
+    │   ├── shirts
+    │   └── pants
+    └── women
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.2: Organizational Chart</h4>
+                    <p>Create an employee hierarchy with reporting structure queries.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">-- Employees with hierarchy paths
+CREATE TABLE employees_org (
+    employee_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    title VARCHAR(100),
+    department VARCHAR(100),
+    path LTREE NOT NULL,
+    hire_date DATE
+);
+
+CREATE INDEX idx_employees_path ON employees_org USING gist(path);
+
+-- Insert organizational structure
+INSERT INTO employees_org (name, title, department, path, hire_date) VALUES
+    ('Alice CEO', 'Chief Executive Officer', 'Executive', 'ceo', '2010-01-01'),
+    ('Bob CTO', 'Chief Technology Officer', 'Technology', 'ceo.cto', '2012-03-15'),
+    ('Carol CFO', 'Chief Financial Officer', 'Finance', 'ceo.cfo', '2013-06-01'),
+    ('Dave Engineering', 'VP Engineering', 'Technology', 'ceo.cto.eng_vp', '2015-02-01'),
+    ('Eve Design', 'Design Lead', 'Technology', 'ceo.cto.design', '2016-04-01'),
+    ('Frank Backend', 'Senior Developer', 'Technology', 'ceo.cto.eng_vp.backend', '2018-01-15'),
+    ('Grace Frontend', 'Senior Developer', 'Technology', 'ceo.cto.eng_vp.frontend', '2018-03-20'),
+    ('Henry QA', 'QA Lead', 'Technology', 'ceo.cto.eng_vp.qa', '2019-05-01'),
+    ('Ivy Accounting', 'Accounting Manager', 'Finance', 'ceo.cfo.accounting', '2017-08-01');
+
+-- Get all reports (direct and indirect) under CTO
+SELECT name, title, path
+FROM employees_org
+WHERE path <@ 'ceo.cto'
+ORDER BY path;
+
+-- Get reporting chain for a specific employee
+SELECT name, title, nlevel(path) AS level
+FROM employees_org
+WHERE path @> 'ceo.cto.eng_vp.backend'
+ORDER BY path;
+
+-- Count direct reports for each manager
+SELECT
+    e.name AS manager,
+    COUNT(*) AS direct_reports
+FROM employees_org e
+JOIN employees_org reports ON reports.path ~ (e.path::text || '.*{1}')::lquery
+GROUP BY e.employee_id, e.name
+ORDER BY direct_reports DESC;
+
+-- Find team size (all descendants) for each manager
+SELECT
+    e.name AS manager,
+    e.title,
+    (SELECT COUNT(*) FROM employees_org WHERE path <@ e.path AND path != e.path) AS team_size
+FROM employees_org e
+ORDER BY team_size DESC;
+
+-- Move an employee (and their subtree) to new manager
+-- Example: Move Dave's team under CFO
+UPDATE employees_org
+SET path = 'ceo.cfo' || subpath(path, nlevel('ceo.cto.eng_vp') - 1)
+WHERE path <@ 'ceo.cto.eng_vp';</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 5: tablefunc for Pivot Tables -->
+            <section>
+                <h2 id="exercise-5">Exercise 5: Pivot Tables with tablefunc</h2>
+                <p>Transform row-based data into columnar format for reports.</p>
+
+                <div class="extension-box">
+                    <code>tablefunc</code> provides the <code>crosstab()</code> function for
+                    creating pivot tables - transforming rows into columns.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.1: Sales Pivot Report</h4>
+                    <p>Create a sales report with products as rows and months as columns.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <div id="solution5_1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable tablefunc extension
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
+-- Sample sales data
+CREATE TABLE sales (
+    sale_id SERIAL PRIMARY KEY,
+    product VARCHAR(50),
+    sale_month VARCHAR(10),
+    amount DECIMAL(10, 2)
+);
+
+INSERT INTO sales (product, sale_month, amount) VALUES
+    ('Laptop', 'Jan', 15000),
+    ('Laptop', 'Feb', 18000),
+    ('Laptop', 'Mar', 22000),
+    ('Phone', 'Jan', 8000),
+    ('Phone', 'Feb', 9500),
+    ('Phone', 'Mar', 11000),
+    ('Tablet', 'Jan', 5000),
+    ('Tablet', 'Feb', 6000),
+    ('Tablet', 'Mar', 7500),
+    ('Monitor', 'Jan', 3000),
+    ('Monitor', 'Feb', 3500),
+    ('Monitor', 'Mar', 4000);
+
+-- Basic crosstab (pivot) query
+SELECT * FROM crosstab(
+    -- Source query: must return row_name, category, value
+    'SELECT product, sale_month, amount
+     FROM sales
+     ORDER BY 1, 2',
+    -- Categories query: defines the columns
+    'SELECT DISTINCT sale_month FROM sales ORDER BY 1'
+) AS ct (
+    product VARCHAR(50),
+    jan_sales DECIMAL,
+    feb_sales DECIMAL,
+    mar_sales DECIMAL
+);
+
+-- Pivot with totals
+WITH pivoted AS (
+    SELECT * FROM crosstab(
+        'SELECT product, sale_month, amount FROM sales ORDER BY 1, 2',
+        'SELECT DISTINCT sale_month FROM sales ORDER BY 1'
+    ) AS ct (product VARCHAR, jan DECIMAL, feb DECIMAL, mar DECIMAL)
+)
+SELECT
+    product,
+    COALESCE(jan, 0) AS january,
+    COALESCE(feb, 0) AS february,
+    COALESCE(mar, 0) AS march,
+    COALESCE(jan, 0) + COALESCE(feb, 0) + COALESCE(mar, 0) AS total
+FROM pivoted
+UNION ALL
+SELECT
+    'TOTAL',
+    SUM(COALESCE(jan, 0)),
+    SUM(COALESCE(feb, 0)),
+    SUM(COALESCE(mar, 0)),
+    SUM(COALESCE(jan, 0) + COALESCE(feb, 0) + COALESCE(mar, 0))
+FROM pivoted;</code></pre>
+
+                        <div class="output-display">
+product | january | february | march  | total
+--------+---------+----------+--------+--------
+Laptop  | 15000   | 18000    | 22000  | 55000
+Monitor | 3000    | 3500     | 4000   | 10500
+Phone   | 8000    | 9500     | 11000  | 28500
+Tablet  | 5000    | 6000     | 7500   | 18500
+TOTAL   | 31000   | 37000    | 44500  | 112500
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 6: PostGIS Basics -->
+            <section>
+                <h2 id="exercise-6">Exercise 6: Spatial Data with PostGIS</h2>
+                <p>Work with geographic data for location-based applications.</p>
+
+                <div class="extension-box">
+                    <code>PostGIS</code> is the premier spatial extension, adding support for
+                    geographic objects (points, lines, polygons) and spatial queries.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 6.1: Store and Query Locations</h4>
+                    <p>Build a location-based service for finding nearby places.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Show Solution</button>
+                    <div id="solution6_1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable PostGIS extension
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+-- Stores with geographic locations
+CREATE TABLE stores (
+    store_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    address TEXT,
+    city VARCHAR(100),
+    -- GEOMETRY(Point, 4326) - Point type with WGS84 coordinate system
+    location GEOMETRY(Point, 4326)
+);
+
+-- Create spatial index
+CREATE INDEX idx_stores_location ON stores USING gist(location);
+
+-- Insert store locations (longitude, latitude)
+INSERT INTO stores (name, address, city, location) VALUES
+    ('Downtown Store', '123 Main St', 'New York',
+     ST_SetSRID(ST_MakePoint(-74.0060, 40.7128), 4326)),
+    ('Brooklyn Branch', '456 Atlantic Ave', 'Brooklyn',
+     ST_SetSRID(ST_MakePoint(-73.9862, 40.6892), 4326)),
+    ('Queens Location', '789 Queens Blvd', 'Queens',
+     ST_SetSRID(ST_MakePoint(-73.8448, 40.7282), 4326)),
+    ('Manhattan Express', '321 5th Ave', 'New York',
+     ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)),
+    ('Jersey City Store', '555 Grove St', 'Jersey City',
+     ST_SetSRID(ST_MakePoint(-74.0431, 40.7178), 4326));
+
+-- Find stores within 5km of a location (Times Square)
+SELECT
+    name,
+    city,
+    ROUND(ST_Distance(
+        location::geography,
+        ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)::geography
+    )::numeric) AS distance_meters
+FROM stores
+WHERE ST_DWithin(
+    location::geography,
+    ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)::geography,
+    5000  -- 5000 meters = 5km
+)
+ORDER BY distance_meters;
+
+-- Find the nearest store to a given location
+SELECT
+    name,
+    city,
+    ROUND(ST_Distance(
+        location::geography,
+        ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)::geography
+    )::numeric) AS distance_meters
+FROM stores
+ORDER BY location <-> ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)
+LIMIT 1;
+
+-- Find all stores within a bounding box (polygon)
+SELECT name, city
+FROM stores
+WHERE ST_Within(
+    location,
+    ST_MakeEnvelope(-74.1, 40.6, -73.9, 40.8, 4326)
+);
+
+-- Calculate distance between two stores
+SELECT
+    ROUND(ST_Distance(
+        (SELECT location::geography FROM stores WHERE name = 'Downtown Store'),
+        (SELECT location::geography FROM stores WHERE name = 'Brooklyn Branch')
+    )::numeric) AS distance_meters;</code></pre>
+
+                        <div class="output-display">
+-- Stores within 5km of Times Square:
+name              | city     | distance_meters
+------------------+----------+----------------
+Manhattan Express | New York | 1074
+Downtown Store    | New York | 3823
+Brooklyn Branch   | Brooklyn | 4918
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenge Exercises -->
+            <section>
+                <h2 id="challenge-exercises">Challenge Exercises</h2>
+                <p>Apply multiple extensions to solve complex problems.</p>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Secure User System</h4>
+                    <p>Build a complete secure user system using multiple extensions:</p>
+                    <ul>
+                        <li>UUID primary keys (<code>uuid-ossp</code>)</li>
+                        <li>Bcrypt password hashing (<code>pgcrypto</code>)</li>
+                        <li>Encrypted sensitive data (<code>pgcrypto</code>)</li>
+                        <li>Searchable usernames with typo tolerance (<code>pg_trgm</code>)</li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">-- Enable required extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+-- Secure users table
+CREATE TABLE secure_users (
+    user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    phone_encrypted BYTEA,  -- Encrypted phone number
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Trigram index for fuzzy username search
+CREATE INDEX idx_secure_users_username_trgm
+ON secure_users USING gin(username gin_trgm_ops);
+
+-- Register user function
+CREATE OR REPLACE FUNCTION create_secure_user(
+    p_username VARCHAR,
+    p_email VARCHAR,
+    p_password VARCHAR,
+    p_phone VARCHAR DEFAULT NULL,
+    p_encryption_key VARCHAR DEFAULT 'default_key'
+)
+RETURNS UUID AS $$
+DECLARE
+    new_user_id UUID;
+BEGIN
+    INSERT INTO secure_users (
+        username,
+        email,
+        password_hash,
+        phone_encrypted
+    ) VALUES (
+        p_username,
+        p_email,
+        crypt(p_password, gen_salt('bf', 12)),
+        CASE WHEN p_phone IS NOT NULL
+             THEN pgp_sym_encrypt(p_phone, p_encryption_key)
+             ELSE NULL
+        END
+    )
+    RETURNING user_id INTO new_user_id;
+
+    RETURN new_user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Login function
+CREATE OR REPLACE FUNCTION login_user(
+    p_username VARCHAR,
+    p_password VARCHAR
+)
+RETURNS TABLE(
+    user_id UUID,
+    username VARCHAR,
+    email VARCHAR,
+    session_token UUID
+) AS $$
+DECLARE
+    v_user_id UUID;
+BEGIN
+    -- Verify credentials
+    SELECT su.user_id INTO v_user_id
+    FROM secure_users su
+    WHERE su.username = p_username
+      AND su.password_hash = crypt(p_password, su.password_hash)
+      AND su.is_active = TRUE;
+
+    IF v_user_id IS NULL THEN
+        RETURN;
+    END IF;
+
+    -- Update last login
+    UPDATE secure_users SET last_login = CURRENT_TIMESTAMP
+    WHERE secure_users.user_id = v_user_id;
+
+    -- Return user info with session token
+    RETURN QUERY
+    SELECT
+        su.user_id,
+        su.username,
+        su.email,
+        uuid_generate_v4() AS session_token
+    FROM secure_users su
+    WHERE su.user_id = v_user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Search users with fuzzy matching
+CREATE OR REPLACE FUNCTION search_users(
+    search_term VARCHAR,
+    similarity_threshold REAL DEFAULT 0.3
+)
+RETURNS TABLE(
+    user_id UUID,
+    username VARCHAR,
+    similarity_score REAL
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        su.user_id,
+        su.username,
+        similarity(su.username, search_term)
+    FROM secure_users su
+    WHERE similarity(su.username, search_term) > similarity_threshold
+      AND su.is_active = TRUE
+    ORDER BY similarity(su.username, search_term) DESC
+    LIMIT 10;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Usage
+SELECT create_secure_user('john_doe', 'john@example.com', 'SecureP@ss123', '555-1234');
+SELECT create_secure_user('jane_smith', 'jane@example.com', 'AnotherP@ss456');
+
+SELECT * FROM login_user('john_doe', 'SecureP@ss123');
+SELECT * FROM search_users('jon doe');  -- Finds 'john_doe' despite typo</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: E-commerce with Hierarchy and Location</h4>
+                    <p>Create a product catalog with:</p>
+                    <ul>
+                        <li>Hierarchical categories (<code>ltree</code>)</li>
+                        <li>Fuzzy product search (<code>pg_trgm</code>)</li>
+                        <li>Store locations for pickup (<code>PostGIS</code>)</li>
+                        <li>Sales pivot reports (<code>tablefunc</code>)</li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- Enable all required extensions
+CREATE EXTENSION IF NOT EXISTS ltree;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
+-- Categories with hierarchy
+CREATE TABLE product_categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    path LTREE NOT NULL UNIQUE
+);
+
+CREATE INDEX idx_cat_path ON product_categories USING gist(path);
+
+INSERT INTO product_categories (name, path) VALUES
+    ('All Products', 'all'),
+    ('Electronics', 'all.electronics'),
+    ('Computers', 'all.electronics.computers'),
+    ('Laptops', 'all.electronics.computers.laptops'),
+    ('Phones', 'all.electronics.phones'),
+    ('Clothing', 'all.clothing'),
+    ('Men', 'all.clothing.men'),
+    ('Women', 'all.clothing.women');
+
+-- Products with category reference
+CREATE TABLE catalog_products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    category_path LTREE NOT NULL
+);
+
+CREATE INDEX idx_prod_name_trgm ON catalog_products USING gin(name gin_trgm_ops);
+CREATE INDEX idx_prod_category ON catalog_products USING gist(category_path);
+
+INSERT INTO catalog_products (name, description, price, category_path) VALUES
+    ('MacBook Pro 16"', 'Apple laptop with M3 chip', 2499.00, 'all.electronics.computers.laptops'),
+    ('Dell XPS 15', 'Windows laptop with Intel Core', 1799.00, 'all.electronics.computers.laptops'),
+    ('iPhone 15 Pro', 'Latest Apple smartphone', 1199.00, 'all.electronics.phones'),
+    ('Samsung Galaxy S24', 'Android flagship phone', 999.00, 'all.electronics.phones'),
+    ('Men Oxford Shirt', 'Classic cotton dress shirt', 79.00, 'all.clothing.men'),
+    ('Women Blazer', 'Professional wool blazer', 199.00, 'all.clothing.women');
+
+-- Stores with locations
+CREATE TABLE pickup_stores (
+    store_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    location GEOMETRY(Point, 4326) NOT NULL
+);
+
+CREATE INDEX idx_store_loc ON pickup_stores USING gist(location);
+
+INSERT INTO pickup_stores (name, location) VALUES
+    ('Central Store', ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)),
+    ('East Side Store', ST_SetSRID(ST_MakePoint(-73.9632, 40.7794), 4326)),
+    ('West Side Store', ST_SetSRID(ST_MakePoint(-74.0060, 40.7282), 4326));
+
+-- Monthly sales
+CREATE TABLE monthly_sales (
+    product_id INTEGER REFERENCES catalog_products(product_id),
+    sale_month VARCHAR(7) NOT NULL,  -- 'YYYY-MM'
+    quantity INTEGER NOT NULL,
+    revenue DECIMAL(12, 2) NOT NULL
+);
+
+INSERT INTO monthly_sales VALUES
+    (1, '2024-01', 50, 124950), (1, '2024-02', 65, 162435), (1, '2024-03', 80, 199920),
+    (2, '2024-01', 40, 71960), (2, '2024-02', 55, 98945), (2, '2024-03', 70, 125930),
+    (3, '2024-01', 100, 119900), (3, '2024-02', 120, 143880), (3, '2024-03', 150, 179850);
+
+-- Combined search function
+CREATE OR REPLACE FUNCTION search_catalog(
+    search_term VARCHAR,
+    category_filter LTREE DEFAULT 'all',
+    user_lat FLOAT DEFAULT NULL,
+    user_lon FLOAT DEFAULT NULL
+)
+RETURNS TABLE(
+    product_id INTEGER,
+    name VARCHAR,
+    price DECIMAL,
+    category VARCHAR,
+    similarity REAL,
+    nearest_store VARCHAR,
+    store_distance_m INTEGER
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        p.product_id,
+        p.name,
+        p.price,
+        c.name AS category,
+        similarity(p.name, search_term) AS similarity,
+        CASE WHEN user_lat IS NOT NULL THEN
+            (SELECT s.name FROM pickup_stores s
+             ORDER BY s.location <-> ST_SetSRID(ST_MakePoint(user_lon, user_lat), 4326)
+             LIMIT 1)
+        ELSE NULL END AS nearest_store,
+        CASE WHEN user_lat IS NOT NULL THEN
+            (SELECT ROUND(ST_Distance(
+                s.location::geography,
+                ST_SetSRID(ST_MakePoint(user_lon, user_lat), 4326)::geography
+            )::numeric)::INTEGER
+             FROM pickup_stores s
+             ORDER BY s.location <-> ST_SetSRID(ST_MakePoint(user_lon, user_lat), 4326)
+             LIMIT 1)
+        ELSE NULL END AS store_distance_m
+    FROM catalog_products p
+    JOIN product_categories c ON p.category_path = c.path
+    WHERE p.category_path <@ category_filter
+      AND (search_term IS NULL OR p.name % search_term)
+    ORDER BY similarity(p.name, search_term) DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Search with location
+SELECT * FROM search_catalog('macbook', 'all.electronics', 40.7580, -73.9855);
+
+-- Sales pivot by month
+SELECT * FROM crosstab(
+    $$SELECT p.name, ms.sale_month, ms.revenue
+      FROM monthly_sales ms
+      JOIN catalog_products p ON ms.product_id = p.product_id
+      ORDER BY 1, 2$$,
+    $$VALUES ('2024-01'), ('2024-02'), ('2024-03')$$
+) AS ct(product VARCHAR, jan_2024 DECIMAL, feb_2024 DECIMAL, mar_2024 DECIMAL);</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h2 id="key-takeaways">Key Takeaways</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Extension</th>
+                            <th>Best Used For</th>
+                            <th>Key Tip</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="ext-badge">pgcrypto</span></td>
+                            <td>Password hashing, data encryption</td>
+                            <td>Use bcrypt (<code>gen_salt('bf')</code>) for passwords, never MD5/SHA alone</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">uuid-ossp</span></td>
+                            <td>Distributed IDs, API resources</td>
+                            <td>V4 is random; use <code>gen_random_uuid()</code> in PostgreSQL 13+</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">pg_trgm</span></td>
+                            <td>Fuzzy search, autocomplete</td>
+                            <td>Create GIN index with <code>gin_trgm_ops</code> for performance</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">ltree</span></td>
+                            <td>Categories, org charts, file paths</td>
+                            <td>Use GiST index; <code><@</code> for descendants, <code>@></code> for ancestors</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">hstore</span></td>
+                            <td>Legacy key-value storage</td>
+                            <td>Prefer JSONB for new projects; hstore is simpler but less flexible</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">tablefunc</span></td>
+                            <td>Pivot tables, cross-tabulations</td>
+                            <td>Define output columns explicitly; handle NULLs with COALESCE</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">PostGIS</span></td>
+                            <td>Location queries, mapping</td>
+                            <td>Cast to <code>::geography</code> for accurate distance in meters</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ext-badge">pg_stat_statements</span></td>
+                            <td>Query performance monitoring</td>
+                            <td>Requires <code>shared_preload_libraries</code> setting in postgresql.conf</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <p><a href="03_database_extensibility_and_postgresql_extensions.html">&larr; Back to PostgreSQL Extensions Lesson</a></p>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../static/script.js"></script>
+
+    <script>
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+                event.target.textContent = 'Show Solution';
+            } else {
+                element.classList.add('show');
+                event.target.textContent = 'Hide Solution';
+            }
+        }
+    </script>
+</body>
+
+</html>

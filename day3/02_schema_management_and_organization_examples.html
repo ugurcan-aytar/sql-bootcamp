@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style_bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Schema Management and Organization - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .exercise-box h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .solution-box {
+            background-color: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .toggle-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .hint-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .hint-box::before {
+            content: "Hint: ";
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box::before {
+            content: "Warning: ";
+            font-weight: bold;
+        }
+
+        .concept-box {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box::before {
+            content: "Concept: ";
+            font-weight: bold;
+        }
+
+        .best-practice-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .best-practice-box::before {
+            content: "Best Practice: ";
+            font-weight: bold;
+            color: #155724;
+        }
+
+        .challenge-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .challenge-box h4 {
+            color: #155724;
+        }
+
+        .challenge-box::before {
+            content: "";
+        }
+
+        .dataset-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .dataset-table th,
+        .dataset-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .dataset-table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .dataset-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .result-box {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .bad-name {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 2px 6px;
+            border-radius: 3px;
+            text-decoration: line-through;
+        }
+
+        .good-name {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .db-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .db-postgresql {
+            background-color: #336791;
+            color: white;
+        }
+
+        .db-mysql {
+            background-color: #4479A1;
+            color: white;
+        }
+
+        .db-sqlserver {
+            background-color: #CC2927;
+            color: white;
+        }
+
+        .schema-diagram {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .migration-flow {
+            background-color: #f8f9fa;
+            border: 2px solid #6c757d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .migration-step {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 5px 0;
+            display: inline-block;
+        }
+
+        .migration-arrow {
+            color: #6c757d;
+            font-size: 20px;
+            margin: 0 10px;
+        }
+
+        .file-tree {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+        }
+
+        .file-tree .folder {
+            color: #dcdcaa;
+        }
+
+        .file-tree .file {
+            color: #9cdcfe;
+        }
+
+        .change-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .change-safe {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .change-caution {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .change-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="schema-management-practical-examples">Schema Management and Organization - Practical Examples</h1>
+                <p><a href="02_schema_management_and_organization.html">&larr; Back to Schema Management Lesson</a></p>
+                <p>This page provides hands-on exercises to master schema organization, naming conventions, and
+                    migration strategies. Practice creating schemas, applying naming standards, and writing migration scripts.</p>
+            </section>
+
+            <!-- Schema Terminology Reference -->
+            <section>
+                <h2 id="terminology-reference">Schema Terminology Across Databases</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th><span class="db-badge db-postgresql">PostgreSQL</span></th>
+                            <th><span class="db-badge db-mysql">MySQL</span></th>
+                            <th><span class="db-badge db-sqlserver">SQL Server</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Namespace for objects</td>
+                            <td>Schema</td>
+                            <td>Database</td>
+                            <td>Schema</td>
+                        </tr>
+                        <tr>
+                            <td>Create namespace</td>
+                            <td><code>CREATE SCHEMA</code></td>
+                            <td><code>CREATE DATABASE</code></td>
+                            <td><code>CREATE SCHEMA</code></td>
+                        </tr>
+                        <tr>
+                            <td>Default namespace</td>
+                            <td><code>public</code></td>
+                            <td>Selected via <code>USE</code></td>
+                            <td><code>dbo</code></td>
+                        </tr>
+                        <tr>
+                            <td>Set current namespace</td>
+                            <td><code>SET search_path TO</code></td>
+                            <td><code>USE database_name</code></td>
+                            <td><code>USE database_name</code></td>
+                        </tr>
+                        <tr>
+                            <td>Full object reference</td>
+                            <td><code>schema.table</code></td>
+                            <td><code>database.table</code></td>
+                            <td><code>database.schema.table</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Exercise 1: Creating and Managing Schemas -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Creating and Managing Schemas</h2>
+                <p>Learn to create schemas for organizing database objects by functional area or application module.</p>
+
+                <div class="concept-box">
+                    Schemas help organize objects, prevent naming conflicts, and enable fine-grained access control.
+                    Use them to separate different application modules or multi-tenant data.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Create Application Schemas</h4>
+                    <p>You're designing a database for an e-commerce platform. Create separate schemas for:</p>
+                    <ul>
+                        <li><strong>sales</strong> - orders, order items, invoices</li>
+                        <li><strong>inventory</strong> - products, stock levels, warehouses</li>
+                        <li><strong>customers</strong> - customer profiles, addresses, preferences</li>
+                        <li><strong>analytics</strong> - reports, summaries, materialized views</li>
+                    </ul>
+                    <p><strong>Task:</strong> Write the SQL to create these schemas and one sample table in each.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+
+-- Create schemas
+CREATE SCHEMA sales;
+CREATE SCHEMA inventory;
+CREATE SCHEMA customers;
+CREATE SCHEMA analytics;
+
+-- Sample table in sales schema
+CREATE TABLE sales.orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'pending',
+    total_amount DECIMAL(12, 2)
+);
+
+CREATE TABLE sales.order_items (
+    item_id SERIAL PRIMARY KEY,
+    order_id INTEGER REFERENCES sales.orders(order_id),
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10, 2) NOT NULL
+);
+
+-- Sample table in inventory schema
+CREATE TABLE inventory.products (
+    product_id SERIAL PRIMARY KEY,
+    sku VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    current_price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE inventory.warehouses (
+    warehouse_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    location VARCHAR(200),
+    capacity INTEGER
+);
+
+CREATE TABLE inventory.stock_levels (
+    product_id INTEGER REFERENCES inventory.products(product_id),
+    warehouse_id INTEGER REFERENCES inventory.warehouses(warehouse_id),
+    quantity INTEGER NOT NULL DEFAULT 0,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (product_id, warehouse_id)
+);
+
+-- Sample table in customers schema
+CREATE TABLE customers.profiles (
+    customer_id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE customers.addresses (
+    address_id SERIAL PRIMARY KEY,
+    customer_id INTEGER REFERENCES customers.profiles(customer_id),
+    address_type VARCHAR(20) DEFAULT 'shipping',
+    street VARCHAR(200),
+    city VARCHAR(100),
+    country VARCHAR(100),
+    postal_code VARCHAR(20)
+);
+
+-- Sample view in analytics schema
+CREATE TABLE analytics.daily_sales_summary (
+    summary_date DATE PRIMARY KEY,
+    total_orders INTEGER,
+    total_revenue DECIMAL(15, 2),
+    avg_order_value DECIMAL(10, 2),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Cross-schema foreign key (orders reference customers)
+ALTER TABLE sales.orders
+ADD CONSTRAINT fk_orders_customer
+FOREIGN KEY (customer_id) REFERENCES customers.profiles(customer_id);
+
+-- Cross-schema foreign key (order_items reference products)
+ALTER TABLE sales.order_items
+ADD CONSTRAINT fk_order_items_product
+FOREIGN KEY (product_id) REFERENCES inventory.products(product_id);</code></pre>
+
+                        <div class="schema-diagram">
+Database: ecommerce
+├── Schema: sales
+│   ├── orders
+│   └── order_items
+├── Schema: inventory
+│   ├── products
+│   ├── warehouses
+│   └── stock_levels
+├── Schema: customers
+│   ├── profiles
+│   └── addresses
+└── Schema: analytics
+    └── daily_sales_summary
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Working with Search Path</h4>
+                    <p>You have tables in multiple schemas. Write queries that:</p>
+                    <ol>
+                        <li>Show the current search path</li>
+                        <li>Set the search path to prioritize the <code>sales</code> schema</li>
+                        <li>Query a table without specifying the schema name</li>
+                        <li>Query tables from multiple schemas in one query</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+
+-- 1. Show current search path
+SHOW search_path;
+-- Default result: "$user", public
+
+-- 2. Set search path to prioritize sales schema
+SET search_path TO sales, inventory, customers, public;
+
+-- For permanent change (per user):
+ALTER USER myuser SET search_path TO sales, inventory, customers, public;
+
+-- 3. Query without schema name (uses search path)
+-- With search_path set to sales first, this finds sales.orders
+SELECT * FROM orders WHERE order_date >= CURRENT_DATE - INTERVAL '7 days';
+
+-- 4. Cross-schema query with explicit schema names (recommended)
+SELECT
+    o.order_id,
+    o.order_date,
+    c.email AS customer_email,
+    p.name AS product_name,
+    oi.quantity,
+    oi.unit_price
+FROM sales.orders o
+JOIN customers.profiles c ON o.customer_id = c.customer_id
+JOIN sales.order_items oi ON o.order_id = oi.order_id
+JOIN inventory.products p ON oi.product_id = p.product_id
+WHERE o.status = 'completed';
+
+-- MySQL equivalent (using databases)
+USE ecommerce_sales;  -- Set default database
+
+SELECT
+    o.order_id,
+    o.order_date,
+    c.email AS customer_email,
+    p.name AS product_name
+FROM orders o  -- Uses current database
+JOIN ecommerce_customers.profiles c ON o.customer_id = c.customer_id
+JOIN ecommerce_inventory.products p ON o.product_id = p.product_id;</code></pre>
+
+                        <div class="best-practice-box">
+                            Always use fully qualified names (<code>schema.table</code>) in application code
+                            and scripts to avoid ambiguity and make the code self-documenting.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: Multi-Tenant Schema Design</h4>
+                    <p>Design a schema structure for a SaaS application where each tenant (customer) has isolated data.
+                        Create schemas for two tenants and shared reference data.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL Multi-Tenant Schema Design
+
+-- Shared schema for common reference data
+CREATE SCHEMA shared;
+
+CREATE TABLE shared.countries (
+    country_code CHAR(2) PRIMARY KEY,
+    country_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE shared.currencies (
+    currency_code CHAR(3) PRIMARY KEY,
+    currency_name VARCHAR(50) NOT NULL,
+    symbol VARCHAR(5)
+);
+
+CREATE TABLE shared.subscription_plans (
+    plan_id SERIAL PRIMARY KEY,
+    plan_name VARCHAR(50) NOT NULL,
+    monthly_price DECIMAL(10, 2),
+    features JSONB
+);
+
+-- Tenant-specific schemas
+CREATE SCHEMA tenant_acme;
+CREATE SCHEMA tenant_globex;
+
+-- Template for tenant tables (create in each tenant schema)
+-- Tenant: ACME Corp
+CREATE TABLE tenant_acme.users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(200),
+    role VARCHAR(50) DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tenant_acme.projects (
+    project_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    owner_id INTEGER REFERENCES tenant_acme.users(user_id),
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Same structure for tenant_globex
+CREATE TABLE tenant_globex.users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(200),
+    role VARCHAR(50) DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tenant_globex.projects (
+    project_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    owner_id INTEGER REFERENCES tenant_globex.users(user_id),
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Function to dynamically set schema based on tenant
+CREATE OR REPLACE FUNCTION set_tenant(tenant_name TEXT)
+RETURNS VOID AS $$
+BEGIN
+    EXECUTE format('SET search_path TO tenant_%s, shared, public', tenant_name);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Usage: SELECT set_tenant('acme');
+-- Now queries automatically use tenant_acme schema</code></pre>
+
+                        <div class="schema-diagram">
+Database: saas_app
+├── Schema: shared (reference data)
+│   ├── countries
+│   ├── currencies
+│   └── subscription_plans
+├── Schema: tenant_acme (Tenant 1)
+│   ├── users
+│   └── projects
+├── Schema: tenant_globex (Tenant 2)
+│   ├── users
+│   └── projects
+└── Schema: public (system tables)
+                        </div>
+
+                        <p><strong>Benefits of this approach:</strong></p>
+                        <ul>
+                            <li>Complete data isolation between tenants</li>
+                            <li>Easy to backup/restore individual tenants</li>
+                            <li>Simple to add new tenants (create schema, copy table structure)</li>
+                            <li>Shared reference data prevents duplication</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Naming Conventions -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: Object Naming Conventions</h2>
+                <p>Practice applying consistent naming conventions to database objects.</p>
+
+                <div class="concept-box">
+                    Use <code>snake_case</code> for maximum portability. PostgreSQL lowercases unquoted identifiers,
+                    MySQL behavior varies by OS, SQL Server is typically case-insensitive.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Fix Bad Names</h4>
+                    <p>The following object names violate naming conventions. Identify the issues and provide better names:</p>
+
+                    <table class="dataset-table">
+                        <thead>
+                            <tr>
+                                <th>Object Type</th>
+                                <th>Bad Name</th>
+                                <th>Issues</th>
+                                <th>Better Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Table</td>
+                                <td><span class="bad-name">tblCustomerData</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Column</td>
+                                <td><span class="bad-name">CustFirstName</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Table</td>
+                                <td><span class="bad-name">Order</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Column</td>
+                                <td><span class="bad-name">isdeleted</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Index</td>
+                                <td><span class="bad-name">index1</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Foreign Key</td>
+                                <td><span class="bad-name">FK1</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>View</td>
+                                <td><span class="bad-name">CustomerOrdersView</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Stored Procedure</td>
+                                <td><span class="bad-name">sp_GetData</span></td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Object Type</th>
+                                    <th>Bad Name</th>
+                                    <th>Issues</th>
+                                    <th>Better Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Table</td>
+                                    <td><span class="bad-name">tblCustomerData</span></td>
+                                    <td>Hungarian notation (tbl prefix), CamelCase, redundant "Data"</td>
+                                    <td><span class="good-name">customers</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Column</td>
+                                    <td><span class="bad-name">CustFirstName</span></td>
+                                    <td>Abbreviation, CamelCase, redundant prefix</td>
+                                    <td><span class="good-name">first_name</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Table</td>
+                                    <td><span class="bad-name">Order</span></td>
+                                    <td>Reserved word in SQL, singular</td>
+                                    <td><span class="good-name">orders</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Column</td>
+                                    <td><span class="bad-name">isdeleted</span></td>
+                                    <td>No word separation</td>
+                                    <td><span class="good-name">is_deleted</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Index</td>
+                                    <td><span class="bad-name">index1</span></td>
+                                    <td>Non-descriptive, no indication of table/column</td>
+                                    <td><span class="good-name">idx_orders_customer_id</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Foreign Key</td>
+                                    <td><span class="bad-name">FK1</span></td>
+                                    <td>Non-descriptive</td>
+                                    <td><span class="good-name">fk_orders_customer_id</span></td>
+                                </tr>
+                                <tr>
+                                    <td>View</td>
+                                    <td><span class="bad-name">CustomerOrdersView</span></td>
+                                    <td>CamelCase, "View" suffix redundant</td>
+                                    <td><span class="good-name">v_customer_orders</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Stored Procedure</td>
+                                    <td><span class="bad-name">sp_GetData</span></td>
+                                    <td>sp_ prefix reserved in SQL Server, vague name</td>
+                                    <td><span class="good-name">get_customer_order_history</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Apply Naming Convention</h4>
+                    <p>Create a complete set of database objects for a blog system following proper naming conventions.
+                        Include tables, columns, indexes, foreign keys, and a view.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">-- Blog System with Proper Naming Conventions
+
+-- Tables: plural nouns, snake_case
+CREATE TABLE authors (
+    author_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    display_name VARCHAR(100),
+    bio TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
+
+    -- Named constraints
+    CONSTRAINT uq_authors_username UNIQUE (username),
+    CONSTRAINT uq_authors_email UNIQUE (email)
+);
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) NOT NULL,
+    description TEXT,
+    parent_category_id INTEGER,
+
+    CONSTRAINT uq_categories_slug UNIQUE (slug),
+    CONSTRAINT fk_categories_parent
+        FOREIGN KEY (parent_category_id)
+        REFERENCES categories(category_id)
+        ON DELETE SET NULL
+);
+
+CREATE TABLE posts (
+    post_id SERIAL PRIMARY KEY,
+    author_id INTEGER NOT NULL,
+    category_id INTEGER,
+    title VARCHAR(300) NOT NULL,
+    slug VARCHAR(300) NOT NULL,
+    content TEXT,
+    excerpt VARCHAR(500),
+    status VARCHAR(20) DEFAULT 'draft',
+    published_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    view_count INTEGER DEFAULT 0,
+
+    -- Named foreign key constraints
+    CONSTRAINT fk_posts_author
+        FOREIGN KEY (author_id)
+        REFERENCES authors(author_id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT fk_posts_category
+        FOREIGN KEY (category_id)
+        REFERENCES categories(category_id)
+        ON DELETE SET NULL,
+
+    -- Check constraints
+    CONSTRAINT chk_posts_status
+        CHECK (status IN ('draft', 'published', 'archived')),
+
+    CONSTRAINT uq_posts_slug UNIQUE (slug)
+);
+
+-- Junction table: combines both entity names
+CREATE TABLE post_tags (
+    post_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (post_id, tag_id),
+
+    CONSTRAINT fk_post_tags_post
+        FOREIGN KEY (post_id) REFERENCES posts(post_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_post_tags_tag
+        FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE tags (
+    tag_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    slug VARCHAR(50) NOT NULL,
+
+    CONSTRAINT uq_tags_slug UNIQUE (slug)
+);
+
+CREATE TABLE comments (
+    comment_id SERIAL PRIMARY KEY,
+    post_id INTEGER NOT NULL,
+    author_name VARCHAR(100) NOT NULL,
+    author_email VARCHAR(255),
+    content TEXT NOT NULL,
+    is_approved BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_comments_post
+        FOREIGN KEY (post_id) REFERENCES posts(post_id)
+        ON DELETE CASCADE
+);
+
+-- Indexes: idx_tablename_columnname(s)
+CREATE INDEX idx_posts_author_id ON posts(author_id);
+CREATE INDEX idx_posts_category_id ON posts(category_id);
+CREATE INDEX idx_posts_status ON posts(status);
+CREATE INDEX idx_posts_published_at ON posts(published_at DESC);
+CREATE INDEX idx_comments_post_id ON comments(post_id);
+
+-- Composite index
+CREATE INDEX idx_posts_status_published
+    ON posts(status, published_at)
+    WHERE status = 'published';
+
+-- Views: v_ prefix
+CREATE VIEW v_published_posts AS
+SELECT
+    p.post_id,
+    p.title,
+    p.slug,
+    p.excerpt,
+    p.published_at,
+    p.view_count,
+    a.display_name AS author_name,
+    c.name AS category_name
+FROM posts p
+JOIN authors a ON p.author_id = a.author_id
+LEFT JOIN categories c ON p.category_id = c.category_id
+WHERE p.status = 'published'
+ORDER BY p.published_at DESC;
+
+CREATE VIEW v_post_statistics AS
+SELECT
+    a.author_id,
+    a.display_name,
+    COUNT(p.post_id) AS total_posts,
+    COUNT(p.post_id) FILTER (WHERE p.status = 'published') AS published_posts,
+    COALESCE(SUM(p.view_count), 0) AS total_views
+FROM authors a
+LEFT JOIN posts p ON a.author_id = p.author_id
+GROUP BY a.author_id, a.display_name;
+
+-- Function: verb_noun pattern
+CREATE OR REPLACE FUNCTION get_post_comment_count(p_post_id INTEGER)
+RETURNS INTEGER AS $$
+    SELECT COUNT(*)::INTEGER
+    FROM comments
+    WHERE post_id = p_post_id AND is_approved = TRUE;
+$$ LANGUAGE SQL;
+
+-- Trigger: trg_tablename_timing_event
+CREATE OR REPLACE FUNCTION update_post_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_posts_before_update
+    BEFORE UPDATE ON posts
+    FOR EACH ROW
+    EXECUTE FUNCTION update_post_timestamp();</code></pre>
+
+                        <h5>Naming Convention Summary:</h5>
+                        <table class="dataset-table">
+                            <tr>
+                                <th>Object</th>
+                                <th>Pattern</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td>Tables</td>
+                                <td>plural_noun</td>
+                                <td>posts, authors, categories</td>
+                            </tr>
+                            <tr>
+                                <td>Junction Tables</td>
+                                <td>entity1_entity2</td>
+                                <td>post_tags, user_roles</td>
+                            </tr>
+                            <tr>
+                                <td>Primary Key</td>
+                                <td>singular_id</td>
+                                <td>post_id, author_id</td>
+                            </tr>
+                            <tr>
+                                <td>Foreign Key Column</td>
+                                <td>referenced_table_id</td>
+                                <td>author_id, category_id</td>
+                            </tr>
+                            <tr>
+                                <td>FK Constraint</td>
+                                <td>fk_table_column</td>
+                                <td>fk_posts_author</td>
+                            </tr>
+                            <tr>
+                                <td>Unique Constraint</td>
+                                <td>uq_table_column</td>
+                                <td>uq_authors_email</td>
+                            </tr>
+                            <tr>
+                                <td>Check Constraint</td>
+                                <td>chk_table_description</td>
+                                <td>chk_posts_status</td>
+                            </tr>
+                            <tr>
+                                <td>Index</td>
+                                <td>idx_table_column(s)</td>
+                                <td>idx_posts_author_id</td>
+                            </tr>
+                            <tr>
+                                <td>View</td>
+                                <td>v_description</td>
+                                <td>v_published_posts</td>
+                            </tr>
+                            <tr>
+                                <td>Function</td>
+                                <td>verb_noun</td>
+                                <td>get_post_comment_count</td>
+                            </tr>
+                            <tr>
+                                <td>Trigger</td>
+                                <td>trg_table_timing_event</td>
+                                <td>trg_posts_before_update</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: Schema Migrations -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: Schema Migration Scripts</h2>
+                <p>Practice writing versioned migration scripts for evolving database schemas.</p>
+
+                <div class="concept-box">
+                    Migration scripts should be versioned, idempotent where possible, and include both
+                    "up" (apply) and "down" (rollback) sections.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Write Migration Scripts</h4>
+                    <p>Create migration scripts for the following changes to a <code>users</code> table:</p>
+                    <ol>
+                        <li>V001: Create initial users table</li>
+                        <li>V002: Add phone_number column</li>
+                        <li>V003: Add last_login_at column and index</li>
+                        <li>V004: Rename column email to email_address</li>
+                    </ol>
+
+                    <div class="file-tree">
+<span class="folder">migrations/</span>
+├── <span class="file">V001__create_users_table.sql</span>
+├── <span class="file">V002__add_phone_number.sql</span>
+├── <span class="file">V003__add_last_login.sql</span>
+└── <span class="file">V004__rename_email_column.sql</span>
+                    </div>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- V001__create_users_table.sql
+-- Description: Create initial users table
+-- Author: DBA Team
+-- Date: 2024-03-15
+
+-- UP Migration
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_is_active ON users(is_active);
+
+-- DOWN Migration (in separate file or comments for reference)
+-- DROP TABLE IF EXISTS users CASCADE;</code></pre>
+
+                        <pre><code class="language-sql">-- V002__add_phone_number.sql
+-- Description: Add phone_number column to users
+-- Author: DBA Team
+-- Date: 2024-03-18
+
+-- UP Migration
+ALTER TABLE users
+ADD COLUMN phone_number VARCHAR(20);
+
+-- Optional: Add index if frequently queried
+CREATE INDEX idx_users_phone ON users(phone_number);
+
+-- DOWN Migration
+-- DROP INDEX IF EXISTS idx_users_phone;
+-- ALTER TABLE users DROP COLUMN phone_number;</code></pre>
+
+                        <pre><code class="language-sql">-- V003__add_last_login.sql
+-- Description: Add last_login_at tracking
+-- Author: DBA Team
+-- Date: 2024-03-20
+
+-- UP Migration
+ALTER TABLE users
+ADD COLUMN last_login_at TIMESTAMP;
+
+-- Index for queries like "users who logged in recently"
+CREATE INDEX idx_users_last_login ON users(last_login_at DESC NULLS LAST);
+
+-- DOWN Migration
+-- DROP INDEX IF EXISTS idx_users_last_login;
+-- ALTER TABLE users DROP COLUMN last_login_at;</code></pre>
+
+                        <pre><code class="language-sql">-- V004__rename_email_column.sql
+-- Description: Rename email to email_address for clarity
+-- Author: DBA Team
+-- Date: 2024-03-22
+
+-- UP Migration
+
+-- Step 1: Add new column
+ALTER TABLE users ADD COLUMN email_address VARCHAR(255);
+
+-- Step 2: Copy data
+UPDATE users SET email_address = email;
+
+-- Step 3: Add constraints to new column
+ALTER TABLE users
+ALTER COLUMN email_address SET NOT NULL;
+
+ALTER TABLE users
+ADD CONSTRAINT uq_users_email_address UNIQUE (email_address);
+
+-- Step 4: Drop old column and index
+DROP INDEX IF EXISTS idx_users_email;
+ALTER TABLE users DROP COLUMN email;
+
+-- Step 5: Create new index
+CREATE INDEX idx_users_email_address ON users(email_address);
+
+-- DOWN Migration
+-- ALTER TABLE users ADD COLUMN email VARCHAR(255);
+-- UPDATE users SET email = email_address;
+-- ALTER TABLE users ALTER COLUMN email SET NOT NULL;
+-- ALTER TABLE users ADD CONSTRAINT uq_users_email UNIQUE (email);
+-- CREATE INDEX idx_users_email ON users(email);
+-- DROP INDEX IF EXISTS idx_users_email_address;
+-- ALTER TABLE users DROP CONSTRAINT uq_users_email_address;
+-- ALTER TABLE users DROP COLUMN email_address;</code></pre>
+
+                        <div class="warning-box">
+                            Renaming columns is complex because it can break application code.
+                            The expand-contract pattern (add new → migrate data → update app → drop old)
+                            is safer for production systems.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Classify Schema Changes</h4>
+                    <p>Classify each change as Safe, Caution, or Danger, and explain why:</p>
+
+                    <table class="dataset-table">
+                        <thead>
+                            <tr>
+                                <th>Change</th>
+                                <th>Risk Level</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CREATE TABLE new_table</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>ALTER TABLE ADD COLUMN (nullable)</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>ALTER TABLE ADD COLUMN (NOT NULL, no default)</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>DROP TABLE</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>ALTER TABLE DROP COLUMN</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE INDEX</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>CREATE INDEX CONCURRENTLY</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>ALTER COLUMN TYPE (widen)</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>ALTER COLUMN TYPE (narrow)</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>ADD FOREIGN KEY</td>
+                                <td>?</td>
+                                <td>?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Change</th>
+                                    <th>Risk Level</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CREATE TABLE</td>
+                                    <td><span class="change-type change-safe">SAFE</span></td>
+                                    <td>Additive change, no impact on existing objects</td>
+                                </tr>
+                                <tr>
+                                    <td>ADD COLUMN (nullable)</td>
+                                    <td><span class="change-type change-safe">SAFE</span></td>
+                                    <td>Additive, nullable allows existing rows to have NULL</td>
+                                </tr>
+                                <tr>
+                                    <td>ADD COLUMN (NOT NULL, no default)</td>
+                                    <td><span class="change-type change-danger">DANGER</span></td>
+                                    <td>Will fail if table has existing rows (no value for new column)</td>
+                                </tr>
+                                <tr>
+                                    <td>DROP TABLE</td>
+                                    <td><span class="change-type change-danger">DANGER</span></td>
+                                    <td>Permanent data loss, cannot be undone</td>
+                                </tr>
+                                <tr>
+                                    <td>DROP COLUMN</td>
+                                    <td><span class="change-type change-danger">DANGER</span></td>
+                                    <td>Permanent data loss, may break dependent objects</td>
+                                </tr>
+                                <tr>
+                                    <td>CREATE INDEX</td>
+                                    <td><span class="change-type change-caution">CAUTION</span></td>
+                                    <td>Locks table during creation on large tables</td>
+                                </tr>
+                                <tr>
+                                    <td>CREATE INDEX CONCURRENTLY</td>
+                                    <td><span class="change-type change-safe">SAFE</span></td>
+                                    <td>PostgreSQL: No lock, builds index in background</td>
+                                </tr>
+                                <tr>
+                                    <td>ALTER TYPE (widen, e.g., VARCHAR(50)→VARCHAR(100))</td>
+                                    <td><span class="change-type change-safe">SAFE</span></td>
+                                    <td>Expanding capacity, all existing data fits</td>
+                                </tr>
+                                <tr>
+                                    <td>ALTER TYPE (narrow, e.g., VARCHAR(100)→VARCHAR(50))</td>
+                                    <td><span class="change-type change-danger">DANGER</span></td>
+                                    <td>May truncate data or fail if data too long</td>
+                                </tr>
+                                <tr>
+                                    <td>ADD FOREIGN KEY</td>
+                                    <td><span class="change-type change-caution">CAUTION</span></td>
+                                    <td>Will fail if orphan records exist; locks tables</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="best-practice-box">
+                            Before running dangerous migrations in production:
+                            <ul>
+                                <li>Back up the database or affected tables</li>
+                                <li>Test on a staging environment with production-like data</li>
+                                <li>Plan for rollback</li>
+                                <li>Consider scheduling during low-traffic periods</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.3: Zero-Downtime Migration</h4>
+                    <p>You need to split a <code>full_name</code> column into <code>first_name</code> and <code>last_name</code>
+                        without downtime. Write the migration steps using the expand-contract pattern.</p>
+
+                    <p><strong>Current state:</strong></p>
+                    <pre><code>users (user_id, email, full_name, created_at)</code></pre>
+
+                    <p><strong>Target state:</strong></p>
+                    <pre><code>users (user_id, email, first_name, last_name, created_at)</code></pre>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <div id="solution3_3" class="solution-box">
+                        <div class="migration-flow">
+                            <span class="migration-step">1. Expand</span>
+                            <span class="migration-arrow">→</span>
+                            <span class="migration-step">2. Migrate</span>
+                            <span class="migration-arrow">→</span>
+                            <span class="migration-step">3. Update App</span>
+                            <span class="migration-arrow">→</span>
+                            <span class="migration-step">4. Contract</span>
+                        </div>
+
+                        <pre><code class="language-sql">-- PHASE 1: EXPAND (Add new columns)
+-- Migration: V005__add_name_columns.sql
+
+ALTER TABLE users ADD COLUMN first_name VARCHAR(100);
+ALTER TABLE users ADD COLUMN last_name VARCHAR(100);
+
+-- Create trigger to sync old column to new columns (for writes during transition)
+CREATE OR REPLACE FUNCTION sync_name_columns()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.full_name IS NOT NULL AND NEW.first_name IS NULL THEN
+        -- Split full_name into first_name and last_name
+        NEW.first_name := split_part(NEW.full_name, ' ', 1);
+        NEW.last_name := substring(NEW.full_name from position(' ' in NEW.full_name) + 1);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_users_sync_names
+    BEFORE INSERT OR UPDATE ON users
+    FOR EACH ROW
+    EXECUTE FUNCTION sync_name_columns();
+
+
+-- PHASE 2: MIGRATE (Backfill existing data)
+-- Migration: V006__backfill_name_columns.sql
+
+-- Backfill in batches to avoid long locks
+DO $$
+DECLARE
+    batch_size INT := 1000;
+    rows_updated INT;
+BEGIN
+    LOOP
+        UPDATE users
+        SET
+            first_name = split_part(full_name, ' ', 1),
+            last_name = CASE
+                WHEN position(' ' in full_name) > 0
+                THEN substring(full_name from position(' ' in full_name) + 1)
+                ELSE ''
+            END
+        WHERE first_name IS NULL
+          AND full_name IS NOT NULL
+          AND user_id IN (
+              SELECT user_id FROM users
+              WHERE first_name IS NULL
+              LIMIT batch_size
+          );
+
+        GET DIAGNOSTICS rows_updated = ROW_COUNT;
+        EXIT WHEN rows_updated = 0;
+
+        -- Optional: Add small delay to reduce load
+        PERFORM pg_sleep(0.1);
+    END LOOP;
+END $$;
+
+
+-- PHASE 3: UPDATE APPLICATION
+-- Update application code to:
+-- 1. Read from first_name/last_name columns
+-- 2. Write to first_name/last_name columns
+-- 3. Remove references to full_name
+-- Deploy application changes
+
+
+-- PHASE 4: CONTRACT (Remove old column)
+-- Migration: V007__remove_full_name.sql
+-- Only run AFTER application is updated and tested
+
+-- First remove the sync trigger
+DROP TRIGGER IF EXISTS trg_users_sync_names ON users;
+DROP FUNCTION IF EXISTS sync_name_columns();
+
+-- Add NOT NULL constraints if needed
+ALTER TABLE users ALTER COLUMN first_name SET NOT NULL;
+-- last_name can stay nullable for single-name users
+
+-- Drop old column
+ALTER TABLE users DROP COLUMN full_name;
+
+-- Add index on new columns if needed
+CREATE INDEX idx_users_last_name ON users(last_name);</code></pre>
+
+                        <p><strong>Timeline for Zero-Downtime Migration:</strong></p>
+                        <table class="dataset-table">
+                            <tr>
+                                <th>Phase</th>
+                                <th>Database State</th>
+                                <th>Application Reads</th>
+                                <th>Application Writes</th>
+                            </tr>
+                            <tr>
+                                <td>Before</td>
+                                <td>full_name only</td>
+                                <td>full_name</td>
+                                <td>full_name</td>
+                            </tr>
+                            <tr>
+                                <td>After Phase 1</td>
+                                <td>full_name + first/last (nullable)</td>
+                                <td>full_name</td>
+                                <td>full_name (trigger syncs)</td>
+                            </tr>
+                            <tr>
+                                <td>After Phase 2</td>
+                                <td>All columns populated</td>
+                                <td>full_name</td>
+                                <td>full_name (trigger syncs)</td>
+                            </tr>
+                            <tr>
+                                <td>After Phase 3</td>
+                                <td>All columns populated</td>
+                                <td>first/last</td>
+                                <td>first/last</td>
+                            </tr>
+                            <tr>
+                                <td>After Phase 4</td>
+                                <td>first/last only</td>
+                                <td>first/last</td>
+                                <td>first/last</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenge Exercises -->
+            <section>
+                <h2 id="challenge-exercises">Challenge Exercises</h2>
+                <p>Apply all concepts to real-world schema management scenarios.</p>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Design Multi-Schema Application</h4>
+                    <p>Design a complete schema organization for a project management SaaS with:</p>
+                    <ul>
+                        <li>Shared configuration and lookup tables</li>
+                        <li>Core application tables (projects, tasks, users)</li>
+                        <li>Reporting/analytics tables (read-optimized)</li>
+                        <li>Audit log tables (append-only)</li>
+                        <li>Integration tables (for external API data)</li>
+                    </ul>
+                    <p><strong>Deliverables:</strong> Schema design, sample tables, access patterns, and migration for initial setup.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">-- Schema Organization for Project Management SaaS
+
+-- 1. CORE Schema - Main application tables
+CREATE SCHEMA core;
+
+CREATE TABLE core.users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    display_name VARCHAR(200),
+    role VARCHAR(50) DEFAULT 'member',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE core.projects (
+    project_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    description TEXT,
+    owner_id INTEGER NOT NULL REFERENCES core.users(user_id),
+    status VARCHAR(20) DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    due_date DATE
+);
+
+CREATE TABLE core.tasks (
+    task_id SERIAL PRIMARY KEY,
+    project_id INTEGER NOT NULL REFERENCES core.projects(project_id),
+    title VARCHAR(300) NOT NULL,
+    description TEXT,
+    assignee_id INTEGER REFERENCES core.users(user_id),
+    priority VARCHAR(20) DEFAULT 'medium',
+    status VARCHAR(20) DEFAULT 'todo',
+    due_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP
+);
+
+CREATE TABLE core.project_members (
+    project_id INTEGER REFERENCES core.projects(project_id),
+    user_id INTEGER REFERENCES core.users(user_id),
+    role VARCHAR(50) DEFAULT 'member',
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (project_id, user_id)
+);
+
+
+-- 2. CONFIG Schema - Shared configuration and lookups
+CREATE SCHEMA config;
+
+CREATE TABLE config.task_statuses (
+    status_code VARCHAR(20) PRIMARY KEY,
+    display_name VARCHAR(50) NOT NULL,
+    sort_order INTEGER,
+    is_completed BOOLEAN DEFAULT FALSE
+);
+
+INSERT INTO config.task_statuses VALUES
+    ('todo', 'To Do', 1, FALSE),
+    ('in_progress', 'In Progress', 2, FALSE),
+    ('review', 'In Review', 3, FALSE),
+    ('done', 'Done', 4, TRUE);
+
+CREATE TABLE config.priority_levels (
+    priority_code VARCHAR(20) PRIMARY KEY,
+    display_name VARCHAR(50) NOT NULL,
+    color_hex VARCHAR(7),
+    sort_order INTEGER
+);
+
+CREATE TABLE config.app_settings (
+    setting_key VARCHAR(100) PRIMARY KEY,
+    setting_value TEXT,
+    description TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- 3. ANALYTICS Schema - Read-optimized reporting tables
+CREATE SCHEMA analytics;
+
+CREATE TABLE analytics.daily_project_metrics (
+    metric_date DATE,
+    project_id INTEGER,
+    tasks_created INTEGER DEFAULT 0,
+    tasks_completed INTEGER DEFAULT 0,
+    active_members INTEGER DEFAULT 0,
+    PRIMARY KEY (metric_date, project_id)
+);
+
+CREATE TABLE analytics.user_activity_summary (
+    summary_date DATE,
+    user_id INTEGER,
+    tasks_created INTEGER DEFAULT 0,
+    tasks_completed INTEGER DEFAULT 0,
+    comments_added INTEGER DEFAULT 0,
+    PRIMARY KEY (summary_date, user_id)
+);
+
+-- Materialized view for dashboard
+CREATE MATERIALIZED VIEW analytics.mv_project_overview AS
+SELECT
+    p.project_id,
+    p.name,
+    p.status,
+    p.owner_id,
+    u.display_name AS owner_name,
+    COUNT(DISTINCT pm.user_id) AS member_count,
+    COUNT(t.task_id) AS total_tasks,
+    COUNT(t.task_id) FILTER (WHERE t.status = 'done') AS completed_tasks,
+    MAX(t.created_at) AS last_activity
+FROM core.projects p
+JOIN core.users u ON p.owner_id = u.user_id
+LEFT JOIN core.project_members pm ON p.project_id = pm.project_id
+LEFT JOIN core.tasks t ON p.project_id = t.project_id
+GROUP BY p.project_id, p.name, p.status, p.owner_id, u.display_name;
+
+CREATE UNIQUE INDEX ON analytics.mv_project_overview(project_id);
+
+
+-- 4. AUDIT Schema - Append-only audit logs
+CREATE SCHEMA audit;
+
+CREATE TABLE audit.activity_log (
+    log_id BIGSERIAL PRIMARY KEY,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER,
+    action VARCHAR(50) NOT NULL,
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id INTEGER,
+    old_values JSONB,
+    new_values JSONB,
+    ip_address INET,
+    user_agent TEXT
+);
+
+CREATE INDEX idx_audit_log_timestamp ON audit.activity_log(timestamp DESC);
+CREATE INDEX idx_audit_log_user ON audit.activity_log(user_id, timestamp DESC);
+CREATE INDEX idx_audit_log_entity ON audit.activity_log(entity_type, entity_id);
+
+-- Partition audit log by month for better performance
+-- CREATE TABLE audit.activity_log_2024_03 PARTITION OF audit.activity_log
+--     FOR VALUES FROM ('2024-03-01') TO ('2024-04-01');
+
+
+-- 5. INTEGRATION Schema - External API data
+CREATE SCHEMA integration;
+
+CREATE TABLE integration.external_users (
+    integration_user_id SERIAL PRIMARY KEY,
+    local_user_id INTEGER REFERENCES core.users(user_id),
+    provider VARCHAR(50) NOT NULL,
+    provider_user_id VARCHAR(255) NOT NULL,
+    access_token TEXT,
+    refresh_token TEXT,
+    token_expires_at TIMESTAMP,
+    synced_at TIMESTAMP,
+    UNIQUE (provider, provider_user_id)
+);
+
+CREATE TABLE integration.webhook_deliveries (
+    delivery_id SERIAL PRIMARY KEY,
+    webhook_url TEXT NOT NULL,
+    event_type VARCHAR(50) NOT NULL,
+    payload JSONB NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending',
+    attempts INTEGER DEFAULT 0,
+    last_attempt_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- 6. Set up default search paths for application roles
+-- Application role uses core + config
+CREATE ROLE app_user;
+ALTER ROLE app_user SET search_path TO core, config, public;
+
+-- Analytics role for reporting
+CREATE ROLE analytics_user;
+ALTER ROLE analytics_user SET search_path TO analytics, core, config, public;
+
+-- Admin role has access to all
+CREATE ROLE admin_user;
+ALTER ROLE admin_user SET search_path TO core, config, analytics, audit, integration, public;</code></pre>
+
+                        <div class="schema-diagram">
+Database: project_mgmt
+├── Schema: core (main application)
+│   ├── users
+│   ├── projects
+│   ├── tasks
+│   └── project_members
+├── Schema: config (shared settings)
+│   ├── task_statuses
+│   ├── priority_levels
+│   └── app_settings
+├── Schema: analytics (reporting)
+│   ├── daily_project_metrics
+│   ├── user_activity_summary
+│   └── mv_project_overview
+├── Schema: audit (logging)
+│   └── activity_log (partitioned)
+└── Schema: integration (external)
+    ├── external_users
+    └── webhook_deliveries
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: Migration Sequence</h4>
+                    <p>Plan a migration sequence for these interdependent changes. Determine the correct order and any required intermediate steps:</p>
+                    <ul>
+                        <li>Add new <code>categories</code> table</li>
+                        <li>Add <code>category_id</code> foreign key to <code>products</code> table</li>
+                        <li>Migrate existing product categories from a comma-separated <code>tags</code> column</li>
+                        <li>Drop the old <code>tags</code> column from products</li>
+                        <li>Add NOT NULL constraint to <code>category_id</code></li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- V010__create_categories_table.sql
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    slug VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- V011__add_category_to_products.sql
+ALTER TABLE products ADD COLUMN category_id INTEGER;
+
+-- Add FK constraint (without NOT NULL initially)
+ALTER TABLE products
+ADD CONSTRAINT fk_products_category
+FOREIGN KEY (category_id) REFERENCES categories(category_id);
+
+CREATE INDEX idx_products_category ON products(category_id);
+
+-- V012__migrate_tags_to_categories.sql
+-- First, extract unique categories from existing tags
+INSERT INTO categories (name, slug)
+SELECT DISTINCT
+    TRIM(unnest(string_to_array(tags, ','))) AS name,
+    LOWER(REPLACE(TRIM(unnest(string_to_array(tags, ','))), ' ', '-')) AS slug
+FROM products
+WHERE tags IS NOT NULL AND tags != ''
+ON CONFLICT (name) DO NOTHING;
+
+-- Then, update products with the first matching category
+UPDATE products p
+SET category_id = c.category_id
+FROM categories c
+WHERE c.name = TRIM(split_part(p.tags, ',', 1))
+  AND p.tags IS NOT NULL;
+
+-- Handle products without tags - assign to "Uncategorized"
+INSERT INTO categories (name, slug) VALUES ('Uncategorized', 'uncategorized')
+ON CONFLICT DO NOTHING;
+
+UPDATE products
+SET category_id = (SELECT category_id FROM categories WHERE slug = 'uncategorized')
+WHERE category_id IS NULL;
+
+-- V013__make_category_required.sql
+-- Only run after verifying all products have category_id
+ALTER TABLE products ALTER COLUMN category_id SET NOT NULL;
+
+-- V014__drop_tags_column.sql
+-- Only run after application no longer uses tags column
+ALTER TABLE products DROP COLUMN tags;</code></pre>
+
+                        <p><strong>Migration Order Reasoning:</strong></p>
+                        <ol>
+                            <li><strong>V010</strong>: Create categories first (dependency for FK)</li>
+                            <li><strong>V011</strong>: Add nullable column + FK (allows gradual population)</li>
+                            <li><strong>V012</strong>: Migrate data (populate all category_id values)</li>
+                            <li><strong>V013</strong>: Add NOT NULL (only after all rows have values)</li>
+                            <li><strong>V014</strong>: Drop old column (only after app updated)</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h2 id="key-takeaways">Key Takeaways</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Best Practice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Schema Organization</td>
+                            <td>Group related objects into schemas by module, function, or tenant</td>
+                        </tr>
+                        <tr>
+                            <td>Object References</td>
+                            <td>Use fully qualified names (<code>schema.table</code>) in code for clarity</td>
+                        </tr>
+                        <tr>
+                            <td>Naming Style</td>
+                            <td>Use <code>snake_case</code> for portability; be consistent</td>
+                        </tr>
+                        <tr>
+                            <td>Table Names</td>
+                            <td>Plural nouns (<code>customers</code>) or singular consistently</td>
+                        </tr>
+                        <tr>
+                            <td>Constraint Names</td>
+                            <td>Descriptive prefixes: <code>pk_</code>, <code>fk_</code>, <code>uq_</code>, <code>chk_</code></td>
+                        </tr>
+                        <tr>
+                            <td>Migration Scripts</td>
+                            <td>Version with timestamps or sequence numbers; keep atomic</td>
+                        </tr>
+                        <tr>
+                            <td>Additive Changes</td>
+                            <td>Generally safe; prefer nullable columns initially</td>
+                        </tr>
+                        <tr>
+                            <td>Destructive Changes</td>
+                            <td>Use expand-contract pattern; never run without backup</td>
+                        </tr>
+                        <tr>
+                            <td>Migration Testing</td>
+                            <td>Always test on staging with production-like data first</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <p><a href="02_schema_management_and_organization.html">&larr; Back to Schema Management Lesson</a></p>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../static/script.js"></script>
+
+    <script>
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+                event.target.textContent = 'Show Solution';
+            } else {
+                element.classList.add('show');
+                event.target.textContent = 'Hide Solution';
+            }
+        }
+    </script>
+</body>
+
+</html>

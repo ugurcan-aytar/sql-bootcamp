@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/code.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 1: Working with Multiple Tables - Practical Examples</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.at {
+      color: #7d9029;
+    }
+
+    code span.bn {
+      color: #40a070;
+    }
+
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    code span.ch {
+      color: #4070a0;
+    }
+
+    code span.cn {
+      color: #880000;
+    }
+
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    code span.dt {
+      color: #902000;
+    }
+
+    code span.dv {
+      color: #40a070;
+    }
+
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    code span.ex {}
+
+    code span.fl {
+      color: #40a070;
+    }
+
+    code span.fu {
+      color: #06287e;
+    }
+
+    code span.im {}
+
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    code span.op {
+      color: #666666;
+    }
+
+    code span.ot {
+      color: #007020;
+    }
+
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    code span.sc {
+      color: #4070a0;
+    }
+
+    code span.ss {
+      color: #bb6688;
+    }
+
+    code span.st {
+      color: #4070a0;
+    }
+
+    code span.va {
+      color: #19177c;
+    }
+
+    code span.vs {
+      color: #4070a0;
+    }
+
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .exercise-box {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .exercise-box h4 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .challenge-box {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .challenge-box h4 {
+      color: #856404;
+      margin-bottom: 10px;
+    }
+
+    .solution-box {
+      background-color: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .solution-box h4 {
+      color: #155724;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle:hover {
+      background-color: #218838;
+    }
+
+    .solution-content {
+      display: none;
+    }
+
+    .solution-content.show {
+      display: block;
+    }
+
+    .hint-box {
+      background-color: #e7f3ff;
+      border: 1px dashed #007bff;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .warning-box {
+      background-color: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .dataset-table {
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    .dataset-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .dataset-table th,
+    .dataset-table td {
+      border: 1px solid #dee2e6;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .dataset-table th {
+      background-color: #e9ecef;
+      font-weight: 600;
+    }
+
+    .dataset-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .back-link {
+      margin-bottom: 20px;
+    }
+
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    .join-diagram {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .relationship-box {
+      background-color: #e8f4f8;
+      border: 1px solid #17a2b8;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .predict-output {
+      background-color: #f0f0f0;
+      border: 2px dashed #6c757d;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+
+    .predict-output h5 {
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <div class="back-link">
+        <a href="04_working_with_multiple_tables.html">&larr; Back to Working with Multiple Tables</a>
+      </div>
+
+      <section>
+        <h1 id="multiple-tables-examples">Working with Multiple Tables - Practical Examples</h1>
+        <p>This page provides hands-on exercises to master JOIN operations. Practice combining data from multiple tables
+          using the sample datasets below.</p>
+      </section>
+
+      <section>
+        <h2 id="sample-datasets">Sample Datasets</h2>
+        <p>The following related tables will be used throughout the exercises. Pay attention to the foreign key
+          relationships between tables.</p>
+
+        <div class="relationship-box">
+          <h4>Table Relationships</h4>
+          <ul>
+            <li><code>orders.customer_id</code> &rarr; <code>customers.id</code> (Many orders belong to one customer)
+            </li>
+            <li><code>orders.product_id</code> &rarr; <code>products.id</code> (Each order references one product)</li>
+            <li><code>products.category_id</code> &rarr; <code>categories.id</code> (Each product belongs to one
+              category)</li>
+          </ul>
+        </div>
+
+        <h3 id="customers-table">customers</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>customer_name</th>
+                <th>city</th>
+                <th>country</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Cansu</td>
+                <td>Istanbul</td>
+                <td>Turkey</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>TTC</td>
+                <td>Ankara</td>
+                <td>Turkey</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>MEXT</td>
+                <td>Berlin</td>
+                <td>Germany</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Audra Berg</td>
+                <td>Munich</td>
+                <td>Germany</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Avram Guthrie</td>
+                <td>London</td>
+                <td>UK</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Macy Marquez</td>
+                <td>Madrid</td>
+                <td>Spain</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Hamish Rodgers</td>
+                <td>Edinburgh</td>
+                <td>UK</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Henry Douglas</td>
+                <td>Paris</td>
+                <td>France</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="categories-table">categories</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>category_name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Electronics</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Clothing</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Books</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Home & Garden</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Sports</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="products-table">products</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>product_name</th>
+                <th>category_id</th>
+                <th>price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Laptop</td>
+                <td>1</td>
+                <td>999.99</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>T-Shirt</td>
+                <td>2</td>
+                <td>29.99</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>SQL Guide</td>
+                <td>3</td>
+                <td>49.99</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Headphones</td>
+                <td>1</td>
+                <td>149.99</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Garden Chair</td>
+                <td>4</td>
+                <td>89.99</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Running Shoes</td>
+                <td>5</td>
+                <td>119.99</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Desk Lamp</td>
+                <td>4</td>
+                <td>45.99</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Novel Collection</td>
+                <td>3</td>
+                <td>35.99</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="orders-table">orders</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>order_id</th>
+                <th>customer_id</th>
+                <th>product_id</th>
+                <th>order_date</th>
+                <th>quantity</th>
+                <th>order_total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>101</td>
+                <td>1</td>
+                <td>1</td>
+                <td>2024-01-15</td>
+                <td>1</td>
+                <td>999.99</td>
+              </tr>
+              <tr>
+                <td>102</td>
+                <td>2</td>
+                <td>3</td>
+                <td>2024-01-18</td>
+                <td>2</td>
+                <td>99.98</td>
+              </tr>
+              <tr>
+                <td>103</td>
+                <td>1</td>
+                <td>4</td>
+                <td>2024-02-01</td>
+                <td>1</td>
+                <td>149.99</td>
+              </tr>
+              <tr>
+                <td>104</td>
+                <td>3</td>
+                <td>2</td>
+                <td>2024-02-10</td>
+                <td>3</td>
+                <td>89.97</td>
+              </tr>
+              <tr>
+                <td>105</td>
+                <td>5</td>
+                <td>6</td>
+                <td>2024-02-15</td>
+                <td>1</td>
+                <td>119.99</td>
+              </tr>
+              <tr>
+                <td>106</td>
+                <td>1</td>
+                <td>7</td>
+                <td>2024-03-01</td>
+                <td>2</td>
+                <td>91.98</td>
+              </tr>
+              <tr>
+                <td>107</td>
+                <td>4</td>
+                <td>5</td>
+                <td>2024-03-05</td>
+                <td>4</td>
+                <td>359.96</td>
+              </tr>
+              <tr>
+                <td>108</td>
+                <td>2</td>
+                <td>8</td>
+                <td>2024-03-10</td>
+                <td>1</td>
+                <td>35.99</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="warning-box">
+          <strong>Note:</strong> Customers 6, 7, and 8 (Macy Marquez, Hamish Rodgers, Henry Douglas) have NOT placed any
+          orders.
+          This is intentional for practicing LEFT/RIGHT JOIN scenarios.
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-1">Exercise 1: INNER JOIN Basics</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.1: Simple Two-Table JOIN</h4>
+          <p>Write a query to display all orders with the customer name. Show <code>order_id</code>,
+            <code>customer_name</code>, and <code>order_date</code>.
+          </p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Join the <code>orders</code> table with the <code>customers</code> table using
+            <code>customer_id</code>.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <div id="sol1-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
+              <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    o.order_id,
+    c.customer_name,
+    o.order_date
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 8 rows showing all orders with their customer names.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.2: JOIN with Product Information</h4>
+          <p>Display orders with product names. Show <code>order_id</code>, <code>product_name</code>,
+            <code>quantity</code>, and <code>order_total</code>.
+          </p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <div id="sol1-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
+              <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    o.order_id,
+    p.product_name,
+    o.quantity,
+    o.order_total
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.3: JOIN with Aliases</h4>
+          <p>Rewrite Exercise 1.1 using meaningful column aliases: "Order Number", "Customer", and "Date Ordered".</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <div id="sol1-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
+              <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    o.order_id <span class="kw">AS</span> <span class="st">"Order Number"</span>,
+    c.customer_name <span class="kw">AS</span> <span class="st">"Customer"</span>,
+    o.order_date <span class="kw">AS</span> <span class="st">"Date Ordered"</span>
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.4: JOIN with WHERE Filter</h4>
+          <p>Find all orders placed by customers from Turkey. Display customer name, order ID, and order total.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <div id="sol1-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
+              <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    o.order_id,
+    o.order_total
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">WHERE</span> c.country = <span class="st">'Turkey'</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Orders from Cansu (3 orders) and TTC (2 orders).</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-2">Exercise 2: LEFT JOIN</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.1: Finding All Customers with Their Orders</h4>
+          <p>List ALL customers and any orders they have placed. Include customers who haven't placed any orders.
+            Display customer name, city, and order_id (will be NULL for customers with no orders).</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use LEFT JOIN to keep all customers, even those without matching orders.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <div id="sol2-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
+              <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    c.city,
+    o.order_id
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 11 rows (8 orders + 3 customers with NULL order_id: Macy, Hamish,
+              Henry).</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.2: Finding Customers WITHOUT Orders</h4>
+          <p>Find customers who have NEVER placed an order. Display only their name and city.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use LEFT JOIN and then filter WHERE the order_id IS NULL.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <div id="sol2-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
+              <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    c.city
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 3 customers - Macy Marquez, Hamish Rodgers, Henry Douglas.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.3: Products and Their Categories</h4>
+          <p>List all products with their category names. Use LEFT JOIN in case any product has no category assigned.
+          </p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <div id="sol2-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
+              <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    p.product_name,
+    p.price,
+    cat.category_name
+<span class="kw">FROM</span> products p
+<span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-3">Exercise 3: RIGHT JOIN and FULL OUTER JOIN</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.1: RIGHT JOIN Example</h4>
+          <p>Rewrite Exercise 2.1 using RIGHT JOIN instead of LEFT JOIN to achieve the same result
+            (all customers with their orders).</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Swap the table order and use RIGHT JOIN instead of LEFT JOIN.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <div id="sol3-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
+              <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    c.city,
+    o.order_id
+<span class="kw">FROM</span> orders o
+<span class="kw">RIGHT JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
+            </div>
+            <p><strong>Note:</strong> This produces the same result as the LEFT JOIN version, just with tables swapped.
+            </p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.2: Categories with Product Count</h4>
+          <p>List all categories and show how many products belong to each. Include categories with zero products (if
+            any).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <div id="sol3-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
+              <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    cat.category_name,
+    <span class="fu">COUNT</span>(p.id) <span class="kw">AS</span> product_count
+<span class="kw">FROM</span> categories cat
+<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> cat.id = p.category_id
+<span class="kw">GROUP BY</span> cat.id, cat.category_name
+<span class="kw">ORDER BY</span> product_count <span class="kw">DESC</span>;</code></pre>
+            </div>
+            <p><strong>Note:</strong> This uses GROUP BY which you may cover in a later session.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.3: FULL OUTER JOIN (PostgreSQL)</h4>
+          <p>Write a query using FULL OUTER JOIN to show all customers and all orders, matched where possible.
+            This will show customers without orders AND orders without customers (if any existed).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <div id="sol3-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
+              <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL / SQL Server / Oracle syntax</span>
+<span class="kw">SELECT</span>
+    c.customer_name,
+    o.order_id,
+    o.order_total
+<span class="kw">FROM</span> customers c
+<span class="kw">FULL OUTER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
+            </div>
+            <div class="warning-box">
+              <strong>MySQL Note:</strong> MySQL doesn't support FULL OUTER JOIN directly. You would need to use UNION:
+              <pre><code>SELECT c.customer_name, o.order_id FROM customers c LEFT JOIN orders o ON c.id = o.customer_id
+UNION
+SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-4">Exercise 4: Joining Multiple Tables</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.1: Three-Table JOIN</h4>
+          <p>Display complete order information: customer name, product name, quantity, and order total.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> You need to join <code>orders</code> with both <code>customers</code> AND
+            <code>products</code>.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <div id="sol4-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
+              <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    p.product_name,
+    o.quantity,
+    o.order_total
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.2: Four-Table JOIN</h4>
+          <p>Display orders with customer name, product name, AND category name. Sort by order date.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <div id="sol4-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
+              <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    o.order_id,
+    c.customer_name,
+    p.product_name,
+    cat.category_name,
+    o.order_date
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
+<span class="kw">ORDER BY</span> o.order_date;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.3: Mixed JOIN Types</h4>
+          <p>List ALL customers with their order details including product and category names.
+            Customers without orders should still appear (with NULL values for order columns).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <div id="sol4-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
+              <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    c.city,
+    o.order_id,
+    p.product_name,
+    cat.category_name
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
+<span class="kw">ORDER BY</span> c.customer_name;</code></pre>
+            </div>
+            <p><strong>Note:</strong> All JOINs after the first LEFT JOIN should also be LEFT JOINs to preserve
+              customers without orders.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-5">Exercise 5: Predict the Output</h2>
+        <p>For these exercises, try to predict what the query will return before checking the answer.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.1: What will this return?</h4>
+          <div class="sourceCode">
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> c.customer_name, <span class="fu">COUNT</span>(o.order_id) <span class="kw">AS</span> order_count
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">GROUP BY</span> c.id, c.customer_name
+<span class="kw">ORDER BY</span> order_count <span class="kw">DESC</span>;</code></pre>
+          </div>
+          <div class="predict-output">
+            <h5>What do you think this query returns?</h5>
+            <p>Think about: How many rows? What values?</p>
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Answer</button>
+          <div id="sol5-1" class="solution-content">
+            <p><strong>Answer:</strong> This returns 8 rows - one for each customer - with a count of their orders:</p>
+            <ul>
+              <li>Cansu: 3 orders</li>
+              <li>TTC: 2 orders</li>
+              <li>MEXT, Audra Berg, Avram Guthrie: 1 order each</li>
+              <li>Macy Marquez, Hamish Rodgers, Henry Douglas: 0 orders each</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.2: INNER vs LEFT - What's the difference?</h4>
+          <p>Compare these two queries. How many rows does each return?</p>
+          <div class="sourceCode">
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Query A</span>
+<span class="kw">SELECT</span> c.customer_name, o.order_id
+<span class="kw">FROM</span> customers c
+<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;
+
+<span class="co">-- Query B</span>
+<span class="kw">SELECT</span> c.customer_name, o.order_id
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Answer</button>
+          <div id="sol5-2" class="solution-content">
+            <p><strong>Answer:</strong></p>
+            <ul>
+              <li><strong>Query A (INNER JOIN):</strong> Returns 8 rows - only customers who have orders</li>
+              <li><strong>Query B (LEFT JOIN):</strong> Returns 11 rows - all 8 customers, but 3 of them (Macy, Hamish,
+                Henry) have NULL for order_id</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="challenge-exercises">Challenge Exercises</h2>
+
+        <div class="challenge-box">
+          <h4>Challenge 1: Top Spending Customers</h4>
+          <p>Find the total amount spent by each customer. Show customer name, city, country, and total spent.
+            Order by total spent descending. Include all customers (even those with $0 spent).</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <div id="chal1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
+              <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    c.city,
+    c.country,
+    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.order_total), <span class="dv">0</span>) <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">GROUP BY</span> c.id, c.customer_name, c.city, c.country
+<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;</code></pre>
+            </div>
+            <p><strong>Note:</strong> COALESCE replaces NULL with 0 for customers without orders.</p>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 2: Popular Categories</h4>
+          <p>Find out how many times products from each category have been ordered.
+            Show category name and total quantity ordered. Sort by quantity descending.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <div id="chal2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
+              <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    cat.category_name,
+    <span class="fu">SUM</span>(o.quantity) <span class="kw">AS</span> total_quantity_ordered
+<span class="kw">FROM</span> categories cat
+<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> cat.id = p.category_id
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> p.id = o.product_id
+<span class="kw">GROUP BY</span> cat.id, cat.category_name
+<span class="kw">ORDER BY</span> total_quantity_ordered <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 3: Customer Order Details Report</h4>
+          <p>Create a comprehensive order report showing:
+            Customer name, country, order ID, product name, category, unit price, quantity, and line total.
+            Only include orders from 2024. Sort by customer name, then order date.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <div id="chal3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
+              <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    c.country,
+    o.order_id,
+    p.product_name,
+    cat.category_name,
+    p.price <span class="kw">AS</span> unit_price,
+    o.quantity,
+    o.order_total <span class="kw">AS</span> line_total
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
+<span class="kw">WHERE</span> o.order_date <span class="op">>=</span> <span class="st">'2024-01-01'</span>
+  <span class="kw">AND</span> o.order_date <span class="op"><</span> <span class="st">'2025-01-01'</span>
+<span class="kw">ORDER BY</span> c.customer_name, o.order_date;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 4: Find Missing Relationships</h4>
+          <p>Write a query to find any products that have NEVER been ordered.
+            Display product name, category name, and price.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <div id="chal4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
+              <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    p.product_name,
+    cat.category_name,
+    p.price
+<span class="kw">FROM</span> products p
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> p.id = o.product_id
+<span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
+<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Products that haven't been ordered (depends on sample data - in our
+              case, all products have orders).</p>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 5: Electronics Orders from UK Customers</h4>
+          <p>Find all orders for products in the 'Electronics' category placed by customers from the UK.
+            Display customer name, product name, order date, and order total.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
+          <div id="chal5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
+              <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    p.product_name,
+    o.order_date,
+    o.order_total
+<span class="kw">FROM</span> orders o
+<span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
+<span class="kw">WHERE</span> c.country = <span class="st">'UK'</span>
+  <span class="kw">AND</span> cat.category_name = <span class="st">'Electronics'</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="summary">Key Takeaways</h2>
+        <ul>
+          <li><strong>INNER JOIN</strong>: Returns only matching rows from both tables - use when you need data that
+            exists in both tables</li>
+          <li><strong>LEFT JOIN</strong>: Returns all rows from the left table - use when you want to include records
+            even without matches</li>
+          <li><strong>RIGHT JOIN</strong>: Returns all rows from the right table - can usually be rewritten as LEFT JOIN
+          </li>
+          <li><strong>FULL OUTER JOIN</strong>: Returns all rows from both tables - use for complete picture (not
+            supported in MySQL)</li>
+          <li><strong>Table Aliases</strong>: Use short aliases (o, c, p) to make queries readable</li>
+          <li><strong>Multiple JOINs</strong>: Chain JOINs to connect more than two tables</li>
+          <li><strong>IS NULL with LEFT JOIN</strong>: Find records without matches in the other table</li>
+          <li><strong>JOIN Order</strong>: The table order matters for LEFT/RIGHT JOIN but not for INNER JOIN</li>
+        </ul>
+
+        <div class="back-link" style="margin-top: 30px;">
+          <a href="04_working_with_multiple_tables.html">&larr; Back to Working with Multiple Tables</a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <script src="../static/script.js"></script>
+
+  <script>
+    function toggleSolution(id) {
+      var element = document.getElementById(id);
+      if (element.classList.contains('show')) {
+        element.classList.remove('show');
+        event.target.textContent = 'Show Solution';
+      } else {
+        element.classList.add('show');
+        event.target.textContent = 'Hide Solution';
+      }
+    }
+  </script>
+
+</body>
+
+</html>

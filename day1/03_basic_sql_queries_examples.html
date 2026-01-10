@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/code.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 1: Basic SQL Queries - Practical Examples</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+
+    /* Add notification styles */
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Exercise styles */
+    .exercise-box {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .exercise-box h4 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .challenge-box {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .challenge-box h4 {
+      color: #856404;
+      margin-bottom: 10px;
+    }
+
+    .solution-box {
+      background-color: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .solution-box h4 {
+      color: #155724;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle:hover {
+      background-color: #218838;
+    }
+
+    .solution-content {
+      display: none;
+    }
+
+    .solution-content.show {
+      display: block;
+    }
+
+    .hint-box {
+      background-color: #e7f3ff;
+      border: 1px dashed #007bff;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .dataset-table {
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    .dataset-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .dataset-table th,
+    .dataset-table td {
+      border: 1px solid #dee2e6;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .dataset-table th {
+      background-color: #e9ecef;
+      font-weight: 600;
+    }
+
+    .dataset-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .back-link {
+      margin-bottom: 20px;
+    }
+
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Add notification element -->
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <div class="back-link">
+        <a href="03_basic_sql_queries.html">&larr; Back to Basic SQL Queries</a>
+      </div>
+
+      <section>
+        <h1 id="basic-sql-queries-examples">Basic SQL Queries - Practical Examples</h1>
+        <p>This page provides hands-on exercises to reinforce the concepts from the Basic SQL Queries lesson.
+           Practice with these examples using the sample datasets below.</p>
+      </section>
+
+      <section>
+        <h2 id="sample-datasets">Sample Datasets</h2>
+        <p>The following sample data will be used throughout the exercises. These represent typical tables you might find in a business database.</p>
+
+        <h3 id="res-partner-table">res_partner (Customers/Partners)</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>email</th>
+                <th>phone</th>
+                <th>city</th>
+                <th>country_id</th>
+                <th>create_date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>George Miller</td><td>george@example.com</td><td>+1-555-0101</td><td>New York</td><td>233</td><td>2023-01-15</td></tr>
+              <tr><td>2</td><td>Anna Schmidt</td><td>anna@sample.org</td><td>+49-555-0102</td><td>Berlin</td><td>73</td><td>2023-02-20</td></tr>
+              <tr><td>3</td><td>John Smith</td><td>NULL</td><td>+1-555-0103</td><td>Los Angeles</td><td>233</td><td>2023-03-10</td></tr>
+              <tr><td>4</td><td>Maria Garcia</td><td>maria@company.es</td><td>NULL</td><td>Madrid</td><td>195</td><td>2023-04-05</td></tr>
+              <tr><td>5</td><td>Gerard Dupont</td><td>gerard@example.com</td><td>+33-555-0105</td><td>Paris</td><td>68</td><td>2023-05-18</td></tr>
+              <tr><td>6</td><td>Sarah Johnson</td><td>sarah@sample.org</td><td>+1-555-0106</td><td>Toronto</td><td>20</td><td>2023-06-22</td></tr>
+              <tr><td>7</td><td>Kenji Tanaka</td><td>kenji123@tech.jp</td><td>+81-555-0107</td><td>Tokyo</td><td>107</td><td>2023-07-30</td></tr>
+              <tr><td>8</td><td>Emma Wilson</td><td>emma@example.com</td><td>+44-555-0108</td><td>London</td><td>229</td><td>2023-08-14</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="product-template-table">product_template (Products)</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>default_code</th>
+                <th>list_price</th>
+                <th>active</th>
+                <th>type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Laptop Pro 15</td><td>LP-001</td><td>1299.99</td><td>true</td><td>consu</td></tr>
+              <tr><td>2</td><td>Wireless Mouse</td><td>WM-002</td><td>49.99</td><td>true</td><td>consu</td></tr>
+              <tr><td>3</td><td>USB-C Cable</td><td>UC-003</td><td>19.99</td><td>true</td><td>consu</td></tr>
+              <tr><td>4</td><td>Monitor 27 inch</td><td>MN-004</td><td>399.99</td><td>true</td><td>consu</td></tr>
+              <tr><td>5</td><td>Keyboard Mechanical</td><td>KM-005</td><td>149.99</td><td>true</td><td>consu</td></tr>
+              <tr><td>6</td><td>Webcam HD</td><td>WC-006</td><td>79.99</td><td>false</td><td>consu</td></tr>
+              <tr><td>7</td><td>Desk Lamp LED</td><td>DL-007</td><td>59.99</td><td>true</td><td>consu</td></tr>
+              <tr><td>8</td><td>Headphones Wireless</td><td>HW-008</td><td>199.99</td><td>true</td><td>consu</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="sale-order-table">sale_order (Sales Orders)</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>partner_id</th>
+                <th>date_order</th>
+                <th>amount_total</th>
+                <th>state</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>SO001</td><td>1</td><td>2023-09-01</td><td>1349.98</td><td>sale</td></tr>
+              <tr><td>2</td><td>SO002</td><td>2</td><td>2023-09-15</td><td>449.98</td><td>done</td></tr>
+              <tr><td>3</td><td>SO003</td><td>3</td><td>2023-10-05</td><td>1499.98</td><td>sale</td></tr>
+              <tr><td>4</td><td>SO004</td><td>1</td><td>2023-10-20</td><td>199.99</td><td>cancel</td></tr>
+              <tr><td>5</td><td>SO005</td><td>5</td><td>2023-11-01</td><td>2599.97</td><td>sale</td></tr>
+              <tr><td>6</td><td>SO006</td><td>6</td><td>2023-11-10</td><td>69.98</td><td>done</td></tr>
+              <tr><td>7</td><td>SO007</td><td>7</td><td>2023-12-01</td><td>1899.97</td><td>sale</td></tr>
+              <tr><td>8</td><td>SO008</td><td>8</td><td>2023-12-15</td><td>599.98</td><td>draft</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-1">Exercise 1: Basic SELECT Statements</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.1: Selecting Specific Columns</h4>
+          <p>Write a query to retrieve only the <code>name</code> and <code>email</code> columns from the <code>res_partner</code> table.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use SELECT followed by the column names separated by commas.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <div id="sol1-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
+              <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
+<span class="kw">FROM</span> res_partner;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 8 rows showing partner names and their email addresses (including NULL values).</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.2: Using Column Aliases</h4>
+          <p>Retrieve the <code>name</code> as "Product Name" and <code>list_price</code> as "Price (USD)" from <code>product_template</code>.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use the AS keyword with double quotes for aliases containing spaces.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <div id="sol1-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
+              <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    name <span class="kw">AS</span> <span class="ot">"Product Name"</span>,
+    list_price <span class="kw">AS</span> <span class="ot">"Price (USD)"</span>
+<span class="kw">FROM</span> product_template;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.3: Expressions in SELECT</h4>
+          <p>Calculate a 10% discount on all products. Display the product name, original price, and discounted price.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> You can perform arithmetic operations directly in the SELECT clause. Multiply the price by 0.9 for 10% off.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <div id="sol1-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
+              <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    name,
+    list_price <span class="kw">AS</span> original_price,
+    list_price <span class="op">*</span> <span class="fl">0.9</span> <span class="kw">AS</span> discounted_price
+<span class="kw">FROM</span> product_template;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.4: DISTINCT Values</h4>
+          <p>Find all unique country IDs from the <code>res_partner</code> table.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <div id="sol1-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
+              <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country_id
+<span class="kw">FROM</span> res_partner;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 7 unique country IDs (233, 73, 195, 68, 20, 107, 229).</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-2">Exercise 2: Filtering with WHERE</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.1: Simple Comparison</h4>
+          <p>Find all products with a price greater than $100.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <div id="sol2-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
+              <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span> list_price <span class="op">></span> <span class="dv">100</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Laptop Pro 15, Monitor 27 inch, Keyboard Mechanical, Headphones Wireless.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.2: Using AND Operator</h4>
+          <p>Find all active products with a price between $50 and $200.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <div id="sol2-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
+              <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price, active
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span> active <span class="op">=</span> <span class="kw">true</span>
+  <span class="kw">AND</span> list_price <span class="op">>=</span> <span class="dv">50</span>
+  <span class="kw">AND</span> list_price <span class="op"><=</span> <span class="dv">200</span>;</span></code></pre>
+            </div>
+            <p><strong>Alternative using BETWEEN:</strong></p>
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-2-alt')">
+              <pre class="sourceCode sql" id="sol2-2-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price, active
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span> active <span class="op">=</span> <span class="kw">true</span>
+  <span class="kw">AND</span> list_price <span class="kw">BETWEEN</span> <span class="dv">50</span> <span class="kw">AND</span> <span class="dv">200</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.3: Using OR Operator</h4>
+          <p>Find partners from the United States (country_id = 233) OR Canada (country_id = 20).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <div id="sol2-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
+              <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city, country_id
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">20</span>;</span></code></pre>
+            </div>
+            <p><strong>Alternative using IN:</strong></p>
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-3-alt')">
+              <pre class="sourceCode sql" id="sol2-3-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city, country_id
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">233</span>, <span class="dv">20</span>);</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> George Miller, John Smith, Sarah Johnson.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.4: Handling NULL Values</h4>
+          <p>Find all partners who do NOT have an email address.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Remember, you cannot use = to compare with NULL. Use IS NULL instead.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Show Solution</button>
+          <div id="sol2-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-4-code')">
+              <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span> email <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> John Smith.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.5: NOT Operator</h4>
+          <p>Find all sales orders that are NOT cancelled.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Show Solution</button>
+          <div id="sol2-5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-5-code')">
+              <pre class="sourceCode sql" id="sol2-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, state, amount_total
+<span class="kw">FROM</span> sale_order
+<span class="kw">WHERE</span> <span class="kw">NOT</span> state <span class="op">=</span> <span class="st">'cancel'</span>;</span></code></pre>
+            </div>
+            <p><strong>Alternative:</strong></p>
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-5-alt')">
+              <pre class="sourceCode sql" id="sol2-5-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, state, amount_total
+<span class="kw">FROM</span> sale_order
+<span class="kw">WHERE</span> state <span class="op"><></span> <span class="st">'cancel'</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-3">Exercise 3: Pattern Matching with LIKE</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.1: Starts With Pattern</h4>
+          <p>Find all partners whose names start with "G".</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <div id="sol3-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
+              <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">'G%'</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> George Miller, Gerard Dupont.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.2: Ends With Pattern</h4>
+          <p>Find all partners with emails ending in ".org".</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <div id="sol3-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
+              <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">'%.org'</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Anna Schmidt, Sarah Johnson.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.3: Contains Pattern</h4>
+          <p>Find all products whose names contain the word "Wireless".</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <div id="sol3-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
+              <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">'%Wireless%'</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Wireless Mouse, Headphones Wireless.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.4: Single Character Wildcard</h4>
+          <p>Find all product codes that have "M" as the second character (e.g., "WM-002", "KM-005").</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use the underscore (_) to match exactly one character.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Show Solution</button>
+          <div id="sol3-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-4-code')">
+              <pre class="sourceCode sql" id="sol3-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'_M%'</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Wireless Mouse (WM-002), Keyboard Mechanical (KM-005).</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-4">Exercise 4: Sorting with ORDER BY</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.1: Ascending Sort</h4>
+          <p>List all partners alphabetically by name.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <div id="sol4-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
+              <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city
+<span class="kw">FROM</span> res_partner
+<span class="kw">ORDER BY</span> name <span class="kw">ASC</span>;</span></code></pre>
+            </div>
+            <p><strong>Note:</strong> ASC is optional as it's the default sort order.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.2: Descending Sort</h4>
+          <p>List all products sorted by price from highest to lowest.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <div id="sol4-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
+              <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
+<span class="kw">FROM</span> product_template
+<span class="kw">ORDER BY</span> list_price <span class="kw">DESC</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.3: Multiple Column Sort</h4>
+          <p>List all sales orders sorted by state (alphabetically), and within each state, by amount (highest first).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <div id="sol4-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
+              <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, state, amount_total
+<span class="kw">FROM</span> sale_order
+<span class="kw">ORDER BY</span> state <span class="kw">ASC</span>, amount_total <span class="kw">DESC</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-5">Exercise 5: Limiting Results</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.1: Top N Results</h4>
+          <p>Find the 3 most expensive products.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Solution</button>
+          <div id="sol5-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-1-code')">
+              <pre class="sourceCode sql" id="sol5-1-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL/MySQL syntax</span>
+<span class="kw">SELECT</span> name, list_price
+<span class="kw">FROM</span> product_template
+<span class="kw">ORDER BY</span> list_price <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">3</span>;</span></code></pre>
+            </div>
+            <p><strong>Standard SQL syntax:</strong></p>
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-1-alt')">
+              <pre class="sourceCode sql" id="sol5-1-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
+<span class="kw">FROM</span> product_template
+<span class="kw">ORDER BY</span> list_price <span class="kw">DESC</span>
+<span class="kw">FETCH FIRST</span> <span class="dv">3</span> <span class="kw">ROWS ONLY</span>;</span></code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Laptop Pro 15, Monitor 27 inch, Headphones Wireless.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.2: Pagination with OFFSET</h4>
+          <p>Get the second page of partners (3 per page), sorted alphabetically.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> For page 2 with 3 items per page, you need to skip the first 3 records.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Solution</button>
+          <div id="sol5-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-2-code')">
+              <pre class="sourceCode sql" id="sol5-2-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL/MySQL syntax</span>
+<span class="kw">SELECT</span> name, city
+<span class="kw">FROM</span> res_partner
+<span class="kw">ORDER BY</span> name
+<span class="kw">LIMIT</span> <span class="dv">3</span> <span class="kw">OFFSET</span> <span class="dv">3</span>;</span></code></pre>
+            </div>
+            <p><strong>Standard SQL syntax:</strong></p>
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-2-alt')">
+              <pre class="sourceCode sql" id="sol5-2-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city
+<span class="kw">FROM</span> res_partner
+<span class="kw">ORDER BY</span> name
+<span class="kw">OFFSET</span> <span class="dv">3</span> <span class="kw">ROWS</span> <span class="kw">FETCH NEXT</span> <span class="dv">3</span> <span class="kw">ROWS ONLY</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="challenge-exercises">Challenge Exercises</h2>
+        <p>These exercises combine multiple concepts from the lesson. Try to solve them before checking the solutions.</p>
+
+        <div class="challenge-box">
+          <h4>Challenge 1: High-Value Active Orders</h4>
+          <p>Find all confirmed (state = 'sale') or completed (state = 'done') orders with an amount greater than $500.
+             Display the order name, amount, and state. Sort by amount descending and limit to top 5.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <div id="chal1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
+              <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    name <span class="kw">AS</span> order_ref,
+    amount_total,
+    state
+<span class="kw">FROM</span> sale_order
+<span class="kw">WHERE</span>
+    state <span class="kw">IN</span> (<span class="st">'sale'</span>, <span class="st">'done'</span>)
+    <span class="kw">AND</span> amount_total <span class="op">></span> <span class="dv">500</span>
+<span class="kw">ORDER BY</span> amount_total <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 2: Partner Contact Summary</h4>
+          <p>Create a report showing partner names with their contact info. Include name (as "Contact Name"),
+             email (as "Email Address"), and phone. Only show partners who have BOTH email AND phone (not NULL).
+             Sort alphabetically by name.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <div id="chal2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
+              <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    name <span class="kw">AS</span> <span class="ot">"Contact Name"</span>,
+    email <span class="kw">AS</span> <span class="ot">"Email Address"</span>,
+    phone
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span>
+    email <span class="kw">IS NOT NULL</span>
+    <span class="kw">AND</span> phone <span class="kw">IS NOT NULL</span>
+<span class="kw">ORDER BY</span> name;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 3: Product Price Analysis</h4>
+          <p>List all active products showing: name, original price, 15% discounted price (as "Sale Price"),
+             and the discount amount (as "You Save"). Only include products priced $50 or more.
+             Sort by discount amount (highest savings first), limit to 5.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <div id="chal3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
+              <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    name,
+    list_price <span class="kw">AS</span> original_price,
+    list_price <span class="op">*</span> <span class="fl">0.85</span> <span class="kw">AS</span> <span class="ot">"Sale Price"</span>,
+    list_price <span class="op">*</span> <span class="fl">0.15</span> <span class="kw">AS</span> <span class="ot">"You Save"</span>
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span>
+    active <span class="op">=</span> <span class="kw">true</span>
+    <span class="kw">AND</span> list_price <span class="op">>=</span> <span class="dv">50</span>
+<span class="kw">ORDER BY</span> <span class="ot">"You Save"</span> <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 4: Email Domain Search</h4>
+          <p>Find all partners whose email is from either "example.com" or "sample.org" domain.
+             Show their name, email, and city. Exclude partners without email.
+             Sort by email domain (so all example.com appear first, then sample.org), then by name.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <div id="chal4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
+              <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    name,
+    email,
+    city
+<span class="kw">FROM</span> res_partner
+<span class="kw">WHERE</span>
+    email <span class="kw">IS NOT NULL</span>
+    <span class="kw">AND</span> (
+        email <span class="kw">LIKE</span> <span class="st">'%@example.com'</span>
+        <span class="kw">OR</span> email <span class="kw">LIKE</span> <span class="st">'%@sample.org'</span>
+    )
+<span class="kw">ORDER BY</span>
+    email <span class="kw">ASC</span>,
+    name <span class="kw">ASC</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 5: Product Code Pattern</h4>
+          <p>Find all products where the product code (default_code) follows the pattern of two letters,
+             a hyphen, and three digits (e.g., "LP-001"). Show the name and code, sorted by code.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use multiple underscores for multiple single characters.
+            The pattern would be: two characters, hyphen, three characters.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
+          <div id="chal5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
+              <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
+<span class="kw">FROM</span> product_template
+<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'__-___'</span>
+<span class="kw">ORDER BY</span> default_code;</span></code></pre>
+            </div>
+            <p><strong>Note:</strong> This matches exactly 2 characters, hyphen, and 3 characters.
+            All sample products match this pattern.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="summary">Key Takeaways</h2>
+        <ul>
+          <li><strong>SELECT</strong>: Always specify only the columns you need rather than using <code>SELECT *</code></li>
+          <li><strong>Aliases</strong>: Use <code>AS</code> to provide readable column names in results</li>
+          <li><strong>Expressions</strong>: You can perform calculations directly in the SELECT clause</li>
+          <li><strong>DISTINCT</strong>: Removes duplicate rows from your results</li>
+          <li><strong>WHERE</strong>: Filters rows based on conditions before any grouping</li>
+          <li><strong>NULL handling</strong>: Always use <code>IS NULL</code> or <code>IS NOT NULL</code> (never <code>= NULL</code>)</li>
+          <li><strong>LIKE</strong>: Use <code>%</code> for any characters and <code>_</code> for exactly one character</li>
+          <li><strong>ORDER BY</strong>: Sort results; use <code>DESC</code> for descending order</li>
+          <li><strong>LIMIT/FETCH</strong>: Restrict the number of returned rows; always use with ORDER BY for predictable results</li>
+        </ul>
+
+        <div class="back-link" style="margin-top: 30px;">
+          <a href="03_basic_sql_queries.html">&larr; Back to Basic SQL Queries</a>
+        </div>
+      </section>
+
+    </div>
+  </div> <!-- /container -->
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script src="../static/script.js"></script>
+
+<script>
+function toggleSolution(id) {
+  var element = document.getElementById(id);
+  if (element.classList.contains('show')) {
+    element.classList.remove('show');
+    event.target.textContent = 'Show Solution';
+  } else {
+    element.classList.add('show');
+    event.target.textContent = 'Hide Solution';
+  }
+}
+</script>
+
+</html>

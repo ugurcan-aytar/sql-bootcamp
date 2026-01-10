@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/04_hands_on_workshop.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    rel="shortcut icon" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 1: Hands-on Workshop</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BaseN */
+    code span.bu {}
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+  </style>
+</head>
+
+<body>
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+
+        <h1 id="day-1-hands-on-workshop">Day 1: Hands-on Workshop</h1>
+        <h2 id="session-5-exploring-the-odoo-database-1.5-hours">Session 5: Exploring the Odoo Database (1.5 hours)</h2>
+        <h3 id="navigating-schemas-and-tables">Navigating Schemas and Tables</h3>
+        <p>In this hands-on workshop, we’ll explore the structure and content of the Odoo database, applying the SQL
+          concepts we’ve learned throughout the day. The Odoo database uses PostgreSQL’s schema capabilities to organize
+          its data model effectively.</p>
+        <p><strong>Understanding Odoo’s Schema Organization</strong>:</p>
+        <p>Odoo typically uses the following schema structure: - <code>public</code>: Contains the core application
+          tables
+          - Additional schemas may be created for specific modules or extensions</p>
+        <p>Let’s start by exploring the available schemas and tables:</p>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="sourceCode" id="cb1" onclick="CopyToClipboard('cb1')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- List all schemas in the database</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> schema_name </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">FROM</span> information_schema.schemata</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> schema_name;</span></code></pre>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="sourceCode" id="cb2" onclick="CopyToClipboard('cb2')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">-- List tables in the public schema</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">SELECT</span> table_name</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw">FROM</span> information_schema.<span class="kw">tables</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">WHERE</span> table_schema <span class="op">=</span> <span class="st">&#39;public&#39;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> table_name;</span></code></pre>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">-- Count tables in each schema</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">SELECT</span> table_schema, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">as</span> table_count</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="kw">FROM</span> information_schema.<span class="kw">tables</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="kw">WHERE</span> table_type <span class="op">=</span> <span class="st">&#39;BASE TABLE&#39;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> table_schema</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> table_count <span class="kw">DESC</span>;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </section>
+      <section>
+        <p><strong>Exploring Table Structure</strong>:</p>
+        <p>Let’s examine the structure of some key tables in the Odoo database:</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb22" style="width: 100%;" onclick="CopyToClipboard('cb22')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Describe the res_partner table (contacts/customers)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    column_name, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    data_type, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    character_maximum_length,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    is_nullable</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    information_schema.<span class="kw">columns</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    table_name <span class="op">=</span> <span class="st">&#39;res_partner&#39;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>    ordinal_position;</span>
+</code></pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb23" style="width: 100%;" onclick="CopyToClipboard('cb23')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">-- Examine constraints on the sale_order table</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>    tc.constraint_name, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>    tc.constraint_type, </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>    kcu.column_name,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>    ccu.table_name <span class="kw">AS</span> foreign_table,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>    ccu.column_name <span class="kw">AS</span> foreign_column</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>    information_schema.table_constraints tc</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>    information_schema.key_column_usage kcu</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>    <span class="kw">ON</span> tc.constraint_name <span class="op">=</span> kcu.constraint_name</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>    information_schema.constraint_column_usage ccu</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>    <span class="kw">ON</span> ccu.constraint_name <span class="op">=</span> tc.constraint_name</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>    tc.table_name <span class="op">=</span> <span class="st">&#39;sale_order&#39;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>    tc.constraint_type, </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>    kcu.column_name;</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <p><strong>Finding Relationships Between Tables</strong>:</p>
+        <p>Understanding table relationships is crucial for effective querying:</p>
+        <div class="sourceCode" id="cb31" onclick="CopyToClipboard('cb31')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Find all tables that reference res_partner</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    tc.table_name, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    kcu.column_name</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    information_schema.table_constraints tc</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    information_schema.key_column_usage kcu</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    <span class="kw">ON</span> tc.constraint_name <span class="op">=</span> kcu.constraint_name</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>    information_schema.constraint_column_usage ccu</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>    <span class="kw">ON</span> ccu.constraint_name <span class="op">=</span> tc.constraint_name</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    tc.constraint_type <span class="op">=</span> <span class="st">&#39;FOREIGN KEY&#39;</span> <span class="kw">AND</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    ccu.table_name <span class="op">=</span> <span class="st">&#39;res_partner&#39;</span> <span class="kw">AND</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    ccu.column_name <span class="op">=</span> <span class="st">&#39;id&#39;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>    tc.table_name;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <h3 id="understanding-the-erp-data-model">Understanding the ERP Data Model</h3>
+        <p>Odoo’s data model is comprehensive and interconnected. Let’s explore some of the core business entities and
+          their relationships:</p>
+        <p><strong>Core Business Entities</strong>:</p>
+        <div class="row">
+          <div class="col-md-6">
+            <ol type="1">
+              <li><strong>Partners (res_partner)</strong>:
+                <ul>
+                  <li>Represents customers, suppliers, employees, and other contacts</li>
+                  <li>Central to many business processes</li>
+                </ul>
+              </li>
+              <li><strong>Products (product_template, product_product)</strong>:
+                <ul>
+                  <li>product_template: Product definition (name, category, etc.)</li>
+                  <li>product_product: Product variants (specific configurations)</li>
+                </ul>
+              </li>
+              <li><strong>Sales (sale_order, sale_order_line)</strong>:
+                <ul>
+                  <li>sale_order: Header information for sales orders</li>
+                  <li>sale_order_line: Line items within sales orders</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+          <div class="col-md-6">
+            <ol type="1" start="4">
+              <li><strong>Inventory (stock_warehouse, stock_location, stock_quant)</strong>:
+                <ul>
+                  <li>stock_warehouse: Physical or logical warehouses</li>
+                  <li>stock_location: Locations within warehouses</li>
+                  <li>stock_quant: Actual inventory quantities</li>
+                </ul>
+              </li>
+              <li><strong>Accounting (account_move, account_move_line)</strong>:
+                <ul>
+                  <li>account_move: Journal entries, invoices, bills</li>
+                  <li>account_move_line: Individual line items in journal entries</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <section>
+        <p>Let’s explore these entities with some queries:</p>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb41" style="width: 100%;" onclick="CopyToClipboard('cb41')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">-- Overview of partners by type</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="cf">CASE</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>        <span class="cf">WHEN</span> customer_rank <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">&#39;Customer&#39;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>        <span class="cf">WHEN</span> supplier_rank <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">&#39;Supplier&#39;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>        <span class="cf">WHEN</span> employee <span class="op">=</span> <span class="kw">true</span> <span class="cf">THEN</span> <span class="st">&#39;Employee&#39;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>        <span class="cf">ELSE</span> <span class="st">&#39;Other&#39;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    <span class="cf">END</span> <span class="kw">AS</span> partner_type,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">as</span> <span class="fu">count</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    res_partner</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    partner_type</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    <span class="fu">count</span> <span class="kw">DESC</span>;</span></code></pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb42" style="width: 100%;" onclick="CopyToClipboard('cb42')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co">-- Product categories hierarchy</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="kw">WITH</span> RECURSIVE category_tree <span class="kw">AS</span> (</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    <span class="kw">SELECT</span> </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>        <span class="kw">id</span>, </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>        name, </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>        parent_id, </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>        <span class="dv">0</span> <span class="kw">AS</span> <span class="kw">level</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>        name <span class="kw">AS</span> path</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>    <span class="kw">FROM</span> product_category</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>    <span class="kw">WHERE</span> parent_id <span class="kw">IS</span> <span class="kw">NULL</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    <span class="kw">UNION</span> <span class="kw">ALL</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>    <span class="kw">SELECT</span> </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>        pc.<span class="kw">id</span>, </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a>        pc.name, </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>        pc.parent_id, </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a>        ct.<span class="kw">level</span> <span class="op">+</span> <span class="dv">1</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a>        ct.path <span class="op">||</span> <span class="st">&#39; &gt; &#39;</span> <span class="op">||</span> pc.name</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a>    <span class="kw">FROM</span> product_category pc </span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a>    <span class="kw">JOIN</span> category_tree ct <span class="kw">ON</span> pc.parent_id <span class="op">=</span> ct.<span class="kw">id</span> </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a>)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true"></a>    <span class="kw">level</span>,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true"></a>    path,</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true"></a>    (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> product_template pt <span class="kw">WHERE</span> pt.categ_id <span class="op">=</span> category_tree.<span class="kw">id</span>) <span class="kw">AS</span> product_count</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true"></a><span class="kw">FROM</span> category_tree</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> path;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <section>
+        <h3 id="writing-basic-queries-against-the-odoo-database">Writing Basic Queries Against the Odoo Database</h3>
+        <p>Now let’s practice writing queries that extract useful business information:</p>
+        <p><strong>Exercise 1: Customer Analysis</strong></p>
+        <div class="sourceCode" id="cb51" onclick="CopyToClipboard('cb51')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Top 10 customers by sales volume</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    rp.name <span class="kw">AS</span> customer,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    rp.email,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    rp.phone,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    <span class="fu">COUNT</span>(so.<span class="kw">id</span>) <span class="kw">AS</span> order_count,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    <span class="fu">SUM</span>(so.amount_total) <span class="kw">AS</span> total_sales</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    res_partner rp</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>    sale_order so <span class="kw">ON</span> rp.<span class="kw">id</span> <span class="op">=</span> so.partner_id</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>    rp.<span class="kw">id</span>, rp.name, rp.email, rp.phone</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>    total_sales <span class="kw">DESC</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <div class="sourceCode" id="cb52" onclick="CopyToClipboard('cb52')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">-- Customers with no orders in the last 6 months</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    rp.name,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a>    rp.email,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    rp.phone,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a>    <span class="fu">MAX</span>(so.date_order) <span class="kw">AS</span> last_order_date</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a>    res_partner rp</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a>    sale_order so <span class="kw">ON</span> rp.<span class="kw">id</span> <span class="op">=</span> so.partner_id <span class="kw">AND</span> so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a>    rp.customer_rank <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>    rp.<span class="kw">id</span>, rp.name, rp.email, rp.phone</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>    <span class="fu">MAX</span>(so.date_order) <span class="op">&lt;</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;6 months&#39;</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a>    <span class="kw">OR</span> <span class="fu">MAX</span>(so.date_order) <span class="kw">IS</span> <span class="kw">NULL</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a>    last_order_date <span class="kw">DESC</span> <span class="kw">NULLS</span> <span class="fu">FIRST</span>;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Exercise 2: Product Performance</strong></p>
+        <div class="sourceCode" id="cb61" onclick="CopyToClipboard('cb61')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- Best-selling products</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    pc.name <span class="kw">AS</span> <span class="kw">category</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(sol.product_uom_qty) <span class="kw">AS</span> quantity_sold,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="fu">SUM</span>(sol.price_subtotal) <span class="kw">AS</span> revenue</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>    sale_order_line sol</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>    sale_order so <span class="kw">ON</span> sol.order_id <span class="op">=</span> so.<span class="kw">id</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>    product_product pp <span class="kw">ON</span> sol.product_id <span class="op">=</span> pp.<span class="kw">id</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>    product_template pt <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>    product_category pc <span class="kw">ON</span> pt.categ_id <span class="op">=</span> pc.<span class="kw">id</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>    pt.<span class="kw">id</span>, pt.name, pc.name</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>    revenue <span class="kw">DESC</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">15</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <div class="sourceCode" id="cb62" onclick="CopyToClipboard('cb62')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="co">-- Products with low inventory</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>    pt.list_price,</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(sq.quantity), <span class="dv">0</span>) <span class="kw">AS</span> current_stock,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a>    swo.product_min_qty <span class="kw">AS</span> minimum_stock,</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a>    <span class="cf">CASE</span> </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a>        <span class="cf">WHEN</span> <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(sq.quantity), <span class="dv">0</span>) <span class="op">&lt;</span> swo.product_min_qty <span class="cf">THEN</span> <span class="st">&#39;Reorder&#39;</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a>        <span class="cf">ELSE</span> <span class="st">&#39;OK&#39;</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a>    <span class="cf">END</span> <span class="kw">AS</span> stock_status</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a>    product_template pt</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a><span class="kw">JOIN</span> product_product pp <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span
+  class="kw">id</span></span> 
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> stock_quant sq <span class="kw">ON</span> pp.<span class="kw">id</span> <span class="op">=</span> sq.product_id</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> stock_warehouse_orderpoint swo <span class="kw">ON</span> pp.<span class="kw">id</span> <span class="op">=</span> swo.product_id</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true"></a><span class="kw">WHERE</span> pt.active <span class="op">=</span> <span class="kw">true</span> <span class="kw">AND</span> pt.<span class="kw">type</span> <span class="op">=</span> <span class="st">&#39;consu&#39;</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true"></a>    pt.<span class="kw">id</span>, pt.name, pt.list_price, swo.product_min_qty</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(sq.quantity), <span class="dv">0</span>) <span class="op">&lt;</span> swo.product_min_qty</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true"></a>    current_stock <span class="kw">ASC</span>;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Exercise 3: Sales Analysis</strong></p>
+        <div class="sourceCode" id="cb71" onclick="CopyToClipboard('cb71')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Monthly sales trend</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    DATE_TRUNC(<span class="st">&#39;month&#39;</span>, so.date_order) <span class="kw">AS</span> <span class="dt">month</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> so.<span class="kw">id</span>) <span class="kw">AS</span> order_count,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(so.amount_total) <span class="kw">AS</span> total_sales</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    sale_order so</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="kw">AND</span> so.date_order <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    DATE_TRUNC(<span class="st">&#39;month&#39;</span>, so.date_order)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    <span class="dt">month</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <div class="sourceCode" id="cb72" onclick="CopyToClipboard('cb72')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="co">-- Sales by country</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    c.name <span class="kw">AS</span> country,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> so.<span class="kw">id</span>) <span class="kw">AS</span> order_count,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>    <span class="fu">SUM</span>(so.amount_total) <span class="kw">AS</span> total_sales</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>    sale_order so</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>    res_partner rp <span class="kw">ON</span> so.partner_id <span class="op">=</span> rp.<span class="kw">id</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a>    res_country c <span class="kw">ON</span> rp.country_id <span class="op">=</span> c.<span class="kw">id</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a>    c.name</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a>    total_sales <span class="kw">DESC</span>;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Exercise 4: Inventory Valuation</strong></p>
+        <div class="sourceCode" id="cb81" onclick="CopyToClipboard('cb81')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">-- Inventory value by warehouse</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    sw.name <span class="kw">AS</span> warehouse,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity <span class="op">*</span> <span class="fu">CAST</span>(pp.standard_price->'1' <span class="kw">AS</span> <span class="kw">NUMERIC</span> )) <span class="kw">AS</span> inventory_value,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> pp.<span class="kw">id</span>) <span class="kw">AS</span> product_count</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>    stock_quant sq</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    stock_location sl <span class="kw">ON</span> sq.location_id <span class="op">=</span> sl.<span class="kw">id</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>    stock_warehouse sw <span class="kw">ON</span> sl.company_id = sw.company_id</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>    product_product pp <span class="kw">ON</span> sq.product_id <span class="op">=</span> pp.<span class="kw">id</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>    product_template pt <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>    sl.<span class="kw">usage</span> <span class="op">=</span> <span class="st">&#39;internal&#39;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>    sw.name</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>    inventory_value <span class="kw">DESC</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <!-- <section>
+        <div class="sourceCode" id="cb82" onclick="CopyToClipboard('cb82')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a><span class="co">-- Products with inventory discrepancies</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity) <span class="kw">AS</span> system_quantity,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a>    pt.qty_available <span class="kw">AS</span> reported_quantity,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a>    <span class="fu">ABS</span>(<span class="fu">SUM</span>(sq.quantity) <span class="op">-</span> pt.qty_available) <span class="kw">AS</span> discrepancy</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a>    stock_quant sq</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true"></a>    product_product pp <span class="kw">ON</span> sq.product_id <span class="op">=</span> pp.<span class="kw">id</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true"></a>    product_template pt <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true"></a>    stock_location sl <span class="kw">ON</span> sq.location_id <span class="op">=</span> sl.<span class="kw">id</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true"></a>    sl.<span class="kw">usage</span> <span class="op">=</span> <span class="st">&#39;internal&#39;</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true"></a>    pt.<span class="kw">id</span>, pt.name, pt.qty_available</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true"></a>    <span class="fu">ABS</span>(<span class="fu">SUM</span>(sq.quantity) <span class="op">-</span> pt.qty_available) <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true"></a>    discrepancy <span class="kw">DESC</span>;</span></code></pre>
+        </div>
+      </section> -->
+      <section>
+        <h3 id="practical-exercises-with-real-data">Practical Exercises with Real Data</h3>
+        <p>Now it’s time for you to practice with some guided exercises. For each exercise, try to write the query
+          yourself before looking at the solution.</p>
+        <p><strong>Exercise 1: Find Unpaid Invoices</strong></p>
+        <p>Write a query to find all unpaid customer invoices that are overdue by more than 30 days. Include customer
+          name, invoice number, invoice date, due date, and amount due.</p>
+        <h4>Hints</h4>
+        <ul>
+          <li>Use the <code>account_move</code> table to find all unpaid invoices.</li>
+          <li>Use the <code>res_partner</code> table to find the customer name.</li>
+        </ul>
+      </section>
+      <section>
+        <details>
+          <p>
+            <summary>Exercise 1: Find Unpaid Invoices - Solution</summary>
+          </p>
+          <div class="sourceCode" id="cb91" onclick="CopyToClipboard('cb91')">
+            <pre
+              class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    rp.name <span class="kw">AS</span> customer,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    am.name <span class="kw">AS</span> invoice_number,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    am.invoice_date,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    am.invoice_date_due <span class="kw">AS</span> due_date,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="fu">CURRENT_DATE</span> <span class="op">-</span> am.invoice_date_due <span class="kw">AS</span> days_overdue,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    am.amount_residual <span class="kw">AS</span> amount_due</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    account_move am</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    res_partner rp <span class="kw">ON</span> am.partner_id <span class="op">=</span> rp.<span class="kw">id</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    am.move_type <span class="op">=</span> <span class="st">&#39;out_invoice&#39;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    <span class="kw">AND</span> am.state <span class="op">=</span> <span class="st">&#39;posted&#39;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>    <span class="kw">AND</span> am.payment_state <span class="op">!=</span> <span class="st">&#39;paid&#39;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>    <span class="kw">AND</span> am.invoice_date_due <span class="op">&lt;</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;30 days&#39;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a>    days_overdue <span class="kw">DESC</span>;</span></code></pre>
+          </div>
+        </details>
+      </section>
+      <section>
+        <h3 id="practical-exercises-with-real-data">Practical Exercises with Real Data</h3>
+        <p><strong>Exercise 2: Product Profitability Analysis</strong></p>
+        <p>Write a query to calculate the profit margin for each product sold in the last year. Include product name,
+          category, total quantity sold, total revenue, total cost, and profit margin percentage.</p>
+        <h4>Hints</h4>
+        <ul>
+          <li>Use the <code>sale_order_line</code></li>
+          <li>Use the <code>sale_order</code></li>
+          <li>Use the <code>product_product</code></li>
+          <li>Use the <code>product_template</code></li>
+          <li>Use the <code>product_category</code></li>
+        </ul>
+      </section>
+      <section>
+        <details>
+          <p>
+            <summary>Exercise 2: Product Profitability Analysis - Solution</summary>
+          </p>
+          <div class="sourceCode" id="cb101" onclick="CopyToClipboard('cb101')">
+            <pre
+              class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    pc.name <span class="kw">AS</span> <span class="kw">category</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    <span class="fu">SUM</span>(sol.product_uom_qty) <span class="kw">AS</span> quantity_sold,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(sol.price_subtotal) <span class="kw">AS</span> revenue,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>    <span class="fu">SUM</span>(sol.product_uom_qty <span class="op">*</span> <span class="fu">CAST</span>(pp.standard_price->'1' <span class="kw">AS</span> <span class="kw">NUMERIC</span>)) <span class="kw">AS</span> <span class="kw">cost</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>    <span class="fu">SUM</span>(sol.price_subtotal) <span class="op">-</span> <span class="fu">SUM</span>(sol.product_uom_qty <span class="op">*</span> <span class="fu">CAST</span>(pp.standard_price->'1' <span class="kw">AS</span> <span class="kw">NUMERIC</span>)) <span class="kw">AS</span> profit,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>    <span class="cf">CASE</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>        <span class="cf">WHEN</span> <span class="fu">SUM</span>(sol.price_subtotal) <span class="op">=</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="dv">0</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>        <span class="cf">ELSE</span> <span class="fu">ROUND</span>((<span class="fu">SUM</span>(sol.price_subtotal) <span class="op">-</span> <span class="fu">SUM</span>(sol.product_uom_qty <span class="op">*</span> <span class="fu">CAST</span>(pp.standard_price->'1' <span class="kw">AS</span> <span class="kw">NUMERIC</span>))) <span class="op">/</span> <span class="fu">SUM</span>(sol.price_subtotal) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>    <span class="cf">END</span> <span class="kw">AS</span> profit_margin_percentage</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a>    sale_order_line sol</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true"></a>    sale_order so <span class="kw">ON</span> sol.order_id <span class="op">=</span> so.<span class="kw">id</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true"></a>    product_product pp <span class="kw">ON</span> sol.product_id <span class="op">=</span> pp.<span class="kw">id</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true"></a>    product_template pt <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true"></a>    product_category pc <span class="kw">ON</span> pt.categ_id <span class="op">=</span> pc.<span class="kw">id</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true"></a>    <span class="kw">AND</span> so.date_order <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;1 year&#39;</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true"></a>    pt.<span class="kw">id</span>, pt.name, pc.name</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true"></a>    profit_margin_percentage <span class="kw">DESC</span>;</span></code></pre>
+          </div>
+        </details>
+      </section>
+      <section>
+        <p><strong>Exercise 3: Customer Segmentation</strong></p>
+        <p>Write a query to segment customers based on their purchase behavior. Create segments for: - VIP customers
+          (more
+          than $10,000 in purchases) - Regular customers ($1,000 to $10,000 in purchases) - Occasional customers (less
+          than $1,000 in purchases) - Inactive customers (no purchases)</p>
+      </section>
+      <section>
+        <details>
+          <p>
+            <summary>Exercise 3: Customer Segmentation - Solution</summary>
+          </p>
+          <div class="sourceCode" id="cb111" onclick="CopyToClipboard('cb111')">
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>customer_segment,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="fu">COUNT</span>(*) <span class="kw">AS</span> customer_count</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="kw">FROM</span> (</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="kw">SELECT</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>    <span class="cf">CASE</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    <span class="cf">WHEN</span> total_spent > 10000 THEN 'VIP Customer'</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>    <span class="cf">WHEN</span> total_spent BETWEEN 1000 AND 10000 THEN 'Regular Customer'</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>    <span class="cf">WHEN</span> total_spent < 1000 AND total_spent > 0 THEN 'Occasional Customer'</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    ELSE 'Inactive Customer'</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>    END AS customer_segment</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>    FROM(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>        SELECT</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a>        rp.id,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true"></a>        COALESCE(SUM(so.amount_total), 0) AS total_spent</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true"></a>        FROM</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true"></a>        res_partner rp</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true"></a>        LEFT JOIN</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true"></a>        sale_order so</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true"></a>        ON rp.id=so.partner_id</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true"></a>        AND so.state IN('sale', 'done')</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true"></a>        GROUP BY</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true"></a>        rp.id</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true"></a>    ) AS spending_data</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true"></a>) AS segmented_data</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true"></a>GROUP BY</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true"></a>customer_segment</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true"></a>ORDER BY</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true"></a>MIN(CASE customer_segment</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true"></a>    WHEN 'VIP Customer' THEN 1</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true"></a>    WHEN 'Regular Customer' THEN 2</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true"></a>    WHEN 'Occasional Customer' THEN 3</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true"></a>    ELSE 4</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true"></a>    END)</span></code></pre>
+          </div>
+        </details>
+      </section>
+      <section>
+        <p><strong>Exercise 4: Inventory Turnover</strong></p>
+        <p>Write a query to calculate inventory turnover for each product category over the last year. Inventory
+          turnover
+          is calculated as (Cost of Goods Sold / Average Inventory).</p>
+      </section>
+      <section>
+        <details>
+          <p>
+            <summary>Exercise 4: Inventory Turnover - Solution</summary>
+          </p>
+          <div class="sourceCode" id="cb121" onclick="CopyToClipboard('cb121')">
+            <pre
+              class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="kw">WITH</span> sold_items <span class="kw">AS</span> (</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>    <span class="kw">SELECT</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>        pt.categ_id,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>        <span class="fu">SUM</span>(sol.product_uom_qty <span class="op">*</span> pt.standard_price) <span class="kw">AS</span> cost_of_goods_sold</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="kw">FROM</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>        sale_order_line sol</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>    <span class="kw">JOIN</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>        sale_order so <span class="kw">ON</span> sol.order_id <span class="op">=</span> so.<span class="kw">id</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>    <span class="kw">JOIN</span> </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>        product_product pp <span class="kw">ON</span> sol.product_id <span class="op">=</span> pp.<span class="kw">id</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>    <span class="kw">JOIN</span> </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>        product_template pt <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a>    <span class="kw">WHERE</span> </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>        so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a>        <span class="kw">AND</span> so.date_order <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;1 year&#39;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a>        pt.categ_id</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a>),</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a>current_inventory <span class="kw">AS</span> (</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a>    <span class="kw">SELECT</span> </span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a>        pt.categ_id,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true"></a>        <span class="fu">SUM</span>(sq.quantity <span class="op">*</span> pt.standard_price) <span class="kw">AS</span> inventory_value</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true"></a>    <span class="kw">FROM</span> </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true"></a>        stock_quant sq</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true"></a>    <span class="kw">JOIN</span> </span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true"></a>        product_product pp <span class="kw">ON</span> sq.product_id <span class="op">=</span> pp.<span class="kw">id</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true"></a>    <span class="kw">JOIN</span> </span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true"></a>        product_template pt <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true"></a>    <span class="kw">JOIN</span> </span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true"></a>        stock_location sl <span class="kw">ON</span> sq.location_id <span class="op">=</span> sl.<span class="kw">id</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true"></a>    <span class="kw">WHERE</span> </span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true"></a>        sl.<span class="kw">usage</span> <span class="op">=</span> <span class="st">&#39;internal&#39;</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true"></a>        pt.categ_id</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true"></a>)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true"></a>    pc.name <span class="kw">AS</span> <span class="kw">category</span>,</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(si.cost_of_goods_sold, <span class="dv">0</span>) <span class="kw">AS</span> cost_of_goods_sold,</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(ci.inventory_value, <span class="dv">0</span>) <span class="kw">AS</span> current_inventory_value,</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true"></a>    <span class="cf">CASE</span> </span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true"></a>        <span class="cf">WHEN</span> <span class="fu">COALESCE</span>(ci.inventory_value, <span class="dv">0</span>) <span class="op">=</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="kw">NULL</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true"></a>        <span class="cf">ELSE</span> <span class="fu">ROUND</span>(<span class="fu">COALESCE</span>(si.cost_of_goods_sold, <span class="dv">0</span>) <span class="op">/</span> <span class="fu">COALESCE</span>(ci.inventory_value, <span class="dv">0</span>), <span class="dv">2</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true"></a>    <span class="cf">END</span> <span class="kw">AS</span> inventory_turnover</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true"></a>    product_category pc</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> </span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true"></a>    sold_items si <span class="kw">ON</span> pc.<span class="kw">id</span> <span class="op">=</span> si.categ_id</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> </span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true"></a>    current_inventory ci <span class="kw">ON</span> pc.<span class="kw">id</span> <span class="op">=</span> ci.categ_id</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(si.cost_of_goods_sold, <span class="dv">0</span>) <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">OR</span> <span class="fu">COALESCE</span>(ci.inventory_value, <span class="dv">0</span>) <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true"></a>    inventory_turnover <span class="kw">DESC</span> <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code></pre>
+          </div>
+        </details>
+      </section>
+      <section>
+        <p><strong>Exercise 5: Working with JSON Data</strong></p>
+        <p>Odoo stores some data in JSON format. Write a query to extract and analyze data from a JSON column. For
+          example, find all products with specific attributes stored in a JSON column.</p>
+        <details>
+          <p>
+            <summary>Solution</summary>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="sourceCode" id="cb131" style="width: 100%;" onclick="CopyToClipboard('cb131')">
+                <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">-- Assuming product attributes are stored in a JSONB column called &#39;attributes_json&#39;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    pt.attributes_json<span class="op">-&gt;</span><span class="st">&#39;color&#39;</span> <span class="kw">AS</span> color,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>    pt.attributes_json<span class="op">-&gt;</span><span class="st">&#39;size&#39;</span> <span class="kw">AS</span> <span class="kw">size</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>    product_template pt</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>    pt.attributes_json ? <span class="st">&#39;color&#39;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>    <span class="kw">AND</span> pt.attributes_json<span class="op">-&gt;&gt;</span><span class="st">&#39;color&#39;</span> <span class="op">=</span> <span class="st">&#39;red&#39;</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a>    pt.name;</span>
+</code></pre>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="sourceCode" id="cb132" style="width: 100%;" onclick="CopyToClipboard('cb132')">
+                <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a><span class="co">-- Alternative approach if attributes are in a different structure</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a>    jsonb_extract_path_text(pt.attributes_json, <span class="st">&#39;specifications&#39;</span>, <span class="st">&#39;dimensions&#39;</span>, <span class="st">&#39;height&#39;</span>) <span class="kw">AS</span> height,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true"></a>    jsonb_extract_path_text(pt.attributes_json, <span class="st">&#39;specifications&#39;</span>, <span class="st">&#39;dimensions&#39;</span>, <span class="st">&#39;width&#39;</span>) <span class="kw">AS</span> width</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true"></a>    product_template pt</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true"></a>    pt.attributes_json <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true"></a>    <span class="kw">AND</span> jsonb_extract_path_text(pt.attributes_json, <span class="st">&#39;specifications&#39;</span>, <span class="st">&#39;material&#39;</span>) <span class="op">=</span> <span class="st">&#39;aluminum&#39;</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true"></a>    pt.name;</span></code></pre>
+              </div>
+            </div>
+          </div>
+
+
+        </details>
+      </section>
+      <section>
+        <h3 id="conclusion-and-next-steps">Conclusion and Next Steps</h3>
+        <p>In this hands-on workshop, you’ve explored the Odoo database structure and practiced writing SQL queries to
+          extract valuable business insights. These skills will be essential for your role as a product owner, enabling
+          you to:</p>
+        <ol type="1">
+          <li>Understand the data model underlying your ERP system</li>
+          <li>Extract specific information needed for decision-making</li>
+          <li>Validate system behavior by examining the actual data</li>
+          <li>Create custom reports that answer specific business questions</li>
+          <li>Communicate more effectively with technical team members</li>
+        </ol>
+        <p>Tomorrow, we’ll build on these fundamentals by exploring advanced querying techniques and data manipulation,
+          with a special focus on PostgreSQL’s powerful JSON capabilities.</p>
+        <!-- <p><strong>Homework Assignment</strong>:</p>
+        <ol type="1">
+          <li>Write a query to find the top 5 selling products in each category</li>
+          <li>Create a report showing sales trends by month for the past year</li>
+          <li>Identify customers who haven’t made a purchase in the last 3 months but were active before that</li>
+          <li>Calculate the average time between order placement and delivery for each shipping method</li>
+        </ol>
+        <p>Bring your solutions to tomorrow’s session for review and discussion.</p> -->
+      </section>
+    </div>
+  </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/04_hands_on_workshop.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

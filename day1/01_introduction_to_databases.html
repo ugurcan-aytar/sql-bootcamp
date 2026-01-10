@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/01_introduction_to_databases.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/code.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 1: Introduction to Databases and SQL Concepts</title>
+    <style>
+        /* Pandoc default styles might conflict, keep minimal */
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark navbar-mext fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../mext.png" alt="MEXT Logo" height="400" class="d-inline-block align-text-top">
+                SQL Training Program
+            </a>
+        </div>
+    </nav> -->
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-1-introduction-to-databases-and-sql">Day 1: Introduction to Databases and SQL</h1>
+                <h2 id="session-1-introduction-to-databases-and-sql-1-hour">Session 1: Introduction to Databases and SQL
+                    (1 hour)</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 id="relational-database-concepts">Relational Database Concepts</h3>
+                        <p>Databases are organized collections of structured information or data, typically stored
+                            electronically in a computer system. A relational database, specifically, organizes data
+                            into tables (or relations) with rows and columns. Each row represents a unique record, and
+                            each
+                            column represents a field in the record. This model is the foundation for most modern
+                            database systems used in business applications.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rd_structure.png" alt="">
+                    </div>
+                </div>
+
+            </section>
+
+
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Key relational database concepts include:</p>
+                        <ul>
+                            <li><strong>Schema</strong>: The blueprint or structure of a database that defines how data
+                                is
+                                organized
+                                and
+                                how relationships between data are handled.</li>
+                            <li><strong>Tables</strong>: The fundamental structure in a relational database. Tables
+                                consist of
+                                rows
+                                and
+                                columns, similar to spreadsheets. They represent entities (like customers, products,
+                                orders).
+                            </li>
+                            <li><strong>Rows (Records/Tuples)</strong>: Each row in a table represents a unique instance
+                                of the
+                                entity
+                                the table represents (e.g., a specific customer, a particular product).</li>
+                            <li><strong>Columns (Fields/Attributes)</strong>: Each column represents a specific
+                                characteristic
+                                or
+                                piece
+                                of data about the entity (e.g., customer name, product price, order date).</li>
+                            <li><strong>Data Types</strong>: Each column is defined with a specific data type (e.g.,
+                                INTEGER,
+                                VARCHAR,
+                                DATE, BOOLEAN, JSON) which dictates the kind of data it can store and how it is stored.
+                                Data types can vary slightly between different database systems.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rds_components.png" alt="">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Primary Keys (PK)</strong>: A column or combination of columns that uniquely
+                                identifies
+                                each
+                                row
+                                in a table. Ensures entity integrity.</li>
+                            <li><strong>Foreign Keys (FK)</strong>: A column or combination of columns in one table that
+                                refers
+                                to
+                                the
+                                primary key in another table, establishing and enforcing a link or relationship between
+                                the
+                                tables.
+                                Ensures referential integrity.</li>
+                            <li><strong>Constraints</strong>: Rules defined on columns or tables to enforce data
+                                integrity and
+                                business
+                                rules. Common constraints include: <code>NOT NULL</code>, <code>UNIQUE</code>,
+                                <code>CHECK</code>,
+                                <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>.
+                            </li>
+                            <li><strong>Normalization</strong>: The process of organizing database tables to reduce data
+                                redundancy
+                                and
+                                improve data integrity.</li>
+                            <li><strong>Relationships</strong>: Connections between tables, typically categorized as
+                                One-to-One,
+                                One-to-Many, or Many-to-Many.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rds_power_components.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>More on schema</strong>: A schema includes:
+                                <ul>
+                                    <li>Table definitions (names, columns, data types)</li>
+                                    <li>Relationships between tables</li>
+                                    <li>Constraints and rules</li>
+                                    <li>Indexes for performance optimization</li>
+                                    <li>Views and stored procedures</li>
+                                    <li>Security and access permissions</li>
+                                </ul>
+                                A schema serves as a logical container for database objects and provides a way to
+                                organize and
+                                manage
+                                database elements. It defines the structure of the database, including what tables
+                                exist, what
+                                columns
+                                each table has, and how tables relate to each other. Schemas help in:
+                                <ul>
+                                    <li>Organizing database objects into logical groups</li>
+                                    <li>Managing access permissions</li>
+                                    <li>Maintaining data integrity</li>
+                                    <li>Supporting multiple users and applications</li>
+                                    <li>Facilitating database maintenance and updates</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rds_schema.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="text-center my-4">
+                    <img src="../static/relational_model.svg"
+                        alt="Relational Model Diagram showing Customers and Orders tables with PK/FK relationship"
+                        class="img-fluid border rounded shadow-sm" style="max-width: 1000px;">
+                    <p class="text-muted small mt-2">Figure 1: Example Relational Model with Customers and
+                        Orders
+                        tables.
+                    </p>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 id="sql-history">SQL History</h3>
+                        <p>SQL (Structured Query Language) has a rich history that dates back to the 1970s:</p>
+
+                        <h4>1970s - The Birth of SQL</h4>
+                        <ul>
+                            <li>Developed by Donald D. Chamberlin and Raymond F. Boyce at IBM in the early 1970s</li>
+                            <li>Originally called SEQUEL (Structured English Query Language)</li>
+                            <li>First implemented in IBM's System R project</li>
+                            <li>Designed to manipulate and retrieve data stored in IBM's System R database</li>
+                        </ul>
+                        <h4>1980s - Standardization and Growth</h4>
+                        <ul>
+                            <li>1986: First SQL standard published by ANSI (SQL-86 or SQL-87)</li>
+                            <li>1989: First revision of the standard (SQL-89)</li>
+                            <li>IBM releases DB2, the first commercial SQL database</li>
+                            <li>Oracle, Sybase, and other vendors begin implementing SQL in their products</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-sql1970-80.png" alt="">
+                    </div>
+                </div>
+
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>1990s - Maturity and Expansion</h4>
+                        <ul>
+                            <li>1992: Major revision of the standard (SQL-92 or SQL2)</li>
+                            <li>Introduction of new features like joins, subqueries, and transaction management</li>
+                            <li>1999: SQL:1999 standard introduces object-oriented features and recursive queries</li>
+                            <li>Major database vendors implement SQL-92 features</li>
+                        </ul>
+                        <h4>2000s - Modern Developments</h4>
+                        <ul>
+                            <li>2003: SQL:2003 standard adds XML support and window functions</li>
+                            <li>2006: SQL:2006 standard enhances XML capabilities</li>
+                            <li>2008: SQL:2008 standard introduces TRUNCATE TABLE and INSTEAD OF triggers</li>
+                            <li>2011: SQL:2011 standard adds temporal database features</li>
+                            <li>2016: SQL:2016 standard introduces JSON support and row pattern matching</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-sql1990-00.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Key Milestones</h4>
+                        <ul>
+                            <li>SQL became an ISO standard in 1987</li>
+                            <li>The language has evolved while maintaining backward compatibility</li>
+                            <li>Different database vendors have implemented various SQL dialects</li>
+                            <li>SQL remains the most widely used database language today</li>
+                        </ul>
+
+                        <h4>Impact and Legacy</h4>
+                        <ul>
+                            <li>SQL has become the standard language for relational database management systems</li>
+                            <li>Used by millions of developers worldwide</li>
+                            <li>Forms the foundation for modern database systems</li>
+                            <li>Continues to evolve to meet new data management challenges</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-sqlEvolvImpact.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+
+                <h3 id="sql-structured-query-language">SQL (Structured Query Language)</h3>
+                <p>SQL is the standard language used to communicate with relational databases. It allows users
+                    to
+                    create,
+                    retrieve, update, and delete data (CRUD operations), as well as manage the database
+                    structure
+                    itself.
+                    SQL
+                    commands are broadly categorized:</p>
+
+                <img class="sub-image" src="session1_content/session1-sqlOperationsOw.png" alt="">
+
+            </section>
+            <section>
+                <img class="sub-image" src="session1_content/session1-sql-ddl-dml-dcl.png" alt="">
+                <ul>
+                    <li><strong>DDL (Data Definition Language)</strong>: Used to define or modify the database structure
+                        (e.g.,
+                        <code>CREATE TABLE</code>, <code>ALTER TABLE</code>, <code>DROP TABLE</code>).
+                    </li>
+                    <li><strong>DML (Data Manipulation Language)</strong>: Used to query and modify data (e.g.,
+                        <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>).
+                    </li>
+                    <li><strong>DCL (Data Control Language)</strong>: Used to manage permissions and access control
+                        (e.g.,
+                        <code>GRANT</code>, <code>REVOKE</code>).
+                    </li>
+                </ul>
+
+            </section>
+            <section>
+                <h3 id="the-broader-rdbms-landscape">The Broader RDBMS Landscape</h3>
+                <p>While SQL is the standard language, different vendors implement RDBMS with variations in features,
+                    performance characteristics, licensing, and minor SQL syntax differences (dialects). It is important
+                    to
+                    be
+                    aware of the major players in the RDBMS market.</p>
+                <p>Key takeaways from the comparison:</p>
+                <ul>
+                    <li><strong>PostgreSQL</strong>: Known for its standards compliance,
+                        extensibility, and rich feature set.</li>
+                    <li><strong>MySQL</strong>: Widely popular, especially for web
+                        applications.</li>
+                    <li><strong>Oracle Database</strong>: Market leader in the enterprise space, known for
+                        robustness.</li>
+                    <li><strong>Microsoft SQL Server</strong>: Strong contender, particularly in Windows
+                        environments.</li>
+                    <li><strong>IBM Db2</strong>: Long-standing enterprise database, often in large corporations.</li>
+                </ul>
+                <p>Understanding these differences helps in choosing the right database and adapting SQL skills.</p>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 id="role-of-databases-in-erp-systems">Role of Databases in ERP Systems</h3>
+                        <p>Enterprise Resource Planning (ERP) systems like Odoo rely heavily on robust database systems.
+                        </p>
+                        <ul>
+                            <li><strong>Central Data Repository</strong>: Consolidates data from various departments.
+                            </li>
+                            <li><strong>Data Integrity and Consistency</strong>: Enforces business rules and
+                                constraints.</li>
+                            <li><strong>Process Automation and Workflow</strong>: Drives automated workflows based on
+                                data.</li>
+                            <li><strong>Reporting and Business Intelligence</strong>: Enables powerful querying and
+                                analytics.
+                            </li>
+                            <li><strong>Security and Access Control</strong>: Manages user permissions.</li>
+                            <li><strong>Scalability and Performance</strong>: Handles large data volumes and transaction
+                                rates.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-odoosql.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p><strong>Specific Example: Odoo and PostgreSQL</strong>: Odoo uses PostgreSQL, leveraging features
+                    like
+                    schemas, rich data types (JSONB), transactions, and extensibility. The Odoo schema is complex,
+                    representing
+                    various interconnected business objects.</p>
+                <p>Understanding the database structure is crucial for product owners to:</p>
+                <ul>
+                    <li>Understand data dependencies.</li>
+                    <li>Define requirements accurately.</li>
+                    <li>Specify reporting needs effectively.</li>
+                    <li>Communicate clearly with technical teams.</li>
+                    <li>Appreciate performance considerations.</li>
+                </ul>
+                <p>In the following sessions, we will delve into practical SQL skills using the PostgreSQL database
+                    (specifically, an Odoo example schema) for hands-on exercises, highlighting variations in other
+                    systems
+                    where applicable.</p>
+            </section>
+        </div> <!-- /container -->
+    </div> <!-- /content-container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        // Add smooth scrolling behavior
+        document.addEventListener('DOMContentLoaded', function () {
+            const contentContainer = document.querySelector('.content-container');
+            contentContainer.style.scrollBehavior = 'smooth';
+
+            // Add keyboard navigation support
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const sections = document.querySelectorAll('section');
+                    const currentSection = document.elementFromPoint(
+                        window.innerWidth / 2,
+                        window.innerHeight / 2
+                    ).closest('section');
+
+                    let targetIndex = Array.from(sections).indexOf(currentSection);
+                    if (e.key === 'ArrowDown' && targetIndex < sections.length - 1) {
+                        sections[targetIndex + 1].scrollIntoView({ behavior: 'smooth' });
+                    } else if (e.key === 'ArrowUp' && targetIndex > 0) {
+                        sections[targetIndex - 1].scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/01_introduction_to_databases.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:30 GMT -->
+</html>

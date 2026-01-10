@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/02_database_connection_and_tools.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/code.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 1: Database Connection and Tools</title>
+</head>
+
+<body>
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+        <h1 id="day-1-database-connection-and-tools">Day 1: Database Connection and Tools</h1>
+        <h2 id="session-2-connecting-to-databases-and-using-tools-1-hour">Session 2: Connecting to Databases and Using
+          Tools (1 hour)</h2>
+        <h3 id="understanding-the-training-environment">Understanding the Training Environment</h3>
+        <p>For the hands-on exercises in this training, we will primarily use a PostgreSQL database environment. This
+          specific setup includes:</p>
+        <p><strong>Database Configuration</strong>: - PostgreSQL version: Latest stable release - Extensions enabled:
+          Various extensions for enhanced functionality - Sample data: Odoo example database with multiple schemas -
+          Data
+          types: Standard types plus specialized types including JSON columns</p>
+        <p><strong>User Roles</strong>: - Admin role: Full privileges for database management and manipulation -
+          Read-only
+          role: Select privileges only, for safe data exploration</p>
+        <p><strong>Important Note</strong>: While our practical examples focus on PostgreSQL due to the provided
+          environment, the concepts of connecting to databases, using client tools, and managing permissions are
+          fundamental to <em>all</em> major relational database systems (MySQL, Oracle, SQL Server, Db2, etc.). We will
+          highlight general principles and mention differences where relevant.</p>
+        <br>
+        <p>You can download the database backups which we will use throughout the training</p>
+        <ul>
+          <li><a href="../empty.db">Empty SQLite Database</a></li>
+          <li><a href="../customer-orders.db">Populated SQLite Database</a></li>
+          <li><a href="../odoo_db.sql">Odoo PostgreSQL Database</a></li>
+        </ul>
+      </section>
+      <section>
+        <h3 id="general-connection-concepts">General Connection Concepts</h3>
+        <p>Regardless of the specific RDBMS, connecting to a database requires providing several key pieces of
+          information, often referred to as connection parameters or a connection string:</p>
+        <ul>
+          <li><strong>Host</strong>: The network address (hostname or IP address) of the server where the database is
+            running (e.g., <code>localhost</code>, <code>db.example.com</code>, <code>192.168.1.100</code>).</li>
+          <li><strong>Port</strong>: The network port number the database server is listening on. Defaults vary by
+            system
+            (e.g., PostgreSQL: 5432, MySQL: 3306, Oracle: 1521, SQL Server: 1433).</li>
+          <li><strong>Database Name</strong>: The specific database instance on the server you want to connect to.</li>
+          <li><strong>Username</strong>: The user account (or role) name for authentication.</li>
+          <li><strong>Password</strong>: The password associated with the username.</li>
+          <li><strong>SSL/TLS Mode</strong>: Specifies whether to use encryption for the connection (highly recommended
+            for non-local connections).</li>
+        </ul>
+        <p>These parameters are used by various tools and applications to establish a connection to the database server.
+        </p>
+      </section>
+      <section>
+        <h3 id="common-connection-methods-and-tools">Common Connection Methods and Tools</h3>
+        <p>Database administrators and developers use a variety of tools to interact with databases:</p>
+        <p><strong>1. Command Line Interfaces (CLIs)</strong>: - Text-based tools providing direct access to the
+          database
+          engine. - Excellent for scripting, automation, and quick administrative tasks. - <strong>Examples</strong>:
+          <code>psql</code> (PostgreSQL), <code>mysql</code> (MySQL), <code>sqlplus</code> (Oracle), <code>sqlcmd</code>
+          (SQL Server), <code>db2</code> (IBM Db2).
+        </p>
+        <p><strong>2. Graphical User Interfaces (GUIs)</strong>: - Visual tools offering features like object browsers,
+          query editors with syntax highlighting, data grids, visual query builders, and administration dashboards. -
+          Often preferred for development, data exploration, and complex administration tasks. - <strong>Vendor-Specific
+            Examples</strong>: <code>pgAdmin</code> (PostgreSQL), <code>MySQL Workbench</code> (MySQL),
+          <code>SQL Developer</code> (Oracle), <code>SQL Server Management Studio (SSMS)</code> (SQL Server). -
+          <strong>Universal Tools</strong>: <code>DBeaver</code>, <code>DataGrip</code> (commercial),
+          <code>SQuirreL SQL</code> - these tools can connect to many different database systems.
+        </p>
+        <p><strong>3. Programmatic Access (Drivers and Libraries)</strong>: - Applications connect to databases using
+          specific drivers or libraries for their programming language. - <strong>Standards</strong>: JDBC (Java), ODBC
+          (various), DB-API (Python). - <strong>Examples</strong>: <code>psycopg2</code> (Python for PostgreSQL),
+          <code>mysql-connector-python</code> (Python for MySQL), <code>node-postgres</code> (Node.js for PostgreSQL),
+          ORMs like SQLAlchemy (Python), Hibernate (Java), Sequelize (Node.js).
+        </p>
+      </section>
+      <section>
+        <h3 id="focus-using-postgresql-tools-psql-and-pgadmin">Focus: Using PostgreSQL Tools (psql and pgAdmin)</h3>
+        <p>Since our hands-on environment uses PostgreSQL, we will focus on its primary tools: <code>psql</code> (CLI)
+          and
+          <code>pgAdmin</code> (GUI).
+        </p>
+        <p><strong>psql Command Line Tool</strong>:</p>
+        <p><code>psql</code> is PostgreSQL's native interactive terminal.</p>
+        <p><strong>Connection Example</strong>:</p>
+        <div class="sourceCode" id="cb1">
+          <pre
+            class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># Connect to database 'odoo_db' on localhost as user 'readonly_user'</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">psql</span> -h localhost -p 5432 -d odoo_db -U readonly_user</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co"># You will be prompted for the password.</span></span></code></pre>
+        </div>
+        <p><strong>Common psql Meta-Commands</strong> (commands starting with <code>\</code>): - <code>\?</code>: Show
+          help for psql commands. - <code>\l</code>: List all databases. - <code>\c [db_name]</code>: Connect to a
+          different database. - <code>\dn</code>: List schemas in the current database. - <code>\dt [schema.]</code>:
+          List
+          tables (optionally in a specific schema). - <code>\dv [schema.]</code>: List views. -
+          <code>\df [schema.]</code>: List functions. - <code>\d [table_name]</code>: Describe a table, view, index, or
+          sequence. - <code>\du</code>: List roles (users and groups). - <code>\timing</code>: Toggle display of query
+          execution time. - <code>\i [filename.sql]</code>: Execute commands from a file. - <code>\q</code>: Quit psql.
+        </p>
+        <p><strong>Executing SQL</strong>: Type SQL commands directly, end with a semicolon (<code>;</code>), and press
+          Enter.</p>
+      </section>
+      <section>
+        <p><strong>DBeaver (GUI)</strong>:</p>
+        <p>DBeaver is a powerful, open-source universal database tool that supports multiple database systems including
+          PostgreSQL, MySQL, Oracle, and more.</p>
+        <p><strong>Basic Usage Steps</strong>:
+        <div class="row">
+          <div class="col-md-6">
+            <ol type="1">
+              <li><strong>Launch DBeaver</strong> and open the Database Navigator view.</li>
+              <li><strong>Create New Connection</strong>
+                <ul>
+                  <li>Click the "New Database Connection" button (or press Ctrl+N)</li>
+                  <li>Select PostgreSQL from the list of database types</li>
+                  <li>Enter connection details:
+                    <ul>
+                      <li>Host: The server address</li>
+                      <li>Port: Usually 5432 for PostgreSQL</li>
+                      <li>Database: The database name</li>
+                      <li>Username and password</li>
+                    </ul>
+                  </li>
+                  <li>Test the connection and save</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+          <div class="col-md-6">
+            <ol type="1" start="3">
+              <li><strong>Database Navigation</strong>:
+                <ul>
+                  <li>Expand the connection in the Database Navigator</li>
+                  <li>Browse schemas, tables, views, and other database objects</li>
+                  <li>Use the Properties view to see detailed information about selected objects</li>
+                </ul>
+              </li>
+              <li><strong>SQL Editor</strong>:
+                <ul>
+                  <li>Right-click a database or table and select "SQL Editor"</li>
+                  <li>Write and execute SQL queries</li>
+                  <li>Use the Execute button (or Ctrl+Enter) to run queries</li>
+                  <li>View results in the Data tab</li>
+                </ul>
+              </li>
+              <li><strong>Data Viewing and Editing</strong>:
+                <ul>
+                  <li>Double-click a table to view its data</li>
+                  <li>Use the Data tab to browse, filter, and edit data</li>
+                  <li>Use the Structure tab to view table definition</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+
+        <p>DBeaver provides a consistent interface across different database systems, making it easier to work with
+          multiple database types. It also includes features like:
+          - SQL syntax highlighting and auto-completion
+          - ER diagrams
+          - Data export/import
+          - Query execution history
+          - Database object search
+        </p>
+
+        </p>
+      </section>
+      <section>
+        <h3 id="understanding-database-roles-and-permissions-general-concept">Understanding Database Roles and
+          Permissions
+          (General Concept)</h3>
+        <p>All major RDBMS use a system of roles and privileges to control who can access what data and perform which
+          actions. This is fundamental to database security.</p>
+        <p><strong>Core Concepts (Apply Broadly)</strong>:</p>
+        <ul>
+          <li><strong>Authentication</strong>: Verifying the identity of a user trying to connect (usually via
+            username/password, but other methods exist).</li>
+          <li><strong>Authorization</strong>: Determining what an authenticated user is allowed to do.</li>
+          <li><strong>Roles/Users</strong>: Entities that can be granted permissions. Some systems distinguish between
+            users (can log in) and roles (groups of privileges), while others (like PostgreSQL) treat them uniformly.
+          </li>
+          <li><strong>Privileges</strong>: Specific permissions that can be granted or revoked (e.g.,
+            <code>SELECT</code>,
+            <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code>,
+            <code>EXECUTE FUNCTION</code>).
+          </li>
+          <li><strong>Objects</strong>: Database entities on which privileges are granted (e.g., databases, schemas,
+            tables, views, columns, functions).</li>
+          <li><strong>Ownership</strong>: Typically, the creator of an object is its owner and has full privileges on
+            it.
+          </li>
+          <li><strong>Granting/Revoking</strong>: SQL commands (<code>GRANT</code>, <code>REVOKE</code>) are used to
+            manage privileges.</li>
+          <li><strong>Principle of Least Privilege</strong>: Best practice is to grant only the minimum privileges
+            necessary for a role to perform its function.</li>
+        </ul>
+      </section>
+      <section>
+        <p><strong>PostgreSQL Specifics (Examples)</strong>:</p>
+        <ul>
+          <li>
+            <p><strong>Roles</strong>: PostgreSQL uses the <code>ROLE</code> concept for both users and groups.</p>
+          </li>
+          <li>
+            <p><strong>Attributes</strong>: Roles have attributes like <code>LOGIN</code>, <code>SUPERUSER</code>,
+              <code>CREATEDB</code>, <code>CREATEROLE</code>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Inheritance</strong>: Roles can be members of other roles, inheriting their privileges.</p>
+          </li>
+          <li>
+            <p><strong>Commands</strong>:</p>
+            <div class="sourceCode" id="cb2">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Create a role that can log in</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> readonly_user <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">&#39;secret&#39;</span>;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">-- Grant permission to connect to a database</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">GRANT</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> <span class="kw">DATABASE</span> odoo_db <span class="kw">TO</span> readonly_user;</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="co">-- Grant permission to use a schema</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="kw">GRANT</span> <span class="kw">USAGE</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">TO</span> readonly_user;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">-- Grant permission to read data from a table</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">TABLE</span> products <span class="kw">TO</span> readonly_user;</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">-- Grant permission to read data from all tables in a schema</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">ALL</span> <span class="kw">TABLES</span> <span class="kw">IN</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">TO</span> readonly_user;</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">-- Revoke permission</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="kw">REVOKE</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">TABLE</span> products <span class="kw">FROM</span> readonly_user;</span></code></pre>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <p><strong>Syntax Variations</strong>: While <code>GRANT SELECT ON table TO user;</code> is common, the exact
+          syntax for creating users/roles and the specific names of privileges or role attributes can differ slightly
+          between RDBMS.</p>
+        <p><strong>Relevance for Product Owners</strong>: Understanding access control is vital for: - Defining user
+          roles
+          and their data access needs within an application. - Ensuring compliance with data privacy regulations (e.g.,
+          GDPR, CCPA). - Communicating security requirements to development and operations teams. - Understanding
+          potential security risks.</p>
+        <p><strong>Training Environment Roles</strong>: Remember, you'll use the provided <code>admin_user</code> (full
+          access) and <code>readonly_user</code> (SELECT only) credentials to connect via your chosen tool
+          (<code>psql</code>, <code>DBeaver</code>, etc.) during the hands-on exercises.</p>
+        <p>In the next session, we'll begin writing basic SQL <code>SELECT</code> queries to retrieve data.</p>
+      </section>
+    </div>
+  </div> <!-- /container -->
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/02_database_connection_and_tools.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:33 GMT -->
+</html>

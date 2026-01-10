@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style_bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Database Design Principles - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .exercise-box h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .solution-box {
+            background-color: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .toggle-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .hint-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .hint-box::before {
+            content: "Hint: ";
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box::before {
+            content: "Warning: ";
+            font-weight: bold;
+        }
+
+        .concept-box {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box::before {
+            content: "Concept: ";
+            font-weight: bold;
+        }
+
+        .challenge-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .challenge-box h4 {
+            color: #155724;
+        }
+
+        .challenge-box::before {
+            content: "";
+        }
+
+        .dataset-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .dataset-table th,
+        .dataset-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .dataset-table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .dataset-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .result-box {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .bad-design {
+            background-color: #f8d7da;
+            border: 2px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .bad-design::before {
+            content: "Bad Design: ";
+            font-weight: bold;
+            color: #721c24;
+        }
+
+        .good-design {
+            background-color: #d4edda;
+            border: 2px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .good-design::before {
+            content: "Good Design: ";
+            font-weight: bold;
+            color: #155724;
+        }
+
+        .nf-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .nf-1nf {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .nf-2nf {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .nf-3nf {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .er-diagram {
+            background-color: #f8f9fa;
+            border: 2px solid #6c757d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .cardinality-box {
+            background-color: #e2d5f1;
+            border: 1px solid #c5b3d9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .key-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .key-pk {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .key-fk {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .key-uk {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .anomaly-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="design-principles-practical-examples">Database Design Principles - Practical Examples</h1>
+                <p><a href="01_database_design_principles.html">&larr; Back to Database Design Principles Lesson</a></p>
+                <p>This page provides hands-on exercises to master database design. Practice identifying normalization
+                    issues, designing entity relationships, implementing keys, and writing constraints.</p>
+            </section>
+
+            <!-- Normal Forms Quick Reference -->
+            <section>
+                <h2 id="normal-forms-reference">Normal Forms Quick Reference</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Normal Form</th>
+                            <th>Rule</th>
+                            <th>Violation Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="nf-badge nf-1nf">1NF</span></td>
+                            <td>Each cell contains atomic (single) values. No repeating groups.</td>
+                            <td>Phone column: "555-1234, 555-5678"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nf-badge nf-2nf">2NF</span></td>
+                            <td>In 1NF + No partial dependencies (non-key depends on part of composite key)</td>
+                            <td>OrderItems(OrderID, ProductID, ProductName) - ProductName depends only on ProductID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="nf-badge nf-3nf">3NF</span></td>
+                            <td>In 2NF + No transitive dependencies (non-key depends on another non-key)</td>
+                            <td>Employee(EmpID, DeptID, DeptLocation) - DeptLocation depends on DeptID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Exercise 1: Identifying Normalization Issues -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Identifying Normalization Issues</h2>
+                <p>Learn to identify which normal form a table violates and how to fix it.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: First Normal Form (1NF) Violations</h4>
+                    <p>Examine this table and identify the 1NF violation:</p>
+
+                    <div class="bad-design">
+                        <strong>students Table</strong>
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>student_id</th>
+                                    <th>name</th>
+                                    <th>courses</th>
+                                    <th>phone_numbers</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>John Smith</td>
+                                    <td>Math, Physics, Chemistry</td>
+                                    <td>555-1234, 555-5678</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Jane Doe</td>
+                                    <td>Biology, Chemistry</td>
+                                    <td>555-9999</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Bob Wilson</td>
+                                    <td>Math</td>
+                                    <td>555-1111, 555-2222, 555-3333</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><strong>Tasks:</strong></p>
+                    <ol>
+                        <li>Identify the 1NF violations</li>
+                        <li>Design a normalized schema that satisfies 1NF</li>
+                        <li>Write the CREATE TABLE statements</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <p><strong>1NF Violations:</strong></p>
+                        <ul>
+                            <li><code>courses</code> column contains multiple values (comma-separated list)</li>
+                            <li><code>phone_numbers</code> column contains multiple values</li>
+                        </ul>
+
+                        <div class="good-design">
+                            <strong>Normalized Schema:</strong>
+                            <pre><code class="language-sql">-- Main students table
+CREATE TABLE students (
+    student_id INTEGER PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+-- Separate table for courses (many-to-many relationship)
+CREATE TABLE courses (
+    course_id INTEGER PRIMARY KEY,
+    course_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Junction table for student-course relationship
+CREATE TABLE student_courses (
+    student_id INTEGER,
+    course_id INTEGER,
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+-- Separate table for phone numbers (one-to-many)
+CREATE TABLE student_phones (
+    phone_id INTEGER PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    phone_type VARCHAR(20) DEFAULT 'mobile',
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+);</code></pre>
+                        </div>
+
+                        <p><strong>Normalized Data:</strong></p>
+                        <table class="dataset-table">
+                            <tr>
+                                <th colspan="2">students</th>
+                            </tr>
+                            <tr>
+                                <th>student_id</th>
+                                <th>name</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>John Smith</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Jane Doe</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Bob Wilson</td>
+                            </tr>
+                        </table>
+
+                        <table class="dataset-table" style="margin-top: 10px;">
+                            <tr>
+                                <th colspan="3">student_phones</th>
+                            </tr>
+                            <tr>
+                                <th>phone_id</th>
+                                <th>student_id</th>
+                                <th>phone_number</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>555-1234</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>1</td>
+                                <td>555-5678</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>2</td>
+                                <td>555-9999</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>3</td>
+                                <td>555-1111</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>3</td>
+                                <td>555-2222</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>3</td>
+                                <td>555-3333</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Second Normal Form (2NF) Violations</h4>
+                    <p>Examine this table with a composite primary key:</p>
+
+                    <div class="bad-design">
+                        <strong>order_items Table (PK: order_id, product_id)</strong>
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>order_id <span class="key-type key-pk">PK</span></th>
+                                    <th>product_id <span class="key-type key-pk">PK</span></th>
+                                    <th>quantity</th>
+                                    <th>product_name</th>
+                                    <th>product_price</th>
+                                    <th>order_date</th>
+                                    <th>customer_name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>101</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>Laptop</td>
+                                    <td>999.99</td>
+                                    <td>2024-03-15</td>
+                                    <td>John Smith</td>
+                                </tr>
+                                <tr>
+                                    <td>101</td>
+                                    <td>2</td>
+                                    <td>1</td>
+                                    <td>Mouse</td>
+                                    <td>29.99</td>
+                                    <td>2024-03-15</td>
+                                    <td>John Smith</td>
+                                </tr>
+                                <tr>
+                                    <td>102</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>Laptop</td>
+                                    <td>999.99</td>
+                                    <td>2024-03-16</td>
+                                    <td>Jane Doe</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="anomaly-box">
+                        <strong>Problems with this design:</strong>
+                        <ul>
+                            <li><strong>Update Anomaly:</strong> If laptop price changes, you must update multiple rows</li>
+                            <li><strong>Redundancy:</strong> Product name and price are repeated for each order</li>
+                            <li><strong>Partial Dependency:</strong> product_name depends only on product_id, not the full key</li>
+                        </ul>
+                    </div>
+
+                    <p><strong>Task:</strong> Normalize this table to 2NF.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <p><strong>Analysis:</strong></p>
+                        <ul>
+                            <li><code>product_name</code>, <code>product_price</code> depend only on <code>product_id</code> (partial dependency)</li>
+                            <li><code>order_date</code>, <code>customer_name</code> depend only on <code>order_id</code> (partial dependency)</li>
+                            <li><code>quantity</code> depends on the full composite key (order_id, product_id)</li>
+                        </ul>
+
+                        <div class="good-design">
+                            <strong>Normalized to 2NF:</strong>
+                            <pre><code class="language-sql">-- Products table (product attributes)
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    product_price DECIMAL(10, 2) NOT NULL
+);
+
+-- Orders table (order attributes)
+CREATE TABLE orders (
+    order_id INTEGER PRIMARY KEY,
+    order_date DATE NOT NULL,
+    customer_name VARCHAR(100) NOT NULL
+);
+
+-- Order items (only attributes depending on full composite key)
+CREATE TABLE order_items (
+    order_id INTEGER,
+    product_id INTEGER,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    PRIMARY KEY (order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: Third Normal Form (3NF) Violations</h4>
+                    <p>Examine this table for transitive dependencies:</p>
+
+                    <div class="bad-design">
+                        <strong>employees Table</strong>
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>emp_id <span class="key-type key-pk">PK</span></th>
+                                    <th>emp_name</th>
+                                    <th>dept_id</th>
+                                    <th>dept_name</th>
+                                    <th>dept_location</th>
+                                    <th>dept_manager</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Alice</td>
+                                    <td>10</td>
+                                    <td>Engineering</td>
+                                    <td>Building A</td>
+                                    <td>Bob</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Charlie</td>
+                                    <td>10</td>
+                                    <td>Engineering</td>
+                                    <td>Building A</td>
+                                    <td>Bob</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Diana</td>
+                                    <td>20</td>
+                                    <td>Marketing</td>
+                                    <td>Building B</td>
+                                    <td>Eve</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><strong>Task:</strong> Identify the transitive dependency and normalize to 3NF.</p>
+
+                    <div class="hint-box">
+                        Look for non-key columns that depend on other non-key columns, not directly on the primary key.
+                    </div>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <div id="solution1_3" class="solution-box">
+                        <p><strong>Transitive Dependencies Found:</strong></p>
+                        <ul>
+                            <li><code>dept_name</code> depends on <code>dept_id</code> (not directly on <code>emp_id</code>)</li>
+                            <li><code>dept_location</code> depends on <code>dept_id</code></li>
+                            <li><code>dept_manager</code> depends on <code>dept_id</code></li>
+                        </ul>
+                        <p>Chain: emp_id → dept_id → dept_name/dept_location/dept_manager</p>
+
+                        <div class="good-design">
+                            <strong>Normalized to 3NF:</strong>
+                            <pre><code class="language-sql">-- Departments table
+CREATE TABLE departments (
+    dept_id INTEGER PRIMARY KEY,
+    dept_name VARCHAR(100) NOT NULL,
+    dept_location VARCHAR(100),
+    dept_manager VARCHAR(100)
+);
+
+-- Employees table (only direct dependencies)
+CREATE TABLE employees (
+    emp_id INTEGER PRIMARY KEY,
+    emp_name VARCHAR(100) NOT NULL,
+    dept_id INTEGER,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);</code></pre>
+                        </div>
+
+                        <p><strong>Benefits:</strong></p>
+                        <ul>
+                            <li>Department info stored once, not repeated for each employee</li>
+                            <li>Updating department location requires changing only one row</li>
+                            <li>No risk of inconsistent department data</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Entity-Relationship Modeling -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: Entity-Relationship Modeling</h2>
+                <p>Practice identifying entities, relationships, and cardinality for real-world scenarios.</p>
+
+                <div class="concept-box">
+                    Cardinality describes how many instances of one entity relate to another:
+                    <strong>1:1</strong> (one-to-one), <strong>1:N</strong> (one-to-many), <strong>M:N</strong> (many-to-many).
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Library Management System</h4>
+                    <p>Design an ER model for a library with these requirements:</p>
+                    <ul>
+                        <li>The library has books with title, ISBN, publication year, and genre</li>
+                        <li>Each book can have one or more authors</li>
+                        <li>Authors have name, birth date, and nationality</li>
+                        <li>Members can borrow books</li>
+                        <li>Track when books are borrowed and returned</li>
+                        <li>Each book copy can be borrowed by one member at a time</li>
+                    </ul>
+
+                    <p><strong>Tasks:</strong></p>
+                    <ol>
+                        <li>Identify the entities</li>
+                        <li>Determine the cardinality of each relationship</li>
+                        <li>Write the CREATE TABLE statements</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <p><strong>Entities Identified:</strong></p>
+                        <ul>
+                            <li><strong>Books</strong> - represents book titles</li>
+                            <li><strong>Authors</strong> - represents book authors</li>
+                            <li><strong>Members</strong> - library members who borrow books</li>
+                            <li><strong>BookCopies</strong> - physical copies of books (a book can have multiple copies)</li>
+                            <li><strong>Loans</strong> - borrowing transactions</li>
+                        </ul>
+
+                        <div class="cardinality-box">
+                            <strong>Relationships:</strong>
+                            <ul>
+                                <li>Book ↔ Author: <strong>M:N</strong> (a book can have multiple authors, an author can write multiple books)</li>
+                                <li>Book ↔ BookCopy: <strong>1:N</strong> (a book can have many copies)</li>
+                                <li>Member ↔ Loan: <strong>1:N</strong> (a member can have many loans)</li>
+                                <li>BookCopy ↔ Loan: <strong>1:N</strong> (a copy can be loaned many times, but one loan per copy at a time)</li>
+                            </ul>
+                        </div>
+
+                        <div class="er-diagram">
++------------+       +---------------+       +-----------+
+|   Authors  |       |  book_authors |       |   Books   |
++------------+       +---------------+       +-----------+
+| author_id  |←----->| author_id     |       | book_id   |
+| name       |       | book_id       |←----->| title     |
+| birth_date |       +---------------+       | isbn      |
+| nationality|           M:N                 | pub_year  |
++------------+                               | genre     |
+                                             +-----------+
+                                                   |
+                                                   | 1:N
+                                                   ↓
++-----------+       +-----------+       +-------------+
+|  Members  |       |   Loans   |       | BookCopies  |
++-----------+       +-----------+       +-------------+
+| member_id |←----->| loan_id   |←----->| copy_id     |
+| name      |  1:N  | member_id |  1:N  | book_id     |
+| email     |       | copy_id   |       | condition   |
+| join_date |       | borrow_dt |       | location    |
++-----------+       | return_dt |       +-------------+
+                    +-----------+
+                        </div>
+
+                        <pre><code class="language-sql">-- Authors
+CREATE TABLE authors (
+    author_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    birth_date DATE,
+    nationality VARCHAR(100)
+);
+
+-- Books
+CREATE TABLE books (
+    book_id INTEGER PRIMARY KEY,
+    title VARCHAR(300) NOT NULL,
+    isbn CHAR(13) UNIQUE,
+    publication_year INTEGER,
+    genre VARCHAR(50)
+);
+
+-- Book-Author junction table (M:N)
+CREATE TABLE book_authors (
+    book_id INTEGER,
+    author_id INTEGER,
+    PRIMARY KEY (book_id, author_id),
+    FOREIGN KEY (book_id) REFERENCES books(book_id),
+    FOREIGN KEY (author_id) REFERENCES authors(author_id)
+);
+
+-- Book copies (physical copies)
+CREATE TABLE book_copies (
+    copy_id INTEGER PRIMARY KEY,
+    book_id INTEGER NOT NULL,
+    condition VARCHAR(20) DEFAULT 'good',
+    shelf_location VARCHAR(20),
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
+);
+
+-- Members
+CREATE TABLE members (
+    member_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    join_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Loans
+CREATE TABLE loans (
+    loan_id INTEGER PRIMARY KEY,
+    member_id INTEGER NOT NULL,
+    copy_id INTEGER NOT NULL,
+    borrow_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    due_date DATE NOT NULL,
+    return_date DATE,
+    FOREIGN KEY (member_id) REFERENCES members(member_id),
+    FOREIGN KEY (copy_id) REFERENCES book_copies(copy_id)
+);</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Identify Cardinality</h4>
+                    <p>For each pair of entities, identify the cardinality (1:1, 1:N, or M:N):</p>
+
+                    <table class="dataset-table">
+                        <thead>
+                            <tr>
+                                <th>Entity A</th>
+                                <th>Relationship</th>
+                                <th>Entity B</th>
+                                <th>Your Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Country</td>
+                                <td>has</td>
+                                <td>Capital City</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Doctor</td>
+                                <td>treats</td>
+                                <td>Patient</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Department</td>
+                                <td>employs</td>
+                                <td>Employee</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Student</td>
+                                <td>enrolls in</td>
+                                <td>Course</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Person</td>
+                                <td>has</td>
+                                <td>Passport</td>
+                                <td>?</td>
+                            </tr>
+                            <tr>
+                                <td>Order</td>
+                                <td>contains</td>
+                                <td>Product</td>
+                                <td>?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <div id="solution2_2" class="solution-box">
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Entity A</th>
+                                    <th>Relationship</th>
+                                    <th>Entity B</th>
+                                    <th>Cardinality</th>
+                                    <th>Explanation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>has</td>
+                                    <td>Capital City</td>
+                                    <td><strong>1:1</strong></td>
+                                    <td>Each country has exactly one capital; each capital belongs to one country</td>
+                                </tr>
+                                <tr>
+                                    <td>Doctor</td>
+                                    <td>treats</td>
+                                    <td>Patient</td>
+                                    <td><strong>M:N</strong></td>
+                                    <td>A doctor treats many patients; a patient can see multiple doctors</td>
+                                </tr>
+                                <tr>
+                                    <td>Department</td>
+                                    <td>employs</td>
+                                    <td>Employee</td>
+                                    <td><strong>1:N</strong></td>
+                                    <td>A department has many employees; an employee belongs to one department</td>
+                                </tr>
+                                <tr>
+                                    <td>Student</td>
+                                    <td>enrolls in</td>
+                                    <td>Course</td>
+                                    <td><strong>M:N</strong></td>
+                                    <td>A student takes many courses; a course has many students</td>
+                                </tr>
+                                <tr>
+                                    <td>Person</td>
+                                    <td>has</td>
+                                    <td>Passport</td>
+                                    <td><strong>1:1</strong></td>
+                                    <td>One person has one passport; one passport belongs to one person</td>
+                                </tr>
+                                <tr>
+                                    <td>Order</td>
+                                    <td>contains</td>
+                                    <td>Product</td>
+                                    <td><strong>M:N</strong></td>
+                                    <td>An order can contain many products; a product can be in many orders</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p><strong>Implementation Notes:</strong></p>
+                        <ul>
+                            <li><strong>1:1</strong>: FK in either table, or merge tables</li>
+                            <li><strong>1:N</strong>: FK in the "many" side table</li>
+                            <li><strong>M:N</strong>: Requires junction table with FKs to both tables</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: Primary and Foreign Keys -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: Implementing Keys</h2>
+                <p>Practice choosing appropriate key types and implementing referential integrity.</p>
+
+                <div class="concept-box">
+                    <strong>Surrogate keys</strong> (auto-generated IDs) are generally preferred over
+                    <strong>natural keys</strong> (business values) for stability and simplicity.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Natural vs Surrogate Keys</h4>
+                    <p>For each table, decide whether to use a natural key or surrogate key and explain why:</p>
+
+                    <ol>
+                        <li><strong>Countries table</strong> - with country code (US, UK, TR) and country name</li>
+                        <li><strong>Users table</strong> - with email, username, password</li>
+                        <li><strong>Products table</strong> - with SKU, name, price</li>
+                        <li><strong>Log entries table</strong> - with timestamp, event_type, message</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- 1. Countries - Natural Key (country code is stable and standard)
+CREATE TABLE countries (
+    country_code CHAR(2) PRIMARY KEY,  -- ISO standard, never changes
+    country_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- 2. Users - Surrogate Key (email might change)
+CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY,  -- Surrogate key
+    email VARCHAR(255) NOT NULL UNIQUE,  -- Natural key candidate, but can change
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL
+);
+-- Reason: Emails can change; using surrogate key means FKs don't need updating
+
+-- 3. Products - Surrogate Key with Natural Key as UNIQUE
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,  -- Surrogate key for FKs
+    sku VARCHAR(50) NOT NULL UNIQUE,  -- Natural key, but might be reformatted
+    name VARCHAR(200) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+-- Reason: SKUs might be reformatted or merged in acquisitions
+
+-- 4. Log entries - Surrogate Key (no natural unique identifier)
+CREATE TABLE log_entries (
+    log_id BIGINT PRIMARY KEY,  -- Surrogate key (BIGINT for high volume)
+    timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    event_type VARCHAR(50) NOT NULL,
+    message TEXT
+);
+-- Reason: Multiple logs can occur at same timestamp; no natural key exists</code></pre>
+
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Table</th>
+                                    <th>Key Type</th>
+                                    <th>Reasoning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Countries</td>
+                                    <td>Natural (country_code)</td>
+                                    <td>ISO codes are stable, universally known, and rarely change</td>
+                                </tr>
+                                <tr>
+                                    <td>Users</td>
+                                    <td>Surrogate (user_id)</td>
+                                    <td>Emails can change; surrogate provides stability</td>
+                                </tr>
+                                <tr>
+                                    <td>Products</td>
+                                    <td>Surrogate (product_id)</td>
+                                    <td>SKUs might be reformatted; business logic shouldn't depend on internal IDs</td>
+                                </tr>
+                                <tr>
+                                    <td>Log entries</td>
+                                    <td>Surrogate (log_id)</td>
+                                    <td>No natural unique identifier; timestamps aren't unique</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Referential Actions</h4>
+                    <p>Given these tables, choose the appropriate referential action for each foreign key:</p>
+
+                    <pre><code class="language-sql">-- Scenario: E-commerce system
+
+-- Customers can have orders
+-- Orders have order items
+-- Products are in categories
+-- Products appear in order items</code></pre>
+
+                    <p><strong>Decide for each relationship:</strong></p>
+                    <ol>
+                        <li>When a Customer is deleted, what should happen to their Orders?</li>
+                        <li>When an Order is deleted, what should happen to its OrderItems?</li>
+                        <li>When a Category is deleted, what should happen to its Products?</li>
+                        <li>When a Product is deleted, what should happen to OrderItems referencing it?</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">-- Customers table
+CREATE TABLE customers (
+    customer_id INTEGER PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- Categories table
+CREATE TABLE categories (
+    category_id INTEGER PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL
+);
+
+-- Products table
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id INTEGER,
+    -- When category deleted, set product's category to NULL
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+-- Orders table
+CREATE TABLE orders (
+    order_id INTEGER PRIMARY KEY,
+    customer_id INTEGER,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- When customer deleted, keep order but set customer_id to NULL
+    -- OR use RESTRICT if orders must not exist without customer
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+-- Order items table
+CREATE TABLE order_items (
+    order_item_id INTEGER PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price DECIMAL(10, 2) NOT NULL,  -- Store price at time of order!
+    -- When order deleted, delete its items too
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+        ON DELETE CASCADE,
+    -- When product deleted, RESTRICT (don't allow if in orders)
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+        ON DELETE RESTRICT
+);</code></pre>
+
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Relationship</th>
+                                    <th>Action</th>
+                                    <th>Reasoning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Customer → Orders</td>
+                                    <td>SET NULL</td>
+                                    <td>Keep order history for accounting; orphaned orders are acceptable</td>
+                                </tr>
+                                <tr>
+                                    <td>Order → OrderItems</td>
+                                    <td>CASCADE</td>
+                                    <td>Order items have no meaning without their order; delete together</td>
+                                </tr>
+                                <tr>
+                                    <td>Category → Products</td>
+                                    <td>SET NULL</td>
+                                    <td>Products can exist without category; let them become "uncategorized"</td>
+                                </tr>
+                                <tr>
+                                    <td>Product → OrderItems</td>
+                                    <td>RESTRICT</td>
+                                    <td>Don't allow deleting products that were ordered; historical integrity</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="warning-box">
+                            Notice we store <code>unit_price</code> in order_items. This is intentional denormalization
+                            to preserve the price at the time of order, since product prices can change.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Constraints -->
+            <section>
+                <h2 id="exercise-4">Exercise 4: Implementing Constraints</h2>
+                <p>Practice writing constraints to enforce business rules at the database level.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Write Constraints</h4>
+                    <p>Create tables with appropriate constraints for these business rules:</p>
+
+                    <ol>
+                        <li><strong>Employees table:</strong>
+                            <ul>
+                                <li>Employee ID is required and unique</li>
+                                <li>Email must be unique and in valid format</li>
+                                <li>Salary must be positive</li>
+                                <li>Hire date cannot be in the future</li>
+                                <li>Status must be 'active', 'inactive', or 'terminated'</li>
+                            </ul>
+                        </li>
+                        <li><strong>Products table:</strong>
+                            <ul>
+                                <li>Price must be non-negative</li>
+                                <li>Discount percentage must be between 0 and 100</li>
+                                <li>Stock quantity cannot be negative</li>
+                                <li>Product name must be at least 3 characters</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">-- 1. Employees table with constraints
+CREATE TABLE employees (
+    employee_id INTEGER PRIMARY KEY,
+
+    -- Email: unique, not null, basic format check
+    email VARCHAR(255) NOT NULL UNIQUE
+        CONSTRAINT chk_email_format CHECK (email LIKE '%_@_%.__%'),
+
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+
+    -- Salary: must be positive
+    salary DECIMAL(12, 2) NOT NULL
+        CONSTRAINT chk_salary_positive CHECK (salary > 0),
+
+    -- Hire date: cannot be in the future
+    hire_date DATE NOT NULL
+        CONSTRAINT chk_hire_date CHECK (hire_date <= CURRENT_DATE),
+
+    -- Status: limited to specific values
+    status VARCHAR(20) NOT NULL DEFAULT 'active'
+        CONSTRAINT chk_status CHECK (status IN ('active', 'inactive', 'terminated'))
+);
+
+-- 2. Products table with constraints
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+
+    -- Product name: minimum length
+    product_name VARCHAR(200) NOT NULL
+        CONSTRAINT chk_name_length CHECK (LENGTH(product_name) >= 3),
+
+    -- Price: non-negative
+    price DECIMAL(10, 2) NOT NULL
+        CONSTRAINT chk_price_non_negative CHECK (price >= 0),
+
+    -- Discount: between 0 and 100
+    discount_percent DECIMAL(5, 2) DEFAULT 0
+        CONSTRAINT chk_discount_range CHECK (discount_percent >= 0 AND discount_percent <= 100),
+
+    -- Stock: non-negative
+    stock_quantity INTEGER NOT NULL DEFAULT 0
+        CONSTRAINT chk_stock_non_negative CHECK (stock_quantity >= 0),
+
+    -- Computed effective price must be non-negative
+    CONSTRAINT chk_effective_price CHECK (price * (1 - discount_percent/100) >= 0)
+);</code></pre>
+
+                        <p><strong>Testing the constraints:</strong></p>
+                        <pre><code class="language-sql">-- These should FAIL:
+INSERT INTO employees (employee_id, email, first_name, last_name, salary, hire_date, status)
+VALUES (1, 'invalid-email', 'John', 'Doe', 50000, '2024-01-01', 'active');
+-- Error: email format check fails
+
+INSERT INTO employees (employee_id, email, first_name, last_name, salary, hire_date, status)
+VALUES (1, 'john@example.com', 'John', 'Doe', -1000, '2024-01-01', 'active');
+-- Error: salary must be positive
+
+INSERT INTO products (product_id, product_name, price, discount_percent, stock_quantity)
+VALUES (1, 'AB', 99.99, 0, 100);
+-- Error: product name too short (< 3 chars)
+
+INSERT INTO products (product_id, product_name, price, discount_percent, stock_quantity)
+VALUES (1, 'Widget', 99.99, 150, 100);
+-- Error: discount > 100</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.2: Multi-Column Constraints</h4>
+                    <p>Write constraints that involve multiple columns:</p>
+
+                    <ol>
+                        <li><strong>Events table:</strong> end_date must be after start_date</li>
+                        <li><strong>Price history:</strong> No overlapping date ranges for the same product</li>
+                        <li><strong>Appointments:</strong> Unique combination of doctor, date, and time slot</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">-- 1. Events: end must be after start
+CREATE TABLE events (
+    event_id INTEGER PRIMARY KEY,
+    event_name VARCHAR(200) NOT NULL,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP NOT NULL,
+
+    -- Multi-column constraint
+    CONSTRAINT chk_dates_valid CHECK (end_date > start_date)
+);
+
+-- 2. Price history with non-overlapping ranges
+-- Note: True overlap prevention often requires triggers or exclusion constraints
+CREATE TABLE price_history (
+    price_id INTEGER PRIMARY KEY,
+    product_id INTEGER NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    effective_from DATE NOT NULL,
+    effective_to DATE,  -- NULL means current/ongoing
+
+    FOREIGN KEY (product_id) REFERENCES products(product_id),
+
+    -- Basic check: from must be before to
+    CONSTRAINT chk_date_range CHECK (
+        effective_to IS NULL OR effective_from < effective_to
+    )
+);
+
+-- PostgreSQL: Use exclusion constraint for true overlap prevention
+-- CREATE TABLE price_history (
+--     ...
+--     EXCLUDE USING gist (
+--         product_id WITH =,
+--         daterange(effective_from, effective_to, '[]') WITH &&
+--     )
+-- );
+
+-- 3. Appointments: unique doctor + date + time slot
+CREATE TABLE appointments (
+    appointment_id INTEGER PRIMARY KEY,
+    doctor_id INTEGER NOT NULL,
+    patient_id INTEGER NOT NULL,
+    appointment_date DATE NOT NULL,
+    time_slot VARCHAR(20) NOT NULL,  -- e.g., '09:00-09:30'
+
+    FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+
+    -- Composite unique constraint
+    CONSTRAINT uk_doctor_schedule UNIQUE (doctor_id, appointment_date, time_slot)
+);</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenge Exercises -->
+            <section>
+                <h2 id="challenge-exercises">Challenge Exercises</h2>
+                <p>Apply all concepts to design complete database schemas.</p>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Hotel Booking System</h4>
+                    <p>Design a database schema for a hotel booking system with these requirements:</p>
+                    <ul>
+                        <li>Hotels have multiple rooms of different types (single, double, suite)</li>
+                        <li>Each room type has a base price per night</li>
+                        <li>Guests can make reservations for specific rooms</li>
+                        <li>Reservations have check-in and check-out dates</li>
+                        <li>Track payment status (pending, paid, refunded)</li>
+                        <li>A room cannot be double-booked for overlapping dates</li>
+                    </ul>
+
+                    <p><strong>Deliverables:</strong></p>
+                    <ol>
+                        <li>Identify entities and relationships</li>
+                        <li>Determine cardinality</li>
+                        <li>Write normalized CREATE TABLE statements with all constraints</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <div class="er-diagram">
++----------+       +------------+       +---------+
+|  Hotels  |------>| Room Types |       |  Rooms  |
++----------+  1:N  +------------+  1:N  +---------+
+| hotel_id |       | type_id    |<------| room_id |
+| name     |       | hotel_id   |       | type_id |
+| address  |       | name       |       | number  |
+| stars    |       | base_price |       | floor   |
++----------+       +------------+       +---------+
+                                              |
+                                              | 1:N
+                                              ↓
++---------+       +--------------+
+|  Guests |------>| Reservations |
++---------+  1:N  +--------------+
+| guest_id|       | reservation_id|
+| name    |       | guest_id     |
+| email   |       | room_id      |
+| phone   |       | check_in     |
++---------+       | check_out    |
+                  | status       |
+                  | total_price  |
+                  +--------------+
+                        </div>
+
+                        <pre><code class="language-sql">-- Hotels
+CREATE TABLE hotels (
+    hotel_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    address TEXT NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    stars INTEGER CHECK (stars BETWEEN 1 AND 5),
+    phone VARCHAR(20),
+    email VARCHAR(255)
+);
+
+-- Room types (per hotel, as prices may differ)
+CREATE TABLE room_types (
+    type_id INTEGER PRIMARY KEY,
+    hotel_id INTEGER NOT NULL,
+    type_name VARCHAR(50) NOT NULL,  -- 'single', 'double', 'suite'
+    description TEXT,
+    base_price_per_night DECIMAL(10, 2) NOT NULL CHECK (base_price_per_night > 0),
+    max_occupancy INTEGER NOT NULL CHECK (max_occupancy > 0),
+
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE,
+    UNIQUE (hotel_id, type_name)
+);
+
+-- Individual rooms
+CREATE TABLE rooms (
+    room_id INTEGER PRIMARY KEY,
+    type_id INTEGER NOT NULL,
+    room_number VARCHAR(10) NOT NULL,
+    floor INTEGER,
+    is_available BOOLEAN DEFAULT TRUE,
+    notes TEXT,
+
+    FOREIGN KEY (type_id) REFERENCES room_types(type_id) ON DELETE RESTRICT,
+    -- Room number unique within its hotel (via type_id relationship)
+    UNIQUE (type_id, room_number)
+);
+
+-- Guests
+CREATE TABLE guests (
+    guest_id INTEGER PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20),
+    id_document_type VARCHAR(20),
+    id_document_number VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Reservations
+CREATE TABLE reservations (
+    reservation_id INTEGER PRIMARY KEY,
+    guest_id INTEGER NOT NULL,
+    room_id INTEGER NOT NULL,
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    num_guests INTEGER NOT NULL DEFAULT 1,
+    total_price DECIMAL(12, 2) NOT NULL,
+    payment_status VARCHAR(20) NOT NULL DEFAULT 'pending'
+        CHECK (payment_status IN ('pending', 'paid', 'partially_paid', 'refunded', 'cancelled')),
+    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    special_requests TEXT,
+
+    FOREIGN KEY (guest_id) REFERENCES guests(guest_id),
+    FOREIGN KEY (room_id) REFERENCES rooms(room_id),
+
+    -- Check-out must be after check-in
+    CONSTRAINT chk_dates CHECK (check_out_date > check_in_date),
+
+    -- Check-in cannot be in the past (for new bookings)
+    CONSTRAINT chk_future_checkin CHECK (check_in_date >= CURRENT_DATE)
+);
+
+-- Prevent double-booking (PostgreSQL with exclusion constraint)
+-- For other databases, use triggers
+-- CREATE EXTENSION IF NOT EXISTS btree_gist;
+-- ALTER TABLE reservations ADD CONSTRAINT no_overlap
+--     EXCLUDE USING gist (
+--         room_id WITH =,
+--         daterange(check_in_date, check_out_date, '[)') WITH &&
+--     )
+--     WHERE (payment_status NOT IN ('cancelled', 'refunded'));
+
+-- Index for availability searches
+CREATE INDEX idx_reservations_room_dates
+    ON reservations(room_id, check_in_date, check_out_date);</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: Identify and Fix Design Problems</h4>
+                    <p>This table has multiple design problems. Identify all issues and create a normalized design:</p>
+
+                    <div class="bad-design">
+                        <strong>invoices Table</strong>
+                        <table class="dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>invoice_num</th>
+                                    <th>date</th>
+                                    <th>customer_name</th>
+                                    <th>customer_email</th>
+                                    <th>customer_address</th>
+                                    <th>items</th>
+                                    <th>item_prices</th>
+                                    <th>item_quantities</th>
+                                    <th>total</th>
+                                    <th>salesperson</th>
+                                    <th>salesperson_phone</th>
+                                    <th>commission_rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-001</td>
+                                    <td>2024-03-15</td>
+                                    <td>John Smith</td>
+                                    <td>john@email.com</td>
+                                    <td>123 Main St</td>
+                                    <td>Laptop, Mouse, Keyboard</td>
+                                    <td>999.99, 29.99, 79.99</td>
+                                    <td>1, 2, 1</td>
+                                    <td>1139.96</td>
+                                    <td>Alice Brown</td>
+                                    <td>555-1234</td>
+                                    <td>0.05</td>
+                                </tr>
+                                <tr>
+                                    <td>INV-002</td>
+                                    <td>2024-03-16</td>
+                                    <td>John Smith</td>
+                                    <td>john@email.com</td>
+                                    <td>123 Main St</td>
+                                    <td>Monitor</td>
+                                    <td>399.99</td>
+                                    <td>1</td>
+                                    <td>399.99</td>
+                                    <td>Alice Brown</td>
+                                    <td>555-1234</td>
+                                    <td>0.05</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <p><strong>Problems Identified:</strong></p>
+                        <ol>
+                            <li><span class="nf-badge nf-1nf">1NF Violation</span>: items, item_prices, item_quantities contain comma-separated values</li>
+                            <li><span class="nf-badge nf-2nf">2NF Violation</span>: Customer data doesn't depend on invoice (partial dependency)</li>
+                            <li><span class="nf-badge nf-3nf">3NF Violation</span>: salesperson_phone depends on salesperson, not invoice</li>
+                            <li><strong>Redundancy</strong>: Customer info repeated; salesperson info repeated</li>
+                            <li><strong>Missing constraints</strong>: No primary key defined; no referential integrity</li>
+                            <li><strong>Calculated field</strong>: total is redundantly stored (can be calculated)</li>
+                        </ol>
+
+                        <div class="good-design">
+                            <strong>Normalized Design:</strong>
+                            <pre><code class="language-sql">-- Customers (extracted from invoice)
+CREATE TABLE customers (
+    customer_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    address TEXT
+);
+
+-- Products (for the items)
+CREATE TABLE products (
+    product_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    current_price DECIMAL(10, 2) NOT NULL CHECK (current_price >= 0)
+);
+
+-- Salespeople
+CREATE TABLE salespeople (
+    salesperson_id INTEGER PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    phone VARCHAR(20),
+    commission_rate DECIMAL(4, 3) NOT NULL CHECK (commission_rate BETWEEN 0 AND 1)
+);
+
+-- Invoices (header)
+CREATE TABLE invoices (
+    invoice_id INTEGER PRIMARY KEY,
+    invoice_number VARCHAR(20) UNIQUE NOT NULL,
+    invoice_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    customer_id INTEGER NOT NULL,
+    salesperson_id INTEGER NOT NULL,
+
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (salesperson_id) REFERENCES salespeople(salesperson_id)
+);
+
+-- Invoice items (line items)
+CREATE TABLE invoice_items (
+    item_id INTEGER PRIMARY KEY,
+    invoice_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10, 2) NOT NULL,  -- Price at time of sale
+
+    FOREIGN KEY (invoice_id) REFERENCES invoices(invoice_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- View for invoice totals (instead of storing calculated value)
+CREATE VIEW invoice_totals AS
+SELECT
+    i.invoice_id,
+    i.invoice_number,
+    i.invoice_date,
+    c.name AS customer_name,
+    s.name AS salesperson_name,
+    SUM(ii.quantity * ii.unit_price) AS subtotal,
+    SUM(ii.quantity * ii.unit_price) * s.commission_rate AS commission
+FROM invoices i
+JOIN customers c ON i.customer_id = c.customer_id
+JOIN salespeople s ON i.salesperson_id = s.salesperson_id
+JOIN invoice_items ii ON i.invoice_id = ii.invoice_id
+GROUP BY i.invoice_id, i.invoice_number, i.invoice_date,
+         c.name, s.name, s.commission_rate;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 3: When to Denormalize</h4>
+                    <p>You have a fully normalized e-commerce database, but these queries are slow:</p>
+
+                    <ol>
+                        <li>Dashboard showing total revenue per product category (runs every minute)</li>
+                        <li>Order history page showing customer name and address with each order</li>
+                        <li>Product listing showing average rating (calculated from reviews table)</li>
+                    </ol>
+
+                    <p><strong>Task:</strong> Propose denormalization strategies for each scenario and write the DDL/DML to implement them.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
+                    <div id="challenge3" class="solution-box">
+                        <pre><code class="language-sql">-- 1. Summary table for category revenue (materialized view or table)
+
+-- Option A: Materialized View (PostgreSQL)
+CREATE MATERIALIZED VIEW category_revenue_summary AS
+SELECT
+    c.category_id,
+    c.category_name,
+    DATE_TRUNC('day', o.order_date) AS date,
+    SUM(oi.quantity * oi.unit_price) AS daily_revenue,
+    COUNT(DISTINCT o.order_id) AS order_count
+FROM categories c
+JOIN products p ON c.category_id = p.category_id
+JOIN order_items oi ON p.product_id = oi.product_id
+JOIN orders o ON oi.order_id = o.order_id
+GROUP BY c.category_id, c.category_name, DATE_TRUNC('day', o.order_date);
+
+-- Refresh periodically
+REFRESH MATERIALIZED VIEW category_revenue_summary;
+
+-- Option B: Summary table with trigger updates
+CREATE TABLE category_daily_summary (
+    category_id INTEGER,
+    summary_date DATE,
+    total_revenue DECIMAL(15, 2) DEFAULT 0,
+    order_count INTEGER DEFAULT 0,
+    PRIMARY KEY (category_id, summary_date),
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+);
+
+
+-- 2. Denormalize customer info into orders
+
+-- Add redundant columns to orders table
+ALTER TABLE orders ADD COLUMN customer_name VARCHAR(200);
+ALTER TABLE orders ADD COLUMN customer_email VARCHAR(255);
+ALTER TABLE orders ADD COLUMN shipping_address TEXT;
+
+-- Populate from existing data
+UPDATE orders o
+SET
+    customer_name = c.name,
+    customer_email = c.email,
+    shipping_address = c.address
+FROM customers c
+WHERE o.customer_id = c.customer_id;
+
+-- Create trigger to keep in sync
+CREATE OR REPLACE FUNCTION sync_order_customer()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        SELECT name, email, address
+        INTO NEW.customer_name, NEW.customer_email, NEW.shipping_address
+        FROM customers WHERE customer_id = NEW.customer_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_sync_order_customer
+    BEFORE INSERT ON orders
+    FOR EACH ROW EXECUTE FUNCTION sync_order_customer();
+
+
+-- 3. Add cached average rating to products
+
+ALTER TABLE products ADD COLUMN avg_rating DECIMAL(3, 2) DEFAULT 0;
+ALTER TABLE products ADD COLUMN review_count INTEGER DEFAULT 0;
+
+-- Update from existing reviews
+UPDATE products p
+SET
+    avg_rating = sub.avg_rating,
+    review_count = sub.review_count
+FROM (
+    SELECT
+        product_id,
+        AVG(rating) AS avg_rating,
+        COUNT(*) AS review_count
+    FROM reviews
+    GROUP BY product_id
+) sub
+WHERE p.product_id = sub.product_id;
+
+-- Trigger to update on new reviews
+CREATE OR REPLACE FUNCTION update_product_rating()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE products
+    SET
+        avg_rating = (SELECT AVG(rating) FROM reviews WHERE product_id = NEW.product_id),
+        review_count = (SELECT COUNT(*) FROM reviews WHERE product_id = NEW.product_id)
+    WHERE product_id = NEW.product_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_product_rating
+    AFTER INSERT OR UPDATE OR DELETE ON reviews
+    FOR EACH ROW EXECUTE FUNCTION update_product_rating();</code></pre>
+
+                        <div class="warning-box">
+                            Denormalization Trade-offs:
+                            <ul>
+                                <li>Faster reads but more complex writes (must maintain consistency)</li>
+                                <li>Risk of stale data if triggers fail</li>
+                                <li>Increased storage requirements</li>
+                                <li>Document all denormalization decisions!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h2 id="key-takeaways">Key Takeaways</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Best Practice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Normalization</td>
+                            <td>Start with 3NF; denormalize only when proven necessary for performance</td>
+                        </tr>
+                        <tr>
+                            <td>1NF</td>
+                            <td>Each cell contains one value; no comma-separated lists</td>
+                        </tr>
+                        <tr>
+                            <td>2NF</td>
+                            <td>No partial dependencies on composite keys</td>
+                        </tr>
+                        <tr>
+                            <td>3NF</td>
+                            <td>No transitive dependencies (non-key → non-key)</td>
+                        </tr>
+                        <tr>
+                            <td>Primary Keys</td>
+                            <td>Prefer surrogate keys for most tables; natural keys for stable reference data</td>
+                        </tr>
+                        <tr>
+                            <td>Foreign Keys</td>
+                            <td>Always define FK constraints; choose referential actions carefully</td>
+                        </tr>
+                        <tr>
+                            <td>M:N Relationships</td>
+                            <td>Use junction tables with composite PKs or surrogate PK</td>
+                        </tr>
+                        <tr>
+                            <td>Constraints</td>
+                            <td>Enforce business rules at database level with CHECK, UNIQUE, NOT NULL</td>
+                        </tr>
+                        <tr>
+                            <td>Denormalization</td>
+                            <td>Document decisions; use triggers or materialized views to maintain consistency</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <p><a href="01_database_design_principles.html">&larr; Back to Database Design Principles Lesson</a></p>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../static/script.js"></script>
+
+    <script>
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+                event.target.textContent = 'Show Solution';
+            } else {
+                element.classList.add('show');
+                event.target.textContent = 'Hide Solution';
+            }
+        }
+    </script>
+</body>
+
+</html>

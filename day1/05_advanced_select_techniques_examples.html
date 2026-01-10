@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 2: Advanced SELECT Techniques - Practical Examples</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.at {
+      color: #7d9029;
+    }
+
+    code span.bn {
+      color: #40a070;
+    }
+
+    code span.bu {}
+
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    code span.ch {
+      color: #4070a0;
+    }
+
+    code span.cn {
+      color: #880000;
+    }
+
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    code span.dt {
+      color: #902000;
+    }
+
+    code span.dv {
+      color: #40a070;
+    }
+
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    code span.ex {}
+
+    code span.fl {
+      color: #40a070;
+    }
+
+    code span.fu {
+      color: #06287e;
+    }
+
+    code span.im {}
+
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    code span.op {
+      color: #666666;
+    }
+
+    code span.ot {
+      color: #007020;
+    }
+
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    code span.sc {
+      color: #4070a0;
+    }
+
+    code span.ss {
+      color: #bb6688;
+    }
+
+    code span.st {
+      color: #4070a0;
+    }
+
+    code span.va {
+      color: #19177c;
+    }
+
+    code span.vs {
+      color: #4070a0;
+    }
+
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .exercise-box {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .exercise-box h4 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .challenge-box {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .challenge-box h4 {
+      color: #856404;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle:hover {
+      background-color: #218838;
+    }
+
+    .solution-content {
+      display: none;
+    }
+
+    .solution-content.show {
+      display: block;
+    }
+
+    .hint-box {
+      background-color: #e7f3ff;
+      border: 1px dashed #007bff;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .warning-box {
+      background-color: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .info-box {
+      background-color: #d1ecf1;
+      border: 1px solid #17a2b8;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .dataset-table {
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    .dataset-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .dataset-table th,
+    .dataset-table td {
+      border: 1px solid #dee2e6;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .dataset-table th {
+      background-color: #e9ecef;
+      font-weight: 600;
+    }
+
+    .dataset-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .back-link {
+      margin-bottom: 20px;
+    }
+
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    .concept-box {
+      background-color: #e8f4f8;
+      border: 1px solid #17a2b8;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .predict-output {
+      background-color: #f0f0f0;
+      border: 2px dashed #6c757d;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+
+    .predict-output h5 {
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    .comparison-table {
+      margin: 15px 0;
+    }
+
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comparison-table th {
+      background-color: #343a40;
+      color: white;
+      padding: 10px;
+    }
+
+    .comparison-table td {
+      border: 1px solid #dee2e6;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <div class="back-link">
+        <a href="05_advanced_select_techniques.html">&larr; Back to Advanced SELECT Techniques</a>
+      </div>
+
+      <section>
+        <h1 id="advanced-select-examples">Advanced SELECT Techniques - Practical Examples</h1>
+        <p>This page provides hands-on exercises to master aggregate functions, GROUP BY, HAVING, and window functions.
+          Practice with the sample datasets below.</p>
+      </section>
+
+      <section>
+        <h2 id="sample-datasets">Sample Datasets</h2>
+
+        <h3 id="employees-table">employees</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>employee_name</th>
+                <th>department</th>
+                <th>salary</th>
+                <th>hire_date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Alice Johnson</td><td>Engineering</td><td>85000</td><td>2020-03-15</td></tr>
+              <tr><td>2</td><td>Bob Smith</td><td>Engineering</td><td>92000</td><td>2019-06-01</td></tr>
+              <tr><td>3</td><td>Carol Williams</td><td>Marketing</td><td>65000</td><td>2021-01-10</td></tr>
+              <tr><td>4</td><td>David Brown</td><td>Engineering</td><td>78000</td><td>2022-04-20</td></tr>
+              <tr><td>5</td><td>Eva Martinez</td><td>Sales</td><td>72000</td><td>2020-09-05</td></tr>
+              <tr><td>6</td><td>Frank Garcia</td><td>Marketing</td><td>68000</td><td>2021-07-12</td></tr>
+              <tr><td>7</td><td>Grace Lee</td><td>Sales</td><td>75000</td><td>2019-11-30</td></tr>
+              <tr><td>8</td><td>Henry Wilson</td><td>Engineering</td><td>95000</td><td>2018-02-14</td></tr>
+              <tr><td>9</td><td>Ivy Chen</td><td>Sales</td><td>71000</td><td>2022-08-01</td></tr>
+              <tr><td>10</td><td>Jack Davis</td><td>Marketing</td><td>62000</td><td>2023-01-15</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="orders-table">orders</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>order_id</th>
+                <th>customer_id</th>
+                <th>order_date</th>
+                <th>order_total</th>
+                <th>status</th>
+                <th>shipped_date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>101</td><td>2024-01-05</td><td>250.00</td><td>completed</td><td>2024-01-07</td></tr>
+              <tr><td>2</td><td>102</td><td>2024-01-10</td><td>175.50</td><td>completed</td><td>2024-01-12</td></tr>
+              <tr><td>3</td><td>101</td><td>2024-01-15</td><td>320.00</td><td>completed</td><td>2024-01-18</td></tr>
+              <tr><td>4</td><td>103</td><td>2024-02-01</td><td>89.99</td><td>completed</td><td>2024-02-03</td></tr>
+              <tr><td>5</td><td>101</td><td>2024-02-10</td><td>450.00</td><td>completed</td><td>2024-02-12</td></tr>
+              <tr><td>6</td><td>104</td><td>2024-02-15</td><td>125.00</td><td>pending</td><td>NULL</td></tr>
+              <tr><td>7</td><td>102</td><td>2024-03-01</td><td>275.50</td><td>completed</td><td>2024-03-03</td></tr>
+              <tr><td>8</td><td>105</td><td>2024-03-10</td><td>599.99</td><td>completed</td><td>2024-03-12</td></tr>
+              <tr><td>9</td><td>103</td><td>2024-03-15</td><td>180.00</td><td>cancelled</td><td>NULL</td></tr>
+              <tr><td>10</td><td>101</td><td>2024-03-20</td><td>350.00</td><td>pending</td><td>NULL</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="sales-data-table">sales_data</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>product</th>
+                <th>region</th>
+                <th>year</th>
+                <th>quarter</th>
+                <th>month</th>
+                <th>sales</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Smartphone</td><td>North</td><td>2024</td><td>1</td><td>1</td><td>15000.00</td></tr>
+              <tr><td>2</td><td>Smartphone</td><td>South</td><td>2024</td><td>1</td><td>2</td><td>12000.00</td></tr>
+              <tr><td>3</td><td>Laptop</td><td>North</td><td>2024</td><td>1</td><td>1</td><td>18000.00</td></tr>
+              <tr><td>4</td><td>Laptop</td><td>East</td><td>2024</td><td>2</td><td>4</td><td>22000.00</td></tr>
+              <tr><td>5</td><td>Tablet</td><td>West</td><td>2024</td><td>2</td><td>5</td><td>8000.00</td></tr>
+              <tr><td>6</td><td>Smartphone</td><td>South</td><td>2024</td><td>3</td><td>7</td><td>14000.00</td></tr>
+              <tr><td>7</td><td>Laptop</td><td>North</td><td>2024</td><td>3</td><td>8</td><td>20000.00</td></tr>
+              <tr><td>8</td><td>Tablet</td><td>East</td><td>2024</td><td>4</td><td>10</td><td>9000.00</td></tr>
+              <tr><td>9</td><td>Smartphone</td><td>West</td><td>2024</td><td>4</td><td>11</td><td>11000.00</td></tr>
+              <tr><td>10</td><td>Laptop</td><td>South</td><td>2024</td><td>4</td><td>12</td><td>25000.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-1">Exercise 1: Aggregate Functions</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.1: Basic COUNT</h4>
+          <p>Count the total number of orders in the orders table.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <div id="sol1-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
+              <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
+<span class="kw">FROM</span> orders;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 10</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.2: COUNT with Column vs COUNT(*)</h4>
+          <p>Write two queries: one counting all orders, and one counting only orders that have been shipped
+            (shipped_date is not NULL). Compare the results.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <div id="sol1-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
+              <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="co">-- Count all orders</span>
+<span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
+<span class="kw">FROM</span> orders;
+
+<span class="co">-- Count only shipped orders (shipped_date is NOT NULL)</span>
+<span class="kw">SELECT</span> <span class="fu">COUNT</span>(shipped_date) <span class="kw">AS</span> shipped_orders
+<span class="kw">FROM</span> orders;</code></pre>
+            </div>
+            <p><strong>Expected Results:</strong> 10 total orders, 7 shipped orders (3 have NULL shipped_date).</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.3: COUNT DISTINCT</h4>
+          <p>How many unique customers have placed orders?</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <div id="sol1-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
+              <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> unique_customers
+<span class="kw">FROM</span> orders;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> 5 unique customers (101, 102, 103, 104, 105).</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.4: SUM and AVG</h4>
+          <p>Calculate the total revenue and average order value for completed orders only.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <div id="sol1-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
+              <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_revenue,
+    <span class="fu">AVG</span>(order_total) <span class="kw">AS</span> avg_order_value
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'completed'</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.5: MIN and MAX</h4>
+          <p>Find the lowest and highest salaries in the employees table, along with the earliest and latest hire
+            dates.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-5')">Show Solution</button>
+          <div id="sol1-5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-5-code')">
+              <pre class="sourceCode sql" id="sol1-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">MIN</span>(salary) <span class="kw">AS</span> lowest_salary,
+    <span class="fu">MAX</span>(salary) <span class="kw">AS</span> highest_salary,
+    <span class="fu">MIN</span>(hire_date) <span class="kw">AS</span> earliest_hire,
+    <span class="fu">MAX</span>(hire_date) <span class="kw">AS</span> latest_hire
+<span class="kw">FROM</span> employees;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Min salary: 62000, Max salary: 95000, Earliest: 2018-02-14, Latest:
+              2023-01-15</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.6: Combining Multiple Aggregates</h4>
+          <p>Create a summary report for the employees table showing: total employees, total salary expenditure, average
+            salary, min salary, and max salary.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-6')">Show Solution</button>
+          <div id="sol1-6" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-6-code')">
+              <pre class="sourceCode sql" id="sol1-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_employees,
+    <span class="fu">SUM</span>(salary) <span class="kw">AS</span> total_salary_expense,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(salary), <span class="dv">2</span>) <span class="kw">AS</span> avg_salary,
+    <span class="fu">MIN</span>(salary) <span class="kw">AS</span> min_salary,
+    <span class="fu">MAX</span>(salary) <span class="kw">AS</span> max_salary
+<span class="kw">FROM</span> employees;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-2">Exercise 2: GROUP BY</h2>
+
+        <div class="concept-box">
+          <h4>Remember the GROUP BY Rule</h4>
+          <p>Any non-aggregated column in the SELECT list <strong>must</strong> be included in the GROUP BY clause.</p>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.1: Basic Grouping</h4>
+          <p>Count the number of employees in each department.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <div id="sol2-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
+              <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> employee_count
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Engineering: 4, Marketing: 3, Sales: 3</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.2: Grouping with Aggregates</h4>
+          <p>Calculate the average salary for each department. Order by average salary descending.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <div id="sol2-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
+              <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(salary), <span class="dv">2</span>) <span class="kw">AS</span> avg_salary
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department
+<span class="kw">ORDER BY</span> avg_salary <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.3: Multiple Aggregates per Group</h4>
+          <p>For each department, show the number of employees, total salary, average salary, min salary, and max
+            salary.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <div id="sol2-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
+              <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_employees,
+    <span class="fu">SUM</span>(salary) <span class="kw">AS</span> total_salary,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(salary), <span class="dv">2</span>) <span class="kw">AS</span> avg_salary,
+    <span class="fu">MIN</span>(salary) <span class="kw">AS</span> min_salary,
+    <span class="fu">MAX</span>(salary) <span class="kw">AS</span> max_salary
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department
+<span class="kw">ORDER BY</span> total_salary <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.4: Grouping by Customer</h4>
+          <p>Find the total amount spent and number of orders for each customer. Only consider completed orders.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Show Solution</button>
+          <div id="sol2-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-4-code')">
+              <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_orders,
+    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'completed'</span>
+<span class="kw">GROUP BY</span> customer_id
+<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.5: Grouping by Multiple Columns</h4>
+          <p>Calculate total sales for each product in each region from the sales_data table.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Show Solution</button>
+          <div id="sol2-5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-5-code')">
+              <pre class="sourceCode sql" id="sol2-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    product,
+    region,
+    <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales
+<span class="kw">FROM</span> sales_data
+<span class="kw">GROUP BY</span> product, region
+<span class="kw">ORDER BY</span> product, total_sales <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.6: Grouping by Date Part</h4>
+          <p>Count the number of orders placed in each month of 2024. Use EXTRACT to get the month.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use EXTRACT(MONTH FROM order_date) to get the month number.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-6')">Show Solution</button>
+          <div id="sol2-6" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-6-code')">
+              <pre class="sourceCode sql" id="sol2-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">EXTRACT</span>(<span class="dt">MONTH</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> order_month,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_orders,
+    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> monthly_revenue
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) = <span class="dv">2024</span>
+<span class="kw">GROUP BY</span> <span class="fu">EXTRACT</span>(<span class="dt">MONTH</span> <span class="kw">FROM</span> order_date)
+<span class="kw">ORDER BY</span> order_month;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-3">Exercise 3: HAVING Clause</h2>
+
+        <div class="concept-box">
+          <h4>WHERE vs HAVING</h4>
+          <div class="comparison-table">
+            <table>
+              <tr>
+                <th>WHERE</th>
+                <th>HAVING</th>
+              </tr>
+              <tr>
+                <td>Filters individual rows BEFORE grouping</td>
+                <td>Filters groups AFTER grouping</td>
+              </tr>
+              <tr>
+                <td>Cannot use aggregate functions</td>
+                <td>Typically uses aggregate functions</td>
+              </tr>
+              <tr>
+                <td>Processed first</td>
+                <td>Processed after GROUP BY</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.1: Basic HAVING</h4>
+          <p>Find departments that have more than 3 employees.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <div id="sol3-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
+              <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> employee_count
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department
+<span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">3</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Engineering with 4 employees.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.2: HAVING with Average</h4>
+          <p>Find departments where the average salary is greater than $70,000.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <div id="sol3-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
+              <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(salary), <span class="dv">2</span>) <span class="kw">AS</span> avg_salary
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department
+<span class="kw">HAVING</span> <span class="fu">AVG</span>(salary) > <span class="dv">70000</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Engineering and Sales.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.3: Finding High-Value Customers</h4>
+          <p>Find customers who have placed more than 2 orders with a total spending of over $500.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <div id="sol3-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
+              <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_orders,
+    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> customer_id
+<span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">2</span> <span class="kw">AND</span> <span class="fu">SUM</span>(order_total) > <span class="dv">500</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Customer 101 with 4 orders and high total spending.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.4: Combining WHERE and HAVING</h4>
+          <p>Find products with total sales over $30,000, but only consider sales from Q1 and Q2 (quarters 1 and 2).</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use WHERE to filter by quarter first, then HAVING to filter by total sales.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Show Solution</button>
+          <div id="sol3-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-4-code')">
+              <pre class="sourceCode sql" id="sol3-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    product,
+    <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales
+<span class="kw">FROM</span> sales_data
+<span class="kw">WHERE</span> quarter <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>)  <span class="co">-- Filter rows BEFORE grouping</span>
+<span class="kw">GROUP BY</span> product
+<span class="kw">HAVING</span> <span class="fu">SUM</span>(sales) > <span class="dv">30000</span>;  <span class="co">-- Filter groups AFTER grouping</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-4">Exercise 4: Window Functions</h2>
+
+        <div class="concept-box">
+          <h4>Window Functions vs GROUP BY</h4>
+          <p>Window functions perform calculations across rows but <strong>do not collapse rows</strong> like GROUP BY.
+            Each row retains its identity while getting access to aggregated or ranked values.</p>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.1: ROW_NUMBER</h4>
+          <p>Assign a row number to each employee ordered by salary (highest first).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <div id="sol4-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
+              <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    employee_name,
+    department,
+    salary,
+    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> salary_rank
+<span class="kw">FROM</span> employees;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.2: ROW_NUMBER with PARTITION BY</h4>
+          <p>Rank employees by salary within each department. Show department, name, salary, and rank.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use PARTITION BY department to restart numbering for each department.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <div id="sol4-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
+              <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    employee_name,
+    salary,
+    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
+        <span class="kw">PARTITION BY</span> department
+        <span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>
+    ) <span class="kw">AS</span> dept_salary_rank
+<span class="kw">FROM</span> employees
+<span class="kw">ORDER BY</span> department, dept_salary_rank;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.3: RANK vs DENSE_RANK</h4>
+          <p>Compare ROW_NUMBER, RANK, and DENSE_RANK on employee salaries (there might be ties in real data).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <div id="sol4-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
+              <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    employee_name,
+    salary,
+    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> row_num,
+    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> rank_num,
+    <span class="fu">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dense_rank_num
+<span class="kw">FROM</span> employees;</code></pre>
+            </div>
+            <div class="info-box">
+              <strong>Difference:</strong>
+              <ul>
+                <li><strong>ROW_NUMBER:</strong> Always unique (1, 2, 3, 4...)</li>
+                <li><strong>RANK:</strong> Ties get same rank, then skip (1, 2, 2, 4...)</li>
+                <li><strong>DENSE_RANK:</strong> Ties get same rank, no skip (1, 2, 2, 3...)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.4: Running Total with SUM</h4>
+          <p>Calculate a running total of order amounts, ordered by order date.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-4')">Show Solution</button>
+          <div id="sol4-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-4-code')">
+              <pre class="sourceCode sql" id="sol4-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    order_id,
+    order_date,
+    order_total,
+    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> (
+        <span class="kw">ORDER BY</span> order_date
+        <span class="kw">ROWS UNBOUNDED PRECEDING</span>
+    ) <span class="kw">AS</span> running_total
+<span class="kw">FROM</span> orders
+<span class="kw">ORDER BY</span> order_date;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.5: LAG Function - Comparing to Previous Row</h4>
+          <p>Show each order with the previous order's total to calculate the difference between consecutive orders.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-5')">Show Solution</button>
+          <div id="sol4-5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-5-code')">
+              <pre class="sourceCode sql" id="sol4-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    order_id,
+    order_date,
+    order_total,
+    <span class="fu">LAG</span>(order_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date) <span class="kw">AS</span> prev_order_total,
+    order_total - <span class="fu">LAG</span>(order_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date) <span class="kw">AS</span> difference
+<span class="kw">FROM</span> orders
+<span class="kw">ORDER BY</span> order_date;</code></pre>
+            </div>
+            <p><strong>Note:</strong> LAG(column, offset, default) - offset is how many rows back (default 1), default
+              value used for first row.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.6: Percentage of Total</h4>
+          <p>Calculate what percentage each order contributes to the total of all orders.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-6')">Show Solution</button>
+          <div id="sol4-6" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-6-code')">
+              <pre class="sourceCode sql" id="sol4-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    order_id,
+    order_total,
+    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> () <span class="kw">AS</span> grand_total,
+    <span class="fu">ROUND</span>(
+        (order_total / <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> ()) * <span class="dv">100</span>,
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> percentage_of_total
+<span class="kw">FROM</span> orders;</code></pre>
+            </div>
+            <p><strong>Note:</strong> Empty OVER() means the window is the entire result set.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.7: Moving Average</h4>
+          <p>Calculate a 3-row moving average of sales from sales_data, ordered by month.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-7')">Show Solution</button>
+          <div id="sol4-7" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-7-code')">
+              <pre class="sourceCode sql" id="sol4-7-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    month,
+    product,
+    sales,
+    <span class="fu">ROUND</span>(
+        <span class="fu">AVG</span>(sales) <span class="kw">OVER</span> (
+            <span class="kw">ORDER BY</span> month
+            <span class="kw">ROWS BETWEEN</span> <span class="dv">2</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
+        ),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> moving_avg_3
+<span class="kw">FROM</span> sales_data
+<span class="kw">ORDER BY</span> month;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-5">Exercise 5: Predict the Output</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.1: What's wrong with this query?</h4>
+          <div class="sourceCode">
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    employee_name,
+    <span class="fu">AVG</span>(salary)
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department;</code></pre>
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Answer</button>
+          <div id="sol5-1" class="solution-content">
+            <p><strong>Error:</strong> <code>employee_name</code> is in SELECT but not in GROUP BY and not an aggregate.
+            </p>
+            <p>When using GROUP BY, every column in SELECT must either:</p>
+            <ul>
+              <li>Be listed in GROUP BY, OR</li>
+              <li>Be used inside an aggregate function</li>
+            </ul>
+            <p><strong>Correct version:</strong></p>
+            <div class="sourceCode">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    department,
+    <span class="fu">AVG</span>(salary) <span class="kw">AS</span> avg_salary
+<span class="kw">FROM</span> employees
+<span class="kw">GROUP BY</span> department;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.2: WHERE or HAVING?</h4>
+          <p>Which clause should you use to:</p>
+          <ol>
+            <li>Only include orders from 2024 in your analysis?</li>
+            <li>Only show customers who have spent more than $1000 total?</li>
+          </ol>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Answer</button>
+          <div id="sol5-2" class="solution-content">
+            <ol>
+              <li><strong>WHERE</strong> - filtering individual rows before grouping</li>
+              <li><strong>HAVING</strong> - filtering groups based on aggregate (SUM)</li>
+            </ol>
+            <div class="sourceCode">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) = <span class="dv">2024</span>  <span class="co">-- Filter rows first</span>
+<span class="kw">GROUP BY</span> customer_id
+<span class="kw">HAVING</span> <span class="fu">SUM</span>(order_total) > <span class="dv">1000</span>;  <span class="co">-- Filter groups</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="challenge-exercises">Challenge Exercises</h2>
+
+        <div class="challenge-box">
+          <h4>Challenge 1: Department Salary Report</h4>
+          <p>Create a comprehensive salary report showing for each employee: their name, department, salary, department
+            average salary, and how much they earn above or below the department average.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <div id="chal1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
+              <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    employee_name,
+    department,
+    salary,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(salary) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> department), <span class="dv">2</span>) <span class="kw">AS</span> dept_avg_salary,
+    <span class="fu">ROUND</span>(salary - <span class="fu">AVG</span>(salary) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> department), <span class="dv">2</span>) <span class="kw">AS</span> diff_from_avg
+<span class="kw">FROM</span> employees
+<span class="kw">ORDER BY</span> department, salary <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 2: Top Performer per Department</h4>
+          <p>Find the highest-paid employee in each department. Show department, employee name, and salary.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use ROW_NUMBER with PARTITION BY, then filter for rank = 1.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <div id="chal2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
+              <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> department, employee_name, salary
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span>
+        department,
+        employee_name,
+        salary,
+        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
+            <span class="kw">PARTITION BY</span> department
+            <span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>
+        ) <span class="kw">AS</span> rn
+    <span class="kw">FROM</span> employees
+) ranked
+<span class="kw">WHERE</span> rn = <span class="dv">1</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 3: Sales Growth Analysis</h4>
+          <p>For each month in sales_data, show the total sales, previous month's sales, and the percentage growth from
+            the previous month.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <div id="chal3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
+              <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        month,
+        <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales
+    <span class="kw">FROM</span> sales_data
+    <span class="kw">GROUP BY</span> month
+)
+<span class="kw">SELECT</span>
+    month,
+    total_sales,
+    <span class="fu">LAG</span>(total_sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month) <span class="kw">AS</span> prev_month_sales,
+    <span class="fu">ROUND</span>(
+        (total_sales - <span class="fu">LAG</span>(total_sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month)) /
+        <span class="fu">LAG</span>(total_sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month) * <span class="dv">100</span>,
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> growth_percentage
+<span class="kw">FROM</span> monthly_sales
+<span class="kw">ORDER BY</span> month;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 4: Cumulative Sales by Region</h4>
+          <p>Show cumulative (running) sales for each region separately, ordered by month.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <div id="chal4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
+              <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
+    region,
+    month,
+    product,
+    sales,
+    <span class="fu">SUM</span>(sales) <span class="kw">OVER</span> (
+        <span class="kw">PARTITION BY</span> region
+        <span class="kw">ORDER BY</span> month
+        <span class="kw">ROWS UNBOUNDED PRECEDING</span>
+    ) <span class="kw">AS</span> cumulative_region_sales
+<span class="kw">FROM</span> sales_data
+<span class="kw">ORDER BY</span> region, month;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 5: Customer Order Frequency Analysis</h4>
+          <p>Categorize customers based on their order count: 'Frequent' (3+ orders), 'Regular' (2 orders), 'New' (1
+            order). Show the count of customers in each category.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
+          <div id="chal5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
+              <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">WITH</span> customer_orders <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        customer_id,
+        <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
+        <span class="kw">CASE</span>
+            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) >= <span class="dv">3</span> <span class="kw">THEN</span> <span class="st">'Frequent'</span>
+            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) = <span class="dv">2</span> <span class="kw">THEN</span> <span class="st">'Regular'</span>
+            <span class="kw">ELSE</span> <span class="st">'New'</span>
+        <span class="kw">END</span> <span class="kw">AS</span> customer_category
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> customer_id
+)
+<span class="kw">SELECT</span>
+    customer_category,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_customers
+<span class="kw">FROM</span> customer_orders
+<span class="kw">GROUP BY</span> customer_category
+<span class="kw">ORDER BY</span> num_customers <span class="kw">DESC</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="summary">Key Takeaways</h2>
+        <ul>
+          <li><strong>Aggregate Functions</strong>: COUNT, SUM, AVG, MIN, MAX operate on sets of rows to produce single
+            values</li>
+          <li><strong>COUNT(*) vs COUNT(column)</strong>: COUNT(*) counts all rows; COUNT(column) counts non-NULL values
+          </li>
+          <li><strong>GROUP BY</strong>: Groups rows with same values; all non-aggregated SELECT columns must be in
+            GROUP BY</li>
+          <li><strong>HAVING</strong>: Filters groups after aggregation; use for conditions on aggregate results</li>
+          <li><strong>WHERE vs HAVING</strong>: WHERE filters rows before grouping; HAVING filters groups after
+            aggregation</li>
+          <li><strong>Window Functions</strong>: Perform calculations across related rows without collapsing them</li>
+          <li><strong>PARTITION BY</strong>: Divides rows into partitions for window function calculations</li>
+          <li><strong>ROW_NUMBER, RANK, DENSE_RANK</strong>: Different ranking behaviors for ties</li>
+          <li><strong>LAG/LEAD</strong>: Access previous/next row values for comparisons</li>
+          <li><strong>Frame Clause</strong>: Define the window of rows for aggregate window functions (e.g., running
+            totals)</li>
+        </ul>
+
+        <div class="back-link" style="margin-top: 30px;">
+          <a href="05_advanced_select_techniques.html">&larr; Back to Advanced SELECT Techniques</a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <script src="../static/script.js"></script>
+
+  <script>
+    function toggleSolution(id) {
+      var element = document.getElementById(id);
+      if (element.classList.contains('show')) {
+        element.classList.remove('show');
+        event.target.textContent = 'Show Solution';
+      } else {
+        element.classList.add('show');
+        event.target.textContent = 'Hide Solution';
+      }
+    }
+  </script>
+
+</body>
+
+</html>

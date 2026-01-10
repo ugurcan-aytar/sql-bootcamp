@@ -1,0 +1,259 @@
+/* MEXT Inspired Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Light background */
+    color: #212529; /* Dark text */
+    overflow-y: scroll;
+}
+
+.page-header {
+    background-color: #0b132b; /* Dark Navy Blue */
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.page-header img {
+    height: 40px;
+    width: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #0b132b; /* Dark Navy Blue for headings */
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+a {
+    color: #1e88e5; /* Link blue */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0b132b; /* Dark Navy on hover */
+    text-decoration: underline;
+}
+
+pre {
+    background-color: #0a192f; /* Dark Navy for code blocks */
+    color: #e0e0e0; /* Light grey text in code blocks */
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 0.9em;
+}
+
+code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #e9ecef; /* Light grey background for inline code */
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    font-size: inherit;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+th, td {
+    border: 1px solid #dee2e6; /* Light grey border */
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #e9ecef; /* Light grey header */
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa; /* Slightly off-white for even rows */
+}
+
+ul, ol {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+blockquote {
+    border-left: 4px solid #4dd0e1; /* Teal accent for blockquotes */
+    padding-left: 15px;
+    margin-left: 0;
+    color: #5a5a5a;
+    background-color: #f1f8ff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Index Page Specific */
+.index-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.day-section {
+    margin-bottom: 30px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.day-section h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #4dd0e1; /* Teal accent */
+    padding-bottom: 0.3em;
+    color: #0b132b; /* Dark Navy Blue */
+}
+
+.day-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.day-section li {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+:root {
+    --bottom-img-height: 96px;
+    --bottom-space: 16px;
+    --top-space: 16px;
+    --top-height: 8rem;
+}
+
+#europeanunion-turkey img {
+    position: absolute;
+    top: var(--top-space);
+    left: calc(50% - 104px);
+    height: var(--top-height);
+}
+
+#sanayiteknolojibakan img {
+    position: absolute;
+    bottom: var(--bottom-space);
+    left: 208px;
+    height: var(--bottom-img-height);
+}
+
+#rekabet img {
+    position: absolute;
+    bottom: var(--bottom-space);
+    height: var(--bottom-img-height);
+    left: calc(50% - 48px);
+}
+
+#tisk img {
+    position: absolute;
+    bottom: var(--bottom-space);
+    left: 65%;
+    height: var(--bottom-img-height);
+}
+
+#undp img {
+    position: absolute;
+    bottom: var(--bottom-space);
+    right: 160px;
+    height: var(--bottom-img-height);
+}
+
+.container {
+    max-width: 1500px;
+    margin: 20px auto;
+    /* Reduced top margin */
+    padding: 20px;
+    background-color: #ffffff;
+    /* White content area */
+    /* border-radius: 8px; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); */
+}
+
+.container h1:first-child {
+    margin-top: 0;
+    /* Remove top margin for first heading in container */
+    border-bottom: 2px solid #4dd0e1;
+    /* Teal accent */
+    padding-bottom: 0.3em;
+}
+
+.content-container {
+    scroll-snap-type: y mandatory;
+    height: calc(100vh - var(--top-height) - var(--top-space) - var(--bottom-space) - var(--bottom-img-height));
+    /* Subtract navbar height */
+    overflow-y: auto;
+    margin-top: calc(var(--top-height) + var(--top-space));
+    /* Add margin for fixed navbar */
+}
+
+section {
+    flex: 1;
+    scroll-snap-align: start;
+    min-height: calc(100vh - var(--top-height)*2);
+    /* Subtract navbar height */
+    padding: 2rem 0;
+}
+
+.side-image {
+    max-width: 900px;
+    max-height: 700px;
+    align-self: center;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.sub-image {
+    width: 900px;
+    align-self: center;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+.col-md-6 {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    min-height: 100%;
+}
+
+.text-center img {
+    display: block;
+    margin: 0 auto;
+}
+
+.copy-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

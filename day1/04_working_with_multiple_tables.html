@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/04_working_with_multiple_tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/code.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 1: Working with Multiple Tables (JOIN)</title>
+    <style>
+        /* Minimal Pandoc styles */
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        /* Scroll snap styles */
+        .container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        section {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-1-working-with-multiple-tables">Day 1: Working with Multiple Tables</h1>
+                <h2 id="session-4-working-with-multiple-tables-2-hours">Session 4: Working with Multiple Tables (2
+                    hours)
+                </h2>
+                <h3 id="understanding-table-relationships-standard-concept">Understanding Table Relationships (Standard
+                    Concept)
+                </h3>
+                <p>Relational databases excel at managing relationships between different pieces of information. Data is
+                    typically split across multiple tables to reduce redundancy (normalization), and these tables are
+                    linked
+                    using relationships.</p>
+                <p><strong>Types of Relationships</strong>:</p>
+                <ul>
+                    <li><strong>One-to-One (1:1)</strong>: Each record in Table A corresponds to exactly one record in
+                        Table
+                        B.
+                    </li>
+                    <li><strong>One-to-Many (1:N)</strong>: A record in Table A can relate to many records in Table B.
+                        (Most
+                        common).</li>
+                    <li><strong>Many-to-Many (M:N)</strong>: Records in Table A can relate to many records in Table B,
+                        and
+                        vice-versa. Requires a junction table.</li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Foreign Keys (Standard Concept)</strong>:</p>
+                <p>Relationships are implemented using <strong>foreign keys</strong>. A foreign key in one table refers
+                    to
+                    the
+                    primary key of another table, ensuring referential integrity.</p>
+                <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
+                    <pre class="sourceCode sql">
+<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
+                </div>
+                <p>
+                    <strong>Example: SQLite</strong>
+                </p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="sourceCode" id="cb33" onclick="CopyToClipboard('cb33')">
+                            <pre><code class="language-sql">-- Standard SQL syntax for creating tables
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> customers (</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>id <span class="kw">INTEGER PRIMARY KEY,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>customer_name <span class="kw">VARCHAR</span>(100)</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> category (</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>id <span class="kw">INTEGER PRIMARY KEY,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>category_name <span class="kw">VARCHAR</span>(100)</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
+</code></pre>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="sourceCode" id="cb332" onclick="CopyToClipboard('cb332')">
+                            <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> products (</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>id <span class="kw">INTEGER PRIMARY KEY,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>product_name <span class="kw">TEXT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>categ_id <span class="kw">INTEGER</span> <span class="kw">REFERENCES</span> category(id)</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+</code></pre>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="sourceCode" id="cb333" onclick="CopyToClipboard('cb333')">
+                            <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> orders (</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>order_id <span class="kw">INTEGER PRIMARY KEY,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>customer_id <span class="kw">INTEGER NOT NULL,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>product_id <span class="kw">INTEGER NOT NULL,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>order_date <span class="kw">DATE NOT NULL,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>order_total <span class="kw">NUMERIC(10,2) NOT NULL,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>shipped_date <span class="kw">DATE,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">FOREIGN KEY</span> (customer_id) <span class="kw">REFERENCES</span> customers(customer_id) -- Constraint definition</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">FOREIGN KEY</span> (product_id) <span class="kw">REFERENCES</span> products(id) -- Constraint definition</span>
+);</span>
+                    </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="sourceCode" id="customers" onclick="CopyToClipboard('customers')">
+                            <pre><code class="language-sql"><span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> customers</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(id, customer_name)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">VALUES</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(0, 'Cansu'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(1, 'TTC'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(2, 'MEXT'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(3, 'Audra Berg'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(4, 'Avram Guthrie'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(5, 'Macy Marquez'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(6, 'Hamish Rodgers'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(7, 'Henry Douglas'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(8, 'Edan Middleton'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(9, 'Alec Lawrence'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(10, 'Tashya Holder'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(11, 'Igor Gould'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(12, 'Claire Carr'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(13, 'Hasad Serrano'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(14, 'Priscilla Clayton'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(15, 'Christopher Stephenson'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(16, 'Cain Dennis'),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>(17, 'James Parrish');</span>
+</code></pre>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="sourceCode" id="pypy" onclick="CopyToClipboard('pypy')">
+                            <pre><code class="language-sql"><span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">import</span> datetime as dt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">import</span> random</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">for</span> i <span class="kw">in</span> <span class="kw">range</span>(100):</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>date = dt.datetime(random.randint(2020,2025),random.randint(1,12), random.randint(1,29)).strftime("%Y-%m-%d")</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">print</span>(f"('{date}',(select customer_id from customers where customer_name = '{random.choice(my_list)}')),")</span>
+</code></pre>
+                        </div>
+                        <div class="sourceCode" id="pypy" onclick="CopyToClipboard('pypy')">
+                            <pre><code class="language-sql"><span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> orders</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw"></span>(order_date, customer_id)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">VALUES</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('>date<', '>customer_id<'),</span>
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3 id="join-operations-standard-sql">JOIN Operations (Standard SQL)</h3>
+                <p><code>JOIN</code> clauses combine rows from two or more tables based on a related column.</p>
+                <ul>
+                    <li>
+                        <strong>INNER JOIN: </strong>
+                        Returns only rows where the join condition is met in both tables.
+                    </li>
+                    <li>
+                        <strong>LEFT JOIN: </strong>
+                        Returns all rows from the left table and matching rows from the right table.
+                    </li>
+                    <li>
+                        <strong>RIGHT JOIN: </strong>
+                        Returns all rows from the right table and matching rows from the left table.
+                    </li>
+                    <li>
+                        <strong>FULL OUTER JOIN: </strong>
+                        Returns all rows from both tables.
+                    </li>
+                </ul>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <!-- INNER JOIN -->
+                        <div class="text-center">
+                            <svg width="120" height="90" viewBox="0 0 120 90">
+                                <circle cx="45" cy="45" r="30" fill="rgba(59, 130, 246, 0.4)" stroke="#3b82f6" />
+                                <circle cx="75" cy="45" r="30" fill="rgba(139, 92, 246, 0.4)" stroke="#8b5cf6" />
+                                <path d="M 45 45 m 15 0 a 15 15 0 0 0 0 0" fill="rgba(255, 255, 255, 0.7)"
+                                    stroke="none" />
+                            </svg>
+                            <p class="text-sm mt-1 font-semibold text-blue-200">INNER JOIN</p>
+                            <p class="text-xs text-gray-400">Matching rows only</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+
+                        <!-- LEFT JOIN -->
+                        <div class="text-center">
+                            <svg width="120" height="90" viewBox="0 0 120 90">
+                                <circle cx="45" cy="45" r="30" fill="rgba(59, 130, 246, 0.7)" stroke="#3b82f6" />
+                                <circle cx="75" cy="45" r="30" fill="rgba(139, 92, 246, 0.4)" stroke="#8b5cf6" />
+                                <path d="M 45 45 m 15 0 a 15 15 0 0 0 0 0" fill="rgba(255, 255, 255, 0.3)"
+                                    stroke="none" />
+                            </svg>
+                            <p class="text-sm mt-1 font-semibold text-blue-200">LEFT JOIN</p>
+                            <p class="text-xs text-gray-400">All left + matching right</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <!-- RIGHT JOIN -->
+                        <div class="text-center">
+                            <svg width="120" height="90" viewBox="0 0 120 90">
+                                <circle cx="45" cy="45" r="30" fill="rgba(59, 130, 246, 0.4)" stroke="#3b82f6" />
+                                <circle cx="75" cy="45" r="30" fill="rgba(139, 92, 246, 0.7)" stroke="#8b5cf6" />
+                                <path d="M 45 45 m 15 0 a 15 15 0 0 0 0 0" fill="rgba(255, 255, 255, 0.3)"
+                                    stroke="none" />
+                            </svg>
+                            <p class="text-sm mt-1 font-semibold text-blue-200">RIGHT JOIN</p>
+                            <p class="text-xs text-gray-400">All right + matching left</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <!-- FULL JOIN -->
+                        <div class="text-center">
+                            <svg width="120" height="90" viewBox="0 0 120 90">
+                                <circle cx="45" cy="45" r="30" fill="rgba(59, 130, 246, 0.7)" stroke="#3b82f6" />
+                                <circle cx="75" cy="45" r="30" fill="rgba(139, 92, 246, 0.7)" stroke="#8b5cf6" />
+                                <path d="M 45 45 m 15 0 a 15 15 0 0 0 0 0" fill="rgba(255, 255, 255, 0.3)"
+                                    stroke="none" />
+                            </svg>
+                            <p class="text-sm mt-1 font-semibold text-blue-200">FULL JOIN</p>
+                            <p class="text-xs text-gray-400">All rows from both tables</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+            <section>
+
+                <p><strong>INNER JOIN</strong>:</p>
+                <ul>
+                    <li>Returns only rows where the join condition is met in <em>both</em> tables.</li>
+                </ul>
+                <div class="sourceCode" id="cb4" onclick="CopyToClipboard('cb4')">
+                    <pre
+                        class="language-sql"><code class="language-sql"><span class="co">-- Standard Syntax</span>
+<span class="kw">SELECT</span> t1.columnA, t2.columnB
+<span class="kw">FROM</span> table1 t1
+<span class="kw">INNER JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
+                </div>
+                <p><em>Example: Get orders and the names of the customers who placed them.</em></p>
+                <div class="sourceCode" id="cb5" onclick="CopyToClipboard('cb5')">
+                    <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
+    o.order_id,
+    o.order_date,
+    c.customer_name
+<span class="kw">FROM</span>
+    orders o
+<span class="kw">INNER JOIN</span>
+    customers c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
+                </div>
+            </section>
+            <section>
+
+                <p><strong>LEFT JOIN (or LEFT OUTER JOIN)</strong>:</p>
+                <ul>
+                    <li>Returns <em>all</em> rows from the <strong>left</strong> table and matching rows from the
+                        right
+                        table.
+                    </li>
+                    <li>If no match, right table columns are <code>NULL</code>.</li>
+                </ul>
+                <div class="sourceCode" id="cb6" onclick="CopyToClipboard('cb6')">
+                    <pre
+                        class="language-sql"><code class="language-sql"><span class="co">-- Standard Syntax</span>
+<span class="kw">SELECT</span> t1.columnA, t2.columnB
+<span class="kw">FROM</span> table1 t1
+<span class="kw">LEFT JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
+                </div>
+
+                <p><em>Example: List all customers and any orders they may have placed.</em></p>
+                <div class="sourceCode" id="cb7" onclick="CopyToClipboard('cb7')">
+                    <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
+    c.customer_name,
+    o.order_id,
+    o.order_date
+<span class="kw">FROM</span>
+    customers c
+<span class="kw">LEFT JOIN</span>
+    orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+                </div>
+            </section>
+            <section>
+                <p><strong>RIGHT JOIN (or RIGHT OUTER JOIN)</strong>:</p>
+                <ul>
+                    <li>Returns <em>all</em> rows from the <strong>right</strong> table and matching rows from the
+                        left
+                        table.
+                    </li>
+                    <li>If no match, left table columns are <code>NULL</code>.</li>
+                    <li>Less common; can often be rewritten as a <code>LEFT JOIN</code>.</li>
+                </ul>
+                <div class="sourceCode" id="cb8" onclick="CopyToClipboard('cb8')">
+                    <pre
+                        class="language-sql"><code class="language-sql"><span class="co">-- Standard Syntax</span>
+<span class="kw">SELECT</span> t1.columnA, t2.columnB
+<span class="kw">FROM</span> table1 t1
+<span class="kw">RIGHT JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
+                </div>
+            </section>
+            <section>
+                <p><strong>FULL OUTER JOIN (or FULL JOIN)</strong>:</p>
+                <ul>
+                    <li>Returns <em>all</em> rows from <em>both</em> tables.</li>
+                    <li>If a row in one table has no match in the other, the columns from the other table will be
+                        <code>NULL</code>.
+                    </li>
+                    <li>Supported by PostgreSQL, SQL Server, Oracle. MySQL does not directly support
+                        <code>FULL OUTER JOIN</code> (can be simulated using <code>UNION</code> of <code>LEFT</code>
+                        and
+                        <code>RIGHT</code> joins).
+                    </li>
+                </ul>
+                <div class="sourceCode" id="cb9" onclick="CopyToClipboard('cb9')">
+                    <pre><code class="language-sql">-- Standard Syntax (Not supported by MySQL directly)
+<span class="kw">SELECT</span> t1.columnA, t2.columnB
+<span class="kw">FROM</span> table1 t1
+<span class="kw">FULL OUTER JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
+                </div>
+                <p><em>Example: List all customers and all orders, matching them where possible.</em></p>
+                <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
+                    <pre><code class="language-sql">-- PostgreSQL / SQL Server / Oracle
+<span class="kw">SELECT</span>
+    c.customer_name,
+    o.order_id
+<span class="kw">FROM</span>
+    customers c
+<span class="kw">FULL OUTER JOIN</span>
+    orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+                </div>
+            </section>
+            <section>
+                <h3 id="joining-multiple-tables">Joining Multiple Tables</h3>
+                <p>You can join more than two tables by chaining <code>JOIN</code> clauses.</p>
+                <p><em>Example: Get order details, customer name, and product name (assuming an
+                        <code>order_items</code>
+                        junction table and a <code>products</code> table).</em></p>
+                <div class="sourceCode" id="cb11" onclick="CopyToClipboard('cb11')">
+                    <pre><code class="language-sql"><span class="kw">SELECT</span>
+    o.order_id,
+    c.customer_name,
+    p.product_name,
+    oi.quantity
+<span class="kw">FROM</span>
+    orders o
+<span class="kw">INNER JOIN</span>
+    customers c <span class="kw">ON</span> o.customer_id = c.customer_id
+<span class="kw">INNER JOIN</span>
+    order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+<span class="kw">INNER JOIN</span>
+    products p <span class="kw">ON</span> oi.product_id = p.product_id
+<span class="kw">WHERE</span>
+    o.order_date >= '2025-01-01'; -- Example filter</code></pre>
+                </div>
+            </section>
+            <section>
+                <h3 id="table-aliases">Table Aliases</h3>
+                <p>Using aliases (short names) for tables makes queries shorter and more readable, especially when
+                    joining
+                    multiple tables or the same table to itself (self-join).</p>
+                <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
+                    <pre><code class="language-sql">-- Using aliases 'o' for orders and 'c' for customers
+<span class="kw">SELECT</span> o.order_id, c.customer_name
+<span class="kw">FROM</span> orders AS o
+<span class="kw">INNER JOIN</span> customers AS c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
+                </div>
+                <ul>
+                    <li>The <code>AS</code> keyword is optional for table aliases in most SQL dialects (including
+                        PostgreSQL).
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3 id="practical-examples-in-odoo-schema-postgresql">Practical Examples in Odoo Schema (PostgreSQL)
+                </h3>
+                <p>The Odoo database uses extensive relationships. Common tables to join include:</p>
+                <ul>
+                    <li><code>res_partner</code> (Customers, Suppliers, Contacts)</li>
+                    <li><code>sale_order</code> (Sales Orders)</li>
+                    <li><code>sale_order_line</code> (Lines within a Sales Order)</li>
+                    <li><code>product_product</code> (Specific Product Variants)</li>
+                    <li><code>product_template</code> (General Product Templates)</li>
+                    <li><code>account_move</code> (Invoices, Journal Entries)</li>
+                    <li><code>account_move_line</code> (Lines within Invoices/Entries)</li>
+                    <li><code>stock_picking</code> (Warehouse Transfers)</li>
+                    <li><code>stock_move</code> (Stock Movements)</li>
+                </ul>
+            </section>
+            <section>
+
+                <p><em>Example: Get Sales Order numbers and the Customer names.</em></p>
+                <div class="sourceCode" id="cb13" onclick="CopyToClipboard('cb13')">
+                    <pre><code class="language-sql">-- Odoo Example (PostgreSQL)
+<span class="kw">SELECT</span>
+    so.name <span class="kw">AS</span> sales_order_ref, -- Odoo often uses 'name' for user-visible identifiers
+    rp.name <span class="kw">AS</span> customer_name,
+    so.date_order,
+    so.amount_total
+<span class="kw">FROM</span>
+    sale_order so
+<span class="kw">LEFT JOIN</span>
+    res_partner rp <span class="kw">ON</span> so.partner_id = rp.id -- Join sale_order to res_partner on customer ID
+<span class="kw">WHERE</span>
+    so.state = 'sale'; -- Filter for confirmed sales orders</code></pre>
+                </div>
+            </section>
+            <section>
+                <p><em>Example: Get Sales Order lines showing Product and Quantity.</em></p>
+                <div class="sourceCode" id="cb14" onclick="CopyToClipboard('cb14')">
+                    <pre><code class="language-sql">-- Odoo Example (PostgreSQL)
+<span class="kw">SELECT</span>
+    so.name <span class="kw">AS</span> sales_order_ref,
+    pt.name <span class="kw">AS</span> product_name,
+    sol.product_uom_qty <span class="kw">AS</span> quantity,
+    sol.price_unit
+<span class="kw">FROM</span>
+    sale_order_line sol
+<span class="kw">INNER JOIN</span>
+    sale_order so <span class="kw">ON</span> sol.order_id = so.id
+<span class="kw">INNER JOIN</span>
+    product_product pp <span class="kw">ON</span> sol.product_id = pp.id
+<span class="kw">INNER JOIN</span>
+    product_template pt <span class="kw">ON</span> pp.product_tmpl_id = pt.id
+<span class="kw">WHERE</span>
+    so.state = 'sale'
+<span class="kw">ORDER BY</span>
+    so.name, pt.name;</code></pre>
+                </div>
+                <p>These examples demonstrate how JOINs are essential for retrieving meaningful information by
+                    combining
+                    data
+                    spread across different tables in a normalized database like Odoo's.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Practice What You Learned</h3>
+                <p>Ready to master JOIN operations? Practice with hands-on exercises using the concepts covered in this lesson.</p>
+                <p><a href="04_working_with_multiple_tables_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+    </div> <!-- /container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../static/script.js"></script>
+</body>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/04_working_with_multiple_tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/05_advanced_select_techniques.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 2: Advanced SELECT Techniques</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BaseN */
+    code span.bu {}
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+  </style>
+</head>
+
+<body>
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+        <h1 id="day-2-advanced-select-techniques">Day 2: Advanced SELECT Techniques</h1>
+        <h2 id="session-1-advanced-select-techniques-1.5-hours">Session 1: Advanced SELECT Techniques (1.5 hours)</h2>
+        <p>Building upon basic queries, this session explores techniques for summarizing, grouping, and analyzing data
+          within SQL, applicable across various database systems.</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb2" onclick="CopyToClipboard('cb2')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Comma-separated list of products in a category</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> category (category_name) <span class="kw">VALUES</span></span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Electronics'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Books'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Clothing'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Toys'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Groceries');</span></code></pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb22-2" onclick="CopyToClipboard('cb22-2')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Comma-separated list of products in a category</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> products (product_name, categ_id) <span class="kw">VALUES</span></span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Smartphone', 1),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Laptop', 1),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Novel', 2),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('T-shirt', 3),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Action Figure', 4),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Apple', 5);</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3 id="aggregate-functions-standard-sql-and-extensions">Aggregate Functions (Standard SQL and Extensions)</h3>
+        <p>Aggregate functions perform calculations on a set of rows and return a single summary value. They are
+          essential
+          for reporting and data analysis.</p>
+        <p><strong>Common Standard SQL Aggregate Functions</strong>:</p>
+        <div class="row">
+          <div class="col-md-6">
+            <ol type="1">
+              <li>
+                <p><strong><code>COUNT()</code></strong>: Counts rows or non-NULL values.</p>
+                <ul>
+                  <li><code>COUNT(*)</code>: Counts the total number of rows in a group.</li>
+                  <li><code>COUNT(column_name)</code>: Counts the number of rows where <code>column_name</code> is NOT
+                    NULL.
+                  </li>
+                  <li><code>COUNT(DISTINCT column_name)</code>: Counts the number of unique non-NULL values in
+                    <code>column_name</code>.
+                  </li>
+                </ul>
+                <div class="sourceCode" id="code1" onclick="CopyToClipboard('code1')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> orders; <span class="co">-- Total orders</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(shipped_date) <span class="kw">FROM</span> orders; <span class="co">-- Orders that have shipped</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">FROM</span> orders; <span class="co">-- Number of unique customers who ordered</span></span></code></pre>
+                </div>
+              </li>
+              <li>
+                <p><strong><code>SUM(numeric_column)</code></strong>: Calculates the sum of non-NULL numeric values.</p>
+                <div class="sourceCode" id="code2" onclick="CopyToClipboard('code1')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Sum of completed orders</span></span></code></pre>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="col-md-6">
+            <ol type="1" start="3">
+              <li>
+                <p><strong><code>AVG(numeric_column)</code></strong>: Calculates the average of non-NULL numeric values.
+                </p>
+                <div class="sourceCode" id="code3" onclick="CopyToClipboard('code3')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Average order value</span></span></code></pre>
+                </div>
+              </li>
+              <li>
+                <p><strong><code>MIN(column)</code></strong>: Finds the minimum non-NULL value in a column (works for
+                  numeric,
+                  string, date types).</p>
+                <div class="sourceCode" id="code4" onclick="CopyToClipboard('code4')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Earliest order date</span></span></code></pre>
+                </div>
+              </li>
+              <li>
+                <p><strong><code>MAX(column)</code></strong>: Finds the maximum non-NULL value in a column.
+                </p>
+                <div class="sourceCode" id="code5" onclick="CopyToClipboard('code5')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders; <span class="co">-- Highest order total</span></span></code></pre>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+      </section>
+      <section>
+        <p><strong>Common Aggregate Function Extensions (Syntax/Availability Varies)</strong>:</p>
+        <p>These functions are widely supported but might have different names or syntax across database systems.</p>
+        <ul>
+          <li><strong>String Aggregation</strong>: Concatenates strings from multiple rows into a single string.
+            <ul>
+              <li><strong>PostgreSQL/Db2/Oracle (11g+)</strong>:
+                <code>STRING_AGG(expression, delimiter [ORDER BY ...])</code>
+              </li>
+              <li><strong>MySQL/SQLite</strong>:
+                <code>GROUP_CONCAT(expression [ORDER BY ...] [SEPARATOR delimiter])</code>
+              </li>
+              <li><strong>SQL Server (2017+)</strong>:
+                <code>STRING_AGG(expression, delimiter) WITHIN GROUP (ORDER BY ...)</code>
+              </li>
+            </ul>
+            <div class="sourceCode" id="code6" onclick="CopyToClipboard('code6')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Comma-separated list of products in a category</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_name, STRING_AGG(product_name, <span class="ot">&quot;, &quot;</span> <span class="kw">ORDER</span> <span class="kw">BY</span> product_name)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">FROM</span> products</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> category_name;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Array Aggregation</strong>: Collects values into an array (less common, more specific to
+            systems
+            like PostgreSQL).
+            <ul>
+              <li><strong>PostgreSQL</strong>: <code>ARRAY_AGG(expression [ORDER BY ...])</code></li>
+            </ul>
+            <div class="sourceCode" id="code7" onclick="CopyToClipboard('code7')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Array of product IDs per category</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_id, ARRAY_AGG(product_id <span class="kw">ORDER</span> <span class="kw">BY</span> product_id)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> products</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> category_id;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Statistical Functions</strong>: Standard deviation (<code>STDDEV_SAMP</code>,
+            <code>STDDEV_POP</code>), variance (<code>VAR_SAMP</code>, <code>VAR_POP</code>), correlation
+            (<code>CORR</code>), etc. Availability and exact names can vary.
+          </li>
+        </ul>
+        <p><strong>Handling NULLs</strong>: Standard aggregate functions (<code>SUM</code>, <code>AVG</code>,
+          <code>MIN</code>, <code>MAX</code>) ignore <code>NULL</code> values. <code>COUNT(*)</code> counts all
+          rows,
+          while <code>COUNT(column)</code> counts only non-NULL rows in that column.
+        </p>
+      </section>
+      <section>
+        <h3 id="grouping-data-with-group-by-standard-sql">Grouping Data with GROUP BY (Standard SQL)</h3>
+        <p>The <code>GROUP BY</code> clause groups rows that have the same values in one or more specified columns into
+          a
+          summary row. Aggregate functions are then applied to each group independently.</p>
+        <p><strong>Standard SQL Syntax</strong>:</p>
+        <div class="sourceCode" id="code8" onclick="CopyToClipboard('code8')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    grouping_column1, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    grouping_column2, <span class="op">..</span>., </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    aggregate_function(<span class="kw">column</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    table_name</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    filter_condition <span class="co">-- Optional: Filters rows BEFORE grouping</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    grouping_column1, </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    grouping_column2, <span class="op">..</span>.</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="op">..</span>.; <span class="co">-- Optional: Sorts the grouped results</span></span></code></pre>
+        </div>
+        <p><strong>Important Rule (Standard SQL)</strong>: Any non-aggregated column in the <code>SELECT</code> list
+          <em>must</em> be included in the <code>GROUP BY</code> clause. (Some databases like older MySQL versions had a
+          relaxed default mode, but relying on that is non-standard and often leads to ambiguous results).
+        </p>
+      </section>
+      <section>
+        <p><strong>Examples</strong>:</p>
+        <div class="sourceCode" id="code9" onclick="CopyToClipboard('code9')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Count orders per customer</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    customer_id, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_orders</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    orders</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    customer_id;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Examples</strong>:</p>
+        <div class="sourceCode" id="code10" onclick="CopyToClipboard('code10')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">-- Standard SQL: Total sales amount per product category</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    p.category_id, </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    c.category_name, <span class="co">-- Include category_name in GROUP BY as it&#39;s in SELECT</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.unit_price) <span class="kw">AS</span> total_category_sales</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>    order_items oi</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    products p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    p.category_id, c.category_name <span class="co">-- Group by both ID and name</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    total_category_sales <span class="kw">DESC</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Examples</strong>:</p>
+        <div class="sourceCode" id="code11" onclick="CopyToClipboard('code11')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="co">-- Standard SQL: Grouping by a date part (function syntax might vary slightly)</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a>    <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> order_year, <span class="co">-- Standard function</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> yearly_order_count</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a>    orders</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>    <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>    order_year;</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a><span class="co">-- Note: Functions like DATE_TRUNC (PostgreSQL) or vendor-specific date formatting functions are often used here.</span></span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Advanced Grouping: <code>GROUPING SETS</code>, <code>ROLLUP</code>, <code>CUBE</code> (Standard SQL
+            Extensions)</strong>:</p>
+        <p>Let's create our tables and populate them. You should use PostgreSQL not SQLite</p>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb332" onclick="CopyToClipboard('cb332')">
+              <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> sales_data (</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>product <span class="kw">TEXT,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>region <span class="kw">TEXT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>year <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>quarter <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>month <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>sales <span class="kw">NUMERIC(10,2)</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+</code></pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb333" onclick="CopyToClipboard('cb333')">
+              <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> sales_data (product, region, year, quarter, month, sales) <span class="kw">VALUES</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Smartphone', 'North', 2024, 1, 1, 15000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Smartphone', 'South', 2024, 1, 2, 12000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Laptop', 'North', 2024, 1, 1, 18000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Laptop', 'East', 2024, 2, 4, 22000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Novel', 'West', 2024, 2, 5, 8000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('T-shirt', 'South', 2024, 3, 7, 5000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Action Figure', 'North', 2024, 3, 8, 7000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Apple', 'East', 2024, 4, 10, 9000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Apple', 'West', 2024, 4, 11, 11000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Smartphone', 'North', 2025, 1, 1, 16000.00);</span>
+                    </code></pre>
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <section>
+        <p><strong>Advanced Grouping: <code>GROUPING SETS</code>, <code>ROLLUP</code>, <code>CUBE</code> (Standard SQL
+            Extensions)</strong>:</p>
+        <p>These clauses provide more complex grouping capabilities, allowing multiple grouping levels or combinations
+          in
+          a single query. They are part of later SQL standards (SQL:1999/SQL:2003) and supported by most major modern
+          databases (PostgreSQL, Oracle, SQL Server, Db2), though syntax details or limitations might exist.</p>
+        <ol type="1">
+          <li><strong><code>GROUPING SETS</code></strong>: Allows specifying multiple independent <code>GROUP BY</code>
+            clauses.
+            <div class="sourceCode" id="code32" onclick="CopyToClipboard('code32')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>-- Example: Sales totals by (Product), by (Region), and overall total</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> product, region, <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>FROM sales_data</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">GROUP BY</span> GROUPING SETS ((product),(region));</span></code></pre>
+            </div>
+          </li>
+          <li><strong><code>ROLLUP</code></strong>: Creates groupings for hierarchical summaries (e.g., Year -&gt;
+            Quarter
+            -&gt; Month, Country -&gt; Region -&gt; City).
+            <div class="sourceCode" id="code33" onclick="CopyToClipboard('code33')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>-- Example: Sales totals by (Product), by (Region), and overall total</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> year, quarter, month, <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>FROM sales_data</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">GROUP BY</span> ROLLUP(year, quarter, month);</span></code></pre>
+            </div>
+          </li>
+          <li><strong><code>CUBE</code></strong>: Creates groupings for all possible combinations of the specified
+            columns.
+            <div class="sourceCode" id="code34" onclick="CopyToClipboard('code34')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>-- Example: Sales totals by (Product), by (Region), and overall total</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> product, region, <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>FROM sales_data</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">GROUP BY</span> CUBE(product, region);</span></code></pre>
+            </div>
+            These are powerful for data warehousing and OLAP-style queries but are more advanced topics.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h3 id="filtering-groups-with-having-standard-sql">Filtering Groups with HAVING (Standard SQL)</h3>
+        <p>The <code>HAVING</code> clause filters the results of a <code>GROUP BY</code> query. It applies conditions to
+          the <em>groups</em> themselves, typically involving aggregate functions.</p>
+        <p><strong>Standard SQL Syntax</strong>:</p>
+        <div class="sourceCode" id="code12" onclick="CopyToClipboard('code12')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    grouping_column1, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    aggregate_function(<span class="kw">column</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    table_name</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    row_filter_condition <span class="co">-- Optional: Filters rows BEFORE grouping</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>    grouping_column1</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>    group_filter_condition; <span class="co">-- Filters groups AFTER grouping</span></span></code></pre>
+        </div>
+        <p><strong><code>WHERE</code> vs. <code>HAVING</code></strong>: - <code>WHERE</code> filters individual rows
+          <em>before</em> they are processed by <code>GROUP BY</code>. - <code>HAVING</code> filters entire groups
+          <em>after</em> they have been created by <code>GROUP BY</code> and aggregates calculated. - Conditions in
+          <code>HAVING</code> often involve aggregate functions; conditions in <code>WHERE</code> cannot (as
+          aggregates
+          operate on groups not yet formed).
+        </p>
+      </section>
+      <section>
+        <p><strong>Examples</strong>:</p>
+        <div class="sourceCode" id="code13" onclick="CopyToClipboard('code13')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Find customers with more than 5 orders</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    customer_id, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_orders</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    orders</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    customer_id</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">5</span>; <span class="co">-- Filter groups based on the aggregate COUNT</span></span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Examples</strong>:</p>
+        <div class="sourceCode" id="code14" onclick="CopyToClipboard('code14')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a><span class="co">-- Standard SQL: Find product categories with average product price over $100</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    p.category_id, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>    c.category_name,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.list_price) <span class="kw">AS</span> average_price</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    products p</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>    p.category_id, c.category_name</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.list_price) <span class="op">&gt;</span> <span class="dv">100</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Examples</strong>:</p>
+        <div class="sourceCode" id="code15" onclick="CopyToClipboard('code15')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a><span class="co">-- Standard SQL: Combining WHERE and HAVING</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a><span class="co">-- Find customers from 'USA' who placed more than 3 orders in 2023</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a>    o.customer_id,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a>    c.customer_name,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> order_count_2023</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true"></a>    orders o</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a>    customers c <span class="kw">ON</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a>    c.country <span class="op">=</span> <span class="st">&#39;USA&#39;</span> </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a>    <span class="kw">AND</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> o.order_date) <span class="op">=</span> <span class="dv">2023</span> <span class="co">-- Filter rows first</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a>    o.customer_id, c.customer_name</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">3</span>; <span class="co">-- Filter groups after counting</span></span></code></pre>
+        </div>
+      </section>
+      <section>
+        <h3 id="introduction-to-window-functions-standard-sql">Introduction to Window Functions (Standard SQL)</h3>
+        <p>Window functions perform calculations across a set of table rows that are somehow related to the current row
+          (called the "window"). Unlike aggregate functions with <code>GROUP BY</code>, window functions do not collapse
+          rows; they return a value for <em>each</em> row based on the window.</p>
+        <p>Window functions are part of standard SQL (SQL:2003 and later) and are supported by most modern RDBMS
+          (PostgreSQL, Oracle, SQL Server, Db2, MySQL 8+, SQLite 3.25+), although specific function availability or
+          syntax
+          details might vary slightly.</p>
+        <p><strong>Standard SQL Syntax</strong>:</p>
+        <div class="sourceCode" id="code16" onclick="CopyToClipboard('code16')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>window_function(arguments) <span class="kw">OVER</span> (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    [<span class="kw">PARTITION</span> <span class="kw">BY</span> partition_column1, partition_column2, <span class="op">..</span>.] <span class="co">-- Optional: Divides rows into partitions (groups)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    [<span class="kw">ORDER</span> <span class="kw">BY</span> sort_column1 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], sort_column2 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], <span class="op">..</span>.] <span class="co">-- Optional: Orders rows within each partition</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    [frame_clause] <span class="co">-- Optional: Defines the subset of rows within the partition (the window frame)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>)</span></code></pre>
+        </div>
+        <p><strong>Key Concepts</strong>: - <strong><code>OVER()</code> Clause</strong>: Mandatory clause that signifies
+          a
+          window function. - <strong><code>PARTITION BY</code></strong>: Divides the rows into independent partitions.
+          The
+          window function is applied separately to each partition. If omitted, the entire result set is treated as a
+          single partition. - <strong><code>ORDER BY</code></strong>: Determines the order of rows <em>within</em> each
+          partition. Crucial for ranking and sequence-dependent functions (<code>LAG</code>, <code>LEAD</code>, running
+          totals). - <strong><code>frame_clause</code></strong>: Specifies the set of rows relative to the current row
+          within the partition to be included in the function's calculation (e.g.,
+          <code>ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING</code>). If omitted, the default frame often depends on the
+          function and presence of <code>ORDER BY</code>.
+        </p>
+      </section>
+      <section>
+        <p><strong>Common Types of Window Functions (Mostly Standard SQL)</strong>:</p>
+        <ol type="1">
+          <li>
+            <p><strong>Ranking Functions</strong>:</p>
+            <ul>
+              <li><code>ROW_NUMBER()</code>: Assigns a unique sequential integer to each row within its partition (e.g.,
+                1, 2, 3, 4).</li>
+              <li><code>RANK()</code>: Assigns ranks based on the <code>ORDER BY</code> clause. Skips ranks after ties
+                (e.g., 1, 2, 2, 4).</li>
+              <li><code>DENSE_RANK()</code>: Assigns ranks without gaps after ties (e.g., 1, 2, 2, 3).</li>
+              <li><code>NTILE(n)</code>: Divides the partition into <code>n</code> roughly equal groups (buckets) and
+                assigns a bucket number (1 to <code>n</code>).</li>
+            </ul>
+            <div class="sourceCode" id="code17" onclick="CopyToClipboard('code17')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Rank employees by salary within each department</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    employee_name, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    department_name, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    salary,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> department_name <span class="kw">ORDER</span> <span class="kw">BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dept_salary_rank</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">FROM</span> employees;</span></code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Common Types of Window Functions (Mostly Standard SQL)</strong>:</p>
+        <ol type="1" start="2">
+          <li>
+            <p><strong>Value Functions (Offset Functions)</strong>:</p>
+            <ul>
+              <li><code>LAG(expression, [offset], [default])</code>: Accesses data from a previous row within the
+                partition based on <code>ORDER BY</code>.</li>
+              <li><code>LEAD(expression, [offset], [default])</code>: Accesses data from a subsequent row.</li>
+              <li><code>FIRST_VALUE(expression)</code>: Gets the value of the expression from the first row in the
+                window
+                frame.</li>
+              <li><code>LAST_VALUE(expression)</code>: Gets the value from the last row in the window frame.</li>
+            </ul>
+            <div class="sourceCode" id="code18" onclick="CopyToClipboard('code18')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Calculate sales growth compared to the previous month</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    sales_month, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    monthly_total,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="fu">LAG</span>(monthly_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> sales_month) <span class="kw">AS</span> previous_month_total</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="kw">FROM</span> monthly_sales_summary;</span></code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Common Types of Window Functions (Mostly Standard SQL)</strong>:</p>
+        <ol type="1" start="3">
+          <li>
+            <p><strong>Aggregate Functions as Window Functions</strong>: Standard aggregate functions (<code>SUM</code>,
+              <code>AVG</code>, <code>COUNT</code>, <code>MIN</code>, <code>MAX</code>) can be used as window functions
+              by
+              adding the <code>OVER()</code> clause. They operate over the window frame for each row.
+            </p>
+            <div class="sourceCode" id="code19" onclick="CopyToClipboard('code19')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Calculate running total of sales over time</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    order_date, </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    order_total,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> order_date <span class="kw">ROWS</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span>) <span class="kw">AS</span> running_total_sales</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="co">-- Standard SQL: Calculate each order's percentage of the total sales</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    order_id, </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>    order_total,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> () <span class="kw">AS</span> grand_total_sales, <span class="co">-- Window is entire result set</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    (order_total <span class="op">/</span> <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> ()) <span class="op">*</span> <span class="dv">100</span> <span class="kw">AS</span> percentage_of_total</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span></code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Window Frame Clause (Standard SQL)</strong>: Defines the subset of rows within the partition used for
+          calculation relative to the current row. Common options: - <code>ROWS UNBOUNDED PRECEDING</code>: From the
+          start
+          of the partition to the current row. - <code>ROWS BETWEEN &lt;n&gt; PRECEDING AND &lt;m&gt; FOLLOWING</code>:
+          A
+          specific range around the current row. - <code>RANGE BETWEEN ...</code>: Based on value ranges relative to the
+          current row's <code>ORDER BY</code> value (more complex).</p>
+        <div class="sourceCode" id="code20" onclick="CopyToClipboard('code20')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">-- Standard SQL: 3-day moving average of sales</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    sales_date,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    daily_total,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="fu">AVG</span>(daily_total) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> sales_date <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="dv">2</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span>) <span class="kw">AS</span> moving_avg_3day</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="kw">FROM</span> daily_sales;</span></code></pre>
+        </div>
+        <p><strong>Practical Applications</strong>: Window functions are extremely powerful for: - Calculating running
+          totals, moving averages. - Ranking results within groups (Top-N queries). - Comparing rows with preceding or
+          succeeding rows (calculating differences, growth rates). - Calculating percentages of totals.</p>
+        <p>Mastering aggregate functions, <code>GROUP BY</code>, <code>HAVING</code>, and window functions significantly
+          enhances your ability to perform complex data analysis and reporting directly within the database.</p>
+      </section>
+      <section>
+        <h3 id="practice-exercises">Practice What You Learned</h3>
+        <p>Ready to master advanced SELECT techniques? Practice with hands-on exercises covering aggregate functions, GROUP BY, HAVING, and window functions.</p>
+        <p><a href="05_advanced_select_techniques_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+      </section>
+    </div>
+  </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/05_advanced_select_techniques.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

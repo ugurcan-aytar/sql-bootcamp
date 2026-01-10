@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 4: Analytics and Data Visualization - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .exercise-box h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .solution {
+            background-color: #e7f3ff;
+            border: 1px solid #b6d4fe;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .solution.show {
+            display: block;
+        }
+
+        .btn-solution {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-solution:hover {
+            background-color: #0b5ed7;
+        }
+
+        .hint-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .hint-box strong {
+            color: #664d03;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box strong {
+            color: #842029;
+        }
+
+        .concept-box {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box strong {
+            color: #0f5132;
+        }
+
+        .dataset-table {
+            font-size: 0.9em;
+            margin: 15px 0;
+        }
+
+        .dataset-table th {
+            background-color: #e9ecef;
+        }
+
+        .badge-window {
+            background-color: #6f42c1;
+            color: white;
+        }
+
+        .badge-aggregate {
+            background-color: #198754;
+            color: white;
+        }
+
+        .badge-cte {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .result-table {
+            font-size: 0.85em;
+            margin: 15px 0;
+        }
+
+        .result-table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .result-table td {
+            font-family: 'Courier New', monospace;
+        }
+
+        .visual-demo {
+            background-color: #f8f9fa;
+            border: 2px dashed #6c757d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .visual-demo h6 {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 150px;
+            padding: 10px;
+        }
+
+        .bar {
+            width: 40px;
+            background: linear-gradient(to top, #0d6efd, #6ea8fe);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7em;
+            white-space: nowrap;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1>Analytics and Data Visualization - Practical Examples</h1>
+                <p class="lead">Master window functions, advanced aggregations, CTEs, and data preparation for
+                    visualization through hands-on exercises.</p>
+
+                <div class="hint-box">
+                    <strong>Learning Objectives:</strong>
+                    <ul class="mb-0">
+                        <li>Apply window functions for ranking, running totals, and comparisons</li>
+                        <li>Use advanced aggregations (GROUPING SETS, ROLLUP, CUBE)</li>
+                        <li>Build complex analytics with CTEs</li>
+                        <li>Prepare data for visualization tools</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Sample Dataset -->
+            <section>
+                <h3>Sample Database Schema</h3>
+                <p>We'll use an e-commerce analytics database:</p>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>orders</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>order_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>customer_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>order_date</td>
+                                    <td><span class="badge bg-warning text-dark">DATE</span></td>
+                                </tr>
+                                <tr>
+                                    <td>amount</td>
+                                    <td><span class="badge bg-info">DECIMAL</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>order_items</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>item_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>order_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>product_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>quantity</td>
+                                    <td><span class="badge bg-info">INTEGER</span></td>
+                                </tr>
+                                <tr>
+                                    <td>price</td>
+                                    <td><span class="badge bg-info">DECIMAL</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>products</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>product_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>category_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>price</td>
+                                    <td><span class="badge bg-info">DECIMAL</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>categories</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>category_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>category_name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>customers</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>customer_id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>region_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>employees</h5>
+                        <table class="table table-bordered dataset-table">
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>manager_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 1: Window Functions -->
+            <section>
+                <h2>Part 1: Window Functions</h2>
+                <p>Practice ranking, aggregating, and comparing across rows.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Ranking Functions Comparison</h4>
+                    <p>Given monthly sales data, show the difference between ROW_NUMBER(), RANK(), and DENSE_RANK():</p>
+
+                    <table class="table table-bordered result-table">
+                        <thead>
+                            <tr>
+                                <th>month</th>
+                                <th>sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-01</td>
+                                <td>50000</td>
+                            </tr>
+                            <tr>
+                                <td>2024-02</td>
+                                <td>45000</td>
+                            </tr>
+                            <tr>
+                                <td>2024-03</td>
+                                <td>45000</td>
+                            </tr>
+                            <tr>
+                                <td>2024-04</td>
+                                <td>42000</td>
+                            </tr>
+                            <tr>
+                                <td>2024-05</td>
+                                <td>55000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Task:</strong> Write a query that shows all three ranking functions ranking by sales DESC.
+                    </p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
+                    <div id="sol1_1" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> <span class="st">'2024-01'</span> <span class="kw">AS</span> month, <span class="dv">50000</span> <span class="kw">AS</span> sales <span class="kw">UNION ALL</span>
+    <span class="kw">SELECT</span> <span class="st">'2024-02'</span>, <span class="dv">45000</span> <span class="kw">UNION ALL</span>
+    <span class="kw">SELECT</span> <span class="st">'2024-03'</span>, <span class="dv">45000</span> <span class="kw">UNION ALL</span>
+    <span class="kw">SELECT</span> <span class="st">'2024-04'</span>, <span class="dv">42000</span> <span class="kw">UNION ALL</span>
+    <span class="kw">SELECT</span> <span class="st">'2024-05'</span>, <span class="dv">55000</span>
+)
+<span class="kw">SELECT</span>
+    month,
+    sales,
+    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales <span class="kw">DESC</span>) <span class="kw">AS</span> row_num,
+    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales <span class="kw">DESC</span>) <span class="kw">AS</span> rank,
+    <span class="fu">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales <span class="kw">DESC</span>) <span class="kw">AS</span> dense_rank
+<span class="kw">FROM</span> monthly_sales;</code></pre>
+
+                        <p><strong>Result:</strong></p>
+                        <table class="table table-bordered result-table">
+                            <thead>
+                                <tr>
+                                    <th>month</th>
+                                    <th>sales</th>
+                                    <th>row_num</th>
+                                    <th>rank</th>
+                                    <th>dense_rank</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-05</td>
+                                    <td>55000</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01</td>
+                                    <td>50000</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-02</td>
+                                    <td>45000</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-03</td>
+                                    <td>45000</td>
+                                    <td>4</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-04</td>
+                                    <td>42000</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                    <td>4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="concept-box">
+                            <strong>Key Differences:</strong>
+                            <ul class="mb-0">
+                                <li><strong>ROW_NUMBER()</strong>: Always unique (3, 4 for ties)</li>
+                                <li><strong>RANK()</strong>: Same rank for ties, skips next (3, 3, 5)</li>
+                                <li><strong>DENSE_RANK()</strong>: Same rank for ties, no skip (3, 3, 4)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Top N Per Group</h4>
+                    <p>Find the top 3 best-selling products in each category.</p>
+
+                    <p><strong>Task:</strong> Use ROW_NUMBER() with PARTITION BY to rank products within each category,
+                        then filter to top 3.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
+                    <div id="sol1_2" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span> product_sales <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        p.product_id,
+        p.name <span class="kw">AS</span> product_name,
+        c.category_name,
+        <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> total_sales
+    <span class="kw">FROM</span> products p
+    <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
+    <span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> p.product_id = oi.product_id
+    <span class="kw">GROUP BY</span> p.product_id, p.name, c.category_name
+),
+ranked_products <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        product_name,
+        category_name,
+        total_sales,
+        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
+            <span class="kw">PARTITION BY</span> category_name
+            <span class="kw">ORDER BY</span> total_sales <span class="kw">DESC</span>
+        ) <span class="kw">AS</span> rank_in_category
+    <span class="kw">FROM</span> product_sales
+)
+<span class="kw">SELECT</span>
+    category_name,
+    rank_in_category,
+    product_name,
+    total_sales
+<span class="kw">FROM</span> ranked_products
+<span class="kw">WHERE</span> rank_in_category <= <span class="dv">3</span>
+<span class="kw">ORDER BY</span> category_name, rank_in_category;</code></pre>
+
+                        <div class="hint-box">
+                            <strong>Use Case:</strong> This pattern is essential for "Top N" reports like:
+                            <ul class="mb-0">
+                                <li>Top 5 customers per region</li>
+                                <li>Top 10 products per month</li>
+                                <li>Best 3 salespeople per quarter</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: LAG and LEAD for Trend Analysis</h4>
+                    <p>Calculate month-over-month sales growth using LAG().</p>
+
+                    <p><strong>Task:</strong> Show each month's sales, previous month's sales, and the percentage
+                        change.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
+                    <div id="sol1_3" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) <span class="kw">AS</span> month,
+        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> sales
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date)
+)
+<span class="kw">SELECT</span>
+    month,
+    sales,
+    <span class="fu">LAG</span>(sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month) <span class="kw">AS</span> prev_month_sales,
+    sales - <span class="fu">LAG</span>(sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month) <span class="kw">AS</span> absolute_change,
+    <span class="fu">ROUND</span>(
+        (sales - <span class="fu">LAG</span>(sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month)) * <span class="fl">100.0</span> /
+        <span class="fu">NULLIF</span>(<span class="fu">LAG</span>(sales) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> month), <span class="dv">0</span>),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> pct_change
+<span class="kw">FROM</span> monthly_sales
+<span class="kw">ORDER BY</span> month;</code></pre>
+
+                        <p><strong>Example Output:</strong></p>
+                        <table class="table table-bordered result-table">
+                            <thead>
+                                <tr>
+                                    <th>month</th>
+                                    <th>sales</th>
+                                    <th>prev_month</th>
+                                    <th>change</th>
+                                    <th>pct_change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-01-01</td>
+                                    <td>50000</td>
+                                    <td>NULL</td>
+                                    <td>NULL</td>
+                                    <td>NULL</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-02-01</td>
+                                    <td>55000</td>
+                                    <td>50000</td>
+                                    <td>5000</td>
+                                    <td>10.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-03-01</td>
+                                    <td>48000</td>
+                                    <td>55000</td>
+                                    <td>-7000</td>
+                                    <td>-12.73</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="concept-box">
+                            <strong>LAG vs LEAD:</strong>
+                            <ul class="mb-0">
+                                <li><code>LAG(col, n)</code> - Gets value from n rows BEFORE (default n=1)</li>
+                                <li><code>LEAD(col, n)</code> - Gets value from n rows AFTER</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.4: Running Totals and Moving Averages</h4>
+                    <p>Calculate cumulative sales and a 7-day moving average.</p>
+
+                    <p><strong>Task:</strong> Use window frame clauses to compute running total and moving average.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_4')">Show Solution</button>
+                    <div id="sol1_4" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    order_date,
+    amount <span class="kw">AS</span> daily_sales,
+    <span class="co">-- Running total: all rows from start to current</span>
+    <span class="fu">SUM</span>(amount) <span class="kw">OVER</span> (
+        <span class="kw">ORDER BY</span> order_date
+        <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
+    ) <span class="kw">AS</span> running_total,
+    <span class="co">-- 7-day moving average: 6 preceding + current</span>
+    <span class="fu">ROUND</span>(
+        <span class="fu">AVG</span>(amount) <span class="kw">OVER</span> (
+            <span class="kw">ORDER BY</span> order_date
+            <span class="kw">ROWS BETWEEN</span> <span class="dv">6</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
+        ),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> moving_avg_7day,
+    <span class="co">-- Count rows in moving window</span>
+    <span class="fu">COUNT</span>(*) <span class="kw">OVER</span> (
+        <span class="kw">ORDER BY</span> order_date
+        <span class="kw">ROWS BETWEEN</span> <span class="dv">6</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
+    ) <span class="kw">AS</span> days_in_window
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span> order_date, <span class="fu">SUM</span>(amount) <span class="kw">AS</span> amount
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> order_date
+) daily_totals
+<span class="kw">ORDER BY</span> order_date;</code></pre>
+
+                        <div class="warning-box">
+                            <strong>Frame Clause Gotcha:</strong>
+                            <ul class="mb-0">
+                                <li><code>ROWS</code> counts physical rows</li>
+                                <li><code>RANGE</code> considers value ranges (handles ties differently)</li>
+                                <li>Without ORDER BY, frame includes entire partition</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 2: Advanced Aggregations -->
+            <section>
+                <h2>Part 2: Advanced Aggregations</h2>
+                <p>Master GROUPING SETS, ROLLUP, CUBE, and conditional aggregations.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: GROUPING SETS for Multiple Summaries</h4>
+                    <p>Generate a report showing sales by:
+                    <ul>
+                        <li>Category + Month</li>
+                        <li>Category only</li>
+                        <li>Month only</li>
+                        <li>Grand total</li>
+                    </ul>
+                    </p>
+
+                    <p><strong>Task:</strong> Use GROUPING SETS to produce all summaries in one query.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
+                    <div id="sol2_1" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">COALESCE</span>(c.category_name, <span class="st">'All Categories'</span>) <span class="kw">AS</span> category,
+    <span class="fu">COALESCE</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>), <span class="st">'All Months'</span>) <span class="kw">AS</span> month,
+    <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> total_sales,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
+    <span class="co">-- Identify grouping level</span>
+    <span class="fu">GROUPING</span>(c.category_name) <span class="kw">AS</span> is_category_total,
+    <span class="fu">GROUPING</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)) <span class="kw">AS</span> is_month_total
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
+<span class="kw">GROUP BY</span> <span class="fu">GROUPING</span> <span class="kw">SETS</span> (
+    (c.category_name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),  <span class="co">-- Detail</span>
+    (c.category_name),                                      <span class="co">-- Category subtotal</span>
+    (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),                    <span class="co">-- Month subtotal</span>
+    ()                                                      <span class="co">-- Grand total</span>
+)
+<span class="kw">ORDER BY</span>
+    <span class="fu">GROUPING</span>(c.category_name),
+    <span class="fu">GROUPING</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),
+    category,
+    month;</code></pre>
+
+                        <div class="concept-box">
+                            <strong>GROUPING() Function:</strong> Returns 1 if the column is aggregated (NULL due to
+                            grouping), 0 if it's a real value. Useful to distinguish NULL values from aggregation NULLs.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: ROLLUP for Hierarchical Totals</h4>
+                    <p>Create a hierarchical sales report: Year > Quarter > Month with subtotals at each level.</p>
+
+                    <p><strong>Task:</strong> Use ROLLUP to automatically generate subtotals.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+                    <div id="sol2_2" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> year,
+    <span class="fu">EXTRACT</span>(<span class="kw">QUARTER</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> quarter,
+    <span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> month,
+    <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_sales,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
+    <span class="cf">CASE</span>
+        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Grand Total'</span>
+        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">QUARTER</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Year Total'</span>
+        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Quarter Total'</span>
+        <span class="cf">ELSE</span> <span class="st">'Month Detail'</span>
+    <span class="cf">END</span> <span class="kw">AS</span> level_type
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> <span class="kw">ROLLUP</span> (
+    <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date),
+    <span class="fu">EXTRACT</span>(<span class="kw">QUARTER</span> <span class="kw">FROM</span> order_date),
+    <span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> order_date)
+)
+<span class="kw">ORDER BY</span> year <span class="kw">NULLS LAST</span>, quarter <span class="kw">NULLS LAST</span>, month <span class="kw">NULLS LAST</span>;</code></pre>
+
+                        <p><strong>ROLLUP generates:</strong></p>
+                        <ul>
+                            <li>(year, quarter, month) - Detail rows</li>
+                            <li>(year, quarter) - Quarterly subtotals</li>
+                            <li>(year) - Yearly subtotals</li>
+                            <li>() - Grand total</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.3: Conditional Aggregation with FILTER</h4>
+                    <p>Create a report showing total orders, completed orders, and cancelled orders per month.</p>
+
+                    <p><strong>Task:</strong> Use the FILTER clause for conditional counting.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
+                    <div id="sol2_3" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) <span class="kw">AS</span> month,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders,
+    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'completed'</span>) <span class="kw">AS</span> completed,
+    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'cancelled'</span>) <span class="kw">AS</span> cancelled,
+    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'pending'</span>) <span class="kw">AS</span> pending,
+    <span class="fu">ROUND</span>(
+        <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'completed'</span>) * <span class="fl">100.0</span> / <span class="fu">COUNT</span>(*),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> completion_rate,
+    <span class="fu">SUM</span>(amount) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'completed'</span>) <span class="kw">AS</span> completed_revenue
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date)
+<span class="kw">ORDER BY</span> month;</code></pre>
+
+                        <div class="hint-box">
+                            <strong>Alternative (without FILTER):</strong>
+                            <pre><code class="sourceCode sql"><span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> status = <span class="st">'completed'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> completed</code></pre>
+                            FILTER is cleaner and PostgreSQL-specific.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.4: Statistical Aggregations</h4>
+                    <p>Calculate statistical metrics for product prices within each category.</p>
+
+                    <p><strong>Task:</strong> Compute mean, median, standard deviation, and identify outliers.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Show Solution</button>
+                    <div id="sol2_4" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    c.category_name,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> product_count,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(p.price), <span class="dv">2</span>) <span class="kw">AS</span> avg_price,
+    <span class="fu">ROUND</span>(
+        <span class="fu">PERCENTILE_CONT</span>(<span class="fl">0.5</span>) <span class="kw">WITHIN GROUP</span> (<span class="kw">ORDER BY</span> p.price),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> median_price,
+    <span class="fu">ROUND</span>(<span class="fu">STDDEV</span>(p.price), <span class="dv">2</span>) <span class="kw">AS</span> stddev_price,
+    <span class="fu">MIN</span>(p.price) <span class="kw">AS</span> min_price,
+    <span class="fu">MAX</span>(p.price) <span class="kw">AS</span> max_price,
+    <span class="fu">ROUND</span>(
+        <span class="fu">PERCENTILE_CONT</span>(<span class="fl">0.25</span>) <span class="kw">WITHIN GROUP</span> (<span class="kw">ORDER BY</span> p.price),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> q1,
+    <span class="fu">ROUND</span>(
+        <span class="fu">PERCENTILE_CONT</span>(<span class="fl">0.75</span>) <span class="kw">WITHIN GROUP</span> (<span class="kw">ORDER BY</span> p.price),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> q3
+<span class="kw">FROM</span> products p
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
+<span class="kw">GROUP BY</span> c.category_name
+<span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>;</code></pre>
+
+                        <p><strong>Finding Outliers (Z-Score > 2):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span> category_stats <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        p.product_id,
+        p.name,
+        p.price,
+        c.category_name,
+        <span class="fu">AVG</span>(p.price) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.category_id) <span class="kw">AS</span> avg_price,
+        <span class="fu">STDDEV</span>(p.price) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.category_id) <span class="kw">AS</span> stddev_price
+    <span class="kw">FROM</span> products p
+    <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
+)
+<span class="kw">SELECT</span>
+    name,
+    category_name,
+    price,
+    <span class="fu">ROUND</span>((price - avg_price) / <span class="fu">NULLIF</span>(stddev_price, <span class="dv">0</span>), <span class="dv">2</span>) <span class="kw">AS</span> z_score
+<span class="kw">FROM</span> category_stats
+<span class="kw">WHERE</span> <span class="fu">ABS</span>((price - avg_price) / <span class="fu">NULLIF</span>(stddev_price, <span class="dv">0</span>)) > <span class="dv">2</span>;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 3: CTEs for Complex Analytics -->
+            <section>
+                <h2>Part 3: CTEs for Complex Analytics</h2>
+                <p>Build multi-step analytics queries with Common Table Expressions.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Cohort Retention Analysis</h4>
+                    <p>Build a cohort analysis showing customer retention by their first purchase month.</p>
+
+                    <p><strong>Task:</strong> Calculate what percentage of customers from each cohort made purchases in
+                        subsequent months.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
+                    <div id="sol3_1" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span>
+<span class="co">-- Step 1: Identify each customer's cohort (first purchase month)</span>
+customer_cohort <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        customer_id,
+        <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">MIN</span>(order_date)) <span class="kw">AS</span> cohort_month
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> customer_id
+),
+<span class="co">-- Step 2: Calculate months since cohort for each order</span>
+customer_activity <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        cc.customer_id,
+        cc.cohort_month,
+        <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> activity_month,
+        (<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)) -
+         <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> cc.cohort_month)) * <span class="dv">12</span> +
+        (<span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)) -
+         <span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> cc.cohort_month)) <span class="kw">AS</span> months_since_cohort
+    <span class="kw">FROM</span> customer_cohort cc
+    <span class="kw">JOIN</span> orders o <span class="kw">ON</span> cc.customer_id = o.customer_id
+),
+<span class="co">-- Step 3: Count cohort size</span>
+cohort_size <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        cohort_month,
+        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> cohort_customers
+    <span class="kw">FROM</span> customer_cohort
+    <span class="kw">GROUP BY</span> cohort_month
+),
+<span class="co">-- Step 4: Count active customers per cohort per period</span>
+retention_data <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        cohort_month,
+        months_since_cohort,
+        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> active_customers
+    <span class="kw">FROM</span> customer_activity
+    <span class="kw">GROUP BY</span> cohort_month, months_since_cohort
+)
+<span class="co">-- Final: Calculate retention rate</span>
+<span class="kw">SELECT</span>
+    r.cohort_month,
+    cs.cohort_customers,
+    r.months_since_cohort,
+    r.active_customers,
+    <span class="fu">ROUND</span>(r.active_customers * <span class="fl">100.0</span> / cs.cohort_customers, <span class="dv">1</span>) <span class="kw">AS</span> retention_pct
+<span class="kw">FROM</span> retention_data r
+<span class="kw">JOIN</span> cohort_size cs <span class="kw">ON</span> r.cohort_month = cs.cohort_month
+<span class="kw">WHERE</span> r.months_since_cohort <= <span class="dv">12</span>
+<span class="kw">ORDER BY</span> r.cohort_month, r.months_since_cohort;</code></pre>
+
+                        <div class="visual-demo">
+                            <h6>Cohort Retention Heatmap Concept</h6>
+                            <table class="table table-sm table-bordered" style="font-size: 0.8em;">
+                                <thead>
+                                    <tr>
+                                        <th>Cohort</th>
+                                        <th>M0</th>
+                                        <th>M1</th>
+                                        <th>M2</th>
+                                        <th>M3</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Jan 2024</td>
+                                        <td style="background: #198754; color: white;">100%</td>
+                                        <td style="background: #28a745; color: white;">45%</td>
+                                        <td style="background: #5cb85c; color: white;">32%</td>
+                                        <td style="background: #8bc34a;">28%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Feb 2024</td>
+                                        <td style="background: #198754; color: white;">100%</td>
+                                        <td style="background: #28a745; color: white;">52%</td>
+                                        <td style="background: #5cb85c; color: white;">38%</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Customer Lifetime Value (CLV)</h4>
+                    <p>Calculate customer lifetime value metrics and segment customers.</p>
+
+                    <p><strong>Task:</strong> Compute total spent, frequency, recency, and project future value.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
+                    <div id="sol3_2" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span>
+customer_metrics <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        customer_id,
+        <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders,
+        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_spent,
+        <span class="fu">AVG</span>(amount) <span class="kw">AS</span> avg_order_value,
+        <span class="fu">MIN</span>(order_date) <span class="kw">AS</span> first_order,
+        <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> last_order,
+        <span class="fu">CURRENT_DATE</span> - <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> days_since_last,
+        <span class="fu">MAX</span>(order_date) - <span class="fu">MIN</span>(order_date) <span class="kw">AS</span> customer_lifespan_days
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> customer_id
+),
+customer_segments <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        *,
+        <span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>) <span class="kw">AS</span> spending_quartile,
+        <span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> total_orders <span class="kw">DESC</span>) <span class="kw">AS</span> frequency_quartile,
+        <span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> days_since_last <span class="kw">ASC</span>) <span class="kw">AS</span> recency_quartile,
+        <span class="co">-- Project CLV (simple model: avg * expected orders)</span>
+        <span class="cf">CASE</span>
+            <span class="cf">WHEN</span> customer_lifespan_days > <span class="dv">0</span> <span class="cf">THEN</span>
+                (total_orders::float / <span class="fu">GREATEST</span>(customer_lifespan_days, <span class="dv">1</span>)) * <span class="dv">365</span>
+            <span class="cf">ELSE</span> <span class="dv">1</span>
+        <span class="cf">END</span> <span class="kw">AS</span> orders_per_year,
+        avg_order_value * <span class="dv">3</span> * <span class="co">-- 3-year projection</span>
+        <span class="cf">CASE</span>
+            <span class="cf">WHEN</span> customer_lifespan_days > <span class="dv">0</span> <span class="cf">THEN</span>
+                (total_orders::float / <span class="fu">GREATEST</span>(customer_lifespan_days, <span class="dv">1</span>)) * <span class="dv">365</span>
+            <span class="cf">ELSE</span> <span class="dv">1</span>
+        <span class="cf">END</span> <span class="kw">AS</span> projected_3yr_value
+    <span class="kw">FROM</span> customer_metrics
+)
+<span class="kw">SELECT</span>
+    <span class="cf">CASE</span>
+        <span class="cf">WHEN</span> spending_quartile = <span class="dv">1</span> <span class="kw">AND</span> frequency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Champions'</span>
+        <span class="cf">WHEN</span> spending_quartile <= <span class="dv">2</span> <span class="kw">AND</span> recency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Loyal'</span>
+        <span class="cf">WHEN</span> recency_quartile >= <span class="dv">3</span> <span class="kw">AND</span> spending_quartile <= <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'At Risk'</span>
+        <span class="cf">WHEN</span> recency_quartile = <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Lost'</span>
+        <span class="cf">ELSE</span> <span class="st">'Regular'</span>
+    <span class="cf">END</span> <span class="kw">AS</span> segment,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> customer_count,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_spent), <span class="dv">2</span>) <span class="kw">AS</span> avg_total_spent,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_orders), <span class="dv">1</span>) <span class="kw">AS</span> avg_orders,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(projected_3yr_value), <span class="dv">2</span>) <span class="kw">AS</span> avg_projected_clv
+<span class="kw">FROM</span> customer_segments
+<span class="kw">GROUP BY</span> <span class="dv">1</span>
+<span class="kw">ORDER BY</span> avg_total_spent <span class="kw">DESC</span>;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.3: Recursive CTE - Organization Hierarchy</h4>
+                    <p>Build a complete organization tree showing reporting chains.</p>
+
+                    <p><strong>Task:</strong> Use recursive CTE to traverse the employee-manager relationship.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
+                    <div id="sol3_3" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH RECURSIVE</span> org_hierarchy <span class="kw">AS</span> (
+    <span class="co">-- Base case: top-level employees (no manager)</span>
+    <span class="kw">SELECT</span>
+        id,
+        name,
+        manager_id,
+        <span class="dv">1</span> <span class="kw">AS</span> level,
+        name <span class="kw">AS</span> path,
+        <span class="kw">ARRAY</span>[id] <span class="kw">AS</span> path_ids
+    <span class="kw">FROM</span> employees
+    <span class="kw">WHERE</span> manager_id <span class="kw">IS NULL</span>
+
+    <span class="kw">UNION ALL</span>
+
+    <span class="co">-- Recursive case: employees with managers</span>
+    <span class="kw">SELECT</span>
+        e.id,
+        e.name,
+        e.manager_id,
+        oh.level + <span class="dv">1</span>,
+        oh.path || <span class="st">' > '</span> || e.name,
+        oh.path_ids || e.id
+    <span class="kw">FROM</span> employees e
+    <span class="kw">JOIN</span> org_hierarchy oh <span class="kw">ON</span> e.manager_id = oh.id
+)
+<span class="kw">SELECT</span>
+    <span class="fu">REPEAT</span>(<span class="st">'  '</span>, level - <span class="dv">1</span>) || name <span class="kw">AS</span> employee_tree,
+    level,
+    path,
+    <span class="fu">ARRAY_LENGTH</span>(path_ids, <span class="dv">1</span>) <span class="kw">AS</span> depth
+<span class="kw">FROM</span> org_hierarchy
+<span class="kw">ORDER BY</span> path;</code></pre>
+
+                        <p><strong>Example Output:</strong></p>
+                        <pre>
+employee_tree         | level | path
+----------------------+-------+---------------------------
+Alice (CEO)           | 1     | Alice (CEO)
+  Bob (VP Sales)      | 2     | Alice (CEO) > Bob (VP Sales)
+    Carol (Manager)   | 3     | Alice (CEO) > Bob > Carol
+    Dave (Manager)    | 3     | Alice (CEO) > Bob > Dave
+  Eve (VP Engineering)| 2     | Alice (CEO) > Eve
+    Frank (Dev)       | 3     | Alice (CEO) > Eve > Frank
+                        </pre>
+
+                        <div class="warning-box">
+                            <strong>Recursive CTE Caution:</strong> Always ensure there's a termination condition.
+                            Circular references will cause infinite loops. Use <code>CYCLE</code> detection in
+                            PostgreSQL 14+.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 4: Data Visualization Prep -->
+            <section>
+                <h2>Part 4: Preparing Data for Visualization</h2>
+                <p>Format query results for charts, graphs, and dashboards.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Time Series for Line Charts</h4>
+                    <p>Prepare daily sales data with filled gaps for continuous line charts.</p>
+
+                    <p><strong>Task:</strong> Generate a series of all dates and join with actual sales (filling gaps
+                        with 0).</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
+                    <div id="sol4_1" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span>
+date_range <span class="kw">AS</span> (
+    <span class="kw">SELECT</span> <span class="fu">generate_series</span>(
+        (<span class="kw">SELECT</span> <span class="fu">MIN</span>(order_date) <span class="kw">FROM</span> orders),
+        (<span class="kw">SELECT</span> <span class="fu">MAX</span>(order_date) <span class="kw">FROM</span> orders),
+        <span class="st">'1 day'</span>::interval
+    )::date <span class="kw">AS</span> date
+),
+daily_sales <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        order_date,
+        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> sales,
+        <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> order_date
+)
+<span class="kw">SELECT</span>
+    dr.date,
+    <span class="fu">COALESCE</span>(ds.sales, <span class="dv">0</span>) <span class="kw">AS</span> sales,
+    <span class="fu">COALESCE</span>(ds.order_count, <span class="dv">0</span>) <span class="kw">AS</span> order_count,
+    <span class="co">-- 7-day moving average</span>
+    <span class="fu">ROUND</span>(
+        <span class="fu">AVG</span>(<span class="fu">COALESCE</span>(ds.sales, <span class="dv">0</span>)) <span class="kw">OVER</span> (
+            <span class="kw">ORDER BY</span> dr.date
+            <span class="kw">ROWS BETWEEN</span> <span class="dv">6</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
+        ),
+        <span class="dv">2</span>
+    ) <span class="kw">AS</span> moving_avg
+<span class="kw">FROM</span> date_range dr
+<span class="kw">LEFT JOIN</span> daily_sales ds <span class="kw">ON</span> dr.date = ds.order_date
+<span class="kw">ORDER BY</span> dr.date;</code></pre>
+
+                        <div class="visual-demo">
+                            <h6>Line Chart Ready Data</h6>
+                            <div class="bar-chart">
+                                <div class="bar" style="height: 80px;">
+                                    <span class="bar-value">$800</span>
+                                    <span class="bar-label">Mon</span>
+                                </div>
+                                <div class="bar" style="height: 60px;">
+                                    <span class="bar-value">$600</span>
+                                    <span class="bar-label">Tue</span>
+                                </div>
+                                <div class="bar" style="height: 0px; background: #ddd;">
+                                    <span class="bar-value">$0</span>
+                                    <span class="bar-label">Wed</span>
+                                </div>
+                                <div class="bar" style="height: 100px;">
+                                    <span class="bar-value">$1000</span>
+                                    <span class="bar-label">Thu</span>
+                                </div>
+                                <div class="bar" style="height: 90px;">
+                                    <span class="bar-value">$900</span>
+                                    <span class="bar-label">Fri</span>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.8em; color: #666;">Gap filled with $0 for Wednesday</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.2: Pivot Data for Heatmaps</h4>
+                    <p>Create a heatmap-ready dataset showing sales by day of week and hour.</p>
+
+                    <p><strong>Task:</strong> Aggregate by day/hour for visualization.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol4_2')">Show Solution</button>
+                    <div id="sol4_2" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) <span class="kw">AS</span> day_of_week,
+    <span class="cf">CASE</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date)
+        <span class="cf">WHEN</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">'Sunday'</span>
+        <span class="cf">WHEN</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Monday'</span>
+        <span class="cf">WHEN</span> <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'Tuesday'</span>
+        <span class="cf">WHEN</span> <span class="dv">3</span> <span class="cf">THEN</span> <span class="st">'Wednesday'</span>
+        <span class="cf">WHEN</span> <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Thursday'</span>
+        <span class="cf">WHEN</span> <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Friday'</span>
+        <span class="cf">WHEN</span> <span class="dv">6</span> <span class="cf">THEN</span> <span class="st">'Saturday'</span>
+    <span class="cf">END</span> <span class="kw">AS</span> day_name,
+    <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time) <span class="kw">AS</span> hour_of_day,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_sales,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(amount), <span class="dv">2</span>) <span class="kw">AS</span> avg_order_value
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span>
+    <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date),
+    <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time)
+<span class="kw">ORDER BY</span> day_of_week, hour_of_day;</code></pre>
+
+                        <p><strong>Pivoted format for visualization tools:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time) <span class="kw">AS</span> hour,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">0</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> sunday,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">1</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> monday,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">2</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> tuesday,
+    <span class="co">-- ... etc</span>
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time)
+<span class="kw">ORDER BY</span> hour;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.3: Export as JSON for APIs/Dashboards</h4>
+                    <p>Generate JSON-formatted data for web dashboards.</p>
+
+                    <p><strong>Task:</strong> Use JSON aggregation functions to build structured output.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol4_3')">Show Solution</button>
+                    <div id="sol4_3" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- Category sales with products nested</span>
+<span class="kw">SELECT</span>
+    <span class="fu">JSON_BUILD_OBJECT</span>(
+        <span class="st">'report_date'</span>, <span class="fu">CURRENT_DATE</span>,
+        <span class="st">'categories'</span>, (
+            <span class="kw">SELECT</span> <span class="fu">JSON_AGG</span>(category_data)
+            <span class="kw">FROM</span> (
+                <span class="kw">SELECT</span>
+                    <span class="fu">JSON_BUILD_OBJECT</span>(
+                        <span class="st">'name'</span>, c.category_name,
+                        <span class="st">'total_sales'</span>, <span class="fu">SUM</span>(oi.quantity * oi.price),
+                        <span class="st">'order_count'</span>, <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id),
+                        <span class="st">'top_products'</span>, (
+                            <span class="kw">SELECT</span> <span class="fu">JSON_AGG</span>(prod)
+                            <span class="kw">FROM</span> (
+                                <span class="kw">SELECT</span>
+                                    <span class="fu">JSON_BUILD_OBJECT</span>(
+                                        <span class="st">'name'</span>, p2.name,
+                                        <span class="st">'sales'</span>, <span class="fu">SUM</span>(oi2.quantity * oi2.price)
+                                    ) <span class="kw">AS</span> prod
+                                <span class="kw">FROM</span> products p2
+                                <span class="kw">JOIN</span> order_items oi2 <span class="kw">ON</span> p2.product_id = oi2.product_id
+                                <span class="kw">WHERE</span> p2.category_id = c.category_id
+                                <span class="kw">GROUP BY</span> p2.product_id, p2.name
+                                <span class="kw">ORDER BY</span> <span class="fu">SUM</span>(oi2.quantity * oi2.price) <span class="kw">DESC</span>
+                                <span class="kw">LIMIT</span> <span class="dv">3</span>
+                            ) top_prods
+                        )
+                    ) <span class="kw">AS</span> category_data
+                <span class="kw">FROM</span> categories c
+                <span class="kw">JOIN</span> products p <span class="kw">ON</span> c.category_id = p.category_id
+                <span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> p.product_id = oi.product_id
+                <span class="kw">JOIN</span> orders o <span class="kw">ON</span> oi.order_id = o.order_id
+                <span class="kw">GROUP BY</span> c.category_id, c.category_name
+            ) cats
+        )
+    ) <span class="kw">AS</span> dashboard_data;</code></pre>
+
+                        <p><strong>Output structure:</strong></p>
+                        <pre>{
+  "report_date": "2024-06-15",
+  "categories": [
+    {
+      "name": "Electronics",
+      "total_sales": 125000,
+      "order_count": 450,
+      "top_products": [
+        {"name": "Laptop Pro", "sales": 45000},
+        {"name": "Wireless Mouse", "sales": 12000}
+      ]
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 5: Challenge -->
+            <section>
+                <h2>Part 5: Challenge Exercise</h2>
+
+                <div class="exercise-box">
+                    <h4>Challenge: Executive Dashboard Query</h4>
+                    <p>Build a comprehensive dashboard query that combines multiple analytics techniques.</p>
+
+                    <p><strong>Requirements:</strong></p>
+                    <ul>
+                        <li>Current month vs previous month sales comparison</li>
+                        <li>Top 5 products by revenue</li>
+                        <li>Customer segment distribution</li>
+                        <li>Daily sales trend with moving average</li>
+                    </ul>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol5_1')">Show Solution</button>
+                    <div id="sol5_1" class="solution">
+                        <pre><code class="sourceCode sql"><span class="kw">WITH</span>
+<span class="co">-- Monthly comparison</span>
+monthly_comparison <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
+            <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> current_month,
+        <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span> - <span class="kw">INTERVAL</span> <span class="st">'1 month'</span>)
+            <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> previous_month
+    <span class="kw">FROM</span> orders
+),
+<span class="co">-- Top products</span>
+top_products <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        p.name,
+        <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> revenue,
+        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">DESC</span>) <span class="kw">AS</span> rank
+    <span class="kw">FROM</span> products p
+    <span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> p.product_id = oi.product_id
+    <span class="kw">JOIN</span> orders o <span class="kw">ON</span> oi.order_id = o.order_id
+    <span class="kw">WHERE</span> o.order_date >= <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
+    <span class="kw">GROUP BY</span> p.product_id, p.name
+),
+<span class="co">-- Customer segments</span>
+customer_segments <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        <span class="cf">CASE</span>
+            <span class="cf">WHEN</span> total_orders >= <span class="dv">10</span> <span class="cf">THEN</span> <span class="st">'VIP'</span>
+            <span class="cf">WHEN</span> total_orders >= <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Regular'</span>
+            <span class="cf">ELSE</span> <span class="st">'Occasional'</span>
+        <span class="cf">END</span> <span class="kw">AS</span> segment,
+        <span class="fu">COUNT</span>(*) <span class="kw">AS</span> count
+    <span class="kw">FROM</span> (
+        <span class="kw">SELECT</span> customer_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
+        <span class="kw">FROM</span> orders
+        <span class="kw">GROUP BY</span> customer_id
+    ) cust
+    <span class="kw">GROUP BY</span> <span class="dv">1</span>
+),
+<span class="co">-- Daily trend</span>
+daily_trend <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        order_date,
+        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> daily_sales,
+        <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="fu">SUM</span>(amount)) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date <span class="kw">ROWS</span> <span class="dv">6</span> <span class="kw">PRECEDING</span>), <span class="dv">2</span>) <span class="kw">AS</span> ma_7d
+    <span class="kw">FROM</span> orders
+    <span class="kw">WHERE</span> order_date >= <span class="fu">CURRENT_DATE</span> - <span class="dv">30</span>
+    <span class="kw">GROUP BY</span> order_date
+)
+<span class="kw">SELECT</span>
+    <span class="fu">JSON_BUILD_OBJECT</span>(
+        <span class="st">'summary'</span>, (
+            <span class="kw">SELECT</span> <span class="fu">JSON_BUILD_OBJECT</span>(
+                <span class="st">'current_month_sales'</span>, current_month,
+                <span class="st">'previous_month_sales'</span>, previous_month,
+                <span class="st">'growth_pct'</span>, <span class="fu">ROUND</span>((current_month - previous_month) * <span class="fl">100.0</span> / <span class="fu">NULLIF</span>(previous_month, <span class="dv">0</span>), <span class="dv">2</span>)
+            )
+            <span class="kw">FROM</span> monthly_comparison
+        ),
+        <span class="st">'top_products'</span>, (<span class="kw">SELECT</span> <span class="fu">JSON_AGG</span>(<span class="fu">JSON_BUILD_OBJECT</span>(<span class="st">'name'</span>, name, <span class="st">'revenue'</span>, revenue)) <span class="kw">FROM</span> top_products <span class="kw">WHERE</span> rank <= <span class="dv">5</span>),
+        <span class="st">'segments'</span>, (<span class="kw">SELECT</span> <span class="fu">JSON_AGG</span>(<span class="fu">JSON_BUILD_OBJECT</span>(<span class="st">'segment'</span>, segment, <span class="st">'count'</span>, count)) <span class="kw">FROM</span> customer_segments),
+        <span class="st">'daily_trend'</span>, (<span class="kw">SELECT</span> <span class="fu">JSON_AGG</span>(<span class="fu">JSON_BUILD_OBJECT</span>(<span class="st">'date'</span>, order_date, <span class="st">'sales'</span>, daily_sales, <span class="st">'ma'</span>, ma_7d) <span class="kw">ORDER BY</span> order_date) <span class="kw">FROM</span> daily_trend)
+    ) <span class="kw">AS</span> dashboard;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h3>Key Takeaways</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Key Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Window Functions</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Use PARTITION BY to create groups without aggregating</li>
+                                    <li>LAG/LEAD access adjacent rows for comparisons</li>
+                                    <li>Frame clauses control which rows are included</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Advanced Aggregations</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>GROUPING SETS for multiple summary levels</li>
+                                    <li>ROLLUP for hierarchical subtotals</li>
+                                    <li>FILTER for conditional aggregation</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>CTEs</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Chain CTEs for step-by-step analytics</li>
+                                    <li>Recursive CTEs for hierarchical data</li>
+                                    <li>Improve readability of complex queries</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Visualization Prep</strong></td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li>Fill date gaps with generate_series</li>
+                                    <li>Use JSON functions for API-ready output</li>
+                                    <li>Pre-aggregate at the visualization level</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <div class="d-flex justify-content-between">
+                    <a href="02_analytics_data_visualization.html" class="btn btn-outline-primary">&larr; Back to
+                        Lesson</a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script>
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+                event.target.textContent = 'Show Solution';
+            } else {
+                element.classList.add('show');
+                event.target.textContent = 'Hide Solution';
+            }
+        }
+    </script>
+</body>
+
+</html>

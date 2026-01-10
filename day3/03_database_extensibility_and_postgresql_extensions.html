@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/03_database_extensibility_and_postgresql_extensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/code.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Database Extensibility and PostgreSQL Extensions</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-database-extensibility-and-postgresql-extensions">Day 3: Database Extensibility and
+                    PostgreSQL
+                    Extensions</h1>
+                <h2 id="session-3-database-extensibility-and-postgresql-extensions-2-hours">Session 3: Database
+                    Extensibility and PostgreSQL Extensions (2 hours)</h2>
+                <h3 id="the-concept-of-database-extensibility">The Concept of Database Extensibility</h3>
+                <p>Modern database systems often need to go beyond the core SQL standards and built-in features to meet
+                    specific application requirements. Database extensibility refers to the mechanisms provided by an
+                    RDBMS
+                    to add new functionality, data types, operators, indexing methods, or procedural languages without
+                    modifying the core database engine code.</p>
+                <p><strong>Why Extend a Database?</strong></p>
+                <ul>
+                    <li><strong>Domain-Specific Needs</strong>: Adding specialized data types or functions for specific
+                        fields like GIS, bioinformatics, finance, etc.</li>
+                    <li><strong>Performance Optimization</strong>: Implementing custom index types or functions
+                        optimized
+                        for particular workloads.</li>
+                    <li><strong>Integration</strong>: Connecting with external systems or libraries.</li>
+                    <li><strong>New Features</strong>: Incorporating functionality not yet part of the standard SQL or
+                        the
+                        core RDBMS (e.g., advanced cryptographic functions, fuzzy text search).</li>
+                    <li><strong>Code Reusability</strong>: Packaging complex logic into reusable functions or
+                        procedures.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Common Extensibility Mechanisms Across Databases</strong>:</p>
+                <p>While implementation details vary greatly, common approaches include:</p>
+                <ol type="1">
+                    <li><strong>User-Defined Functions (UDFs) and Stored Procedures</strong>: Most databases allow users
+                        to
+                        write custom functions and procedures using SQL, procedural languages (like PL/pgSQL, T-SQL,
+                        PL/SQL), or even external languages (Python, Java, C#, C).</li>
+                    <li><strong>User-Defined Types (UDTs)</strong>: Creating custom data types based on existing ones or
+                        as
+                        composite structures.</li>
+                    <li><strong>User-Defined Aggregates (UDAs)</strong>: Creating custom aggregate functions.</li>
+                    <li><strong>Custom Operators</strong>: Defining new operators for specific data types or logic.</li>
+                    <li><strong>Plugin/Extension Architectures</strong>: Formal systems for packaging and installing
+                        bundles
+                        of related functionality (e.g., PostgreSQL Extensions, MySQL Plugins).</li>
+                    <li><strong>Foreign Data Wrappers (FDWs)</strong>: Mechanisms to access data residing outside the
+                        database as if it were local tables (part of SQL/MED standard, well-supported in PostgreSQL).
+                    </li>
+                    <li><strong>External Language Integration</strong>: Calling code written in languages like C, Java,
+                        Python, etc., from within the database (e.g., SQL Server CLR Integration, Oracle External
+                        Procedures, PostgreSQL PL/Python, PL/Perl, PL/Java).</li>
+                </ol>
+            </section>
+            <section>
+                <h3 id="extensibility-in-different-rdbms-brief-overview">Extensibility in Different RDBMS (Brief
+                    Overview)
+                </h3>
+                <ul>
+                    <li><strong>PostgreSQL</strong>: Has a robust <strong>Extension</strong> system. Extensions are
+                        packaged
+                        modules that can add types, functions, operators, index types, etc. Examples include PostGIS
+                        (spatial), pg_trgm (fuzzy search), pgcrypto (cryptography). Also supports UDFs in various
+                        languages
+                        (PL/pgSQL, PL/Python, PL/Perl, PL/Tcl, PL/Java, C, etc.) and FDWs.</li>
+                    <li><strong>Oracle</strong>: Relies heavily on <strong>PL/SQL</strong> for procedural logic,
+                        <strong>Packages</strong> (grouping related procedures, functions, types), Java Stored
+                        Procedures,
+                        and External Procedures (calling C code).
+                    </li>
+                    <li><strong>SQL Server</strong>: Uses <strong>T-SQL</strong> for procedural logic, <strong>CLR
+                            Integration</strong> (allowing managed .NET code to run inside the database), and External
+                        Scripts (e.g., Python, R).</li>
+                    <li><strong>MySQL</strong>: Supports Stored Procedures/Functions in SQL, <strong>User-Defined
+                            Functions
+                            (UDFs)</strong> written in C/C++, and a <strong>Plugin API</strong> for more extensive
+                        additions
+                        (like storage engines or full-text parsers).</li>
+                    <li><strong>Db2</strong>: Supports SQL PL, Java Stored Procedures, and external UDFs.</li>
+                </ul>
+            </section>
+            <section>
+                <h3 id="postgresql-extensions-a-case-study">PostgreSQL Extensions: A Case Study</h3>
+                <p>Since this workshop uses PostgreSQL, we will focus on its powerful extension system. Extensions
+                    provide a
+                    clean, versioned, and manageable way to add significant capabilities.</p>
+                <p><strong>Managing Extensions in PostgreSQL</strong>:</p>
+                <ul>
+                    <li><strong>Availability</strong>: Extensions must first be installed on the server filesystem
+                        (often
+                        via OS package manager, e.g., <code>apt install postgresql-14-postgis-3</code>).</li>
+                    <li><strong>Listing</strong>:
+                        <code>SELECT name, default_version, comment FROM pg_available_extensions;</code> shows
+                        extensions
+                        available for installation in a database.
+                    </li>
+                    <li><strong>Installation</strong>:
+                        <code>CREATE EXTENSION extension_name [SCHEMA schema_name] [VERSION version_number];</code>
+                        installs
+                        the extension's objects (tables, functions, types) into the current database, typically within a
+                        specified or default schema.
+                    </li>
+                    <li><strong>Updating</strong>:
+                        <code>ALTER EXTENSION extension_name UPDATE [TO version_number];</code>
+                        upgrades an installed extension to a newer version (requires the new version's files to be
+                        installed
+                        on the server).
+                    </li>
+                    <li><strong>Removal</strong>: <code>DROP EXTENSION extension_name [CASCADE];</code> removes the
+                        extension's objects from the database.</li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Common and Useful PostgreSQL Extensions</strong>:</p>
+                <p><em>(Note: These are PostgreSQL-specific examples illustrating the power of its extensibility
+                        model)</em>
+                </p>
+                <ol type="1">
+                    <li>
+                        <p><strong><code>pg_stat_statements</code></strong>: Tracks execution statistics for all SQL
+                            queries. Essential for performance monitoring and tuning.</p>
+                        <div class="sourceCode" id="cb2">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Query pg_stat_statements view for slow or frequent queries</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> pg_stat_statements;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">SELECT</span> query, calls, total_exec_time, rows <span class="kw">FROM</span> pg_stat_statements <span class="kw">ORDER BY</span> total_exec_time <span class="kw">DESC LIMIT</span> 10;</span></code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>pgcrypto</code></strong>: Provides cryptographic functions (hashing,
+                            encryption/decryption).</p>
+                        <div class="sourceCode" id="cb2">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Query pg_stat_statements view for slow or frequent queries</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> pgcrypto;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">SELECT</span> crypt("password123", gen_salt("bf"));</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">SELECT</span> encrypt("sensitive data", "secret_key", "aes");</span></code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>uuid-ossp</code></strong>: Generates various types of Universally Unique
+                            Identifiers (UUIDs).</p>
+                        <div class="sourceCode" id="code1" onclick="CopyToClipboard('code1')">
+                            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION</span> <span class="kw">IF NOT EXISTS</span> <span class="st">"uuid-ossp"</span>;
+<span class="co">-- Generate a random UUID (Version 4)</span>
+<span class="kw">SELECT</span> <span class="fu">uuid_generate_v4</span>();
+<span class="co">-- Use as a default value for a primary key</span>
+<span class="kw">CREATE TABLE</span> items (
+    item_id <span class="kw">UUID PRIMARY KEY DEFAULT</span> <span class="fu">uuid_generate_v4</span>(),
+    name <span class="kw">TEXT</span>
+);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Common and Useful PostgreSQL Extensions</strong>:</p>
+                <p><em>(Note: These are PostgreSQL-specific examples illustrating the power of its extensibility
+                        model)</em>
+                </p>
+                <ol type="1" start="4">
+                    <li>
+                        <p><strong><code>hstore</code></strong>: Provides a key-value store data type. Useful for
+                            semi-structured data (though <code>JSONB</code> is often preferred now).</p>
+                        <div class="sourceCode" id="code2" onclick="CopyToClipboard('code2')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> hstore;<span class="kw">CREATE TABLE</span> products_legacy (
+    id <span class="kw">INT</span>,
+    attributes <span class="kw">HSTORE</span>
+);
+<span class="kw">INSERT INTO</span> products_legacy <span class="kw">VALUES</span> (1, <span class="st">'color=>red, size=>large'</span>);
+<span class="kw">SELECT</span> attributes -&gt; <span class="st">'color'</span> <span class="kw">FROM</span> products_legacy <span class="kw">WHERE</span> id = 1;</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>pg_trgm</code></strong>: Supports trigram matching for fuzzy text search and
+                            similarity measurement.</p>
+                        <div class="sourceCode" id="code3" onclick="CopyToClipboard('code3')">
+                            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> pg_trgm;
+<span class="co">-- Find similar names</span>
+<span class="kw">SELECT</span> name, <span class="fu">similarity</span>(name, <span class="st">'PostgresQL'</span>) 
+<span class="kw">FROM</span> products 
+<span class="kw">WHERE</span> name % <span class="st">'PostgresQL'</span>;
+<span class="co">-- Requires a GIN or GiST index using *_trgm_ops for performance</span>
+<span class="kw">CREATE INDEX</span> idx_products_name_trgm 
+<span class="kw">ON</span> products <span class="kw">USING</span> gin (name gin_trgm_ops);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Common and Useful PostgreSQL Extensions</strong>:</p>
+                <p><em>(Note: These are PostgreSQL-specific examples illustrating the power of its extensibility
+                        model)</em>
+                </p>
+                <ol type="1" start="6">
+                    <li>
+                        <p><strong><code>ltree</code></strong>: Data type for representing and querying hierarchical
+                            tree structures (e.g., categories, organizational charts).</p>
+                        <div class="sourceCode" id="code4" onclick="CopyToClipboard('code4')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> ltree;
+<span class="kw">CREATE TABLE</span> categories (
+    id <span class="kw">INT</span>,
+    path <span class="kw">LTREE</span>
+);
+<span class="kw">INSERT INTO</span> categories <span class="kw">VALUES</span> (1, <span class="st">'Top.Electronics.Computers.Laptops'</span>);
+<span class="co">-- Find all descendants of Electronics</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> categories <span class="kw">WHERE</span> path &lt;@ <span class="st">'Top.Electronics'</span>;</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>tablefunc</code></strong>: Provides functions that return tables, notably
+                            <code>crosstab</code> for creating pivot tables.
+                        </p>
+                        <div class="sourceCode" id="code5" onclick="CopyToClipboard('code5')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> tablefunc;
+<span class="co">-- Example: Pivot sales data by year</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> crosstab(
+    <span class="st">'SELECT product, year, sales FROM sales_summary ORDER BY 1,2'</span>,
+    <span class="st">'SELECT DISTINCT year FROM sales_summary ORDER BY 1'</span>
+) <span class="kw">AS</span> ct (product <span class="kw">TEXT</span>, year_2021 <span class="kw">NUMERIC</span>, year_2022 <span class="kw">NUMERIC</span>);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Common and Useful PostgreSQL Extensions</strong>:</p>
+                <p><em>(Note: These are PostgreSQL-specific examples illustrating the power of its extensibility
+                        model)</em>
+                </p>
+                <ol type="1" start="8">
+                    <li>
+                        <p><strong><code>intarray</code></strong>: Provides operators and functions for manipulating
+                            arrays of integers (useful for tag systems, permissions).</p>
+                        <div class="sourceCode" id="code6" onclick="CopyToClipboard('code6')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> intarray;
+<span class="co">-- Find items tagged with both 1 AND 3</span>
+<span class="kw">SELECT</span> item_id <span class="kw">FROM</span> items_with_tags <span class="kw">WHERE</span> tags @&gt; <span class="fu">ARRAY</span>[1, 3];
+<span class="co">-- Find items tagged with either 2 OR 4</span>
+<span class="kw">SELECT</span> item_id <span class="kw">FROM</span> items_with_tags <span class="kw">WHERE</span> tags &amp;&amp; <span class="fu">ARRAY</span>[2, 4];</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong>PostGIS</strong>: The premier spatial database extension, adding extensive support
+                            for geographic objects, queries, and analysis.</p>
+                        <div class="sourceCode" id="code7" onclick="CopyToClipboard('code7')">
+                            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> postgis;
+<span class="kw">CREATE TABLE</span> locations (
+    id <span class="kw">INT</span>,
+    name <span class="kw">TEXT</span>,
+    geom <span class="kw">GEOMETRY</span>(Point, 4326)
+);
+<span class="kw">INSERT INTO</span> locations <span class="kw">VALUES</span> (
+    1,
+    <span class="st">'City Hall'</span>,
+    <span class="fu">ST_SetSRID</span>(<span class="fu">ST_MakePoint</span>(-74.0, 40.7), 4326)
+);
+<span class="co">-- Find locations within a certain distance</span>
+<span class="kw">SELECT</span> name 
+<span class="kw">FROM</span> locations 
+<span class="kw">WHERE</span> <span class="fu">ST_DWithin</span>(
+    geom,
+    <span class="fu">ST_SetSRID</span>(<span class="fu">ST_MakePoint</span>(-74.1, 40.7), 4326)::geography,
+    5000
+);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Choosing and Using Extensions</strong>: While extensions add powerful features, consider:</p>
+                <ul>
+                    <li><strong>Need</strong>: Only install extensions you actually require.</li>
+                    <li><strong>Trustworthiness</strong>: Prefer extensions included with PostgreSQL or from reputable
+                        sources.</li>
+                    <li><strong>Maintenance</strong>: Ensure the extension is actively maintained.</li>
+                    <li><strong>Performance Impact</strong>: Some extensions can impact performance; monitor
+                        appropriately.</li>
+                    <li><strong>Dependencies</strong>: Be aware of any dependencies between extensions.</li>
+                </ul>
+                <p>Database extensibility allows tailoring the database to specific needs, but it should be used
+                    judiciously. PostgreSQL's extension system provides a particularly well-integrated and powerful
+                    mechanism for achieving this.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Practice What You Learned</h3>
+                <p>Ready to master PostgreSQL extensions? Practice with hands-on exercises covering pgcrypto, uuid-ossp, pg_trgm, ltree, PostGIS, and more.</p>
+                <p><a href="03_database_extensibility_and_postgresql_extensions_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/03_database_extensibility_and_postgresql_extensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

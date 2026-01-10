@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    rel="shortcut icon" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 5: Database Administration and Maintenance - Practical Examples</title>
+  <style>
+    .exercise-box {
+      border: 2px solid #0d6efd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      background-color: #f8f9fa;
+    }
+
+    .exercise-box h4 {
+      color: #0d6efd;
+      margin-bottom: 15px;
+    }
+
+    .solution-box {
+      border: 2px solid #198754;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      background-color: #f0fff4;
+      display: none;
+    }
+
+    .solution-box.show {
+      display: block;
+    }
+
+    .hint-box {
+      border-left: 4px solid #ffc107;
+      padding: 10px 15px;
+      margin: 10px 0;
+      background-color: #fff3cd;
+    }
+
+    .warning-box {
+      border-left: 4px solid #dc3545;
+      padding: 10px 15px;
+      margin: 10px 0;
+      background-color: #f8d7da;
+    }
+
+    .concept-box {
+      border-left: 4px solid #0dcaf0;
+      padding: 10px 15px;
+      margin: 10px 0;
+      background-color: #e7f6f8;
+    }
+
+    .btn-solution {
+      margin-top: 10px;
+    }
+
+    .sample-data {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .key-takeaways {
+      background-color: #e7f3ff;
+      border: 1px solid #b6d4fe;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+
+      <section>
+        <h1>Day 5: Database Administration and Maintenance</h1>
+        <h2>Practical Examples and Exercises</h2>
+        <p class="lead">Master PostgreSQL database administration with hands-on exercises covering backup strategies,
+          PITR, maintenance, security, high availability, and scaling.</p>
+
+        <div class="concept-box">
+          <strong>Learning Objectives:</strong>
+          <ul class="mb-0">
+            <li>Create and validate database backups using pg_dump and pg_restore</li>
+            <li>Configure and perform Point-in-Time Recovery (PITR)</li>
+            <li>Monitor and maintain database health with VACUUM and statistics</li>
+            <li>Implement security best practices including roles and Row-Level Security</li>
+            <li>Set up and monitor replication for high availability</li>
+            <li>Design scaling strategies with partitioning and connection pooling</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h3>Sample Database Schema</h3>
+        <p>We'll use the following sample datasets for our administration exercises:</p>
+
+        <div class="sample-data">
+          <h5><span class="badge bg-primary">Admin Test Database</span></h5>
+          <pre><code class="language-sql">-- Create sample tables for DBA exercises
+CREATE TABLE customers (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    region_id INTEGER,
+    created_by VARCHAR(50) DEFAULT current_user,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    customer_id INTEGER REFERENCES customers(id),
+    order_date DATE NOT NULL,
+    amount NUMERIC(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER REFERENCES orders(id),
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    price NUMERIC(10,2) NOT NULL
+);
+
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category VARCHAR(50),
+    price NUMERIC(10,2) NOT NULL,
+    stock_quantity INTEGER DEFAULT 0
+);
+
+CREATE TABLE sensitive_data (
+    id SERIAL PRIMARY KEY,
+    customer_id INTEGER REFERENCES customers(id),
+    ssn_encrypted BYTEA,
+    credit_card_encrypted BYTEA
+);
+
+CREATE TABLE audit_log (
+    audit_id SERIAL PRIMARY KEY,
+    table_name TEXT NOT NULL,
+    operation TEXT NOT NULL,
+    record_id INTEGER NOT NULL,
+    changed_by TEXT NOT NULL,
+    changed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    old_data JSONB,
+    new_data JSONB
+);
+
+-- Insert sample data
+INSERT INTO customers (name, email, region_id) VALUES
+    ('Alice Johnson', 'alice@example.com', 1),
+    ('Bob Smith', 'bob@example.com', 2),
+    ('Carol White', 'carol@example.com', 1),
+    ('David Brown', 'david@example.com', 3),
+    ('Eva Martinez', 'eva@example.com', 2);
+
+INSERT INTO products (name, category, price, stock_quantity) VALUES
+    ('Laptop Pro', 'Electronics', 1299.99, 50),
+    ('Wireless Mouse', 'Electronics', 29.99, 200),
+    ('Office Chair', 'Furniture', 249.99, 75),
+    ('Desk Lamp', 'Furniture', 49.99, 150),
+    ('Notebook Set', 'Stationery', 15.99, 500);
+
+INSERT INTO orders (customer_id, order_date, amount, status) VALUES
+    (1, '2024-01-15', 1329.98, 'completed'),
+    (2, '2024-01-16', 249.99, 'completed'),
+    (3, '2024-01-17', 79.98, 'shipped'),
+    (1, '2024-02-01', 49.99, 'pending'),
+    (4, '2024-02-10', 1549.97, 'completed');
+
+INSERT INTO order_items (order_id, product_id, quantity, price) VALUES
+    (1, 1, 1, 1299.99),
+    (1, 2, 1, 29.99),
+    (2, 3, 1, 249.99),
+    (3, 2, 1, 29.99),
+    (3, 5, 3, 15.99),
+    (4, 4, 1, 49.99),
+    (5, 1, 1, 1299.99),
+    (5, 3, 1, 249.99);</code></pre>
+        </div>
+      </section>
+
+      <!-- PART 1: Backup and Recovery -->
+      <section>
+        <h3 id="part1">Part 1: Backup and Recovery</h3>
+        <p>Practice creating and restoring database backups using PostgreSQL tools.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.1: Logical Backup Commands</h4>
+          <p><strong>Scenario:</strong> You need to create various backup scripts for your production database.
+            Write the appropriate pg_dump commands for each scenario.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Create a backup command for the entire database in custom format with compression</li>
+            <li>Create a backup command for only the <code>customers</code> and <code>orders</code> tables</li>
+            <li>Create a backup command that includes only the schema (no data)</li>
+            <li>Create a backup command for data only (no schema)</li>
+          </ol>
+
+          <div class="hint-box">
+            <strong>Hint:</strong> pg_dump supports formats: plain (-Fp), custom (-Fc), directory (-Fd), tar (-Ft)
+          </div>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
+          <div id="sol1_1" class="solution-box">
+            <pre><code class="language-bash"># 1. Full database backup in custom format with compression
+pg_dump -Fc -Z9 -f backup_full.dump dbname
+
+# 2. Backup specific tables only
+pg_dump -t customers -t orders -Fc -f backup_tables.dump dbname
+
+# 3. Schema-only backup (structure without data)
+pg_dump --schema-only -Fc -f backup_schema.dump dbname
+
+# 4. Data-only backup (data without structure)
+pg_dump --data-only -Fc -f backup_data.dump dbname
+
+# Additional useful variations:
+# Backup with verbose output and parallel jobs
+pg_dump -Fc -j 4 -v -f backup_parallel.dump dbname
+
+# Backup specific schema
+pg_dump -n public -Fc -f backup_public_schema.dump dbname
+
+# Backup excluding a table
+pg_dump -T audit_log -Fc -f backup_no_audit.dump dbname</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.2: Restore Operations</h4>
+          <p><strong>Scenario:</strong> You have a backup file and need to restore it in different ways.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Write a command to list the contents of a backup file without restoring</li>
+            <li>Write a command to restore only the <code>customers</code> table from a backup</li>
+            <li>Write a command to restore with parallel jobs for faster processing</li>
+            <li>Write a command to restore to a different database</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
+          <div id="sol1_2" class="solution-box">
+            <pre><code class="language-bash"># 1. List backup contents (for inspection)
+pg_restore --list backup_full.dump
+
+# 2. Restore only specific table
+pg_restore -d dbname -t customers backup_full.dump
+
+# 3. Restore with parallel jobs (faster for large databases)
+pg_restore -d dbname -j 4 backup_full.dump
+
+# 4. Restore to a different database
+createdb new_database
+pg_restore -d new_database backup_full.dump
+
+# Additional useful commands:
+# Restore with clean (drop existing objects first)
+pg_restore -d dbname --clean backup_full.dump
+
+# Restore schema only
+pg_restore -d dbname --schema-only backup_full.dump
+
+# Restore with verbose output
+pg_restore -d dbname -v backup_full.dump
+
+# Test restore without actually restoring (validate backup)
+pg_restore --list backup_full.dump > /dev/null && echo "Backup is valid"</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.3: Backup Validation Script</h4>
+          <p><strong>Scenario:</strong> Create a backup validation procedure that tests if a backup is restorable.</p>
+
+          <p><strong>Write a shell script that:</strong></p>
+          <ol>
+            <li>Creates a test database</li>
+            <li>Restores the backup to the test database</li>
+            <li>Runs validation queries to check data integrity</li>
+            <li>Drops the test database</li>
+            <li>Reports success or failure</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
+          <div id="sol1_3" class="solution-box">
+            <pre><code class="language-bash">#!/bin/bash
+# backup_validation.sh - Validate PostgreSQL backup
+
+BACKUP_FILE=$1
+TEST_DB="backup_test_$(date +%s)"
+PGUSER="postgres"
+
+echo "=== Starting backup validation ==="
+echo "Backup file: $BACKUP_FILE"
+echo "Test database: $TEST_DB"
+
+# Step 1: Validate backup file exists and is readable
+if [ ! -f "$BACKUP_FILE" ]; then
+    echo "ERROR: Backup file not found!"
+    exit 1
+fi
+
+# Step 2: Check backup file integrity
+echo "Checking backup integrity..."
+pg_restore --list "$BACKUP_FILE" > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "ERROR: Backup file appears corrupted!"
+    exit 1
+fi
+echo "Backup file integrity: OK"
+
+# Step 3: Create test database
+echo "Creating test database..."
+createdb -U $PGUSER "$TEST_DB"
+if [ $? -ne 0 ]; then
+    echo "ERROR: Could not create test database!"
+    exit 1
+fi
+
+# Step 4: Restore backup to test database
+echo "Restoring backup..."
+pg_restore -U $PGUSER -d "$TEST_DB" "$BACKUP_FILE" 2>&1
+if [ $? -ne 0 ]; then
+    echo "WARNING: Restore completed with some errors (this may be normal)"
+fi
+
+# Step 5: Run validation queries
+echo "Running validation queries..."
+VALIDATION_RESULT=$(psql -U $PGUSER -d "$TEST_DB" -t -c "
+    SELECT json_build_object(
+        'tables_count', (SELECT count(*) FROM information_schema.tables
+                         WHERE table_schema = 'public'),
+        'customers_count', (SELECT count(*) FROM customers),
+        'orders_count', (SELECT count(*) FROM orders),
+        'has_constraints', (SELECT count(*) > 0 FROM information_schema.table_constraints
+                            WHERE table_schema = 'public')
+    );
+")
+
+echo "Validation results: $VALIDATION_RESULT"
+
+# Step 6: Cleanup - Drop test database
+echo "Cleaning up..."
+dropdb -U $PGUSER "$TEST_DB"
+
+echo "=== Backup validation completed successfully ==="
+exit 0</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 2: Point-in-Time Recovery -->
+      <section>
+        <h3 id="part2">Part 2: Point-in-Time Recovery (PITR)</h3>
+        <p>Learn to configure and perform Point-in-Time Recovery.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.1: WAL Archiving Configuration</h4>
+          <p><strong>Scenario:</strong> Configure WAL archiving for PITR capability.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Write the postgresql.conf settings needed to enable WAL archiving</li>
+            <li>Create a simple archive_command that copies WAL files to a backup location</li>
+            <li>Write a query to check if WAL archiving is properly configured</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
+          <div id="sol2_1" class="solution-box">
+            <pre><code class="language-sql">-- postgresql.conf settings for WAL archiving
+
+-- Enable WAL at replica level (required for archiving)
+wal_level = replica
+
+-- Enable archive mode
+archive_mode = on
+
+-- Archive command - copy WAL files to archive location
+-- %p = full path to WAL file, %f = filename only
+archive_command = 'cp %p /var/lib/postgresql/archive/%f'
+
+-- Alternative with compression
+archive_command = 'gzip < %p > /var/lib/postgresql/archive/%f.gz'
+
+-- Force WAL switch every 60 seconds (useful for low-traffic databases)
+archive_timeout = 60
+
+-- Check WAL archiving configuration
+SELECT name, setting, unit, context
+FROM pg_settings
+WHERE name IN (
+    'wal_level',
+    'archive_mode',
+    'archive_command',
+    'archive_timeout'
+);
+
+-- Check archive status
+SELECT * FROM pg_stat_archiver;
+
+-- Check last archived WAL file
+SELECT
+    last_archived_wal,
+    last_archived_time,
+    last_failed_wal,
+    last_failed_time,
+    stats_reset
+FROM pg_stat_archiver;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.2: Creating Restore Points</h4>
+          <p><strong>Scenario:</strong> Before performing major database operations, create named restore points.</p>
+
+          <p><strong>Write SQL commands to:</strong></p>
+          <ol>
+            <li>Create a named restore point before a bulk data load</li>
+            <li>Create a restore point before schema changes</li>
+            <li>Query the current WAL position for documentation</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+          <div id="sol2_2" class="solution-box">
+            <pre><code class="language-sql">-- 1. Create named restore point before bulk data load
+SELECT pg_create_restore_point('before_data_load_2024_01_15');
+
+-- 2. Create restore point before schema changes
+SELECT pg_create_restore_point('before_schema_migration_v2');
+
+-- 3. Query current WAL position for documentation
+SELECT
+    pg_current_wal_lsn() AS current_wal_position,
+    pg_walfile_name(pg_current_wal_lsn()) AS current_wal_file,
+    pg_current_wal_insert_lsn() AS current_insert_position;
+
+-- Document the restore point with timestamp
+SELECT
+    pg_create_restore_point('maintenance_window_start') AS restore_point,
+    CURRENT_TIMESTAMP AS created_at;
+
+-- Best Practice: Create a restore point procedure
+CREATE OR REPLACE FUNCTION create_documented_restore_point(point_name TEXT)
+RETURNS TABLE (
+    restore_point_name TEXT,
+    wal_lsn pg_lsn,
+    created_at TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        point_name::TEXT,
+        pg_create_restore_point(point_name),
+        CURRENT_TIMESTAMP;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Usage
+SELECT * FROM create_documented_restore_point('before_major_update');</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.3: PITR Recovery Configuration</h4>
+          <p><strong>Scenario:</strong> An accidental deletion occurred at 2:45 PM. Configure recovery to 2:44 PM.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Write the recovery configuration for PostgreSQL 12+</li>
+            <li>Write recovery configuration to restore to a named restore point</li>
+            <li>Write recovery configuration to restore to a specific transaction ID</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
+          <div id="sol2_3" class="solution-box">
+            <pre><code class="language-bash"># For PostgreSQL 12+, add to postgresql.conf:
+
+# 1. Recovery to specific time (before the accident at 2:45 PM)
+restore_command = 'cp /var/lib/postgresql/archive/%f %p'
+recovery_target_time = '2024-01-15 14:44:00'
+recovery_target_action = 'promote'  # or 'pause' or 'shutdown'
+
+# Create recovery.signal file to indicate recovery mode
+touch /var/lib/postgresql/data/recovery.signal
+
+# 2. Recovery to named restore point
+restore_command = 'cp /var/lib/postgresql/archive/%f %p'
+recovery_target_name = 'before_major_update'
+recovery_target_action = 'promote'
+
+# 3. Recovery to specific transaction ID
+restore_command = 'cp /var/lib/postgresql/archive/%f %p'
+recovery_target_xid = '12345678'
+recovery_target_action = 'promote'
+
+# Additional options:
+# Recovery to specific LSN (Log Sequence Number)
+recovery_target_lsn = '16/B374D848'
+
+# Include or exclude the target transaction
+recovery_target_inclusive = true  # default, includes the target
+
+# Timeline settings for complex recovery scenarios
+recovery_target_timeline = 'latest'  # or specific timeline ID</code></pre>
+
+            <pre><code class="language-bash"># Complete PITR recovery steps:
+
+# 1. Stop PostgreSQL
+systemctl stop postgresql
+
+# 2. Backup current data directory (safety measure)
+mv /var/lib/postgresql/data /var/lib/postgresql/data_old
+
+# 3. Restore base backup
+tar -xzf /backup/base_backup.tar.gz -C /var/lib/postgresql/data
+
+# 4. Configure recovery settings in postgresql.conf
+# (add the settings shown above)
+
+# 5. Create recovery signal file
+touch /var/lib/postgresql/data/recovery.signal
+
+# 6. Start PostgreSQL (recovery will begin automatically)
+systemctl start postgresql
+
+# 7. Monitor recovery progress
+tail -f /var/log/postgresql/postgresql.log
+
+# 8. Verify recovery completed
+psql -c "SELECT pg_is_in_recovery();"
+# Should return 'f' (false) after recovery completes</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 3: Database Maintenance -->
+      <section>
+        <h3 id="part3">Part 3: Database Maintenance and Monitoring</h3>
+        <p>Practice essential database maintenance tasks.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.1: VACUUM and ANALYZE Operations</h4>
+          <p><strong>Scenario:</strong> Monitor and optimize table health using VACUUM and statistics.</p>
+
+          <p><strong>Write queries to:</strong></p>
+          <ol>
+            <li>Find tables with the most dead tuples (candidates for VACUUM)</li>
+            <li>Check when tables were last vacuumed and analyzed</li>
+            <li>Configure custom autovacuum settings for a high-traffic table</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
+          <div id="sol3_1" class="solution-box">
+            <pre><code class="language-sql">-- 1. Find tables with most dead tuples (need VACUUM)
+SELECT
+    schemaname,
+    relname AS table_name,
+    n_live_tup AS live_rows,
+    n_dead_tup AS dead_rows,
+    ROUND(100.0 * n_dead_tup / NULLIF(n_live_tup + n_dead_tup, 0), 2) AS dead_ratio_pct,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    last_vacuum,
+    last_autovacuum
+FROM pg_stat_user_tables
+WHERE n_dead_tup > 0
+ORDER BY n_dead_tup DESC
+LIMIT 10;
+
+-- 2. Tables that haven't been vacuumed/analyzed recently
+SELECT
+    schemaname,
+    relname AS table_name,
+    n_live_tup AS live_rows,
+    last_vacuum,
+    last_autovacuum,
+    last_analyze,
+    last_autoanalyze,
+    COALESCE(last_vacuum, last_autovacuum) AS last_any_vacuum,
+    CASE
+        WHEN last_vacuum IS NULL AND last_autovacuum IS NULL
+        THEN 'NEVER VACUUMED'
+        WHEN GREATEST(last_vacuum, last_autovacuum) < NOW() - INTERVAL '7 days'
+        THEN 'NEEDS VACUUM'
+        ELSE 'OK'
+    END AS vacuum_status
+FROM pg_stat_user_tables
+ORDER BY
+    COALESCE(last_vacuum, last_autovacuum, '1970-01-01'::timestamp) ASC;
+
+-- 3. Configure autovacuum for high-traffic table
+-- This table processes many updates, needs more frequent vacuuming
+ALTER TABLE orders SET (
+    -- Trigger vacuum after 1000 dead tuples (default: 50)
+    autovacuum_vacuum_threshold = 1000,
+    -- Plus 5% of table size (default: 20%)
+    autovacuum_vacuum_scale_factor = 0.05,
+    -- Trigger analyze after 500 changed rows (default: 50)
+    autovacuum_analyze_threshold = 500,
+    -- Plus 2% of table size (default: 10%)
+    autovacuum_analyze_scale_factor = 0.02,
+    -- Allow more cost before sleeping (faster vacuum)
+    autovacuum_vacuum_cost_limit = 1000
+);
+
+-- Run manual VACUUM with verbose output
+VACUUM (VERBOSE, ANALYZE) orders;
+
+-- VACUUM FULL to reclaim disk space (locks table!)
+-- Only use during maintenance windows
+VACUUM FULL orders;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.2: Index Health Monitoring</h4>
+          <p><strong>Scenario:</strong> Analyze index usage and identify optimization opportunities.</p>
+
+          <p><strong>Write queries to:</strong></p>
+          <ol>
+            <li>Find unused indexes (wasting space and slowing writes)</li>
+            <li>Find duplicate indexes on the same columns</li>
+            <li>Check index bloat and fragmentation</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
+          <div id="sol3_2" class="solution-box">
+            <pre><code class="language-sql">-- 1. Find unused indexes (never scanned)
+SELECT
+    schemaname,
+    relname AS table_name,
+    indexrelname AS index_name,
+    idx_scan AS times_used,
+    idx_tup_read AS tuples_read,
+    idx_tup_fetch AS tuples_fetched,
+    pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,
+    pg_size_pretty(pg_relation_size(relid)) AS table_size
+FROM pg_stat_user_indexes
+WHERE idx_scan = 0
+    AND indexrelname NOT LIKE '%pkey%'  -- Keep primary keys
+ORDER BY pg_relation_size(indexrelid) DESC;
+
+-- 2. Find potentially duplicate indexes
+WITH index_cols AS (
+    SELECT
+        i.indrelid::regclass AS table_name,
+        i.indexrelid::regclass AS index_name,
+        array_agg(a.attname ORDER BY x.ordinality) AS columns
+    FROM pg_index i
+    CROSS JOIN LATERAL unnest(i.indkey) WITH ORDINALITY AS x(attnum, ordinality)
+    JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = x.attnum
+    WHERE i.indrelid::regclass::text NOT LIKE 'pg_%'
+    GROUP BY i.indrelid, i.indexrelid
+)
+SELECT
+    a.table_name,
+    a.index_name AS index1,
+    b.index_name AS index2,
+    a.columns AS index1_columns,
+    b.columns AS index2_columns
+FROM index_cols a
+JOIN index_cols b ON a.table_name = b.table_name
+    AND a.index_name < b.index_name
+    AND a.columns = b.columns;
+
+-- 3. Check index bloat estimation
+SELECT
+    schemaname,
+    relname AS table_name,
+    indexrelname AS index_name,
+    pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,
+    idx_scan AS times_used,
+    CASE
+        WHEN idx_scan = 0 THEN 'UNUSED'
+        WHEN idx_scan < 100 THEN 'RARELY USED'
+        ELSE 'ACTIVE'
+    END AS usage_status
+FROM pg_stat_user_indexes
+ORDER BY pg_relation_size(indexrelid) DESC;
+
+-- Rebuild bloated indexes (non-blocking in PostgreSQL 12+)
+REINDEX INDEX CONCURRENTLY idx_orders_customer_id;
+
+-- Rebuild all indexes on a table
+REINDEX TABLE CONCURRENTLY orders;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.3: Connection and Lock Monitoring</h4>
+          <p><strong>Scenario:</strong> Monitor active connections and identify blocking issues.</p>
+
+          <p><strong>Write queries to:</strong></p>
+          <ol>
+            <li>View current active connections and their queries</li>
+            <li>Find long-running queries (over 5 minutes)</li>
+            <li>Identify blocking locks and blocked sessions</li>
+            <li>Safely terminate a blocking session</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
+          <div id="sol3_3" class="solution-box">
+            <pre><code class="language-sql">-- 1. View active connections
+SELECT
+    pid,
+    usename,
+    datname,
+    client_addr,
+    application_name,
+    state,
+    wait_event_type,
+    wait_event,
+    LEFT(query, 100) AS query_preview,
+    query_start,
+    NOW() - query_start AS query_duration
+FROM pg_stat_activity
+WHERE state != 'idle'
+    AND backend_type = 'client backend'
+ORDER BY query_start;
+
+-- 2. Find long-running queries (over 5 minutes)
+SELECT
+    pid,
+    usename,
+    datname,
+    state,
+    NOW() - query_start AS duration,
+    query
+FROM pg_stat_activity
+WHERE state != 'idle'
+    AND query_start < NOW() - INTERVAL '5 minutes'
+    AND backend_type = 'client backend'
+ORDER BY query_start;
+
+-- 3. Find blocking locks
+SELECT
+    blocked.pid AS blocked_pid,
+    blocked.usename AS blocked_user,
+    blocked.query AS blocked_query,
+    blocking.pid AS blocking_pid,
+    blocking.usename AS blocking_user,
+    blocking.query AS blocking_query,
+    NOW() - blocked.query_start AS blocked_duration
+FROM pg_stat_activity blocked
+JOIN pg_locks blocked_locks ON blocked.pid = blocked_locks.pid
+JOIN pg_locks blocking_locks ON
+    blocked_locks.locktype = blocking_locks.locktype
+    AND blocked_locks.database IS NOT DISTINCT FROM blocking_locks.database
+    AND blocked_locks.relation IS NOT DISTINCT FROM blocking_locks.relation
+    AND blocked_locks.page IS NOT DISTINCT FROM blocking_locks.page
+    AND blocked_locks.tuple IS NOT DISTINCT FROM blocking_locks.tuple
+    AND blocked_locks.virtualxid IS NOT DISTINCT FROM blocking_locks.virtualxid
+    AND blocked_locks.transactionid IS NOT DISTINCT FROM blocking_locks.transactionid
+    AND blocked_locks.classid IS NOT DISTINCT FROM blocking_locks.classid
+    AND blocked_locks.objid IS NOT DISTINCT FROM blocking_locks.objid
+    AND blocked_locks.objsubid IS NOT DISTINCT FROM blocking_locks.objsubid
+    AND blocked_locks.pid != blocking_locks.pid
+JOIN pg_stat_activity blocking ON blocking_locks.pid = blocking.pid
+WHERE NOT blocked_locks.granted;
+
+-- 4. Terminate a blocking session
+-- First, try to cancel the query gracefully
+SELECT pg_cancel_backend(blocking_pid);
+
+-- If that doesn't work, terminate the connection (use with caution!)
+SELECT pg_terminate_backend(blocking_pid);
+
+-- Connection count by state
+SELECT
+    state,
+    COUNT(*) as connection_count,
+    ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER(), 2) AS percentage
+FROM pg_stat_activity
+WHERE backend_type = 'client backend'
+GROUP BY state
+ORDER BY connection_count DESC;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.4: Database Size Analysis</h4>
+          <p><strong>Scenario:</strong> Analyze database size and identify space usage patterns.</p>
+
+          <p><strong>Write queries to:</strong></p>
+          <ol>
+            <li>Get total database size</li>
+            <li>List top 10 largest tables with their indexes</li>
+            <li>Calculate table bloat estimation</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_4')">Show Solution</button>
+          <div id="sol3_4" class="solution-box">
+            <pre><code class="language-sql">-- 1. Total database size
+SELECT
+    pg_database.datname AS database_name,
+    pg_size_pretty(pg_database_size(pg_database.datname)) AS database_size
+FROM pg_database
+WHERE datistemplate = false
+ORDER BY pg_database_size(pg_database.datname) DESC;
+
+-- 2. Top 10 largest tables with index sizes
+SELECT
+    schemaname,
+    relname AS table_name,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    pg_size_pretty(pg_relation_size(relid)) AS table_size,
+    pg_size_pretty(pg_indexes_size(relid)) AS indexes_size,
+    pg_size_pretty(pg_total_relation_size(relid) - pg_relation_size(relid) - pg_indexes_size(relid)) AS toast_size,
+    n_live_tup AS live_rows
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC
+LIMIT 10;
+
+-- 3. Table bloat estimation
+WITH constants AS (
+    SELECT
+        current_setting('block_size')::numeric AS bs,
+        23 AS hdr,  -- header size
+        8 AS ma     -- maximum alignment
+), table_stats AS (
+    SELECT
+        schemaname,
+        relname AS table_name,
+        pg_relation_size(relid) AS table_bytes,
+        n_live_tup AS live_tuples,
+        n_dead_tup AS dead_tuples
+    FROM pg_stat_user_tables
+    WHERE n_live_tup > 0
+)
+SELECT
+    schemaname,
+    table_name,
+    pg_size_pretty(table_bytes) AS actual_size,
+    live_tuples,
+    dead_tuples,
+    ROUND(100.0 * dead_tuples / (live_tuples + dead_tuples), 2) AS dead_tuple_ratio,
+    CASE
+        WHEN dead_tuples > live_tuples * 0.1 THEN 'NEEDS VACUUM'
+        ELSE 'OK'
+    END AS status
+FROM table_stats
+ORDER BY dead_tuples DESC;
+
+-- Space reclamation opportunity
+SELECT
+    schemaname,
+    relname,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    n_dead_tup AS dead_tuples,
+    CASE
+        WHEN n_dead_tup > 10000 THEN 'Consider VACUUM FULL during maintenance'
+        WHEN n_dead_tup > 1000 THEN 'Regular VACUUM sufficient'
+        ELSE 'Healthy'
+    END AS recommendation
+FROM pg_stat_user_tables
+WHERE n_dead_tup > 0
+ORDER BY n_dead_tup DESC;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 4: Security -->
+      <section>
+        <h3 id="part4">Part 4: Security Best Practices</h3>
+        <p>Implement robust security measures for your PostgreSQL database.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.1: Role and Privilege Management</h4>
+          <p><strong>Scenario:</strong> Set up a role hierarchy for a multi-tier application.</p>
+
+          <p><strong>Create roles for:</strong></p>
+          <ol>
+            <li>A read-only analytics role that can only SELECT from specific tables</li>
+            <li>An application role that can INSERT, UPDATE, DELETE but not DROP</li>
+            <li>An admin role with full privileges</li>
+            <li>Grant the app role membership in the analytics role</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
+          <div id="sol4_1" class="solution-box">
+            <pre><code class="language-sql">-- 1. Create read-only analytics role
+CREATE ROLE analytics_role NOLOGIN;
+
+-- Grant SELECT on specific tables
+GRANT USAGE ON SCHEMA public TO analytics_role;
+GRANT SELECT ON customers, orders, order_items, products TO analytics_role;
+
+-- Create a login user with analytics role
+CREATE ROLE analyst_user WITH LOGIN PASSWORD 'secure_analyst_password';
+GRANT analytics_role TO analyst_user;
+
+-- 2. Create application role (CRUD but no DDL)
+CREATE ROLE app_role NOLOGIN;
+
+-- Grant data manipulation privileges
+GRANT USAGE ON SCHEMA public TO app_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON
+    customers, orders, order_items, products, sensitive_data
+TO app_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_role;
+
+-- Explicitly deny DDL operations (default, but for clarity)
+-- Note: Not granting CREATE, DROP, TRUNCATE
+
+-- Create application login user
+CREATE ROLE app_user WITH
+    LOGIN
+    PASSWORD 'secure_app_password'
+    CONNECTION LIMIT 50;  -- Limit concurrent connections
+GRANT app_role TO app_user;
+
+-- 3. Create admin role with full privileges
+CREATE ROLE admin_role NOLOGIN
+    CREATEDB
+    CREATEROLE;
+
+-- Grant all privileges
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin_role;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO admin_role;
+GRANT CREATE ON SCHEMA public TO admin_role;
+
+-- Create admin login user
+CREATE ROLE admin_user WITH
+    LOGIN
+    PASSWORD 'very_secure_admin_password'
+    CONNECTION LIMIT 5;
+GRANT admin_role TO admin_user;
+
+-- 4. Grant app_role membership in analytics_role (inheritance)
+GRANT analytics_role TO app_role;
+
+-- Verify role memberships
+SELECT
+    r.rolname AS role_name,
+    r.rolsuper AS is_superuser,
+    r.rolinherit AS inherits,
+    r.rolcreaterole AS can_create_roles,
+    r.rolcreatedb AS can_create_db,
+    r.rolcanlogin AS can_login,
+    r.rolconnlimit AS connection_limit,
+    ARRAY(SELECT b.rolname FROM pg_catalog.pg_auth_members m
+          JOIN pg_catalog.pg_roles b ON m.roleid = b.oid
+          WHERE m.member = r.oid) AS member_of
+FROM pg_catalog.pg_roles r
+WHERE r.rolname NOT LIKE 'pg_%'
+ORDER BY r.rolname;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.2: Row-Level Security (RLS)</h4>
+          <p><strong>Scenario:</strong> Implement multi-tenant data isolation where users can only see their own data.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Enable RLS on the customers table</li>
+            <li>Create a policy where users can only see customers they created</li>
+            <li>Create a policy for managers who can see all customers in their region</li>
+            <li>Test the policies with different users</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_2')">Show Solution</button>
+          <div id="sol4_2" class="solution-box">
+            <pre><code class="language-sql">-- Create a user_regions table for manager access
+CREATE TABLE user_regions (
+    user_name TEXT NOT NULL,
+    region_id INTEGER NOT NULL,
+    PRIMARY KEY (user_name, region_id)
+);
+
+-- Insert region assignments for managers
+INSERT INTO user_regions (user_name, region_id) VALUES
+    ('manager_east', 1),
+    ('manager_east', 2),
+    ('manager_west', 3);
+
+-- 1. Enable RLS on customers table
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+
+-- Force RLS even for table owner (important for security)
+ALTER TABLE customers FORCE ROW LEVEL SECURITY;
+
+-- 2. Create policy for regular users (see only own customers)
+CREATE POLICY user_own_customers ON customers
+    FOR ALL
+    TO app_role
+    USING (created_by = current_user);
+
+-- 3. Create policy for managers (see all in their regions)
+CREATE POLICY manager_regional_customers ON customers
+    FOR SELECT
+    TO manager_role
+    USING (
+        region_id IN (
+            SELECT region_id
+            FROM user_regions
+            WHERE user_name = current_user
+        )
+    );
+
+-- Create manager role
+CREATE ROLE manager_role NOLOGIN;
+GRANT SELECT ON customers, user_regions TO manager_role;
+
+-- Create manager users
+CREATE ROLE manager_east WITH LOGIN PASSWORD 'manager_pass1';
+CREATE ROLE manager_west WITH LOGIN PASSWORD 'manager_pass2';
+GRANT manager_role TO manager_east, manager_west;
+
+-- 4. Test policies
+-- First, as the owner, bypass RLS to insert test data
+SET ROLE postgres;
+INSERT INTO customers (name, email, region_id, created_by) VALUES
+    ('Test User 1', 'test1@example.com', 1, 'app_user'),
+    ('Test User 2', 'test2@example.com', 2, 'other_user'),
+    ('Test User 3', 'test3@example.com', 3, 'app_user');
+
+-- Test as app_user (should only see rows they created)
+SET ROLE app_user;
+SELECT * FROM customers;
+-- Expected: Only rows where created_by = 'app_user'
+
+-- Test as manager_east (should see regions 1 and 2)
+SET ROLE manager_east;
+SELECT * FROM customers;
+-- Expected: Rows in regions 1 and 2
+
+-- Test as manager_west (should see region 3)
+SET ROLE manager_west;
+SELECT * FROM customers;
+-- Expected: Only rows in region 3
+
+-- Reset to superuser
+RESET ROLE;
+
+-- View all policies
+SELECT
+    schemaname,
+    tablename,
+    policyname,
+    permissive,
+    roles,
+    cmd,
+    qual,
+    with_check
+FROM pg_policies
+WHERE tablename = 'customers';</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.3: Data Encryption with pgcrypto</h4>
+          <p><strong>Scenario:</strong> Encrypt sensitive customer data at rest.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Enable pgcrypto extension</li>
+            <li>Create a function to encrypt SSN data</li>
+            <li>Create a function to decrypt SSN data (for authorized users only)</li>
+            <li>Insert encrypted data and retrieve it</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_3')">Show Solution</button>
+          <div id="sol4_3" class="solution-box">
+            <pre><code class="language-sql">-- 1. Enable pgcrypto extension
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- 2. Create encryption function
+CREATE OR REPLACE FUNCTION encrypt_sensitive_data(
+    plain_text TEXT,
+    encryption_key TEXT
+) RETURNS BYTEA AS $$
+BEGIN
+    RETURN pgp_sym_encrypt(plain_text, encryption_key);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 3. Create decryption function (restricted access)
+CREATE OR REPLACE FUNCTION decrypt_sensitive_data(
+    encrypted_data BYTEA,
+    encryption_key TEXT
+) RETURNS TEXT AS $$
+BEGIN
+    -- Only allow decryption for authorized roles
+    IF NOT pg_has_role(current_user, 'data_security_role', 'MEMBER') THEN
+        RAISE EXCEPTION 'Access denied: insufficient privileges to decrypt data';
+    END IF;
+
+    RETURN pgp_sym_decrypt(encrypted_data, encryption_key);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create data security role
+CREATE ROLE data_security_role NOLOGIN;
+GRANT EXECUTE ON FUNCTION decrypt_sensitive_data TO data_security_role;
+
+-- 4. Insert encrypted data
+-- In production, the encryption key should be stored securely (e.g., vault)
+DO $$
+DECLARE
+    encryption_key TEXT := 'your-super-secure-key-here';
+BEGIN
+    INSERT INTO sensitive_data (customer_id, ssn_encrypted, credit_card_encrypted)
+    VALUES (
+        1,
+        encrypt_sensitive_data('123-45-6789', encryption_key),
+        encrypt_sensitive_data('4111-1111-1111-1111', encryption_key)
+    );
+END $$;
+
+-- Query encrypted data (shows encrypted bytes)
+SELECT
+    id,
+    customer_id,
+    ssn_encrypted,
+    credit_card_encrypted
+FROM sensitive_data;
+
+-- Decrypt data (requires data_security_role)
+-- First, grant role to current user
+GRANT data_security_role TO current_user;
+
+SELECT
+    sd.id,
+    c.name AS customer_name,
+    decrypt_sensitive_data(sd.ssn_encrypted, 'your-super-secure-key-here') AS ssn,
+    decrypt_sensitive_data(sd.credit_card_encrypted, 'your-super-secure-key-here') AS credit_card
+FROM sensitive_data sd
+JOIN customers c ON sd.customer_id = c.id;
+
+-- Best practice: Create a view that masks sensitive data
+CREATE VIEW customer_sensitive_masked AS
+SELECT
+    sd.id,
+    c.name AS customer_name,
+    '***-**-' || RIGHT(decrypt_sensitive_data(sd.ssn_encrypted, 'key'), 4) AS ssn_masked,
+    '****-****-****-' || RIGHT(decrypt_sensitive_data(sd.credit_card_encrypted, 'key'), 4) AS cc_masked
+FROM sensitive_data sd
+JOIN customers c ON sd.customer_id = c.id;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.4: Audit Logging</h4>
+          <p><strong>Scenario:</strong> Implement comprehensive audit logging for all data changes.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Create a generic audit trigger function</li>
+            <li>Apply the audit trigger to the customers table</li>
+            <li>Query the audit log to see changes</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_4')">Show Solution</button>
+          <div id="sol4_4" class="solution-box">
+            <pre><code class="language-sql">-- 1. Create generic audit trigger function
+CREATE OR REPLACE FUNCTION audit_trigger_function()
+RETURNS TRIGGER AS $$
+DECLARE
+    old_data JSONB;
+    new_data JSONB;
+    record_id INTEGER;
+BEGIN
+    IF (TG_OP = 'DELETE') THEN
+        old_data = to_jsonb(OLD);
+        record_id = OLD.id;
+        new_data = NULL;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        old_data = to_jsonb(OLD);
+        new_data = to_jsonb(NEW);
+        record_id = NEW.id;
+        -- Only log if data actually changed
+        IF old_data = new_data THEN
+            RETURN NEW;
+        END IF;
+    ELSIF (TG_OP = 'INSERT') THEN
+        old_data = NULL;
+        new_data = to_jsonb(NEW);
+        record_id = NEW.id;
+    END IF;
+
+    INSERT INTO audit_log (
+        table_name,
+        operation,
+        record_id,
+        changed_by,
+        old_data,
+        new_data
+    ) VALUES (
+        TG_TABLE_NAME,
+        TG_OP,
+        record_id,
+        current_user,
+        old_data,
+        new_data
+    );
+
+    IF (TG_OP = 'DELETE') THEN
+        RETURN OLD;
+    ELSE
+        RETURN NEW;
+    END IF;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 2. Apply audit trigger to customers table
+CREATE TRIGGER audit_customers
+AFTER INSERT OR UPDATE OR DELETE ON customers
+FOR EACH ROW EXECUTE FUNCTION audit_trigger_function();
+
+-- Apply to orders table too
+CREATE TRIGGER audit_orders
+AFTER INSERT OR UPDATE OR DELETE ON orders
+FOR EACH ROW EXECUTE FUNCTION audit_trigger_function();
+
+-- 3. Test the audit logging
+-- Insert a new customer
+INSERT INTO customers (name, email, region_id)
+VALUES ('Test Customer', 'test@example.com', 1);
+
+-- Update the customer
+UPDATE customers
+SET name = 'Updated Customer Name'
+WHERE email = 'test@example.com';
+
+-- Delete the customer
+DELETE FROM customers WHERE email = 'test@example.com';
+
+-- Query the audit log
+SELECT
+    audit_id,
+    table_name,
+    operation,
+    record_id,
+    changed_by,
+    changed_at,
+    old_data,
+    new_data,
+    -- Show what changed in updates
+    CASE
+        WHEN operation = 'UPDATE' THEN
+            (SELECT jsonb_object_agg(key, value)
+             FROM jsonb_each(new_data)
+             WHERE new_data->key IS DISTINCT FROM old_data->key)
+    END AS changes
+FROM audit_log
+ORDER BY changed_at DESC
+LIMIT 10;
+
+-- Find all changes to a specific record
+SELECT * FROM audit_log
+WHERE table_name = 'customers'
+    AND record_id = 1
+ORDER BY changed_at;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 5: High Availability -->
+      <section>
+        <h3 id="part5">Part 5: High Availability and Replication</h3>
+        <p>Configure and monitor PostgreSQL replication.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.1: Replication Monitoring Queries</h4>
+          <p><strong>Scenario:</strong> Monitor streaming replication health and lag.</p>
+
+          <p><strong>Write queries to:</strong></p>
+          <ol>
+            <li>Check replication status on the primary server</li>
+            <li>Calculate replication lag in bytes and time</li>
+            <li>Check replication slot status</li>
+            <li>Monitor WAL generation rate</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_1')">Show Solution</button>
+          <div id="sol5_1" class="solution-box">
+            <pre><code class="language-sql">-- 1. Check replication status on primary
+SELECT
+    client_addr,
+    usename,
+    application_name,
+    state,
+    sync_state,
+    sent_lsn,
+    write_lsn,
+    flush_lsn,
+    replay_lsn,
+    write_lag,
+    flush_lag,
+    replay_lag
+FROM pg_stat_replication;
+
+-- 2. Calculate replication lag in bytes and time
+SELECT
+    client_addr,
+    application_name,
+    state,
+    sync_state,
+    pg_wal_lsn_diff(pg_current_wal_lsn(), sent_lsn) AS send_lag_bytes,
+    pg_wal_lsn_diff(pg_current_wal_lsn(), write_lsn) AS write_lag_bytes,
+    pg_wal_lsn_diff(pg_current_wal_lsn(), flush_lsn) AS flush_lag_bytes,
+    pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) AS replay_lag_bytes,
+    pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn)) AS replay_lag_pretty,
+    COALESCE(EXTRACT(EPOCH FROM replay_lag), 0) AS replay_lag_seconds
+FROM pg_stat_replication;
+
+-- 3. Check replication slot status
+SELECT
+    slot_name,
+    slot_type,
+    database,
+    active,
+    active_pid,
+    xmin,
+    catalog_xmin,
+    restart_lsn,
+    confirmed_flush_lsn,
+    pg_size_pretty(
+        pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn)
+    ) AS retained_wal_size
+FROM pg_replication_slots;
+
+-- 4. Monitor WAL generation rate
+WITH wal_stats AS (
+    SELECT
+        pg_current_wal_lsn() AS current_lsn,
+        pg_stat_get_wal_senders() AS sender_count
+)
+SELECT
+    current_lsn,
+    sender_count,
+    pg_size_pretty(
+        pg_wal_lsn_diff(
+            current_lsn,
+            '0/0'::pg_lsn
+        )
+    ) AS total_wal_generated
+FROM wal_stats;
+
+-- Check on standby server
+-- (Run these on the replica)
+SELECT
+    pg_is_in_recovery() AS is_standby,
+    pg_last_wal_receive_lsn() AS last_received_lsn,
+    pg_last_wal_replay_lsn() AS last_replayed_lsn,
+    pg_last_xact_replay_timestamp() AS last_replay_time,
+    EXTRACT(EPOCH FROM (NOW() - pg_last_xact_replay_timestamp())) AS lag_seconds;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.2: Logical Replication Setup</h4>
+          <p><strong>Scenario:</strong> Set up logical replication for specific tables.</p>
+
+          <p><strong>Write SQL to:</strong></p>
+          <ol>
+            <li>Create a publication for the orders and customers tables</li>
+            <li>Show the publication configuration</li>
+            <li>Create a subscription (subscriber side)</li>
+            <li>Monitor logical replication status</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_2')">Show Solution</button>
+          <div id="sol5_2" class="solution-box">
+            <pre><code class="language-sql">-- ON PUBLISHER (source database)
+
+-- Verify wal_level is set to logical
+SHOW wal_level;  -- Should return 'logical'
+
+-- 1. Create publication for specific tables
+CREATE PUBLICATION orders_pub
+    FOR TABLE customers, orders, order_items;
+
+-- Alternative: Publication for all tables
+CREATE PUBLICATION all_tables_pub FOR ALL TABLES;
+
+-- 2. View publication configuration
+SELECT
+    pubname,
+    puballtables,
+    pubinsert,
+    pubupdate,
+    pubdelete,
+    pubtruncate
+FROM pg_publication;
+
+-- View tables in publication
+SELECT
+    pubname,
+    schemaname,
+    tablename
+FROM pg_publication_tables;
+
+-- ON SUBSCRIBER (destination database)
+-- First, create matching table structures
+
+-- 3. Create subscription
+CREATE SUBSCRIPTION orders_sub
+    CONNECTION 'host=publisher_host port=5432 dbname=source_db user=repl_user password=repl_password'
+    PUBLICATION orders_pub
+    WITH (
+        copy_data = true,     -- Initial data sync
+        enabled = true,        -- Start replication immediately
+        synchronous_commit = off  -- Performance optimization
+    );
+
+-- 4. Monitor logical replication status
+
+-- On subscriber: Check subscription status
+SELECT
+    subname,
+    subenabled,
+    subconninfo,
+    subslotname,
+    subsynccommit,
+    subpublications
+FROM pg_subscription;
+
+-- Check replication state for each table
+SELECT
+    srsubid::regsubscription AS subscription,
+    srrelid::regclass AS table_name,
+    srsubstate AS state,
+    CASE srsubstate
+        WHEN 'i' THEN 'Initialize'
+        WHEN 'd' THEN 'Data copying'
+        WHEN 's' THEN 'Synchronized'
+        WHEN 'r' THEN 'Ready'
+    END AS state_description,
+    srsublsn AS lsn
+FROM pg_subscription_rel;
+
+-- On publisher: Check replication slots used by logical replication
+SELECT
+    slot_name,
+    plugin,
+    slot_type,
+    database,
+    active,
+    restart_lsn,
+    confirmed_flush_lsn
+FROM pg_replication_slots
+WHERE slot_type = 'logical';
+
+-- Check logical replication workers
+SELECT
+    pid,
+    relid::regclass AS table_name,
+    received_lsn,
+    last_msg_send_time,
+    last_msg_receipt_time
+FROM pg_stat_subscription;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.3: Connection Pooling Configuration</h4>
+          <p><strong>Scenario:</strong> Configure pgBouncer for connection pooling.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Write a pgBouncer configuration for transaction pooling</li>
+            <li>Create the userlist.txt authentication file</li>
+            <li>Write queries to monitor pgBouncer statistics</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_3')">Show Solution</button>
+          <div id="sol5_3" class="solution-box">
+            <pre><code class="language-ini">; 1. pgbouncer.ini configuration
+
+[databases]
+; Production database with read/write primary
+mydb = host=primary.example.com port=5432 dbname=mydb
+
+; Read replica for analytics queries
+mydb_readonly = host=replica.example.com port=5432 dbname=mydb
+
+; Specific database for high-traffic application
+app_db = host=primary.example.com port=5432 dbname=mydb pool_size=30
+
+[pgbouncer]
+; Connection settings
+listen_addr = *
+listen_port = 6432
+unix_socket_dir = /var/run/pgbouncer
+
+; Authentication
+auth_type = scram-sha-256
+auth_file = /etc/pgbouncer/userlist.txt
+
+; Pool mode: session, transaction, or statement
+pool_mode = transaction
+
+; Pool sizing
+default_pool_size = 20
+min_pool_size = 5
+reserve_pool_size = 5
+reserve_pool_timeout = 3
+
+; Connection limits
+max_client_conn = 1000
+max_db_connections = 100
+max_user_connections = 50
+
+; Timeouts
+server_idle_timeout = 600
+client_idle_timeout = 0
+client_login_timeout = 60
+query_timeout = 0
+query_wait_timeout = 120
+
+; Logging
+log_connections = 1
+log_disconnections = 1
+log_pooler_errors = 1
+stats_period = 60
+
+; Admin console
+admin_users = pgbouncer_admin
+stats_users = pgbouncer_stats</code></pre>
+
+            <pre><code class="language-text">; 2. userlist.txt - Authentication file
+; Format: "username" "password" or "username" "md5hash"
+
+"app_user" "scram-sha-256$4096:salt$client_key:stored_key"
+"analyst_user" "scram-sha-256$4096:salt$client_key:stored_key"
+"pgbouncer_admin" "admin_password"
+"pgbouncer_stats" "stats_password"
+
+; Generate password hash with:
+; echo -n "passwordusername" | md5sum | cut -d' ' -f1 | sed 's/^/md5/'</code></pre>
+
+            <pre><code class="language-sql">-- 3. Monitor pgBouncer statistics
+-- Connect to pgBouncer admin console
+-- psql -p 6432 -U pgbouncer_admin pgbouncer
+
+-- Show all databases and their pool stats
+SHOW DATABASES;
+
+-- Show all connection pools
+SHOW POOLS;
+
+-- Show currently active client connections
+SHOW CLIENTS;
+
+-- Show connections to backend PostgreSQL servers
+SHOW SERVERS;
+
+-- Show connection statistics
+SHOW STATS;
+
+-- Detailed stats per database
+SHOW STATS_TOTALS;
+
+-- Show pgBouncer configuration
+SHOW CONFIG;
+
+-- Useful monitoring queries
+-- Connection efficiency
+SELECT
+    database,
+    total_xact_count,
+    total_query_count,
+    total_wait_time,
+    avg_xact_time,
+    avg_query_time
+FROM stats;
+
+-- Pool utilization
+SELECT
+    database,
+    user,
+    cl_active,
+    cl_waiting,
+    sv_active,
+    sv_idle,
+    sv_used,
+    maxwait
+FROM pools;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- PART 6: Scaling -->
+      <section>
+        <h3 id="part6">Part 6: Scaling PostgreSQL</h3>
+        <p>Implement scaling strategies for growing databases.</p>
+
+        <div class="exercise-box">
+          <h4>Exercise 6.1: Table Partitioning</h4>
+          <p><strong>Scenario:</strong> Partition a large orders table by date for better performance.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Create a partitioned orders table by month</li>
+            <li>Create partitions for Q1 2024</li>
+            <li>Create a function to automatically create future partitions</li>
+            <li>Query the partitioned table and verify partition pruning</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_1')">Show Solution</button>
+          <div id="sol6_1" class="solution-box">
+            <pre><code class="language-sql">-- 1. Create partitioned table
+CREATE TABLE orders_partitioned (
+    id SERIAL,
+    customer_id INTEGER NOT NULL,
+    order_date DATE NOT NULL,
+    amount NUMERIC(10,2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id, order_date)
+) PARTITION BY RANGE (order_date);
+
+-- 2. Create partitions for Q1 2024
+CREATE TABLE orders_2024_01 PARTITION OF orders_partitioned
+    FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+
+CREATE TABLE orders_2024_02 PARTITION OF orders_partitioned
+    FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');
+
+CREATE TABLE orders_2024_03 PARTITION OF orders_partitioned
+    FOR VALUES FROM ('2024-03-01') TO ('2024-04-01');
+
+-- Create indexes on each partition (automatically inherited)
+CREATE INDEX ON orders_partitioned (customer_id);
+CREATE INDEX ON orders_partitioned (order_date);
+CREATE INDEX ON orders_partitioned (status);
+
+-- 3. Function to auto-create future partitions
+CREATE OR REPLACE FUNCTION create_monthly_partition(
+    table_name TEXT,
+    partition_date DATE
+) RETURNS TEXT AS $$
+DECLARE
+    partition_name TEXT;
+    start_date DATE;
+    end_date DATE;
+BEGIN
+    start_date := date_trunc('month', partition_date)::DATE;
+    end_date := (start_date + INTERVAL '1 month')::DATE;
+    partition_name := table_name || '_' || to_char(start_date, 'YYYY_MM');
+
+    -- Check if partition already exists
+    IF EXISTS (
+        SELECT 1 FROM pg_class
+        WHERE relname = partition_name
+    ) THEN
+        RETURN 'Partition ' || partition_name || ' already exists';
+    END IF;
+
+    EXECUTE format(
+        'CREATE TABLE %I PARTITION OF %I FOR VALUES FROM (%L) TO (%L)',
+        partition_name,
+        table_name,
+        start_date,
+        end_date
+    );
+
+    RETURN 'Created partition: ' || partition_name;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create next 3 months of partitions
+SELECT create_monthly_partition('orders_partitioned', '2024-04-01');
+SELECT create_monthly_partition('orders_partitioned', '2024-05-01');
+SELECT create_monthly_partition('orders_partitioned', '2024-06-01');
+
+-- 4. Insert test data and verify partition pruning
+INSERT INTO orders_partitioned (customer_id, order_date, amount, status)
+VALUES
+    (1, '2024-01-15', 100.00, 'completed'),
+    (2, '2024-02-20', 200.00, 'completed'),
+    (3, '2024-03-25', 300.00, 'pending');
+
+-- Verify partition pruning with EXPLAIN
+EXPLAIN (ANALYZE, COSTS OFF)
+SELECT * FROM orders_partitioned
+WHERE order_date BETWEEN '2024-01-01' AND '2024-01-31';
+-- Should only scan orders_2024_01 partition
+
+-- List all partitions
+SELECT
+    parent.relname AS parent_table,
+    child.relname AS partition_name,
+    pg_get_expr(child.relpartbound, child.oid) AS partition_bound
+FROM pg_inherits
+JOIN pg_class parent ON pg_inherits.inhparent = parent.oid
+JOIN pg_class child ON pg_inherits.inhrelid = child.oid
+WHERE parent.relname = 'orders_partitioned'
+ORDER BY child.relname;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 6.2: Materialized Views for Caching</h4>
+          <p><strong>Scenario:</strong> Create materialized views to cache complex aggregations.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Create a materialized view for product sales summary</li>
+            <li>Add indexes to the materialized view</li>
+            <li>Create a refresh schedule strategy</li>
+            <li>Implement concurrent refresh</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_2')">Show Solution</button>
+          <div id="sol6_2" class="solution-box">
+            <pre><code class="language-sql">-- 1. Create materialized view for product sales summary
+CREATE MATERIALIZED VIEW mv_product_sales_summary AS
+SELECT
+    p.product_id,
+    p.name AS product_name,
+    p.category,
+    COUNT(DISTINCT oi.order_id) AS order_count,
+    SUM(oi.quantity) AS total_units_sold,
+    SUM(oi.quantity * oi.price) AS total_revenue,
+    AVG(oi.price) AS avg_price,
+    MIN(o.order_date) AS first_order_date,
+    MAX(o.order_date) AS last_order_date
+FROM products p
+LEFT JOIN order_items oi ON p.product_id = oi.product_id
+LEFT JOIN orders o ON oi.order_id = o.id
+GROUP BY p.product_id, p.name, p.category
+WITH DATA;
+
+-- 2. Add indexes to materialized view
+CREATE UNIQUE INDEX idx_mv_product_sales_product_id
+    ON mv_product_sales_summary (product_id);
+CREATE INDEX idx_mv_product_sales_revenue
+    ON mv_product_sales_summary (total_revenue DESC);
+CREATE INDEX idx_mv_product_sales_category
+    ON mv_product_sales_summary (category);
+
+-- 3. Create refresh management
+-- Create a table to track refresh history
+CREATE TABLE mv_refresh_log (
+    id SERIAL PRIMARY KEY,
+    view_name TEXT NOT NULL,
+    refresh_started TIMESTAMP NOT NULL,
+    refresh_completed TIMESTAMP,
+    duration_ms INTEGER,
+    status TEXT,
+    error_message TEXT
+);
+
+-- Create refresh function with logging
+CREATE OR REPLACE FUNCTION refresh_materialized_view_logged(
+    view_name TEXT,
+    concurrent BOOLEAN DEFAULT false
+) RETURNS TEXT AS $$
+DECLARE
+    start_time TIMESTAMP;
+    end_time TIMESTAMP;
+    duration INTEGER;
+BEGIN
+    start_time := clock_timestamp();
+
+    -- Log start
+    INSERT INTO mv_refresh_log (view_name, refresh_started, status)
+    VALUES (view_name, start_time, 'running');
+
+    -- Perform refresh
+    IF concurrent THEN
+        EXECUTE format('REFRESH MATERIALIZED VIEW CONCURRENTLY %I', view_name);
+    ELSE
+        EXECUTE format('REFRESH MATERIALIZED VIEW %I', view_name);
+    END IF;
+
+    end_time := clock_timestamp();
+    duration := EXTRACT(MILLISECONDS FROM (end_time - start_time));
+
+    -- Log completion
+    UPDATE mv_refresh_log
+    SET
+        refresh_completed = end_time,
+        duration_ms = duration,
+        status = 'completed'
+    WHERE view_name = refresh_materialized_view_logged.view_name
+        AND status = 'running';
+
+    RETURN format('Refreshed %s in %s ms', view_name, duration);
+
+EXCEPTION WHEN OTHERS THEN
+    UPDATE mv_refresh_log
+    SET
+        refresh_completed = clock_timestamp(),
+        status = 'failed',
+        error_message = SQLERRM
+    WHERE view_name = refresh_materialized_view_logged.view_name
+        AND status = 'running';
+
+    RAISE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 4. Concurrent refresh (requires unique index)
+SELECT refresh_materialized_view_logged('mv_product_sales_summary', true);
+
+-- Query the materialized view (fast!)
+SELECT * FROM mv_product_sales_summary
+ORDER BY total_revenue DESC
+LIMIT 10;
+
+-- Check refresh history
+SELECT
+    view_name,
+    refresh_started,
+    refresh_completed,
+    duration_ms,
+    status
+FROM mv_refresh_log
+ORDER BY refresh_started DESC
+LIMIT 10;
+
+-- Schedule refresh with pg_cron (if installed)
+-- SELECT cron.schedule('refresh_mv_hourly', '0 * * * *',
+--     $$SELECT refresh_materialized_view_logged('mv_product_sales_summary', true)$$);</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 6.3: Performance Tuning Configuration</h4>
+          <p><strong>Scenario:</strong> Optimize PostgreSQL configuration for a production workload.</p>
+
+          <p><strong>Tasks:</strong></p>
+          <ol>
+            <li>Calculate optimal memory settings for a 32GB RAM server</li>
+            <li>Configure checkpoint settings for better performance</li>
+            <li>Set up pg_stat_statements for query analysis</li>
+            <li>Find the slowest queries</li>
+          </ol>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_3')">Show Solution</button>
+          <div id="sol6_3" class="solution-box">
+            <pre><code class="language-sql">-- 1. Optimal memory settings for 32GB RAM server
+-- postgresql.conf recommendations
+
+-- Shared buffers: 25% of RAM
+-- For 32GB: 8GB
+ALTER SYSTEM SET shared_buffers = '8GB';
+
+-- Work memory: depends on max_connections and query complexity
+-- Total work_mem usage can be: max_connections * work_mem * operations
+-- Conservative: 64MB for complex queries
+ALTER SYSTEM SET work_mem = '64MB';
+
+-- Maintenance work memory: for VACUUM, CREATE INDEX
+-- 5-10% of RAM
+ALTER SYSTEM SET maintenance_work_mem = '2GB';
+
+-- Effective cache size: 75% of RAM (hint to planner)
+ALTER SYSTEM SET effective_cache_size = '24GB';
+
+-- 2. Checkpoint settings for better performance
+-- Spread checkpoints over time
+ALTER SYSTEM SET checkpoint_completion_target = '0.9';
+
+-- Time between checkpoints (balance between recovery time and I/O)
+ALTER SYSTEM SET checkpoint_timeout = '15min';
+
+-- Maximum WAL size between checkpoints
+ALTER SYSTEM SET max_wal_size = '4GB';
+ALTER SYSTEM SET min_wal_size = '1GB';
+
+-- For SSDs: lower random page cost
+ALTER SYSTEM SET random_page_cost = '1.1';
+ALTER SYSTEM SET effective_io_concurrency = '200';
+
+-- 3. Set up pg_stat_statements
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+
+-- Configure in postgresql.conf:
+ALTER SYSTEM SET shared_preload_libraries = 'pg_stat_statements';
+ALTER SYSTEM SET pg_stat_statements.track = 'all';
+ALTER SYSTEM SET pg_stat_statements.max = 10000;
+
+-- Requires restart to take effect
+-- sudo systemctl restart postgresql
+
+-- 4. Find slowest queries
+SELECT
+    queryid,
+    LEFT(query, 80) AS query_preview,
+    calls,
+    ROUND(total_exec_time::numeric / 1000, 2) AS total_time_sec,
+    ROUND(mean_exec_time::numeric / 1000, 4) AS avg_time_sec,
+    ROUND(stddev_exec_time::numeric / 1000, 4) AS stddev_sec,
+    rows,
+    ROUND(100.0 * shared_blks_hit / NULLIF(shared_blks_hit + shared_blks_read, 0), 2) AS cache_hit_ratio
+FROM pg_stat_statements
+ORDER BY total_exec_time DESC
+LIMIT 20;
+
+-- Find queries with poor cache hit ratio
+SELECT
+    queryid,
+    LEFT(query, 100) AS query_preview,
+    calls,
+    shared_blks_hit,
+    shared_blks_read,
+    ROUND(100.0 * shared_blks_hit / NULLIF(shared_blks_hit + shared_blks_read, 0), 2) AS cache_hit_pct
+FROM pg_stat_statements
+WHERE shared_blks_hit + shared_blks_read > 1000
+ORDER BY cache_hit_pct ASC
+LIMIT 20;
+
+-- Reset statistics periodically
+-- SELECT pg_stat_statements_reset();
+
+-- View current configuration
+SELECT name, setting, unit, context, short_desc
+FROM pg_settings
+WHERE name IN (
+    'shared_buffers', 'work_mem', 'maintenance_work_mem',
+    'effective_cache_size', 'checkpoint_completion_target',
+    'checkpoint_timeout', 'max_wal_size', 'random_page_cost'
+)
+ORDER BY name;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Challenge Section -->
+      <section>
+        <h3 id="challenge">Challenge Exercise: Complete DBA Scenario</h3>
+
+        <div class="exercise-box">
+          <h4>Comprehensive DBA Task</h4>
+          <p><strong>Scenario:</strong> You are the DBA for an e-commerce company. The production database is
+            experiencing issues and you need to:</p>
+
+          <ol>
+            <li><strong>Diagnose</strong>: Find long-running queries and blocking locks</li>
+            <li><strong>Optimize</strong>: Identify tables needing maintenance and optimize them</li>
+            <li><strong>Secure</strong>: Set up proper role-based access for a new analytics team</li>
+            <li><strong>Backup</strong>: Create a backup strategy with validation</li>
+            <li><strong>Monitor</strong>: Set up monitoring queries for ongoing health checks</li>
+          </ol>
+
+          <div class="warning-box">
+            <strong>Important:</strong> This is an integrated exercise. Consider dependencies between tasks and
+            the order of operations carefully.
+          </div>
+
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol_challenge')">Show Solution</button>
+          <div id="sol_challenge" class="solution-box">
+            <pre><code class="language-sql">-- ========================================
+-- STEP 1: DIAGNOSE CURRENT ISSUES
+-- ========================================
+
+-- Find long-running queries (over 1 minute)
+SELECT
+    pid,
+    usename,
+    datname,
+    state,
+    wait_event_type,
+    wait_event,
+    NOW() - query_start AS duration,
+    LEFT(query, 100) AS query_preview
+FROM pg_stat_activity
+WHERE state != 'idle'
+    AND query_start < NOW() - INTERVAL '1 minute'
+ORDER BY query_start;
+
+-- Find blocking locks
+WITH blocked AS (
+    SELECT
+        blocked_locks.pid AS blocked_pid,
+        blocked_activity.usename AS blocked_user,
+        blocking_locks.pid AS blocking_pid,
+        blocking_activity.usename AS blocking_user,
+        blocked_activity.query AS blocked_query,
+        blocking_activity.query AS blocking_query
+    FROM pg_locks blocked_locks
+    JOIN pg_stat_activity blocked_activity ON blocked_locks.pid = blocked_activity.pid
+    JOIN pg_locks blocking_locks ON
+        blocked_locks.locktype = blocking_locks.locktype
+        AND blocked_locks.database IS NOT DISTINCT FROM blocking_locks.database
+        AND blocked_locks.relation IS NOT DISTINCT FROM blocking_locks.relation
+        AND blocked_locks.pid != blocking_locks.pid
+    JOIN pg_stat_activity blocking_activity ON blocking_locks.pid = blocking_activity.pid
+    WHERE NOT blocked_locks.granted
+)
+SELECT * FROM blocked;
+
+-- ========================================
+-- STEP 2: OPTIMIZE TABLES
+-- ========================================
+
+-- Find tables needing vacuum
+SELECT
+    schemaname,
+    relname,
+    n_live_tup,
+    n_dead_tup,
+    ROUND(100.0 * n_dead_tup / NULLIF(n_live_tup + n_dead_tup, 0), 2) AS dead_pct,
+    last_vacuum,
+    last_autovacuum,
+    CASE
+        WHEN n_dead_tup > n_live_tup * 0.2 THEN 'URGENT'
+        WHEN n_dead_tup > n_live_tup * 0.1 THEN 'RECOMMENDED'
+        ELSE 'OK'
+    END AS vacuum_priority
+FROM pg_stat_user_tables
+ORDER BY n_dead_tup DESC
+LIMIT 20;
+
+-- Vacuum and analyze high-priority tables
+VACUUM (VERBOSE, ANALYZE) orders;
+VACUUM (VERBOSE, ANALYZE) order_items;
+VACUUM (VERBOSE, ANALYZE) customers;
+
+-- Find unused indexes to drop
+SELECT
+    schemaname,
+    relname,
+    indexrelname,
+    idx_scan,
+    pg_size_pretty(pg_relation_size(indexrelid)) AS size
+FROM pg_stat_user_indexes
+WHERE idx_scan = 0
+    AND indexrelname NOT LIKE '%pkey%'
+ORDER BY pg_relation_size(indexrelid) DESC;
+
+-- ========================================
+-- STEP 3: SET UP ANALYTICS TEAM ACCESS
+-- ========================================
+
+-- Create analytics schema
+CREATE SCHEMA IF NOT EXISTS analytics;
+
+-- Create analytics role
+CREATE ROLE analytics_team NOLOGIN;
+
+-- Grant read access to production data
+GRANT USAGE ON SCHEMA public TO analytics_team;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO analytics_team;
+
+-- Prevent analytics from accessing sensitive data
+REVOKE SELECT ON sensitive_data FROM analytics_team;
+
+-- Grant full access to analytics schema
+GRANT ALL ON SCHEMA analytics TO analytics_team;
+GRANT ALL ON ALL TABLES IN SCHEMA analytics TO analytics_team;
+
+-- Create individual user accounts
+CREATE ROLE analyst1 WITH LOGIN PASSWORD 'secure_password_1';
+CREATE ROLE analyst2 WITH LOGIN PASSWORD 'secure_password_2';
+GRANT analytics_team TO analyst1, analyst2;
+
+-- Set connection limits
+ALTER ROLE analyst1 CONNECTION LIMIT 5;
+ALTER ROLE analyst2 CONNECTION LIMIT 5;
+
+-- ========================================
+-- STEP 4: BACKUP STRATEGY
+-- ========================================
+
+-- Create backup validation function
+CREATE OR REPLACE FUNCTION validate_backup_integrity()
+RETURNS TABLE (
+    check_name TEXT,
+    status TEXT,
+    details TEXT
+) AS $$
+BEGIN
+    -- Check table counts
+    RETURN QUERY
+    SELECT
+        'Table Count'::TEXT,
+        CASE WHEN COUNT(*) > 0 THEN 'PASS' ELSE 'FAIL' END,
+        'Found ' || COUNT(*)::TEXT || ' tables'
+    FROM information_schema.tables
+    WHERE table_schema = 'public';
+
+    -- Check row counts for critical tables
+    RETURN QUERY
+    SELECT
+        'Customers Table'::TEXT,
+        CASE WHEN (SELECT COUNT(*) FROM customers) > 0 THEN 'PASS' ELSE 'WARN' END,
+        (SELECT COUNT(*)::TEXT FROM customers) || ' rows';
+
+    RETURN QUERY
+    SELECT
+        'Orders Table'::TEXT,
+        CASE WHEN (SELECT COUNT(*) FROM orders) > 0 THEN 'PASS' ELSE 'WARN' END,
+        (SELECT COUNT(*)::TEXT FROM orders) || ' rows';
+
+    -- Check foreign key integrity
+    RETURN QUERY
+    SELECT
+        'FK Integrity (orders->customers)'::TEXT,
+        CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END,
+        COUNT(*)::TEXT || ' orphaned records'
+    FROM orders o
+    LEFT JOIN customers c ON o.customer_id = c.id
+    WHERE c.id IS NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test validation
+SELECT * FROM validate_backup_integrity();
+
+-- ========================================
+-- STEP 5: MONITORING DASHBOARD
+-- ========================================
+
+-- Create monitoring view
+CREATE OR REPLACE VIEW v_database_health AS
+SELECT
+    'Database Size' AS metric,
+    pg_size_pretty(pg_database_size(current_database())) AS value
+UNION ALL
+SELECT
+    'Active Connections',
+    COUNT(*)::TEXT
+FROM pg_stat_activity WHERE state = 'active'
+UNION ALL
+SELECT
+    'Idle Connections',
+    COUNT(*)::TEXT
+FROM pg_stat_activity WHERE state = 'idle'
+UNION ALL
+SELECT
+    'Cache Hit Ratio',
+    ROUND(100.0 * sum(heap_blks_hit) /
+        NULLIF(sum(heap_blks_hit) + sum(heap_blks_read), 0), 2)::TEXT || '%'
+FROM pg_statio_user_tables
+UNION ALL
+SELECT
+    'Total Dead Tuples',
+    SUM(n_dead_tup)::TEXT
+FROM pg_stat_user_tables
+UNION ALL
+SELECT
+    'Tables Needing Vacuum',
+    COUNT(*)::TEXT
+FROM pg_stat_user_tables
+WHERE n_dead_tup > n_live_tup * 0.1;
+
+-- Check health dashboard
+SELECT * FROM v_database_health;
+
+-- Create alert function for monitoring
+CREATE OR REPLACE FUNCTION check_database_alerts()
+RETURNS TABLE (
+    alert_level TEXT,
+    alert_type TEXT,
+    message TEXT
+) AS $$
+BEGIN
+    -- Check for long-running queries
+    RETURN QUERY
+    SELECT
+        'WARNING'::TEXT,
+        'Long Query'::TEXT,
+        'PID ' || pid::TEXT || ' running for ' ||
+        EXTRACT(MINUTES FROM (NOW() - query_start))::TEXT || ' minutes'
+    FROM pg_stat_activity
+    WHERE state = 'active'
+        AND query_start < NOW() - INTERVAL '5 minutes';
+
+    -- Check for tables with high dead tuple ratio
+    RETURN QUERY
+    SELECT
+        'WARNING'::TEXT,
+        'Table Bloat'::TEXT,
+        relname || ' has ' || ROUND(100.0 * n_dead_tup /
+            NULLIF(n_live_tup + n_dead_tup, 0), 2)::TEXT || '% dead tuples'
+    FROM pg_stat_user_tables
+    WHERE n_dead_tup > n_live_tup * 0.2;
+
+    -- Check connection count
+    RETURN QUERY
+    SELECT
+        CASE WHEN COUNT(*) > 90 THEN 'CRITICAL' ELSE 'WARNING' END::TEXT,
+        'Connection Count'::TEXT,
+        COUNT(*)::TEXT || ' active connections'
+    FROM pg_stat_activity
+    WHERE backend_type = 'client backend'
+    HAVING COUNT(*) > 80;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Run alert check
+SELECT * FROM check_database_alerts();</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Key Takeaways -->
+      <section>
+        <div class="key-takeaways">
+          <h4>Key Takeaways</h4>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Topic</th>
+                <th>Key Concepts</th>
+                <th>Best Practices</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Backup & Recovery</strong></td>
+                <td>pg_dump, pg_restore, logical vs physical backups</td>
+                <td>Test restores regularly, automate validation</td>
+              </tr>
+              <tr>
+                <td><strong>PITR</strong></td>
+                <td>WAL archiving, restore points, recovery targets</td>
+                <td>Create restore points before major changes</td>
+              </tr>
+              <tr>
+                <td><strong>Maintenance</strong></td>
+                <td>VACUUM, ANALYZE, autovacuum, REINDEX</td>
+                <td>Monitor dead tuples, tune autovacuum for high-traffic tables</td>
+              </tr>
+              <tr>
+                <td><strong>Security</strong></td>
+                <td>Roles, privileges, RLS, encryption</td>
+                <td>Principle of least privilege, audit all changes</td>
+              </tr>
+              <tr>
+                <td><strong>High Availability</strong></td>
+                <td>Streaming replication, logical replication</td>
+                <td>Monitor lag, test failover procedures</td>
+              </tr>
+              <tr>
+                <td><strong>Scaling</strong></td>
+                <td>Partitioning, connection pooling, caching</td>
+                <td>Partition by access pattern, use pgBouncer</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h3>Next Steps</h3>
+        <p>Continue your PostgreSQL mastery by:</p>
+        <ul>
+          <li>Setting up a test environment to practice backup and recovery</li>
+          <li>Implementing monitoring dashboards with pg_stat_statements</li>
+          <li>Experimenting with partitioning strategies for your data</li>
+          <li>Configuring and testing replication between instances</li>
+          <li>Reviewing security policies and implementing RLS where appropriate</li>
+        </ul>
+        <p><a href="02_database_administration_and_maintenance.html" class="btn btn-outline-primary">&larr; Back to Lesson</a></p>
+      </section>
+
+    </div>
+  </div> <!-- /container -->
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+  function toggleSolution(id) {
+    var element = document.getElementById(id);
+    if (element.classList.contains('show')) {
+      element.classList.remove('show');
+      event.target.textContent = 'Show Solution';
+    } else {
+      element.classList.add('show');
+      event.target.textContent = 'Hide Solution';
+    }
+  }
+</script>
+
+</html>

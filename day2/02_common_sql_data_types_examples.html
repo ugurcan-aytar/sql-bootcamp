@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style_bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 2: Common SQL Data Types - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .exercise-box h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .solution-box {
+            background-color: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .solution-box.show {
+            display: block;
+        }
+
+        .toggle-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .hint-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .hint-box::before {
+            content: "💡 Hint: ";
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box::before {
+            content: "⚠️ Warning: ";
+            font-weight: bold;
+        }
+
+        .concept-box {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box::before {
+            content: "📚 Concept: ";
+            font-weight: bold;
+        }
+
+        .challenge-box {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .challenge-box h4 {
+            color: #155724;
+        }
+
+        .challenge-box::before {
+            content: "🏆 ";
+        }
+
+        .dataset-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .dataset-table th,
+        .dataset-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .dataset-table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .dataset-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .type-numeric {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .type-string {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        .type-date {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .type-boolean {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .type-json {
+            background-color: #e2d5f1;
+            color: #563d7c;
+        }
+
+        .result-box {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="data-types-practical-examples">Common SQL Data Types - Practical Examples</h1>
+                <p><a href="02_common_sql_data_types.html">&larr; Back to Common SQL Data Types Lesson</a></p>
+                <p>This page provides hands-on exercises to help you master SQL data types. Practice choosing the right
+                    data type, working with type conversions, and understanding type-specific behaviors.</p>
+            </section>
+
+            <!-- Sample Datasets Section -->
+            <section>
+                <h2 id="sample-datasets">Sample Datasets</h2>
+                <p>The following tables demonstrate different data types in action. Use these as reference for the
+                    exercises.</p>
+
+                <h4>products Table</h4>
+                <p>Shows various numeric and string data types:</p>
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>product_id<br><span class="type-badge type-numeric">INTEGER</span></th>
+                            <th>name<br><span class="type-badge type-string">VARCHAR(100)</span></th>
+                            <th>sku<br><span class="type-badge type-string">CHAR(10)</span></th>
+                            <th>price<br><span class="type-badge type-numeric">DECIMAL(10,2)</span></th>
+                            <th>weight_kg<br><span class="type-badge type-numeric">REAL</span></th>
+                            <th>is_active<br><span class="type-badge type-boolean">BOOLEAN</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Laptop Pro 15</td>
+                            <td>LAP-001</td>
+                            <td>1299.99</td>
+                            <td>2.1</td>
+                            <td>TRUE</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Wireless Mouse</td>
+                            <td>MOU-002</td>
+                            <td>29.50</td>
+                            <td>0.085</td>
+                            <td>TRUE</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>USB-C Hub</td>
+                            <td>HUB-003</td>
+                            <td>49.99</td>
+                            <td>0.15</td>
+                            <td>FALSE</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Monitor 27"</td>
+                            <td>MON-004</td>
+                            <td>399.00</td>
+                            <td>5.5</td>
+                            <td>TRUE</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Keyboard Mechanical</td>
+                            <td>KEY-005</td>
+                            <td>89.99</td>
+                            <td>0.95</td>
+                            <td>TRUE</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>events Table</h4>
+                <p>Shows date and time data types:</p>
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>event_id<br><span class="type-badge type-numeric">INTEGER</span></th>
+                            <th>event_name<br><span class="type-badge type-string">VARCHAR(100)</span></th>
+                            <th>event_date<br><span class="type-badge type-date">DATE</span></th>
+                            <th>start_time<br><span class="type-badge type-date">TIME</span></th>
+                            <th>created_at<br><span class="type-badge type-date">TIMESTAMP</span></th>
+                            <th>duration<br><span class="type-badge type-date">INTERVAL</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>SQL Workshop</td>
+                            <td>2024-03-15</td>
+                            <td>09:00:00</td>
+                            <td>2024-03-01 10:30:00</td>
+                            <td>3 hours</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Database Design</td>
+                            <td>2024-03-20</td>
+                            <td>14:00:00</td>
+                            <td>2024-03-05 14:15:00</td>
+                            <td>2 hours</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Team Meeting</td>
+                            <td>2024-03-18</td>
+                            <td>10:30:00</td>
+                            <td>2024-03-10 09:00:00</td>
+                            <td>1 hour 30 minutes</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Code Review</td>
+                            <td>2024-03-22</td>
+                            <td>16:00:00</td>
+                            <td>2024-03-12 11:45:00</td>
+                            <td>1 hour</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>user_profiles Table (JSON example)</h4>
+                <p>Shows JSON data type usage:</p>
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>user_id<br><span class="type-badge type-numeric">INTEGER</span></th>
+                            <th>username<br><span class="type-badge type-string">VARCHAR(50)</span></th>
+                            <th>preferences<br><span class="type-badge type-json">JSONB</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>john_doe</td>
+                            <td>{"theme": "dark", "language": "en", "notifications": true}</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>jane_smith</td>
+                            <td>{"theme": "light", "language": "fr", "notifications": false}</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>bob_wilson</td>
+                            <td>{"theme": "dark", "language": "en", "notifications": true, "timezone": "UTC"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>financial_data Table</h4>
+                <p>Demonstrates precision differences between DECIMAL and FLOAT:</p>
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>id<br><span class="type-badge type-numeric">INTEGER</span></th>
+                            <th>description<br><span class="type-badge type-string">VARCHAR(50)</span></th>
+                            <th>decimal_value<br><span class="type-badge type-numeric">DECIMAL(15,4)</span></th>
+                            <th>float_value<br><span class="type-badge type-numeric">FLOAT</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Monthly Revenue</td>
+                            <td>123456.7890</td>
+                            <td>123456.7890</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Tax Rate</td>
+                            <td>0.0825</td>
+                            <td>0.0825</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Interest Calc</td>
+                            <td>0.1000</td>
+                            <td>0.1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Exercise 1: Choosing the Right Data Type -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Choosing the Right Data Type</h2>
+                <p>A crucial skill is selecting the appropriate data type for each column. Consider storage efficiency,
+                    data integrity, and query performance.</p>
+
+                <div class="concept-box">
+                    Use the most specific type that fits your data. <code>INTEGER</code> for counts,
+                    <code>DECIMAL</code> for money, <code>VARCHAR</code> for variable text, <code>DATE</code> for dates
+                    only.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Design a Table Schema</h4>
+                    <p>You need to create a table to store employee information with the following fields:</p>
+                    <ul>
+                        <li>Employee ID (unique identifier, auto-generated)</li>
+                        <li>First Name (up to 50 characters)</li>
+                        <li>Last Name (up to 50 characters)</li>
+                        <li>Email (up to 100 characters)</li>
+                        <li>Salary (exact amount with 2 decimal places, up to millions)</li>
+                        <li>Hire Date</li>
+                        <li>Is Full Time (yes/no)</li>
+                        <li>Department Code (always exactly 4 characters)</li>
+                    </ul>
+                    <p><strong>Write the CREATE TABLE statement with appropriate data types.</strong></p>
+
+                    <div class="hint-box">
+                        Consider: Should department code be CHAR or VARCHAR? What precision do you need for salary?
+                    </div>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL syntax
+CREATE TABLE employees (
+    employee_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,  -- Up to 99,999,999.99
+    hire_date DATE NOT NULL,
+    is_full_time BOOLEAN DEFAULT TRUE,
+    department_code CHAR(4) NOT NULL  -- Fixed 4 characters
+);
+
+-- MySQL syntax
+CREATE TABLE employees (
+    employee_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    hire_date DATE NOT NULL,
+    is_full_time BOOLEAN DEFAULT TRUE,
+    department_code CHAR(4) NOT NULL
+);
+
+-- SQL Server syntax
+CREATE TABLE employees (
+    employee_id INT IDENTITY(1,1) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    hire_date DATE NOT NULL,
+    is_full_time BIT DEFAULT 1,
+    department_code CHAR(4) NOT NULL
+);</code></pre>
+                        <p><strong>Explanation:</strong></p>
+                        <ul>
+                            <li><code>CHAR(4)</code> for department_code because it's always exactly 4 characters</li>
+                            <li><code>VARCHAR</code> for names/email because lengths vary</li>
+                            <li><code>DECIMAL(10,2)</code> for exact currency calculations</li>
+                            <li><code>DATE</code> for hire_date (no time component needed)</li>
+                            <li><code>BOOLEAN</code> for is_full_time (SQL Server uses BIT)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Identify Data Type Problems</h4>
+                    <p>The following table definition has several data type issues. Identify and fix them:</p>
+                    <pre><code class="language-sql">CREATE TABLE orders (
+    order_id VARCHAR(20),          -- Problem?
+    customer_name TEXT,            -- Problem?
+    order_total FLOAT,             -- Problem?
+    quantity VARCHAR(10),          -- Problem?
+    order_date VARCHAR(20),        -- Problem?
+    is_shipped VARCHAR(5)          -- Problem?
+);</code></pre>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">-- Corrected table definition
+CREATE TABLE orders (
+    order_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    -- Was VARCHAR: IDs should be numeric for efficiency and auto-generation
+
+    customer_name VARCHAR(100) NOT NULL,
+    -- Was TEXT: For names, VARCHAR with limit is more appropriate
+
+    order_total DECIMAL(12, 2) NOT NULL,
+    -- Was FLOAT: Financial data needs exact precision
+
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    -- Was VARCHAR: Quantities are numbers, not text
+
+    order_date DATE NOT NULL,
+    -- Was VARCHAR: Dates should use DATE type for validation and functions
+
+    is_shipped BOOLEAN DEFAULT FALSE
+    -- Was VARCHAR: Boolean values should use BOOLEAN type
+);</code></pre>
+                        <p><strong>Issues identified:</strong></p>
+                        <ul>
+                            <li><strong>order_id</strong>: Using VARCHAR prevents auto-increment and is less efficient
+                            </li>
+                            <li><strong>customer_name</strong>: TEXT is overkill; VARCHAR with reasonable limit is
+                                better</li>
+                            <li><strong>order_total</strong>: FLOAT causes rounding errors with money</li>
+                            <li><strong>quantity</strong>: Storing numbers as strings prevents arithmetic operations
+                            </li>
+                            <li><strong>order_date</strong>: String dates can't use date functions or be validated</li>
+                            <li><strong>is_shipped</strong>: Boolean values stored as strings waste space and are error-prone</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Numeric Type Precision -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: Numeric Type Precision</h2>
+                <p>Understanding the difference between exact and approximate numeric types is crucial for financial
+                    applications.</p>
+
+                <div class="warning-box">
+                    Never use FLOAT or REAL for financial calculations! Floating-point types can introduce rounding
+                    errors.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Precision Comparison</h4>
+                    <p>Run this query and observe the difference between DECIMAL and FLOAT:</p>
+                    <pre><code class="language-sql">-- PostgreSQL / MySQL
+SELECT
+    0.1 + 0.2 AS float_result,
+    CAST(0.1 AS DECIMAL(10,2)) + CAST(0.2 AS DECIMAL(10,2)) AS decimal_result;
+
+-- What do you expect? What do you get?</code></pre>
+                    <p><strong>Question:</strong> What result do you expect for each calculation?</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <div class="result-box">
+                            float_result: 0.30000000000000004 (approximate)
+                            decimal_result: 0.30 (exact)
+                        </div>
+                        <p><strong>Explanation:</strong> The floating-point calculation produces a tiny error due to
+                            binary representation of decimal fractions. DECIMAL maintains exact precision.</p>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Calculate Total with Tax</h4>
+                    <p>Using the <code>products</code> table, calculate the total price including 8.25% tax. Make sure
+                        to use proper precision.</p>
+                    <p><strong>Write a query that:</strong></p>
+                    <ul>
+                        <li>Shows product name, original price</li>
+                        <li>Calculates tax amount (rounded to 2 decimal places)</li>
+                        <li>Shows total price with tax</li>
+                    </ul>
+
+                    <div class="hint-box">
+                        Use ROUND() or CAST() to ensure 2 decimal places in your results.
+                    </div>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    name,
+    price,
+    ROUND(price * 0.0825, 2) AS tax_amount,
+    ROUND(price * 1.0825, 2) AS total_with_tax
+FROM products
+WHERE is_active = TRUE
+ORDER BY price DESC;</code></pre>
+                        <p><strong>Expected Results:</strong></p>
+                        <table class="dataset-table">
+                            <tr>
+                                <th>name</th>
+                                <th>price</th>
+                                <th>tax_amount</th>
+                                <th>total_with_tax</th>
+                            </tr>
+                            <tr>
+                                <td>Laptop Pro 15</td>
+                                <td>1299.99</td>
+                                <td>107.25</td>
+                                <td>1407.24</td>
+                            </tr>
+                            <tr>
+                                <td>Monitor 27"</td>
+                                <td>399.00</td>
+                                <td>32.92</td>
+                                <td>431.92</td>
+                            </tr>
+                            <tr>
+                                <td>Keyboard Mechanical</td>
+                                <td>89.99</td>
+                                <td>7.42</td>
+                                <td>97.41</td>
+                            </tr>
+                            <tr>
+                                <td>Wireless Mouse</td>
+                                <td>29.50</td>
+                                <td>2.43</td>
+                                <td>31.93</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.3: Integer Division vs Decimal Division</h4>
+                    <p>What is the difference between these two queries?</p>
+                    <pre><code class="language-sql">-- Query A
+SELECT 5 / 2 AS result_a;
+
+-- Query B
+SELECT 5.0 / 2 AS result_b;
+
+-- Query C
+SELECT CAST(5 AS DECIMAL) / 2 AS result_c;</code></pre>
+                    <p><strong>Question:</strong> What result does each query return?</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Show Solution</button>
+                    <div id="solution2_3" class="solution-box">
+                        <div class="result-box">
+                            result_a: 2 (integer division truncates)
+                            result_b: 2.5 (decimal division preserves fraction)
+                            result_c: 2.5 (explicit cast to decimal)
+                        </div>
+                        <p><strong>Explanation:</strong></p>
+                        <ul>
+                            <li>Integer / Integer = Integer (fraction discarded)</li>
+                            <li>If either operand is decimal/float, result is decimal/float</li>
+                            <li>Use explicit CAST when you need decimal results from integer values</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: String Data Types -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: String Data Types</h2>
+                <p>Understanding when to use CHAR vs VARCHAR and how to work with text data.</p>
+
+                <div class="concept-box">
+                    <code>CHAR(n)</code> pads shorter strings with spaces. <code>VARCHAR(n)</code> stores only the
+                    actual characters. Use CHAR only when data is always the exact same length.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: CHAR Padding Behavior</h4>
+                    <p>Observe how CHAR handles shorter strings:</p>
+                    <pre><code class="language-sql">-- Create a test table
+CREATE TABLE char_test (
+    fixed_code CHAR(10),
+    variable_code VARCHAR(10)
+);
+
+INSERT INTO char_test VALUES ('ABC', 'ABC');
+
+-- Query to see the difference
+SELECT
+    fixed_code,
+    LENGTH(fixed_code) AS char_length,
+    variable_code,
+    LENGTH(variable_code) AS varchar_length
+FROM char_test;</code></pre>
+                    <p><strong>Question:</strong> What lengths do you expect?</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <div class="result-box">
+                            fixed_code: 'ABC       ' (with trailing spaces)
+                            char_length: 10 (or 3 in some DBs that trim)
+                            variable_code: 'ABC'
+                            varchar_length: 3
+                        </div>
+                        <p><strong>Note:</strong> Behavior varies by database:</p>
+                        <ul>
+                            <li><strong>PostgreSQL</strong>: CHAR is padded, but LENGTH() ignores trailing spaces</li>
+                            <li><strong>MySQL</strong>: Trailing spaces are removed when retrieving CHAR values</li>
+                            <li><strong>SQL Server</strong>: CHAR includes padding, LEN() ignores trailing spaces, DATALENGTH() includes them</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: String Comparison with CHAR</h4>
+                    <p>What happens when you compare CHAR values?</p>
+                    <pre><code class="language-sql">-- Will this return TRUE or FALSE?
+SELECT
+    CASE WHEN 'ABC'::CHAR(10) = 'ABC'::VARCHAR(10)
+         THEN 'Equal'
+         ELSE 'Not Equal'
+    END AS comparison_result;</code></pre>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <p><strong>Result varies by database:</strong></p>
+                        <ul>
+                            <li><strong>PostgreSQL</strong>: 'Equal' - trailing spaces are ignored in comparisons</li>
+                            <li><strong>MySQL</strong>: 'Equal' - trailing spaces are ignored by default</li>
+                            <li><strong>SQL Server</strong>: 'Equal' - uses ANSI padding rules</li>
+                        </ul>
+                        <p><strong>Best Practice:</strong> Don't rely on implicit behavior. Use TRIM() explicitly when comparing strings if padding might be an issue.</p>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.3: Pattern Matching with Different Data Types</h4>
+                    <p>Using the <code>products</code> table, write queries to:</p>
+                    <ol>
+                        <li>Find products where SKU starts with 'MON' or 'MOU'</li>
+                        <li>Find products with names containing numbers</li>
+                        <li>Find products where SKU ends with '3', '4', or '5'</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <div id="solution3_3" class="solution-box">
+                        <pre><code class="language-sql">-- 1. SKU starts with 'MON' or 'MOU'
+SELECT name, sku
+FROM products
+WHERE sku LIKE 'MON%' OR sku LIKE 'MOU%';
+-- Or using regular expression (PostgreSQL):
+-- WHERE sku ~ '^MO[NU]'
+
+-- 2. Names containing numbers
+SELECT name, sku
+FROM products
+WHERE name ~ '[0-9]';  -- PostgreSQL
+-- MySQL: WHERE name REGEXP '[0-9]'
+-- SQL Server: WHERE name LIKE '%[0-9]%'
+
+-- 3. SKU ends with 3, 4, or 5
+SELECT name, sku
+FROM products
+WHERE sku LIKE '%-00[345]';
+-- Or: WHERE RIGHT(sku, 1) IN ('3', '4', '5')</code></pre>
+                        <p><strong>Results for query 1:</strong></p>
+                        <table class="dataset-table">
+                            <tr>
+                                <th>name</th>
+                                <th>sku</th>
+                            </tr>
+                            <tr>
+                                <td>Wireless Mouse</td>
+                                <td>MOU-002</td>
+                            </tr>
+                            <tr>
+                                <td>Monitor 27"</td>
+                                <td>MON-004</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Date and Time Types -->
+            <section>
+                <h2 id="exercise-4">Exercise 4: Date and Time Types</h2>
+                <p>Working with temporal data requires understanding DATE, TIME, TIMESTAMP, and INTERVAL types.</p>
+
+                <div class="concept-box">
+                    Use <code>TIMESTAMP WITH TIME ZONE</code> for most timestamp needs to avoid timezone ambiguity.
+                    Store in UTC and convert for display.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Date Extraction and Formatting</h4>
+                    <p>Using the <code>events</code> table, write queries to:</p>
+                    <ol>
+                        <li>Extract the year, month, and day from event_date</li>
+                        <li>Get the day of the week for each event</li>
+                        <li>Format the date as 'Month DD, YYYY' (e.g., 'March 15, 2024')</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+SELECT
+    event_name,
+    event_date,
+    EXTRACT(YEAR FROM event_date) AS year,
+    EXTRACT(MONTH FROM event_date) AS month,
+    EXTRACT(DAY FROM event_date) AS day,
+    TO_CHAR(event_date, 'Day') AS day_of_week,
+    TO_CHAR(event_date, 'Month DD, YYYY') AS formatted_date
+FROM events;
+
+-- MySQL
+SELECT
+    event_name,
+    event_date,
+    YEAR(event_date) AS year,
+    MONTH(event_date) AS month,
+    DAY(event_date) AS day,
+    DAYNAME(event_date) AS day_of_week,
+    DATE_FORMAT(event_date, '%M %d, %Y') AS formatted_date
+FROM events;
+
+-- SQL Server
+SELECT
+    event_name,
+    event_date,
+    YEAR(event_date) AS year,
+    MONTH(event_date) AS month,
+    DAY(event_date) AS day,
+    DATENAME(WEEKDAY, event_date) AS day_of_week,
+    FORMAT(event_date, 'MMMM dd, yyyy') AS formatted_date
+FROM events;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.2: Date Arithmetic</h4>
+                    <p>Using the <code>events</code> table:</p>
+                    <ol>
+                        <li>Calculate how many days until each event (from today)</li>
+                        <li>Find events that were created more than 5 days before the event date</li>
+                        <li>Calculate the end time of each event (start_time + duration)</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+-- 1. Days until each event
+SELECT
+    event_name,
+    event_date,
+    event_date - CURRENT_DATE AS days_until
+FROM events;
+
+-- 2. Events created more than 5 days before event date
+SELECT
+    event_name,
+    created_at::DATE AS created_date,
+    event_date,
+    event_date - created_at::DATE AS days_before
+FROM events
+WHERE event_date - created_at::DATE > 5;
+
+-- 3. Calculate end time
+SELECT
+    event_name,
+    start_time,
+    duration,
+    start_time + duration AS end_time
+FROM events;
+
+-- MySQL
+-- 1. Days until each event
+SELECT
+    event_name,
+    event_date,
+    DATEDIFF(event_date, CURDATE()) AS days_until
+FROM events;
+
+-- 2. Events created more than 5 days before
+SELECT
+    event_name,
+    DATE(created_at) AS created_date,
+    event_date,
+    DATEDIFF(event_date, DATE(created_at)) AS days_before
+FROM events
+WHERE DATEDIFF(event_date, DATE(created_at)) > 5;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.3: Timestamp with Time Zone</h4>
+                    <p>Understanding timezone handling:</p>
+                    <pre><code class="language-sql">-- PostgreSQL: Show current time in different zones
+SELECT
+    CURRENT_TIMESTAMP AS server_time,
+    CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AS utc_time,
+    CURRENT_TIMESTAMP AT TIME ZONE 'America/New_York' AS new_york_time,
+    CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Istanbul' AS istanbul_time;</code></pre>
+                    <p><strong>Question:</strong> If it's 15:00 UTC, what time is it in Istanbul (UTC+3)?</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Show Solution</button>
+                    <div id="solution4_3" class="solution-box">
+                        <div class="result-box">
+                            UTC: 15:00
+                            Istanbul (UTC+3): 18:00
+                        </div>
+                        <p><strong>Best Practice:</strong></p>
+                        <ul>
+                            <li>Store all timestamps in UTC</li>
+                            <li>Convert to local time only for display</li>
+                            <li>Use <code>TIMESTAMP WITH TIME ZONE</code> to preserve timezone information</li>
+                            <li>Be consistent across your application</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 5: JSON Data Type -->
+            <section>
+                <h2 id="exercise-5">Exercise 5: JSON Data Type</h2>
+                <p>Modern databases support JSON for storing semi-structured data.</p>
+
+                <div class="concept-box">
+                    PostgreSQL offers <code>JSON</code> (text) and <code>JSONB</code> (binary). Use JSONB for better
+                    performance and indexing capabilities.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.1: Querying JSON Data</h4>
+                    <p>Using the <code>user_profiles</code> table, write queries to:</p>
+                    <ol>
+                        <li>Get the theme preference for all users</li>
+                        <li>Find users who have notifications enabled</li>
+                        <li>Find users who have a timezone setting</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <div id="solution5_1" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+-- 1. Get theme preference
+SELECT
+    username,
+    preferences->>'theme' AS theme
+FROM user_profiles;
+
+-- 2. Users with notifications enabled
+SELECT username, preferences
+FROM user_profiles
+WHERE (preferences->>'notifications')::BOOLEAN = TRUE;
+-- Or: WHERE preferences @> '{"notifications": true}'
+
+-- 3. Users with timezone setting
+SELECT username, preferences->>'timezone' AS timezone
+FROM user_profiles
+WHERE preferences ? 'timezone';
+
+-- MySQL
+-- 1. Get theme preference
+SELECT
+    username,
+    JSON_EXTRACT(preferences, '$.theme') AS theme
+    -- Or: preferences->>'$.theme'
+FROM user_profiles;
+
+-- 2. Users with notifications enabled
+SELECT username, preferences
+FROM user_profiles
+WHERE JSON_EXTRACT(preferences, '$.notifications') = true;
+
+-- 3. Users with timezone setting
+SELECT username, JSON_EXTRACT(preferences, '$.timezone') AS timezone
+FROM user_profiles
+WHERE JSON_CONTAINS_PATH(preferences, 'one', '$.timezone');</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.2: Modifying JSON Data</h4>
+                    <p>Write queries to:</p>
+                    <ol>
+                        <li>Add a new key "email_digest" with value "weekly" to all user preferences</li>
+                        <li>Update the theme to "system" for user john_doe</li>
+                    </ol>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
+                    <div id="solution5_2" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+-- 1. Add new key to all users
+UPDATE user_profiles
+SET preferences = preferences || '{"email_digest": "weekly"}'::jsonb;
+
+-- 2. Update theme for specific user
+UPDATE user_profiles
+SET preferences = jsonb_set(preferences, '{theme}', '"system"')
+WHERE username = 'john_doe';
+
+-- MySQL
+-- 1. Add new key to all users
+UPDATE user_profiles
+SET preferences = JSON_SET(preferences, '$.email_digest', 'weekly');
+
+-- 2. Update theme for specific user
+UPDATE user_profiles
+SET preferences = JSON_SET(preferences, '$.theme', 'system')
+WHERE username = 'john_doe';</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenge Exercises -->
+            <section>
+                <h2 id="challenge-exercises">Challenge Exercises</h2>
+                <p>Test your comprehensive understanding of SQL data types with these advanced challenges.</p>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Design a Complete Schema</h4>
+                    <p>Design a table schema for an e-commerce order system that includes:</p>
+                    <ul>
+                        <li>Order ID (unique identifier)</li>
+                        <li>Customer email</li>
+                        <li>Order items (as JSON array)</li>
+                        <li>Subtotal, tax, and total (financial values)</li>
+                        <li>Order status (limited set of values)</li>
+                        <li>Shipping address (structured data)</li>
+                        <li>Order timestamp with timezone</li>
+                        <li>Estimated delivery date</li>
+                        <li>Tracking number (optional, alphanumeric)</li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+CREATE TABLE ecommerce_orders (
+    order_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    customer_email VARCHAR(255) NOT NULL,
+
+    -- Order items as JSON array
+    items JSONB NOT NULL,
+    -- Example: [{"product_id": 1, "name": "Widget", "qty": 2, "price": 9.99}]
+
+    -- Financial values with exact precision
+    subtotal DECIMAL(12, 2) NOT NULL CHECK (subtotal >= 0),
+    tax_amount DECIMAL(12, 2) NOT NULL CHECK (tax_amount >= 0),
+    total DECIMAL(12, 2) NOT NULL CHECK (total >= 0),
+
+    -- Order status with constrained values
+    status VARCHAR(20) NOT NULL DEFAULT 'pending'
+        CHECK (status IN ('pending', 'confirmed', 'processing',
+                          'shipped', 'delivered', 'cancelled')),
+
+    -- Shipping address as structured JSON
+    shipping_address JSONB NOT NULL,
+    -- Example: {"street": "123 Main St", "city": "NYC", "zip": "10001", "country": "US"}
+
+    -- Timestamps
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+
+    -- Delivery date (no time component needed)
+    estimated_delivery DATE,
+
+    -- Optional tracking number
+    tracking_number VARCHAR(50)
+);
+
+-- Add index on JSONB for faster queries
+CREATE INDEX idx_orders_items ON ecommerce_orders USING GIN (items);
+CREATE INDEX idx_orders_status ON ecommerce_orders (status);
+CREATE INDEX idx_orders_customer ON ecommerce_orders (customer_email);</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: Type Conversion Query</h4>
+                    <p>Given a legacy table where all data was stored as VARCHAR:</p>
+                    <pre><code class="language-sql">CREATE TABLE legacy_data (
+    id VARCHAR(10),
+    amount VARCHAR(20),
+    transaction_date VARCHAR(20),
+    is_valid VARCHAR(5)
+);</code></pre>
+                    <p>Write a query that:</p>
+                    <ul>
+                        <li>Converts id to INTEGER</li>
+                        <li>Converts amount to DECIMAL with proper handling of currency symbols</li>
+                        <li>Converts transaction_date to proper DATE</li>
+                        <li>Converts is_valid to BOOLEAN</li>
+                        <li>Handles NULL and invalid values gracefully</li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+SELECT
+    -- Convert ID, NULL if not valid integer
+    CASE
+        WHEN id ~ '^\d+$' THEN id::INTEGER
+        ELSE NULL
+    END AS id,
+
+    -- Remove currency symbols and convert to DECIMAL
+    CASE
+        WHEN REGEXP_REPLACE(amount, '[^0-9.-]', '', 'g') ~ '^-?\d+\.?\d*$'
+        THEN REGEXP_REPLACE(amount, '[^0-9.-]', '', 'g')::DECIMAL(12,2)
+        ELSE NULL
+    END AS amount,
+
+    -- Convert date string to DATE
+    CASE
+        WHEN transaction_date IS NOT NULL
+        THEN TO_DATE(transaction_date, 'YYYY-MM-DD')
+        ELSE NULL
+    END AS transaction_date,
+
+    -- Convert string to BOOLEAN
+    CASE
+        WHEN LOWER(is_valid) IN ('true', 'yes', '1', 't', 'y') THEN TRUE
+        WHEN LOWER(is_valid) IN ('false', 'no', '0', 'f', 'n') THEN FALSE
+        ELSE NULL
+    END AS is_valid
+FROM legacy_data;
+
+-- For creating a new properly-typed table from legacy data:
+CREATE TABLE cleaned_data AS
+SELECT
+    NULLIF(REGEXP_REPLACE(id, '[^0-9]', '', 'g'), '')::INTEGER AS id,
+    NULLIF(REGEXP_REPLACE(amount, '[^0-9.-]', '', 'g'), '')::DECIMAL(12,2) AS amount,
+    TO_DATE(transaction_date, 'YYYY-MM-DD') AS transaction_date,
+    LOWER(is_valid) IN ('true', 'yes', '1', 't', 'y') AS is_valid
+FROM legacy_data
+WHERE id IS NOT NULL;</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 3: Complex Date Calculations</h4>
+                    <p>Write a query that generates a report of all events with:</p>
+                    <ul>
+                        <li>Event name and date</li>
+                        <li>Calculated end time (start_time + duration)</li>
+                        <li>Days from creation to event</li>
+                        <li>Status: 'upcoming', 'today', or 'past' based on current date</li>
+                        <li>Week number of the year</li>
+                        <li>Whether the event is on a weekend</li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
+                    <div id="challenge3" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+SELECT
+    event_name,
+    event_date,
+    start_time,
+    start_time + duration AS end_time,
+
+    -- Days from creation to event
+    event_date - created_at::DATE AS days_from_creation,
+
+    -- Event status
+    CASE
+        WHEN event_date > CURRENT_DATE THEN 'upcoming'
+        WHEN event_date = CURRENT_DATE THEN 'today'
+        ELSE 'past'
+    END AS status,
+
+    -- Week number
+    EXTRACT(WEEK FROM event_date) AS week_number,
+
+    -- Is weekend (Saturday=6, Sunday=0 in PostgreSQL)
+    CASE
+        WHEN EXTRACT(DOW FROM event_date) IN (0, 6) THEN TRUE
+        ELSE FALSE
+    END AS is_weekend,
+
+    -- Day name for reference
+    TO_CHAR(event_date, 'Day') AS day_name
+FROM events
+ORDER BY event_date;
+
+-- MySQL equivalent
+SELECT
+    event_name,
+    event_date,
+    start_time,
+    ADDTIME(start_time, SEC_TO_TIME(
+        CASE
+            WHEN duration LIKE '%hour%'
+            THEN CAST(REGEXP_SUBSTR(duration, '[0-9]+') AS SIGNED) * 3600
+            ELSE 0
+        END
+    )) AS end_time,
+
+    DATEDIFF(event_date, DATE(created_at)) AS days_from_creation,
+
+    CASE
+        WHEN event_date > CURDATE() THEN 'upcoming'
+        WHEN event_date = CURDATE() THEN 'today'
+        ELSE 'past'
+    END AS status,
+
+    WEEK(event_date) AS week_number,
+
+    DAYOFWEEK(event_date) IN (1, 7) AS is_weekend,
+
+    DAYNAME(event_date) AS day_name
+FROM events
+ORDER BY event_date;</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 4: JSON Analytics</h4>
+                    <p>Using the user_profiles table, write a query that:</p>
+                    <ul>
+                        <li>Counts users by theme preference</li>
+                        <li>Lists all unique languages used</li>
+                        <li>Shows percentage of users with notifications enabled</li>
+                        <li>Identifies users with custom/non-standard preferences (more than 3 keys)</li>
+                    </ul>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge4')">Show Solution</button>
+                    <div id="challenge4" class="solution-box">
+                        <pre><code class="language-sql">-- PostgreSQL
+
+-- Count users by theme
+SELECT
+    preferences->>'theme' AS theme,
+    COUNT(*) AS user_count
+FROM user_profiles
+GROUP BY preferences->>'theme';
+
+-- List unique languages
+SELECT DISTINCT preferences->>'language' AS language
+FROM user_profiles
+WHERE preferences->>'language' IS NOT NULL;
+
+-- Percentage with notifications enabled
+SELECT
+    ROUND(
+        100.0 * SUM(CASE WHEN (preferences->>'notifications')::BOOLEAN THEN 1 ELSE 0 END)
+        / COUNT(*),
+        2
+    ) AS notification_percentage
+FROM user_profiles;
+
+-- Users with more than 3 preference keys (custom preferences)
+SELECT
+    username,
+    preferences,
+    jsonb_object_keys(preferences) AS keys
+FROM user_profiles
+WHERE (
+    SELECT COUNT(*)
+    FROM jsonb_object_keys(preferences)
+) > 3;
+
+-- Or more elegantly:
+SELECT
+    username,
+    preferences,
+    jsonb_array_length(jsonb_path_query_array(preferences, '$.keyvalue()')) AS key_count
+FROM user_profiles
+HAVING jsonb_array_length(jsonb_path_query_array(preferences, '$.keyvalue()')) > 3;
+
+-- Combined analytics report
+SELECT
+    (SELECT jsonb_object_agg(theme, cnt)
+     FROM (SELECT preferences->>'theme' AS theme, COUNT(*) AS cnt
+           FROM user_profiles GROUP BY 1) t) AS themes_breakdown,
+
+    (SELECT jsonb_agg(DISTINCT preferences->>'language')
+     FROM user_profiles) AS languages,
+
+    (SELECT ROUND(100.0 * AVG(CASE WHEN (preferences->>'notifications')::BOOLEAN
+                                   THEN 1 ELSE 0 END), 2)
+     FROM user_profiles) AS notification_percentage;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section>
+                <h2 id="key-takeaways">Key Takeaways</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Best Practice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Financial Data</td>
+                            <td>Always use <code>DECIMAL</code> or <code>NUMERIC</code>, never <code>FLOAT</code></td>
+                        </tr>
+                        <tr>
+                            <td>Fixed-Length Codes</td>
+                            <td>Use <code>CHAR(n)</code> only when length is always exactly n</td>
+                        </tr>
+                        <tr>
+                            <td>Variable Text</td>
+                            <td>Use <code>VARCHAR(n)</code> with reasonable limits, or <code>TEXT</code> for unlimited
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Timestamps</td>
+                            <td>Use <code>TIMESTAMP WITH TIME ZONE</code> and store in UTC</td>
+                        </tr>
+                        <tr>
+                            <td>Boolean Values</td>
+                            <td>Use native <code>BOOLEAN</code> type, not strings or integers</td>
+                        </tr>
+                        <tr>
+                            <td>Semi-Structured Data</td>
+                            <td>Use <code>JSONB</code> (PostgreSQL) or <code>JSON</code> type with proper indexing</td>
+                        </tr>
+                        <tr>
+                            <td>Auto-Generated IDs</td>
+                            <td>Use <code>IDENTITY</code> columns or <code>UUID</code> for distributed systems</td>
+                        </tr>
+                        <tr>
+                            <td>Type Conversions</td>
+                            <td>Use explicit <code>CAST()</code> to avoid implicit conversion surprises</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Navigation -->
+            <section>
+                <p><a href="02_common_sql_data_types.html">&larr; Back to Common SQL Data Types Lesson</a></p>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../static/script.js"></script>
+
+    <script>
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.classList.contains('show')) {
+                element.classList.remove('show');
+                event.target.textContent = 'Show Solution';
+            } else {
+                element.classList.add('show');
+                event.target.textContent = 'Hide Solution';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    rel="shortcut icon" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Day 2: Data Manipulation (DML) - Practical Examples</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.at {
+      color: #7d9029;
+    }
+
+    code span.bn {
+      color: #40a070;
+    }
+
+    code span.bu {}
+
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    code span.ch {
+      color: #4070a0;
+    }
+
+    code span.cn {
+      color: #880000;
+    }
+
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    code span.dt {
+      color: #902000;
+    }
+
+    code span.dv {
+      color: #40a070;
+    }
+
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    code span.ex {}
+
+    code span.fl {
+      color: #40a070;
+    }
+
+    code span.fu {
+      color: #06287e;
+    }
+
+    code span.im {}
+
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    code span.op {
+      color: #666666;
+    }
+
+    code span.ot {
+      color: #007020;
+    }
+
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    code span.sc {
+      color: #4070a0;
+    }
+
+    code span.ss {
+      color: #bb6688;
+    }
+
+    code span.st {
+      color: #4070a0;
+    }
+
+    code span.va {
+      color: #19177c;
+    }
+
+    code span.vs {
+      color: #4070a0;
+    }
+
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .exercise-box {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .exercise-box h4 {
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .challenge-box {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .challenge-box h4 {
+      color: #856404;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .solution-toggle:hover {
+      background-color: #218838;
+    }
+
+    .solution-content {
+      display: none;
+    }
+
+    .solution-content.show {
+      display: block;
+    }
+
+    .hint-box {
+      background-color: #e7f3ff;
+      border: 1px dashed #007bff;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .warning-box {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #721c24;
+    }
+
+    .info-box {
+      background-color: #d1ecf1;
+      border: 1px solid #17a2b8;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .success-box {
+      background-color: #d4edda;
+      border: 1px solid #28a745;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #155724;
+    }
+
+    .dataset-table {
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    .dataset-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .dataset-table th,
+    .dataset-table td {
+      border: 1px solid #dee2e6;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .dataset-table th {
+      background-color: #e9ecef;
+      font-weight: 600;
+    }
+
+    .dataset-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .back-link {
+      margin-bottom: 20px;
+    }
+
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    .concept-box {
+      background-color: #e8f4f8;
+      border: 1px solid #17a2b8;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .danger-zone {
+      background-color: #fff5f5;
+      border: 2px solid #dc3545;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .danger-zone h4 {
+      color: #dc3545;
+    }
+
+    .before-after {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .before-after > div {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .before-after h5 {
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+
+    .before-after .before h5 {
+      background-color: #ffeeba;
+    }
+
+    .before-after .after h5 {
+      background-color: #c3e6cb;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <div class="back-link">
+        <a href="01_data_manipulation.html">&larr; Back to Data Manipulation (DML)</a>
+      </div>
+
+      <section>
+        <h1 id="data-manipulation-examples">Data Manipulation (DML) - Practical Examples</h1>
+        <p>This page provides hands-on exercises to practice INSERT, UPDATE, DELETE, and transaction management.
+          Work through these exercises to build confidence in modifying database data safely.</p>
+
+        <div class="warning-box">
+          <strong>Important Safety Note:</strong> Always practice DML operations on a test/development database.
+          In production, always use transactions and test your WHERE clauses with SELECT first!
+        </div>
+      </section>
+
+      <section>
+        <h2 id="sample-datasets">Sample Datasets</h2>
+        <p>Use these table structures for the exercises. You can create them in your practice database.</p>
+
+        <h3 id="products-table">products</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>product_id</th>
+                <th>product_name</th>
+                <th>category_id</th>
+                <th>price</th>
+                <th>stock_quantity</th>
+                <th>active</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Laptop Pro</td><td>1</td><td>999.99</td><td>50</td><td>true</td></tr>
+              <tr><td>2</td><td>Wireless Mouse</td><td>1</td><td>29.99</td><td>200</td><td>true</td></tr>
+              <tr><td>3</td><td>USB Cable</td><td>1</td><td>9.99</td><td>500</td><td>true</td></tr>
+              <tr><td>4</td><td>Office Chair</td><td>2</td><td>199.99</td><td>30</td><td>true</td></tr>
+              <tr><td>5</td><td>Desk Lamp</td><td>2</td><td>45.99</td><td>0</td><td>false</td></tr>
+              <tr><td>6</td><td>Notebook Set</td><td>3</td><td>12.99</td><td>150</td><td>true</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="categories-table">categories</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>category_id</th>
+                <th>category_name</th>
+                <th>parent_id</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Electronics</td><td>NULL</td></tr>
+              <tr><td>2</td><td>Furniture</td><td>NULL</td></tr>
+              <tr><td>3</td><td>Office Supplies</td><td>NULL</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="customers-table">customers</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>customer_id</th>
+                <th>name</th>
+                <th>email</th>
+                <th>status</th>
+                <th>created_at</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Alice Smith</td><td>alice@example.com</td><td>active</td><td>2023-01-15</td></tr>
+              <tr><td>2</td><td>Bob Johnson</td><td>bob@sample.org</td><td>active</td><td>2023-03-20</td></tr>
+              <tr><td>3</td><td>Carol White</td><td>carol@test.com</td><td>inactive</td><td>2022-06-10</td></tr>
+              <tr><td>4</td><td>David Brown</td><td>david@example.com</td><td>active</td><td>2023-08-05</td></tr>
+              <tr><td>5</td><td>Eve Wilson</td><td>eve@old-email.com</td><td>inactive</td><td>2021-12-01</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="orders-table">orders</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>order_id</th>
+                <th>customer_id</th>
+                <th>order_date</th>
+                <th>total_amount</th>
+                <th>status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>101</td><td>1</td><td>2024-01-10</td><td>1029.98</td><td>completed</td></tr>
+              <tr><td>102</td><td>2</td><td>2024-01-15</td><td>45.99</td><td>completed</td></tr>
+              <tr><td>103</td><td>1</td><td>2024-02-01</td><td>199.99</td><td>pending</td></tr>
+              <tr><td>104</td><td>4</td><td>2024-02-10</td><td>29.99</td><td>cancelled</td></tr>
+              <tr><td>105</td><td>3</td><td>2024-02-15</td><td>12.99</td><td>pending</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="accounts-table">accounts (for transaction exercises)</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>account_id</th>
+                <th>account_holder</th>
+                <th>balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>A001</td><td>John Doe</td><td>5000.00</td></tr>
+              <tr><td>A002</td><td>Jane Smith</td><td>3500.00</td></tr>
+              <tr><td>A003</td><td>Bob Wilson</td><td>1200.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-1">Exercise 1: INSERT Statements</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.1: Insert a Single Row</h4>
+          <p>Insert a new product: "Mechanical Keyboard" in category 1, priced at $79.99, with 75 in stock, and active.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <div id="sol1-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
+              <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="st">'Mechanical Keyboard'</span>, <span class="dv">1</span>, <span class="fl">79.99</span>, <span class="dv">75</span>, <span class="kw">true</span>);</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.2: Insert Multiple Rows</h4>
+          <p>Insert three new customers in a single statement:
+            <ul>
+              <li>Frank Miller, frank@email.com, active</li>
+              <li>Grace Lee, grace@email.com, active</li>
+              <li>Henry Chen, henry@email.com, active</li>
+            </ul>
+          </p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <div id="sol1-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
+              <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> customers (name, email, status, created_at)
+<span class="kw">VALUES</span>
+    (<span class="st">'Frank Miller'</span>, <span class="st">'frank@email.com'</span>, <span class="st">'active'</span>, <span class="fu">CURRENT_DATE</span>),
+    (<span class="st">'Grace Lee'</span>, <span class="st">'grace@email.com'</span>, <span class="st">'active'</span>, <span class="fu">CURRENT_DATE</span>),
+    (<span class="st">'Henry Chen'</span>, <span class="st">'henry@email.com'</span>, <span class="st">'active'</span>, <span class="fu">CURRENT_DATE</span>);</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.3: Insert with DEFAULT</h4>
+          <p>Insert a new category "Accessories" with no parent (NULL). Assume the category_id is auto-generated.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <div id="sol1-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
+              <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> categories (category_name, parent_id)
+<span class="kw">VALUES</span> (<span class="st">'Accessories'</span>, <span class="kw">NULL</span>);</code></pre>
+            </div>
+            <p><strong>Alternative with explicit DEFAULT:</strong></p>
+            <div class="sourceCode">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> categories (category_name, parent_id)
+<span class="kw">VALUES</span> (<span class="st">'Accessories'</span>, <span class="kw">DEFAULT</span>);</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.4: Insert from SELECT</h4>
+          <p>Create a backup of all Electronics products (category_id = 1) by inserting them into a
+            <code>products_backup</code> table with the same structure.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use INSERT INTO ... SELECT to copy data from one table to another.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <div id="sol1-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
+              <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> products_backup (product_name, category_id, price, stock_quantity, active)
+<span class="kw">SELECT</span> product_name, category_id, price, stock_quantity, active
+<span class="kw">FROM</span> products
+<span class="kw">WHERE</span> category_id = <span class="dv">1</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 1.5: Insert with RETURNING (PostgreSQL)</h4>
+          <p>Insert a new product and return the generated product_id along with the product name.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-5')">Show Solution</button>
+          <div id="sol1-5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol1-5-code')">
+              <pre class="sourceCode sql" id="sol1-5-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL syntax</span>
+<span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="st">'Webcam HD'</span>, <span class="dv">1</span>, <span class="fl">89.99</span>, <span class="dv">40</span>, <span class="kw">true</span>)
+<span class="kw">RETURNING</span> product_id, product_name;</code></pre>
+            </div>
+            <div class="info-box">
+              <strong>MySQL alternative:</strong> Use <code>SELECT LAST_INSERT_ID();</code> after the INSERT.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-2">Exercise 2: UPDATE Statements</h2>
+
+        <div class="danger-zone">
+          <h4>Critical Safety Rule</h4>
+          <p><strong>ALWAYS</strong> test your WHERE clause with a SELECT statement first before running UPDATE!</p>
+          <div class="sourceCode">
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Step 1: Test which rows will be affected</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> products <span class="kw">WHERE</span> category_id = <span class="dv">1</span>;
+
+<span class="co">-- Step 2: If correct, run the UPDATE</span>
+<span class="kw">UPDATE</span> products <span class="kw">SET</span> price = price * <span class="fl">1.10</span> <span class="kw">WHERE</span> category_id = <span class="dv">1</span>;</code></pre>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.1: Simple UPDATE</h4>
+          <p>Update Eve Wilson's email from 'eve@old-email.com' to 'eve@new-email.com'.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <div id="sol2-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
+              <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="co">-- First verify which row will be affected</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_id = <span class="dv">5</span>;
+
+<span class="co">-- Then update</span>
+<span class="kw">UPDATE</span> customers
+<span class="kw">SET</span> email = <span class="st">'eve@new-email.com'</span>
+<span class="kw">WHERE</span> customer_id = <span class="dv">5</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.2: UPDATE with Calculation</h4>
+          <p>Increase the price of all Electronics products (category_id = 1) by 15%.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <div id="sol2-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
+              <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">UPDATE</span> products
+<span class="kw">SET</span> price = price * <span class="fl">1.15</span>
+<span class="kw">WHERE</span> category_id = <span class="dv">1</span>;</code></pre>
+            </div>
+            <div class="before-after">
+              <div class="before">
+                <h5>Before</h5>
+                <p>Laptop Pro: $999.99<br>Wireless Mouse: $29.99<br>USB Cable: $9.99</p>
+              </div>
+              <div class="after">
+                <h5>After</h5>
+                <p>Laptop Pro: $1149.99<br>Wireless Mouse: $34.49<br>USB Cable: $11.49</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.3: UPDATE Multiple Columns</h4>
+          <p>Reactivate the "Desk Lamp" product: set active to true and stock_quantity to 25.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <div id="sol2-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
+              <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">UPDATE</span> products
+<span class="kw">SET</span> active = <span class="kw">true</span>,
+    stock_quantity = <span class="dv">25</span>
+<span class="kw">WHERE</span> product_id = <span class="dv">5</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.4: UPDATE with Condition on Current Value</h4>
+          <p>Decrease stock_quantity by 1 for product_id = 2, but only if stock_quantity is greater than 0.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Show Solution</button>
+          <div id="sol2-4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-4-code')">
+              <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">UPDATE</span> products
+<span class="kw">SET</span> stock_quantity = stock_quantity - <span class="dv">1</span>
+<span class="kw">WHERE</span> product_id = <span class="dv">2</span>
+  <span class="kw">AND</span> stock_quantity > <span class="dv">0</span>;</code></pre>
+            </div>
+            <p><strong>Note:</strong> The extra condition prevents negative stock values.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 2.5: UPDATE Based on Another Table (PostgreSQL)</h4>
+          <p>Mark all orders from inactive customers as 'cancelled'.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Use the FROM clause (PostgreSQL) to join with the customers table.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Show Solution</button>
+          <div id="sol2-5" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol2-5-code')">
+              <pre class="sourceCode sql" id="sol2-5-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL syntax</span>
+<span class="kw">UPDATE</span> orders o
+<span class="kw">SET</span> status = <span class="st">'cancelled'</span>
+<span class="kw">FROM</span> customers c
+<span class="kw">WHERE</span> o.customer_id = c.customer_id
+  <span class="kw">AND</span> c.status = <span class="st">'inactive'</span>;</code></pre>
+            </div>
+            <p><strong>Alternative using subquery (works in most databases):</strong></p>
+            <div class="sourceCode">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">UPDATE</span> orders
+<span class="kw">SET</span> status = <span class="st">'cancelled'</span>
+<span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (
+    <span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
+);</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-3">Exercise 3: DELETE Statements</h2>
+
+        <div class="danger-zone">
+          <h4>Critical Safety Rule</h4>
+          <p><strong>ALWAYS</strong> test your WHERE clause with SELECT first! A DELETE without WHERE will remove ALL rows!</p>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.1: Delete a Single Row</h4>
+          <p>Delete the cancelled order (order_id = 104).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <div id="sol3-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
+              <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="co">-- First verify</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders <span class="kw">WHERE</span> order_id = <span class="dv">104</span>;
+
+<span class="co">-- Then delete</span>
+<span class="kw">DELETE FROM</span> orders
+<span class="kw">WHERE</span> order_id = <span class="dv">104</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.2: Delete with Condition</h4>
+          <p>Delete all inactive customers who were created before 2022.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <div id="sol3-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
+              <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="co">-- First verify which rows will be deleted</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
+  <span class="kw">AND</span> created_at < <span class="st">'2022-01-01'</span>;
+
+<span class="co">-- Then delete</span>
+<span class="kw">DELETE FROM</span> customers
+<span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
+  <span class="kw">AND</span> created_at < <span class="st">'2022-01-01'</span>;</code></pre>
+            </div>
+            <p><strong>Expected Result:</strong> Deletes customer Eve Wilson (created 2021-12-01).</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.3: Delete Based on Another Table</h4>
+          <p>Delete all orders from customers who are marked as 'inactive'.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <div id="sol3-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
+              <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="co">-- Using subquery (works in most databases)</span>
+<span class="kw">DELETE FROM</span> orders
+<span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (
+    <span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
+);</code></pre>
+            </div>
+            <p><strong>PostgreSQL alternative with USING:</strong></p>
+            <div class="sourceCode">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">DELETE FROM</span> orders o
+<span class="kw">USING</span> customers c
+<span class="kw">WHERE</span> o.customer_id = c.customer_id
+  <span class="kw">AND</span> c.status = <span class="st">'inactive'</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 3.4: TRUNCATE vs DELETE</h4>
+          <p>What is the difference between these two statements? When would you use each?</p>
+          <div class="sourceCode">
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Option A</span>
+<span class="kw">DELETE FROM</span> temp_data;
+
+<span class="co">-- Option B</span>
+<span class="kw">TRUNCATE TABLE</span> temp_data;</code></pre>
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Show Answer</button>
+          <div id="sol3-4" class="solution-content">
+            <table class="table table-bordered">
+              <thead>
+                <tr><th>Feature</th><th>DELETE</th><th>TRUNCATE</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Speed</td><td>Slower (row by row)</td><td>Much faster</td></tr>
+                <tr><td>WHERE clause</td><td>Supported</td><td>Not supported</td></tr>
+                <tr><td>Triggers</td><td>Fires triggers</td><td>Usually doesn't fire triggers</td></tr>
+                <tr><td>Rollback</td><td>Can be rolled back</td><td>Often cannot be rolled back</td></tr>
+                <tr><td>Reset identity</td><td>No</td><td>Usually resets auto-increment</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Use DELETE</strong> when: You need conditional deletion, triggers should fire, or you need to rollback.</p>
+            <p><strong>Use TRUNCATE</strong> when: You want to quickly clear a table (like temp/staging tables) and don't need the above features.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-4">Exercise 4: Transactions</h2>
+
+        <div class="concept-box">
+          <h4>Transaction Basics</h4>
+          <ul>
+            <li><strong>BEGIN</strong>: Start a transaction</li>
+            <li><strong>COMMIT</strong>: Save all changes permanently</li>
+            <li><strong>ROLLBACK</strong>: Undo all changes since BEGIN</li>
+            <li><strong>SAVEPOINT</strong>: Create a checkpoint within a transaction</li>
+          </ul>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.1: Basic Transaction</h4>
+          <p>Write a transaction that transfers $500 from account A001 to account A002. Both operations must succeed or both must fail.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <div id="sol4-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
+              <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+
+<span class="co">-- Deduct from source account</span>
+<span class="kw">UPDATE</span> accounts
+<span class="kw">SET</span> balance = balance - <span class="fl">500.00</span>
+<span class="kw">WHERE</span> account_id = <span class="st">'A001'</span>;
+
+<span class="co">-- Add to destination account</span>
+<span class="kw">UPDATE</span> accounts
+<span class="kw">SET</span> balance = balance + <span class="fl">500.00</span>
+<span class="kw">WHERE</span> account_id = <span class="st">'A002'</span>;
+
+<span class="co">-- If everything is correct, commit</span>
+<span class="kw">COMMIT</span>;
+
+<span class="co">-- If something went wrong, use ROLLBACK instead</span>
+<span class="co">-- ROLLBACK;</span></code></pre>
+            </div>
+            <div class="before-after">
+              <div class="before">
+                <h5>Before</h5>
+                <p>A001: $5000.00<br>A002: $3500.00</p>
+              </div>
+              <div class="after">
+                <h5>After COMMIT</h5>
+                <p>A001: $4500.00<br>A002: $4000.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.2: Transaction with Validation</h4>
+          <p>Write a transaction that transfers money only if the source account has sufficient funds. If not, rollback.</p>
+          <div class="hint-box">
+            <strong>Hint:</strong> Check the balance before or after the deduction and decide whether to COMMIT or ROLLBACK.
+          </div>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <div id="sol4-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
+              <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+
+<span class="co">-- Try to deduct (with check for sufficient funds)</span>
+<span class="kw">UPDATE</span> accounts
+<span class="kw">SET</span> balance = balance - <span class="fl">500.00</span>
+<span class="kw">WHERE</span> account_id = <span class="st">'A001'</span>
+  <span class="kw">AND</span> balance >= <span class="fl">500.00</span>;  <span class="co">-- Only update if sufficient funds</span>
+
+<span class="co">-- Check if the update actually happened (in application code)</span>
+<span class="co">-- If 0 rows affected, ROLLBACK</span>
+<span class="co">-- If 1 row affected, continue:</span>
+
+<span class="kw">UPDATE</span> accounts
+<span class="kw">SET</span> balance = balance + <span class="fl">500.00</span>
+<span class="kw">WHERE</span> account_id = <span class="st">'A002'</span>;
+
+<span class="kw">COMMIT</span>;</code></pre>
+            </div>
+            <p><strong>Note:</strong> In real applications, you'd check the affected row count in your programming language and conditionally COMMIT or ROLLBACK.</p>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 4.3: Using SAVEPOINT</h4>
+          <p>Create a transaction that inserts two products. Use a SAVEPOINT after the first insert. If the second insert fails, rollback only to the savepoint (keeping the first insert).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <div id="sol4-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
+              <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+
+<span class="co">-- First insert</span>
+<span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="st">'Product A'</span>, <span class="dv">1</span>, <span class="fl">19.99</span>, <span class="dv">100</span>, <span class="kw">true</span>);
+
+<span class="co">-- Create savepoint</span>
+<span class="kw">SAVEPOINT</span> after_first_insert;
+
+<span class="co">-- Second insert (might fail)</span>
+<span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="st">'Product B'</span>, <span class="dv">1</span>, <span class="fl">29.99</span>, <span class="dv">50</span>, <span class="kw">true</span>);
+
+<span class="co">-- If second insert failed:</span>
+<span class="co">-- ROLLBACK TO SAVEPOINT after_first_insert;</span>
+
+<span class="co">-- Commit (first product will be saved even if we rolled back to savepoint)</span>
+<span class="kw">COMMIT</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="exercise-5">Exercise 5: UPSERT Operations</h2>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.1: INSERT or UPDATE (PostgreSQL)</h4>
+          <p>Insert a product with product_id = 100. If it already exists, update its price and stock_quantity instead.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Solution</button>
+          <div id="sol5-1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-1-code')">
+              <pre class="sourceCode sql" id="sol5-1-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL syntax</span>
+<span class="kw">INSERT INTO</span> products (product_id, product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="dv">100</span>, <span class="st">'New Product'</span>, <span class="dv">1</span>, <span class="fl">49.99</span>, <span class="dv">75</span>, <span class="kw">true</span>)
+<span class="kw">ON CONFLICT</span> (product_id)
+<span class="kw">DO UPDATE SET</span>
+    price = EXCLUDED.price,
+    stock_quantity = EXCLUDED.stock_quantity;</code></pre>
+            </div>
+            <div class="info-box">
+              <strong>EXCLUDED</strong> refers to the values that were attempted to be inserted.
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.2: INSERT or IGNORE</h4>
+          <p>Try to insert a product. If there's a conflict (product already exists), do nothing.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Solution</button>
+          <div id="sol5-2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-2-code')">
+              <pre class="sourceCode sql" id="sol5-2-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL syntax</span>
+<span class="kw">INSERT INTO</span> products (product_id, product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="dv">100</span>, <span class="st">'New Product'</span>, <span class="dv">1</span>, <span class="fl">49.99</span>, <span class="dv">75</span>, <span class="kw">true</span>)
+<span class="kw">ON CONFLICT</span> (product_id)
+<span class="kw">DO NOTHING</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-box">
+          <h4>Exercise 5.3: UPSERT with Increment</h4>
+          <p>Insert a product inventory record. If it already exists, add the new quantity to the existing quantity.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-3')">Show Solution</button>
+          <div id="sol5-3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('sol5-3-code')">
+              <pre class="sourceCode sql" id="sol5-3-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL syntax</span>
+<span class="kw">INSERT INTO</span> products (product_id, product_name, category_id, price, stock_quantity, active)
+<span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="st">'Wireless Mouse'</span>, <span class="dv">1</span>, <span class="fl">29.99</span>, <span class="dv">50</span>, <span class="kw">true</span>)
+<span class="kw">ON CONFLICT</span> (product_id)
+<span class="kw">DO UPDATE SET</span>
+    stock_quantity = products.stock_quantity + EXCLUDED.stock_quantity;</code></pre>
+            </div>
+            <p><strong>Result:</strong> If product 2 had 200 in stock, it now has 250.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="challenge-exercises">Challenge Exercises</h2>
+
+        <div class="challenge-box">
+          <h4>Challenge 1: Batch Price Update</h4>
+          <p>Write a statement to apply a 20% discount to all products that have been in stock (stock_quantity > 0)
+            for products in the Furniture category (category_id = 2). Use a transaction for safety.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <div id="chal1" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
+              <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+
+<span class="co">-- First, see what will be affected</span>
+<span class="kw">SELECT</span> product_name, price, price * <span class="fl">0.80</span> <span class="kw">AS</span> new_price
+<span class="kw">FROM</span> products
+<span class="kw">WHERE</span> category_id = <span class="dv">2</span>
+  <span class="kw">AND</span> stock_quantity > <span class="dv">0</span>;
+
+<span class="co">-- Apply the discount</span>
+<span class="kw">UPDATE</span> products
+<span class="kw">SET</span> price = price * <span class="fl">0.80</span>
+<span class="kw">WHERE</span> category_id = <span class="dv">2</span>
+  <span class="kw">AND</span> stock_quantity > <span class="dv">0</span>;
+
+<span class="kw">COMMIT</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 2: Archive and Delete</h4>
+          <p>Write statements to: (1) Copy all cancelled orders to an <code>orders_archive</code> table,
+            then (2) Delete the cancelled orders from the main orders table. Use a transaction.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <div id="chal2" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
+              <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+
+<span class="co">-- Step 1: Copy cancelled orders to archive</span>
+<span class="kw">INSERT INTO</span> orders_archive (order_id, customer_id, order_date, total_amount, status)
+<span class="kw">SELECT</span> order_id, customer_id, order_date, total_amount, status
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'cancelled'</span>;
+
+<span class="co">-- Step 2: Delete from main table</span>
+<span class="kw">DELETE FROM</span> orders
+<span class="kw">WHERE</span> status = <span class="st">'cancelled'</span>;
+
+<span class="kw">COMMIT</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 3: Inventory Adjustment</h4>
+          <p>Write a transaction that processes an order: decrease stock_quantity for product_id = 1 by 5 units,
+            but only if there's enough stock. If successful, also update the order status to 'shipped'.
+            If insufficient stock, rollback everything.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <div id="chal3" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
+              <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+
+<span class="co">-- Attempt to decrease stock (only if sufficient)</span>
+<span class="kw">UPDATE</span> products
+<span class="kw">SET</span> stock_quantity = stock_quantity - <span class="dv">5</span>
+<span class="kw">WHERE</span> product_id = <span class="dv">1</span>
+  <span class="kw">AND</span> stock_quantity >= <span class="dv">5</span>;
+
+<span class="co">-- In application code: check if 1 row was affected</span>
+<span class="co">-- If yes, proceed:</span>
+
+<span class="kw">UPDATE</span> orders
+<span class="kw">SET</span> status = <span class="st">'shipped'</span>
+<span class="kw">WHERE</span> order_id = <span class="dv">103</span>;
+
+<span class="kw">COMMIT</span>;
+
+<span class="co">-- If no rows affected by first UPDATE, use:</span>
+<span class="co">-- ROLLBACK;</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="challenge-box">
+          <h4>Challenge 4: Bulk Customer Cleanup</h4>
+          <p>Write a statement to set all customers to 'inactive' if they haven't placed any orders in the orders table.
+            Use a subquery or NOT EXISTS.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <div id="chal4" class="solution-content">
+            <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
+              <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="co">-- Using NOT EXISTS</span>
+<span class="kw">UPDATE</span> customers c
+<span class="kw">SET</span> status = <span class="st">'inactive'</span>
+<span class="kw">WHERE</span> <span class="kw">NOT EXISTS</span> (
+    <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o
+    <span class="kw">WHERE</span> o.customer_id = c.customer_id
+);
+
+<span class="co">-- Alternative using NOT IN</span>
+<span class="kw">UPDATE</span> customers
+<span class="kw">SET</span> status = <span class="st">'inactive'</span>
+<span class="kw">WHERE</span> customer_id <span class="kw">NOT IN</span> (
+    <span class="kw">SELECT DISTINCT</span> customer_id <span class="kw">FROM</span> orders
+);</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="summary">Key Takeaways</h2>
+        <ul>
+          <li><strong>INSERT</strong>: Add single or multiple rows; use INSERT...SELECT to copy data</li>
+          <li><strong>UPDATE</strong>: Always use WHERE unless updating all rows intentionally</li>
+          <li><strong>DELETE</strong>: Always test with SELECT first; use WHERE to avoid deleting all data</li>
+          <li><strong>TRUNCATE</strong>: Fast way to remove all rows; use for clearing temp tables</li>
+          <li><strong>Transactions</strong>: Group related operations; use COMMIT to save, ROLLBACK to undo</li>
+          <li><strong>SAVEPOINT</strong>: Create checkpoints within transactions for partial rollback</li>
+          <li><strong>UPSERT</strong>: INSERT or UPDATE based on conflict; syntax varies by database</li>
+          <li><strong>Safety First</strong>: Always test in development, use transactions, verify with SELECT before UPDATE/DELETE</li>
+        </ul>
+
+        <div class="success-box">
+          <strong>Best Practice Workflow:</strong>
+          <ol>
+            <li>Write your WHERE clause</li>
+            <li>Test it with SELECT to see affected rows</li>
+            <li>Wrap in BEGIN transaction</li>
+            <li>Run UPDATE/DELETE</li>
+            <li>Verify results</li>
+            <li>COMMIT if correct, ROLLBACK if not</li>
+          </ol>
+        </div>
+
+        <div class="back-link" style="margin-top: 30px;">
+          <a href="01_data_manipulation.html">&larr; Back to Data Manipulation (DML)</a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <script src="../static/script.js"></script>
+
+  <script>
+    function toggleSolution(id) {
+      var element = document.getElementById(id);
+      if (element.classList.contains('show')) {
+        element.classList.remove('show');
+        event.target.textContent = 'Show Solution';
+      } else {
+        element.classList.add('show');
+        event.target.textContent = 'Hide Solution';
+      }
+    }
+  </script>
+
+</body>
+
+</html>

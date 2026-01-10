@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/02_schema_management_and_organization.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Schema Management and Organization</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-schema-management-and-organization">Day 3: Schema Management and Organization</h1>
+                <h2 id="session-2-schema-management-and-organization-1.5-hours">Session 2: Schema Management and
+                    Organization (1.5 hours)</h2>
+                <p>As databases grow, organizing database objects (tables, views, functions, etc.) becomes crucial for
+                    manageability, security, and preventing naming conflicts. This session explores the concept of
+                    schemas
+                    (or equivalent namespaces) and best practices for naming conventions and managing changes to the
+                    database structure (schema migrations).</p>
+            </section>
+            <section>
+                <h3 id="organizing-database-objects-schemas-and-namespaces">Organizing Database Objects: Schemas and
+                    Namespaces</h3>
+                <p>Most relational database systems provide a way to group related objects into logical containers or
+                    namespaces.</p>
+                <ul>
+                    <li><strong>PostgreSQL, Oracle, SQL Server</strong>: Use the concept of <strong>Schemas</strong>. A
+                        database contains multiple schemas, and each schema contains objects like tables, views, etc.
+                        Objects are referenced using <code>schema_name.object_name</code>.</li>
+                    <li><strong>MySQL</strong>: Uses the term <strong>Database</strong> as the primary grouping
+                        mechanism. A
+                        MySQL server hosts multiple databases, and tables belong directly to a database.
+                        <code>USE database_name;</code> selects the default database, and objects are referenced as
+                        <code>database_name.table_name</code> or just <code>table_name</code> if a default database is
+                        selected.
+                    </li>
+                </ul>
+                <p>Despite the terminology differences, the core idea is the same: providing a level of namespacing
+                    below
+                    the main database server instance.</p>
+            </section>
+            <section>
+                <p><strong>Benefits of Using Schemas/Namespaces</strong>:</p>
+                <ol type="1">
+                    <li><strong>Organization</strong>: Group related objects (e.g., all tables related to sales, all
+                        objects
+                        for a specific application module).</li>
+                    <li><strong>Name Collision Prevention</strong>: Different schemas/databases can contain objects with
+                        the
+                        same name (e.g., <code>sales.customers</code> and <code>marketing.customers</code>).</li>
+                    <li><strong>Access Control</strong>: Permissions can often be granted or denied at the
+                        schema/database
+                        level, simplifying security management.</li>
+                    <li><strong>Multi-tenancy</strong>: Isolate data or objects for different tenants/clients within a
+                        single database instance (common in PostgreSQL/Oracle/SQL Server using schemas).</li>
+                    <li><strong>Managing Extensions/Modules</strong>: Keep objects created by third-party extensions
+                        separate from core application objects.</li>
+                </ol>
+                <p><strong>Default Schema/Database</strong>: Most systems have a default container where objects are
+                    created
+                    if not specified (e.g., <code>public</code> schema in PostgreSQL, the database selected by
+                    <code>USE</code> in MySQL).
+                </p>
+                <p><strong>Creating and Managing Schemas/Databases</strong>:</p>
+                <p>Syntax varies, but the concepts are similar.</p>
+                <ul>
+                    <li><strong>PostgreSQL</strong>: <code>CREATE SCHEMA schema_name;</code>,
+                        <code>DROP SCHEMA schema_name [CASCADE];</code>,
+                        <code>ALTER SCHEMA schema_name RENAME TO new_name;</code>
+                    </li>
+                    <li><strong>MySQL</strong>: <code>CREATE DATABASE database_name;</code>,
+                        <code>DROP DATABASE database_name;</code>, <code>ALTER DATABASE database_name ...;</code>
+                        (Renaming
+                        is trickier).
+                    </li>
+                    <li><strong>SQL Server</strong>: <code>CREATE SCHEMA schema_name;</code>,
+                        <code>DROP SCHEMA schema_name;</code>,
+                        <code>ALTER SCHEMA new_schema TRANSFER old_schema.object_name;</code>
+                    </li>
+                    <li><strong>Oracle</strong>: Schemas are tightly linked to Users.
+                        <code>CREATE USER username IDENTIFIED BY password;</code> effectively creates a schema owned by
+                        that
+                        user.
+                    </li>
+                </ul>
+                <p><strong>The Search Path / Default Database</strong>: Determines where the database looks for objects
+                    when
+                    a schema/database name isn’t explicitly provided. This is often configurable per session or user. *
+                    <strong>PostgreSQL</strong>: <code>SHOW search_path;</code>,
+                    <code>SET search_path TO schema1, schema2, public;</code> * <strong>MySQL</strong>:
+                    <code>USE database_name;</code>, <code>SELECT DATABASE();</code> * <strong>SQL Server</strong>:
+                    Default
+                    schema associated with the user, or use <code>USE database_name;</code>. * <strong>Oracle</strong>:
+                    Default schema is the user’s own schema.
+                    <code>ALTER SESSION SET CURRENT_SCHEMA = other_schema;</code>
+                </p>
+                <p><strong>Referencing Objects</strong>: Always prefer using fully qualified names
+                    (<code>schema_name.object_name</code> or <code>database_name.object_name</code>) in scripts and
+                    application code to avoid ambiguity, especially when working with multiple schemas/databases.</p>
+            </section>
+            <section>
+                <h3 id="object-naming-conventions">Object Naming Conventions</h3>
+                <p>Consistent naming conventions are vital for readability and maintainability. While standards vary,
+                    consistency within a project is key.</p>
+                <p><strong>General Principles</strong>:</p>
+                <ul>
+                    <li><strong>Consistency</strong>: Choose a style and stick to it.</li>
+                    <li><strong>Clarity</strong>: Names should clearly indicate the object’s purpose.</li>
+                    <li><strong>Conciseness</strong>: Avoid excessive length, but don’t sacrifice clarity.</li>
+                    <li><strong>Avoid Reserved Words</strong>: Check the list of reserved words for your specific RDBMS.
+                    </li>
+                    <li><strong>Case Sensitivity</strong>: Databases handle case differently. PostgreSQL defaults to
+                        lowercase unless quoted. MySQL behavior depends on the OS. SQL Server is often case-insensitive
+                        by default. Using
+                        <code>snake_case</code> (lowercase words separated by underscores) is often the safest and most
+                        portable
+                        approach.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Common Conventions (Examples using <code>snake_case</code>)</strong>:</p>
+                <ul>
+                    <li><strong>Tables</strong>: Use plural nouns (e.g., <code>customers</code>, <code>products</code>,
+                        <code>orders</code>) or singular nouns (e.g., <code>customer</code>, <code>product</code>,
+                        <code>order</code>). Choose one and be consistent. Junction tables often combine the names
+                        (e.g.,
+                        <code>order_items</code>, <code>user_roles</code>).
+                    </li>
+                    <li><strong>Columns</strong>: Use singular nouns describing the attribute (e.g.,
+                        <code>first_name</code>, <code>order_date</code>, <code>unit_price</code>).
+                    </li>
+                    <li><strong>Primary Keys</strong>: Often <code>id</code> or <code>table_name_id</code> (e.g.,
+                        <code>product_id</code>).
+                    </li>
+                    <li><strong>Foreign Keys</strong>: Often <code>referenced_table_name_id</code> (e.g.,
+                        <code>customer_id</code> in the <code>orders</code> table referencing <code>customers</code>).
+                    </li>
+                    <li><strong>Indexes</strong>: Indicate table, column(s), and possibly type (e.g.,
+                        <code>idx_orders_customer_id</code>, <code>uq_products_sku</code>).
+                    </li>
+                    <li><strong>Views</strong>: Often prefixed with <code>v_</code> or <code>vw_</code> (e.g.,
+                        <code>v_active_customers</code>).
+                    </li>
+                    <li><strong>Stored Procedures/Functions</strong>: Use verb-noun pairs (e.g.,
+                        <code>calculate_order_total</code>, <code>get_customer_details</code>).
+                    </li>
+                    <li><strong>Triggers</strong>: Indicate table, timing, and event (e.g.,
+                        <code>trg_orders_before_update</code>).
+                    </li>
+                </ul>
+                <p><strong>Documenting Conventions</strong>: Maintain a document outlining the chosen naming conventions
+                    for
+                    the project team.</p>
+            </section>
+            <section>
+                <h3 id="schema-migration-strategies">Schema Migration Strategies</h3>
+                <p>Schema migration (or database change management) is the practice of managing incremental, versioned
+                    changes to your database schema in a controlled and automated way. Manual changes are error-prone
+                    and
+                    difficult to track.</p>
+                <p><strong>Why Use Schema Migrations?</strong>
+                <ul>
+                    <li><strong>Version Control</strong>: Track schema changes
+                        alongside application code.</li>
+                    <li><strong>Repeatability</strong>: Ensure the schema can be reliably
+                        created
+                        or updated across different environments (dev, test, prod).</li>
+                    <li><strong>Automation</strong>: Integrate
+                        schema changes into deployment pipelines.</li>
+                    <li><strong>Collaboration</strong>: Manage changes made by
+                        multiple developers.</li>
+                    <li><strong>Rollback Capability</strong>: Define how to undo changes (where
+                        feasible).</li>
+                </ul>
+                </p>
+                <p><strong>Key Principles</strong>:</p>
+                <ul>
+                    <li><strong>Versioned Scripts</strong>: Each change or set of related
+                        changes is contained in a script identified by a unique version number or timestamp.</li>
+                    <li><strong>State
+                            Tracking</strong>: The database keeps track of which migration scripts have already been
+                        applied.</li>
+                    <li><strong>Up/Down Migrations</strong>: Each migration script ideally has an “up” section (apply
+                        the
+                        change) and a “down” section (revert the change).</li>
+                    <li><strong>Idempotency</strong>: Applying the same
+                        migration multiple times should have no adverse effect (though tools usually prevent
+                        re-application).</li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Types of Schema Changes &amp; Considerations</strong>:</p>
+                <ul>
+                    <li><strong>Additive
+                            Changes</strong>:
+                        Generally safe (e.g., <code>CREATE TABLE</code>, <code>ADD COLUMN</code> (nullable or with
+                        default),
+                        <code>CREATE INDEX</code>).
+                    </li>
+                    <li><strong>Destructive Changes</strong>: High risk, require careful
+                        planning
+                        (e.g., <code>DROP TABLE</code>, <code>DROP COLUMN</code>). Often require data migration or
+                        archiving
+                        first. </li>
+                    <li><strong>Data Type Changes</strong>: Can be complex, may require creating a new column,
+                        migrating data, and then dropping the old column. </li>
+                    <li><strong>Renaming</strong>: Can break
+                        dependencies;
+                        often handled as add+migrate+drop. </li>
+                    <li><strong>Constraint Changes</strong>: Adding
+                        <code>NOT NULL</code>
+                        to an existing column requires ensuring no NULLs exist.
+                    </li>
+                </ul>
+                <p><strong>Migration Tools</strong>: Numerous tools exist to manage this process. They typically
+                    connect
+                    to
+                    the database, check the applied migration versions, and run any pending migration scripts. *
+                    <strong>Flyway</strong>: Popular Java-based tool, uses SQL scripts named with version numbers. *
+                    <strong>Liquibase</strong>: Supports XML, YAML, JSON, or SQL formats for defining changesets.
+                    More
+                    feature-rich than Flyway. * <strong>Sqitch</strong>: Uses pure SQL scripts, designed with
+                    database
+                    developers in mind. * <strong>Framework-Specific Tools</strong>: Many application frameworks
+                    have
+                    built-in migration tools (e.g., Alembic for Python/SQLAlchemy, Active Record Migrations for Ruby
+                    on
+                    Rails, Entity Framework Migrations for .NET).
+                </p>
+            </section>
+            <section>
+                <p><strong>Workflow Example (Conceptual)</strong>:</p>
+                <ol type="1">
+                    <li>Developer creates a new migration script (e.g.,
+                        <code>V002__Add_phone_to_customers.sql</code>).
+                    </li>
+                    <li>Script contains <code>ALTER TABLE customers ADD COLUMN phone_number VARCHAR(20);</code>. </li>
+                    <li>Developer tests the migration locally. </li>
+                    <li>Code and migration script are committed to version control. </li>
+                    <li>CI/CD pipeline runs the migration tool against the test database. </li>
+                    <li>If tests pass, the migration tool is run against the production database during deployment.
+                    </li>
+                    <li>The migration tool updates its tracking table in the databaseto record that <code>V002</code>
+                        has
+                        been applied.</li>
+                </ol>
+                <p><strong>Best Practices</strong>:</p>
+                <ul>
+                    <li>Use a dedicated migration tool.</li>
+                    <li>Keep migrations small and focused on a single logical change.</li>
+                    <li>Always include rollback steps (<code>down</code> migrations) if possible.</li>
+                    <li>Test migrations thoroughly in a staging environment that mirrors production.</li>
+                    <li>Never edit a migration script after it has been applied to a shared environment (create a new
+                        script to correct it).</li>
+                    <li>Coordinate schema changes with application code deployments.</li>
+                    <li>For complex changes involving data movement or potential downtime, plan carefully (e.g.,
+                        expand-contract pattern).
+                </ul>
+                <p>Proper schema organization and a robust migration strategy are essential for managing database
+                    evolution
+                    effectively throughout the application lifecycle.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Practice What You Learned</h3>
+                <p>Ready to master schema management? Practice with hands-on exercises covering schema organization, naming conventions, and migration strategies.</p>
+                <p><a href="02_schema_management_and_organization_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/02_schema_management_and_organization.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>
