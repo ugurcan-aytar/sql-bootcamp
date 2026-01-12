@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -10,7 +10,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 1: Basic SQL Queries - Practical Examples</title>
+  <title>Gun 1: Temel SQL Sorgulari - Pratik Ornekler</title>
   <style>
     code {
       white-space: pre-wrap;
@@ -277,34 +277,6 @@
 
     /* Warning */
 
-    .language-switcher {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .language-switcher a {
-      text-decoration: none;
-      padding: 5px 10px;
-      margin: 0 2px;
-      border-radius: 3px;
-      color: #333;
-    }
-
-    .language-switcher a.active {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .language-switcher a:hover:not(.active) {
-      background: #e9ecef;
-    }
-
     /* Add notification styles */
     .copy-notification {
       position: fixed;
@@ -428,17 +400,45 @@
     .back-link a:hover {
       text-decoration: underline;
     }
+
+    .language-switcher {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .language-switcher a {
+      text-decoration: none;
+      padding: 5px 10px;
+      margin: 0 2px;
+      border-radius: 3px;
+      color: #333;
+    }
+
+    .language-switcher a.active {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    .language-switcher a:hover:not(.active) {
+      background: #e9ecef;
+    }
   </style>
 </head>
 
 <body>
   <div class="language-switcher">
-    <a href="03_basic_sql_queries_examples.html" class="active">EN</a>
-    <a href="03_basic_sql_queries_examples_tr.html">TR</a>
+    <a href="03_basic_sql_queries_examples.html">EN</a>
+    <a href="03_basic_sql_queries_examples_tr.html" class="active">TR</a>
   </div>
 
   <!-- Add notification element -->
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
@@ -459,20 +459,20 @@
   <div class="content-container">
     <div class="container">
       <div class="back-link">
-        <a href="03_basic_sql_queries.html">&larr; Back to Basic SQL Queries</a>
+        <a href="03_basic_sql_queries_tr.html">&larr; Geri don: Temel SQL Sorgulari</a>
       </div>
 
       <section>
-        <h1 id="basic-sql-queries-examples">Basic SQL Queries - Practical Examples</h1>
-        <p>This page provides hands-on exercises to reinforce the concepts from the Basic SQL Queries lesson.
-           Practice with these examples using the sample datasets below.</p>
+        <h1 id="basic-sql-queries-examples">Temel SQL Sorgulari - Pratik Ornekler</h1>
+        <p>Bu sayfa, Temel SQL Sorgulari dersindeki kavramlari pekistirmek icin uygulamali alistirmalar sunmaktadir.
+           Asagidaki ornek veri setlerini kullanarak bu orneklerle pratik yapin.</p>
       </section>
 
       <section>
-        <h2 id="sample-datasets">Sample Datasets</h2>
-        <p>The following sample data will be used throughout the exercises. These represent typical tables you might find in a business database.</p>
+        <h2 id="sample-datasets">Ornek Veri Setleri</h2>
+        <p>Asagidaki ornek veriler tum alistirmalar boyunca kullanilacaktir. Bunlar, bir is veritabaninda bulabileceginiz tipik tablolari temsil etmektedir.</p>
 
-        <h3 id="res-partner-table">res_partner (Customers/Partners)</h3>
+        <h3 id="res-partner-table">res_partner (Musteriler/Ortaklar)</h3>
         <div class="dataset-table">
           <table>
             <thead>
@@ -499,7 +499,7 @@
           </table>
         </div>
 
-        <h3 id="product-template-table">product_template (Products)</h3>
+        <h3 id="product-template-table">product_template (Urunler)</h3>
         <div class="dataset-table">
           <table>
             <thead>
@@ -525,7 +525,7 @@
           </table>
         </div>
 
-        <h3 id="sale-order-table">sale_order (Sales Orders)</h3>
+        <h3 id="sale-order-table">sale_order (Satis Siparisleri)</h3>
         <div class="dataset-table">
           <table>
             <thead>
@@ -553,94 +553,94 @@
       </section>
 
       <section>
-        <h2 id="exercise-1">Exercise 1: Basic SELECT Statements</h2>
+        <h2 id="exercise-1">Alistirma 1: Temel SELECT Ifadeleri</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 1.1: Selecting Specific Columns</h4>
-          <p>Write a query to retrieve only the <code>name</code> and <code>email</code> columns from the <code>res_partner</code> table.</p>
+          <h4>Alistirma 1.1: Belirli Sutunlari Secme</h4>
+          <p><code>res_partner</code> tablosundan yalnizca <code>name</code> ve <code>email</code> sutunlarini getiren bir sorgu yazin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use SELECT followed by the column names separated by commas.
+            <strong>Ipucu:</strong> SELECT ifadesinden sonra virgullerle ayrilmis sutun adlarini kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Cozumu Goster</button>
           <div id="sol1-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
 <span class="kw">FROM</span> res_partner;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 8 rows showing partner names and their email addresses (including NULL values).</p>
+            <p><strong>Beklenen Sonuc:</strong> Ortak adlarini ve e-posta adreslerini (NULL degerler dahil) gosteren 8 satir.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.2: Using Column Aliases</h4>
-          <p>Retrieve the <code>name</code> as "Product Name" and <code>list_price</code> as "Price (USD)" from <code>product_template</code>.</p>
+          <h4>Alistirma 1.2: Sutun Takma Adlari Kullanma</h4>
+          <p><code>product_template</code> tablosundan <code>name</code> sutununu "Urun Adi" ve <code>list_price</code> sutununu "Fiyat (USD)" olarak getirin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use the AS keyword with double quotes for aliases containing spaces.
+            <strong>Ipucu:</strong> Bosluk iceren takma adlar icin AS anahtar kelimesini cift tirnak ile kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Cozumu Goster</button>
           <div id="sol1-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
               <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    name <span class="kw">AS</span> <span class="ot">"Product Name"</span>,
-    list_price <span class="kw">AS</span> <span class="ot">"Price (USD)"</span>
+    name <span class="kw">AS</span> <span class="ot">"Urun Adi"</span>,
+    list_price <span class="kw">AS</span> <span class="ot">"Fiyat (USD)"</span>
 <span class="kw">FROM</span> product_template;</span></code></pre>
             </div>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.3: Expressions in SELECT</h4>
-          <p>Calculate a 10% discount on all products. Display the product name, original price, and discounted price.</p>
+          <h4>Alistirma 1.3: SELECT'te Ifadeler</h4>
+          <p>Tum urunler icin %10 indirim hesaplayin. Urun adini, orijinal fiyati ve indirimli fiyati goruntuleyin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> You can perform arithmetic operations directly in the SELECT clause. Multiply the price by 0.9 for 10% off.
+            <strong>Ipucu:</strong> SELECT yan tumcesinde dogrudan aritmetik islemler yapabilirsiniz. %10 indirim icin fiyati 0.9 ile carpin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Cozumu Goster</button>
           <div id="sol1-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
               <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     name,
-    list_price <span class="kw">AS</span> original_price,
-    list_price <span class="op">*</span> <span class="fl">0.9</span> <span class="kw">AS</span> discounted_price
+    list_price <span class="kw">AS</span> orijinal_fiyat,
+    list_price <span class="op">*</span> <span class="fl">0.9</span> <span class="kw">AS</span> indirimli_fiyat
 <span class="kw">FROM</span> product_template;</span></code></pre>
             </div>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.4: DISTINCT Values</h4>
-          <p>Find all unique country IDs from the <code>res_partner</code> table.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <h4>Alistirma 1.4: DISTINCT Degerler</h4>
+          <p><code>res_partner</code> tablosundan tum benzersiz ulke kimliklerini (country_id) bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Cozumu Goster</button>
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country_id
 <span class="kw">FROM</span> res_partner;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 7 unique country IDs (233, 73, 195, 68, 20, 107, 229).</p>
+            <p><strong>Beklenen Sonuc:</strong> 7 benzersiz ulke kimigi (233, 73, 195, 68, 20, 107, 229).</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="exercise-2">Exercise 2: Filtering with WHERE</h2>
+        <h2 id="exercise-2">Alistirma 2: WHERE ile Filtreleme</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 2.1: Simple Comparison</h4>
-          <p>Find all products with a price greater than $100.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <h4>Alistirma 2.1: Basit Karsilastirma</h4>
+          <p>Fiyati $100'dan fazla olan tum urunleri bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Cozumu Goster</button>
           <div id="sol2-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
               <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span> list_price <span class="op">></span> <span class="dv">100</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Laptop Pro 15, Monitor 27 inch, Keyboard Mechanical, Headphones Wireless.</p>
+            <p><strong>Beklenen Sonuc:</strong> Laptop Pro 15, Monitor 27 inch, Keyboard Mechanical, Headphones Wireless.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.2: Using AND Operator</h4>
-          <p>Find all active products with a price between $50 and $200.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <h4>Alistirma 2.2: AND Operatoru Kullanma</h4>
+          <p>Fiyati $50 ile $200 arasinda olan tum aktif urunleri bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Cozumu Goster</button>
           <div id="sol2-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
               <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price, active
@@ -649,7 +649,7 @@
   <span class="kw">AND</span> list_price <span class="op">>=</span> <span class="dv">50</span>
   <span class="kw">AND</span> list_price <span class="op"><=</span> <span class="dv">200</span>;</span></code></pre>
             </div>
-            <p><strong>Alternative using BETWEEN:</strong></p>
+            <p><strong>BETWEEN kullanan alternatif:</strong></p>
             <div class="sourceCode" onclick="CopyToClipboard('sol2-2-alt')">
               <pre class="sourceCode sql" id="sol2-2-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price, active
 <span class="kw">FROM</span> product_template
@@ -660,53 +660,53 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.3: Using OR Operator</h4>
-          <p>Find partners from the United States (country_id = 233) OR Canada (country_id = 20).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <h4>Alistirma 2.3: OR Operatoru Kullanma</h4>
+          <p>Amerika Birlesik Devletleri (country_id = 233) VEYA Kanada'dan (country_id = 20) ortaklari bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Cozumu Goster</button>
           <div id="sol2-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city, country_id
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">20</span>;</span></code></pre>
             </div>
-            <p><strong>Alternative using IN:</strong></p>
+            <p><strong>IN kullanan alternatif:</strong></p>
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-alt')">
               <pre class="sourceCode sql" id="sol2-3-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city, country_id
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">233</span>, <span class="dv">20</span>);</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> George Miller, John Smith, Sarah Johnson.</p>
+            <p><strong>Beklenen Sonuc:</strong> George Miller, John Smith, Sarah Johnson.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.4: Handling NULL Values</h4>
-          <p>Find all partners who do NOT have an email address.</p>
+          <h4>Alistirma 2.4: NULL Degerlerle Calisma</h4>
+          <p>E-posta adresi OLMAYAN tum ortaklari bulun.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Remember, you cannot use = to compare with NULL. Use IS NULL instead.
+            <strong>Ipucu:</strong> Unutmayin, NULL ile karsilastirmak icin = kullanamazsiniz. Bunun yerine IS NULL kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Cozumu Goster</button>
           <div id="sol2-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-4-code')">
               <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> email <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> John Smith.</p>
+            <p><strong>Beklenen Sonuc:</strong> John Smith.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.5: NOT Operator</h4>
-          <p>Find all sales orders that are NOT cancelled.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Show Solution</button>
+          <h4>Alistirma 2.5: NOT Operatoru</h4>
+          <p>Iptal edilmemis tum satis siparislerini bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Cozumu Goster</button>
           <div id="sol2-5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-5-code')">
               <pre class="sourceCode sql" id="sol2-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, state, amount_total
 <span class="kw">FROM</span> sale_order
 <span class="kw">WHERE</span> <span class="kw">NOT</span> state <span class="op">=</span> <span class="st">'cancel'</span>;</span></code></pre>
             </div>
-            <p><strong>Alternative:</strong></p>
+            <p><strong>Alternatif:</strong></p>
             <div class="sourceCode" onclick="CopyToClipboard('sol2-5-alt')">
               <pre class="sourceCode sql" id="sol2-5-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, state, amount_total
 <span class="kw">FROM</span> sale_order
@@ -717,89 +717,89 @@
       </section>
 
       <section>
-        <h2 id="exercise-3">Exercise 3: Pattern Matching with LIKE</h2>
+        <h2 id="exercise-3">Alistirma 3: LIKE ile Desen Eslestirme</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 3.1: Starts With Pattern</h4>
-          <p>Find all partners whose names start with "G".</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <h4>Alistirma 3.1: Ile Baslayan Deseni</h4>
+          <p>Adi "G" ile baslayan tum ortaklari bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Cozumu Goster</button>
           <div id="sol3-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
               <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">'G%'</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> George Miller, Gerard Dupont.</p>
+            <p><strong>Beklenen Sonuc:</strong> George Miller, Gerard Dupont.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.2: Ends With Pattern</h4>
-          <p>Find all partners with emails ending in ".org".</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <h4>Alistirma 3.2: Ile Biten Deseni</h4>
+          <p>E-postasi ".org" ile biten tum ortaklari bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Cozumu Goster</button>
           <div id="sol3-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
               <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">'%.org'</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Anna Schmidt, Sarah Johnson.</p>
+            <p><strong>Beklenen Sonuc:</strong> Anna Schmidt, Sarah Johnson.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.3: Contains Pattern</h4>
-          <p>Find all products whose names contain the word "Wireless".</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <h4>Alistirma 3.3: Iceren Deseni</h4>
+          <p>Adinda "Wireless" kelimesi gecen tum urunleri bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Cozumu Goster</button>
           <div id="sol3-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
               <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">'%Wireless%'</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Wireless Mouse, Headphones Wireless.</p>
+            <p><strong>Beklenen Sonuc:</strong> Wireless Mouse, Headphones Wireless.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.4: Single Character Wildcard</h4>
-          <p>Find all product codes that have "M" as the second character (e.g., "WM-002", "KM-005").</p>
+          <h4>Alistirma 3.4: Tek Karakter Joker Karakteri</h4>
+          <p>Ikinci karakteri "M" olan tum urun kodlarini bulun (ornegin, "WM-002", "KM-005").</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use the underscore (_) to match exactly one character.
+            <strong>Ipucu:</strong> Tam olarak bir karakteri eslemek icin alt cizgi (_) kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Cozumu Goster</button>
           <div id="sol3-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-4-code')">
               <pre class="sourceCode sql" id="sol3-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'_M%'</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Wireless Mouse (WM-002), Keyboard Mechanical (KM-005).</p>
+            <p><strong>Beklenen Sonuc:</strong> Wireless Mouse (WM-002), Keyboard Mechanical (KM-005).</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="exercise-4">Exercise 4: Sorting with ORDER BY</h2>
+        <h2 id="exercise-4">Alistirma 4: ORDER BY ile Siralama</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 4.1: Ascending Sort</h4>
-          <p>List all partners alphabetically by name.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <h4>Alistirma 4.1: Artan Siralama</h4>
+          <p>Tum ortaklari ada gore alfabetik olarak listeleyin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Cozumu Goster</button>
           <div id="sol4-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
               <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city
 <span class="kw">FROM</span> res_partner
 <span class="kw">ORDER BY</span> name <span class="kw">ASC</span>;</span></code></pre>
             </div>
-            <p><strong>Note:</strong> ASC is optional as it's the default sort order.</p>
+            <p><strong>Not:</strong> ASC varsayilan siralama duzenoldugu icin istege baglidir.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.2: Descending Sort</h4>
-          <p>List all products sorted by price from highest to lowest.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <h4>Alistirma 4.2: Azalan Siralama</h4>
+          <p>Tum urunleri en yuksekten en dusuge dogru fiyata gore listeleyin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Cozumu Goster</button>
           <div id="sol4-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
               <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
@@ -810,9 +810,9 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.3: Multiple Column Sort</h4>
-          <p>List all sales orders sorted by state (alphabetically), and within each state, by amount (highest first).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <h4>Alistirma 4.3: Birden Fazla Sutuna Gore Siralama</h4>
+          <p>Tum satis siparislerini duruma gore (alfabetik olarak) ve her durum icinde tutara gore (en yuksekten ilk) listeleyin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Cozumu Goster</button>
           <div id="sol4-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
               <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, state, amount_total
@@ -824,47 +824,47 @@
       </section>
 
       <section>
-        <h2 id="exercise-5">Exercise 5: Limiting Results</h2>
+        <h2 id="exercise-5">Alistirma 5: Sonuclari Sinirlandirma</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 5.1: Top N Results</h4>
-          <p>Find the 3 most expensive products.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Solution</button>
+          <h4>Alistirma 5.1: Ilk N Sonuc</h4>
+          <p>En pahali 3 urunu bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Cozumu Goster</button>
           <div id="sol5-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol5-1-code')">
-              <pre class="sourceCode sql" id="sol5-1-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL/MySQL syntax</span>
+              <pre class="sourceCode sql" id="sol5-1-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL/MySQL sozdizimi</span>
 <span class="kw">SELECT</span> name, list_price
 <span class="kw">FROM</span> product_template
 <span class="kw">ORDER BY</span> list_price <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">3</span>;</span></code></pre>
             </div>
-            <p><strong>Standard SQL syntax:</strong></p>
+            <p><strong>Standart SQL sozdizimi:</strong></p>
             <div class="sourceCode" onclick="CopyToClipboard('sol5-1-alt')">
               <pre class="sourceCode sql" id="sol5-1-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, list_price
 <span class="kw">FROM</span> product_template
 <span class="kw">ORDER BY</span> list_price <span class="kw">DESC</span>
 <span class="kw">FETCH FIRST</span> <span class="dv">3</span> <span class="kw">ROWS ONLY</span>;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Laptop Pro 15, Monitor 27 inch, Headphones Wireless.</p>
+            <p><strong>Beklenen Sonuc:</strong> Laptop Pro 15, Monitor 27 inch, Headphones Wireless.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 5.2: Pagination with OFFSET</h4>
-          <p>Get the second page of partners (3 per page), sorted alphabetically.</p>
+          <h4>Alistirma 5.2: OFFSET ile Sayfalama</h4>
+          <p>Alfabetik olarak sirali ortaklarin ikinci sayfasini (sayfa basina 3) alin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> For page 2 with 3 items per page, you need to skip the first 3 records.
+            <strong>Ipucu:</strong> Sayfa basina 3 oge ile 2. sayfa icin ilk 3 kaydi atlamaniz gerekir.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Cozumu Goster</button>
           <div id="sol5-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol5-2-code')">
-              <pre class="sourceCode sql" id="sol5-2-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL/MySQL syntax</span>
+              <pre class="sourceCode sql" id="sol5-2-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL/MySQL sozdizimi</span>
 <span class="kw">SELECT</span> name, city
 <span class="kw">FROM</span> res_partner
 <span class="kw">ORDER BY</span> name
 <span class="kw">LIMIT</span> <span class="dv">3</span> <span class="kw">OFFSET</span> <span class="dv">3</span>;</span></code></pre>
             </div>
-            <p><strong>Standard SQL syntax:</strong></p>
+            <p><strong>Standart SQL sozdizimi:</strong></p>
             <div class="sourceCode" onclick="CopyToClipboard('sol5-2-alt')">
               <pre class="sourceCode sql" id="sol5-2-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city
 <span class="kw">FROM</span> res_partner
@@ -876,18 +876,18 @@
       </section>
 
       <section>
-        <h2 id="challenge-exercises">Challenge Exercises</h2>
-        <p>These exercises combine multiple concepts from the lesson. Try to solve them before checking the solutions.</p>
+        <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
+        <p>Bu alistirmalar dersten birden fazla kavrami bir araya getirmektedir. Cozumleri kontrol etmeden once bunlari cozmeye calisin.</p>
 
         <div class="challenge-box">
-          <h4>Challenge 1: High-Value Active Orders</h4>
-          <p>Find all confirmed (state = 'sale') or completed (state = 'done') orders with an amount greater than $500.
-             Display the order name, amount, and state. Sort by amount descending and limit to top 5.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <h4>Meydan Okuma 1: Yuksek Degerli Aktif Siparisler</h4>
+          <p>Tutari $500'dan fazla olan tum onaylanmis (state = 'sale') veya tamamlanmis (state = 'done') siparisleri bulun.
+             Siparis adini, tutarini ve durumunu goruntuleyin. Tutara gore azalan sirada siralayin ve ilk 5 ile sinirlandin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Cozumu Goster</button>
           <div id="chal1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    name <span class="kw">AS</span> order_ref,
+    name <span class="kw">AS</span> siparis_ref,
     amount_total,
     state
 <span class="kw">FROM</span> sale_order
@@ -901,16 +901,16 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 2: Partner Contact Summary</h4>
-          <p>Create a report showing partner names with their contact info. Include name (as "Contact Name"),
-             email (as "Email Address"), and phone. Only show partners who have BOTH email AND phone (not NULL).
-             Sort alphabetically by name.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <h4>Meydan Okuma 2: Ortak Iletisim Ozeti</h4>
+          <p>Ortak adlarini iletisim bilgileriyle gosteren bir rapor olusturun. Adi ("Iletisim Adi" olarak),
+             e-postayi ("E-posta Adresi" olarak) ve telefonu ekleyin. Yalnizca HEM e-postasi HEM DE telefonu olan (NULL olmayan) ortaklari gosterin.
+             Ada gore alfabetik olarak siralayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Cozumu Goster</button>
           <div id="chal2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
               <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    name <span class="kw">AS</span> <span class="ot">"Contact Name"</span>,
-    email <span class="kw">AS</span> <span class="ot">"Email Address"</span>,
+    name <span class="kw">AS</span> <span class="ot">"Iletisim Adi"</span>,
+    email <span class="kw">AS</span> <span class="ot">"E-posta Adresi"</span>,
     phone
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span>
@@ -922,34 +922,34 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 3: Product Price Analysis</h4>
-          <p>List all active products showing: name, original price, 15% discounted price (as "Sale Price"),
-             and the discount amount (as "You Save"). Only include products priced $50 or more.
-             Sort by discount amount (highest savings first), limit to 5.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <h4>Meydan Okuma 3: Urun Fiyat Analizi</h4>
+          <p>Tum aktif urunleri su sekilde listeleyin: ad, orijinal fiyat, %15 indirimli fiyat ("Indirimli Fiyat" olarak)
+             ve indirim tutari ("Kazanciniz" olarak). Yalnizca $50 ve uzerindeki urunleri dahil edin.
+             Indirim tutarina gore (en yuksek tasarruf ilk), 5 ile sinirlandin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Cozumu Goster</button>
           <div id="chal3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
               <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     name,
-    list_price <span class="kw">AS</span> original_price,
-    list_price <span class="op">*</span> <span class="fl">0.85</span> <span class="kw">AS</span> <span class="ot">"Sale Price"</span>,
-    list_price <span class="op">*</span> <span class="fl">0.15</span> <span class="kw">AS</span> <span class="ot">"You Save"</span>
+    list_price <span class="kw">AS</span> orijinal_fiyat,
+    list_price <span class="op">*</span> <span class="fl">0.85</span> <span class="kw">AS</span> <span class="ot">"Indirimli Fiyat"</span>,
+    list_price <span class="op">*</span> <span class="fl">0.15</span> <span class="kw">AS</span> <span class="ot">"Kazanciniz"</span>
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span>
     active <span class="op">=</span> <span class="kw">true</span>
     <span class="kw">AND</span> list_price <span class="op">>=</span> <span class="dv">50</span>
-<span class="kw">ORDER BY</span> <span class="ot">"You Save"</span> <span class="kw">DESC</span>
+<span class="kw">ORDER BY</span> <span class="ot">"Kazanciniz"</span> <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre>
             </div>
           </div>
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 4: Email Domain Search</h4>
-          <p>Find all partners whose email is from either "example.com" or "sample.org" domain.
-             Show their name, email, and city. Exclude partners without email.
-             Sort by email domain (so all example.com appear first, then sample.org), then by name.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <h4>Meydan Okuma 4: E-posta Alan Adi Aramasi</h4>
+          <p>E-postasi "example.com" veya "sample.org" alan adi olan tum ortaklari bulun.
+             Adlarini, e-postalarini ve sehirlerini gosterin. E-postasi olmayan ortaklari haric turun.
+             E-posta alan adina gore siralayin (boylece once tum example.com, sonra sample.org gorunur), sonra ada gore.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Cozumu Goster</button>
           <div id="chal4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
               <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -971,14 +971,13 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 5: Product Code Pattern</h4>
-          <p>Find all products where the product code (default_code) follows the pattern of two letters,
-             a hyphen, and three digits (e.g., "LP-001"). Show the name and code, sorted by code.</p>
+          <h4>Meydan Okuma 5: Urun Kodu Deseni</h4>
+          <p>Urun kodunun (default_code) iki harf, tire ve uc rakam desenini takip ettigi tum urunleri bulun (ornegin, "LP-001"). Adi ve kodu gosterin, koda gore siralayin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use multiple underscores for multiple single characters.
-            The pattern would be: two characters, hyphen, three characters.
+            <strong>Ipucu:</strong> Birden fazla tek karakter icin birden fazla alt cizgi kullanin.
+            Desen soyle olacaktir: iki karakter, tire, uc karakter.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('chal5')">Cozumu Goster</button>
           <div id="chal5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
               <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
@@ -986,28 +985,28 @@
 <span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'__-___'</span>
 <span class="kw">ORDER BY</span> default_code;</span></code></pre>
             </div>
-            <p><strong>Note:</strong> This matches exactly 2 characters, hyphen, and 3 characters.
-            All sample products match this pattern.</p>
+            <p><strong>Not:</strong> Bu tam olarak 2 karakter, tire ve 3 karakteri esler.
+            Tum ornek urunler bu desene uymaktadir.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="summary">Key Takeaways</h2>
+        <h2 id="summary">Onemli Cikarimlar</h2>
         <ul>
-          <li><strong>SELECT</strong>: Always specify only the columns you need rather than using <code>SELECT *</code></li>
-          <li><strong>Aliases</strong>: Use <code>AS</code> to provide readable column names in results</li>
-          <li><strong>Expressions</strong>: You can perform calculations directly in the SELECT clause</li>
-          <li><strong>DISTINCT</strong>: Removes duplicate rows from your results</li>
-          <li><strong>WHERE</strong>: Filters rows based on conditions before any grouping</li>
-          <li><strong>NULL handling</strong>: Always use <code>IS NULL</code> or <code>IS NOT NULL</code> (never <code>= NULL</code>)</li>
-          <li><strong>LIKE</strong>: Use <code>%</code> for any characters and <code>_</code> for exactly one character</li>
-          <li><strong>ORDER BY</strong>: Sort results; use <code>DESC</code> for descending order</li>
-          <li><strong>LIMIT/FETCH</strong>: Restrict the number of returned rows; always use with ORDER BY for predictable results</li>
+          <li><strong>SELECT</strong>: <code>SELECT *</code> kullanmak yerine her zaman yalnizca ihtiyaciniz olan sutunlari belirtin</li>
+          <li><strong>Takma Adlar</strong>: Sonuclarda okunabilir sutun adlari saglamak icin <code>AS</code> kullanin</li>
+          <li><strong>Ifadeler</strong>: SELECT yan tumcesinde dogrudan hesaplamalar yapabilirsiniz</li>
+          <li><strong>DISTINCT</strong>: Sonuclarinizdan yinelenen satirlari kaldirir</li>
+          <li><strong>WHERE</strong>: Herhangi bir gruplamadan once kosullara gore satirlari filtreler</li>
+          <li><strong>NULL kullanimi</strong>: Her zaman <code>IS NULL</code> veya <code>IS NOT NULL</code> kullanin (asla <code>= NULL</code> degil)</li>
+          <li><strong>LIKE</strong>: Herhangi bir karakter icin <code>%</code> ve tam olarak bir karakter icin <code>_</code> kullanin</li>
+          <li><strong>ORDER BY</strong>: Sonuclari siralar; azalan siralama icin <code>DESC</code> kullanin</li>
+          <li><strong>LIMIT/FETCH</strong>: Dondrulen satir sayisini kisitlar; tahmin edilebilir sonuclar icin her zaman ORDER BY ile kullanin</li>
         </ul>
 
         <div class="back-link" style="margin-top: 30px;">
-          <a href="03_basic_sql_queries.html">&larr; Back to Basic SQL Queries</a>
+          <a href="03_basic_sql_queries_tr.html">&larr; Geri don: Temel SQL Sorgulari</a>
         </div>
       </section>
 
@@ -1025,10 +1024,10 @@ function toggleSolution(id) {
   var element = document.getElementById(id);
   if (element.classList.contains('show')) {
     element.classList.remove('show');
-    event.target.textContent = 'Show Solution';
+    event.target.textContent = 'Cozumu Goster';
   } else {
     element.classList.add('show');
-    event.target.textContent = 'Hide Solution';
+    event.target.textContent = 'Cozumu Gizle';
   }
 }
 </script>

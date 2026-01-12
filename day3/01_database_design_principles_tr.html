@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/01_database_design_principles.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 3: Veritabani Tasarim Ilkeleri</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="language-switcher">
+        <a href="01_database_design_principles.html">EN</a>
+        <a href="01_database_design_principles_tr.html" class="active">TR</a>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-database-design-principles">Gun 3: Veritabani Tasarim Ilkeleri</h1>
+                <h2 id="session-1-database-design-principles-2-hours">Oturum 1: Veritabani Tasarim Ilkeleri (2 saat)
+                </h2>
+                <p>Etkili veritabani tasarimi, olceklenebilir, bakilabilir ve verimli uygulamalar olusturmak icin kritik oneme sahiptir.
+                    Bu oturum, normalizasyon, Varlik-Iliski (ER) modelleme ve
+                    veri butunlugunu saglamak icin anahtar ve kisitlamalarin kullanimi gibi temel ilkeleri kapsar; bunlar cogu iliskisel veritabani yonetim sisteminde (RDBMS) gecerlidir.</p>
+                <h3 id="normalization-and-denormalization">Normalizasyon ve Denormalizasyon</h3>
+                <p><strong>Normalizasyon</strong>, veritabanindaki verileri tekrari azaltmak ve
+                    veri butunlugunu iyilestirmek icin duzenleme surecidir. Tablolari ve iliskilerini normal formlar adli resmi kurallara gore yapilandirmayi icerir.</p>
+                <p><strong>Normalizasyonun Temel Hedefleri</strong>: * Veri tekrarini en aza indirmek. * Veri degisiklik anomalilerini azaltmak (ekleme, guncelleme, silme sirasindaki sorunlar). * Sorgulari basitlestirmek. * Veritabani yapisini
+                    daha esnek ve bakimi kolay hale getirmek.</p>
+            </section>
+            <section>
+                <p><strong>Yaygin Normal Formlar</strong>:</p>
+                <ol type="1">
+                    <li><strong>Birinci Normal Form (1NF)</strong>:
+                        <ul>
+                            <li><strong>Kural</strong>: Her tablo hucresi tek, atomik bir deger icermelidir. Tek bir hucrede tekrar eden gruplar veya coklu degerli ozellikler olmamalidir. Her satir benzersiz olmalidir.</li>
+                            <li><strong>Ornek (1NF Degil)</strong>: "555-1234, 555-5678" iceren <code>PhoneNumbers</code> sutununa sahip bir <code>Customer</code> tablosu.
+                            </li>
+                            <li><strong>Cozum</strong>: Musteri basina birden fazla satira izin veren <code>CustomerID</code> ve <code>PhoneNumber</code> sutunlarina sahip ayri bir <code>CustomerPhoneNumbers</code> tablosu olusturun.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Ikinci Normal Form (2NF)</strong>:
+                        <ul>
+                            <li><strong>Kural</strong>: 1NF'de olmalidir. Tum anahtar olmayan ozellikler <em>tum</em> birincil anahtara tam olarak bagimli olmalidir. Esas olarak bilesik birincil anahtarlara sahip tablolar icin gecerlidir.
+                            </li>
+                            <li><strong>Ornek (2NF Degil)</strong>: Birincil anahtar olarak <code>(OrderID, ProductID)</code>'ye sahip, ancak yalnizca <code>ProductID</code>'ye bagimli olan <code>ProductName</code>'i de iceren bir <code>OrderItems</code> tablosu.
+                            </li>
+                            <li><strong>Cozum</strong>: <code>ProductName</code>'i <code>ProductID</code> ile anahtarlanan ayri bir <code>Products</code> tablosuna tasiyın.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ucuncu Normal Form (3NF)</strong>:
+                        <ul>
+                            <li><strong>Kural</strong>: 2NF'de olmalidir. Hicbir anahtar olmayan ozellik, baska bir anahtar olmayan ozellige bagimli olmamalidir (gecisli bagimlilik yok).</li>
+                            <li><strong>Ornek (3NF Degil)</strong>: <code>EmployeeID</code> (anahtar), <code>DepartmentID</code> ve <code>DepartmentLocation</code> iceren bir <code>Employees</code> tablosu. Burada, <code>DepartmentLocation</code> dogrudan <code>EmployeeID</code>'ye degil, <code>DepartmentID</code>'ye (anahtar olmayan bir ozellik) bagimlidir.
+                            </li>
+                            <li><strong>Cozum</strong>: <code>DepartmentLocation</code>'i <code>DepartmentID</code> ile anahtarlanan ayri bir <code>Departments</code> tablosuna tasiyin.
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><strong>Daha Yuksek Normal Formlar (BCNF, 4NF, 5NF)</strong> mevcuttur ancak 3NF cogu pratik uygulama icin genellikle yeterlidir.</p>
+                <p><strong>Normalizasyonun Faydalari</strong>: * Iyilestirilmis Veri Butunlugu: Tutarsizliklari azaltir. *
+                    Azaltilmis Depolama Alani: Tekrarlanan verileri ortadan kaldirir. * Daha Kolay Guncellemeler: Degisiklikler yalnizca tek bir yerde yapilmalidir. *
+                    Arttirilmis Esneklik: Semayi daha sonra degistirmek daha kolaydir.</p>
+            </section>
+            <section>
+                <p><strong>Denormalizasyon</strong>:</p>
+                <p>Denormalizasyon, okuma performansini artirmak icin veritabani tasarimina <em>kasitli olarak</em> tekrar eklenmesidir. Genellikle normalizasyondan sonra, sik calistirilan sorgularda maliyetli birlestirmelerden kacinmak icin tekrarlanan verileri geri ekleyerek veya verileri gruplayarak yapilir.</p>
+                <p><strong>Yaygin Denormalizasyon Teknikleri</strong>: * Turetilmis degerleri saklamak (ornegin, <code>order_total</code>'i hesaplayip her seferinde <code>order_items</code>'dan hesaplamak yerine saklamak). * Ilgili tablolardan yedekli sutunlar eklemek (ornegin, <code>customers</code>'a join ile erisilebilir olsa bile <code>customer_name</code>'i <code>orders</code> tablosunda saklamak). * Ozet tablolar olusturmak (ornegin, <code>monthly_sales_summary</code>).
+                </p>
+                <p><strong>Denormalizasyonu Ne Zaman Dusunmeli</strong>: * Okuma performansi kritik oldugunda ve joinler darbogazlar oldugunda. * Veri ambarlama ve raporlama senaryolarinda (OLAP). * Veriler seyrek guncellendigi
+                    ancak cok sik okundugunda.</p>
+                <p><strong>Oduller</strong>: Denormalizasyon okuma hizini arttirir ancak depolama gereksinimlerini arttirir,
+                    veri guncellemelerini karmasiklastirir (yedekli veriler tutarli tutulmalidir) ve dikkatli yonetilmezse veri butunlugunu azaltabilir.</p>
+                <p><strong>En Iyi Uygulama</strong>: Normalize edilmis bir tasarimla baslayin (genellikle 3NF'yi hedefleyin). Profilleme yoluyla performans sorunlarini belirleyin. Performans faydalarinin dezavantajlardan agir bastigi yerlerde denormalizasyonu secici ve stratejik olarak uygulayin. Tum denormalizasyon kararlarini belgeleyin.</p>
+            </section>
+            <section>
+                <h3 id="entity-relationship-er-modeling">Varlik-Iliski (ER) Modelleme</h3>
+                <p>ER modelleme, veritabani yapisini gorsellestirmek icin kullanilan kavramsal bir tasarim teknigidir. Varliklari (hakkinda veri sakladigimiz seyler), ozelliklerini (nitelikleri) ve aralarindaki iliskileri tanimlar.</p>
+                <p><strong>Temel Bilesenler</strong>:</p>
+                <ol type="1">
+                    <li><strong>Varliklar</strong>: Gercek dunya nesnelerini veya kavramlarini temsil eder (ornegin,
+                        <code>Customer</code>,
+                        <code>Product</code>, <code>Order</code>). Genellikle tablolara karsilik gelir.
+                    </li>
+                    <li><strong>Ozellikler</strong>: Bir varligi tanimlayan nitelikler (ornegin, <code>CustomerName</code>,
+                        <code>ProductPrice</code>, <code>OrderDate</code>). Genellikle sutunlara karsilik gelir.
+                        <ul>
+                            <li><strong>Anahtar Ozellikler</strong>: Bir varlik ornegini benzersiz olarak tanimlar (Birincil Anahtar).
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Iliskiler</strong>: Iki veya daha fazla varlik arasindaki baglantilar (ornegin, bir
+                        <code>Customer</code> bir <code>Order</code> <em>verir</em>; bir <code>Order</code>
+                        <code>Products</code> <em>icerir</em>). Genellikle yabanci anahtarlar veya baglanti tablolari kullanilarak uygulanir.
+                    </li>
+                </ol>
+                <p><strong>Kardinalite</strong>: Bir varligin kac orneğinin baska bir varliğin ornekleriyle iliskilenebilecegini tanimlar. * <strong>Bire-Bir (1:1)</strong>: Varlik A'daki her ornek, Varlik B'deki tam olarak bir ornekle iliskilenir ve bunun tersi de gecerlidir (ornegin, <code>User</code> ve
+                    <code>UserProfile</code>).
+                    Genellikle yabanci anahtari bir tabloya yerlestirerek veya tablolari birlestirerek uygulanir. *
+                    <strong>Bire-Cok
+                        (1:N)</strong>: Varlik A'daki bir ornek, Varlik B'deki sifir veya daha fazla ornekle iliskilenir, ancak B'deki her ornek A'daki tam olarak bir ornekle iliskilenir (ornegin, <code>Author</code> ve <code>Books</code>).
+                    Yabanci anahtari "cok" tarafindaki tabloya yerlestirerek uygulanir (<code>Books</code> tablosu
+                    <code>author_id</code> alir). * <strong>Coka-Cok (M:N)</strong>: Varlik A'daki bir ornek, Varlik B'deki sifir veya daha fazla ornekle iliskilenir ve bunun tersi de gecerlidir (ornegin, <code>Students</code> ve
+                    <code>Courses</code>).
+                    Her iki ilgili tabloya yabanci anahtarlar iceren ayri bir <strong>baglanti tablosu</strong> (veya baglama/iliskisel tablo) kullanilarak uygulanir (ornegin, <code>student_id</code>
+                    ve <code>course_id</code> iceren <code>Enrollments</code> tablosu).
+                </p>
+                <p><strong>ER Diyagramlari</strong>: Varliklari (dikdortgenler), ozellikleri (ovaller) ve iliskileri (kardinalite sembolleriyle elmaslar veya cizgiler) gostermek icin standart notasyonlar (ornegin, Chen, Crow's
+                    Foot) kullanan gorsel temsillerdir.</p>
+                <p><strong>Surec</strong>: ER modelleme, herhangi bir <code>CREATE TABLE</code> ifadesi yazmadan once is gereksinimlerini mantiksal bir veritabani yapisina cevirmeyie yardimci olur.</p>
+            </section>
+            <section>
+                <h3 id="primary-and-foreign-keys">Birincil ve Yabanci Anahtarlar</h3>
+                <p>Anahtarlar, iliskisel veritabanlarinda iliskiler kurmak ve veri butunlugunu saglamak icin temeldir.
+                </p>
+                <p><strong>Birincil Anahtarlar (PK)</strong>: * Degeri bir tablodaki her satiri benzersiz olarak tanimlayan bir sutun (veya sutun kumesi). * <strong>Ozellikler</strong>: UNIQUE (benzersiz) olmalidir, NULL olmamalidir. *
+                    <strong>Turleri</strong>: * <strong>Dogal Anahtar</strong>: Zaten mevcut olan ve gercek dunyada anlami olan ozellikleri kullanan bir anahtar (ornegin, kitaplar icin ISBN, kullanicilar icin e-posta adresi). Gercek dunya degeri degisirse veya gercekten benzersiz/kararli degilse sorunlu olabilir. * <strong>Yapay Anahtar</strong>: Is anlami olmayan, yalnizca tanimlama icin olusturulmus yapay bir anahtar (ornegin, otomatik artan bir tamsayi ID, bir UUID). Kararlilik ve basitlik icin <strong>genellikle tercih edilir</strong>. *
+                    <strong>Uygulama</strong>: <code>PRIMARY KEY</code> kisitlamasi kullanilarak tanimlanir. ```sql –
+                    Yapay anahtar kullanarak (otomatik artis icin sozdizimi degisir) CREATE TABLE Products ( product_id INTEGER PRIMARY
+                    KEY,
+                    – Veya SERIAL, AUTO_INCREMENT, GENERATED AS IDENTITY... product_name VARCHAR(200) NOT NULL );
+                </p>
+                <div class="sourceCode" id="cb1">
+                    <pre><code><span class="co">-- Dogal anahtar kullanarak</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> Countries (
+    country_code <span class="kw">CHAR(2)</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    country_name <span class="kw">VARCHAR(100)</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
+);
+
+<span class="co">-- Bilesik birincil anahtar</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> OrderItems (
+    order_id <span class="kw">INTEGER</span>,
+    product_id <span class="kw">INTEGER</span>,
+    quantity <span class="kw">INTEGER</span>,
+    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (<span class="kw">order_id</span>, <span class="kw">product_id</span>) -- Her iki sutun birlikte benzersiz olmalidir
+);
+</code></pre>
+                </div>
+            </section>
+            <section>
+                <p><strong>Yabanci Anahtarlar (FK)</strong>: * Bir tablodaki baska bir tablonun Birincil Anahtarina referans veren bir sutun (veya sutun kumesi). * Tablolar arasinda bir baglanti kurar ve <strong>referans butunlugunu</strong> zorunlu kilar (FK sutunundaki bir degerin referans verilen PK sutununda mevcut bir degerle eslestigini veya NULL oldugunu garanti eder). * <strong>Uygulama</strong>:
+                    <code>FOREIGN KEY (...) REFERENCES ...</code> kisitlamasi kullanilarak tanimlanir.
+                <div class="sourceCode" id="cb1">
+                    <pre><code><span class="co">-- Ornek</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> Orders (
+    order_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    customer_id <span class="kw">INTEGER</span>,
+    order_date <span class="kw">DATE</span>,
+    -- Yabanci anahtar kisitlamasi
+    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (<span class="kw">customer_id</span>) <span class="kw">REFERENCES</span> Customers(<span class="kw">customer_id</span>)
+);</code></pre>
+                </div>
+                * <strong>Referans Eylemleri</strong>: Ust tablodaki (<code>Customers</code>) referans verilen satir silindiginde veya guncellendiginde referans veren tabloda (<code>Orders</code>) ne olacagini belirtir. Yaygin secenekler (sozdizimi/varsayilanlar biraz degisebilir): * <code>ON DELETE RESTRICT</code> /
+                <code>ON UPDATE RESTRICT</code> (veya <code>NO ACTION</code>): Alt satirlar varsa ust satirin silinmesini/guncellenmesini engeller (genellikle varsayilan). * <code>ON DELETE CASCADE</code> /
+                <code>ON UPDATE CASCADE</code>: Ust satir silindiginde/guncellendiginde alt satirlari otomatik olarak siler/gunceller. * <code>ON DELETE SET NULL</code> / <code>ON UPDATE SET NULL</code>: Alt satirlardaki yabanci anahtar sutunlarini NULL olarak ayarlar. * <code>ON DELETE SET DEFAULT</code> /
+                <code>ON UPDATE SET DEFAULT</code>: Yabanci anahtar sutunlarini varsayilan degerlerine ayarlar.
+                <div class="sourceCode" id="cb1">
+                    <pre><code><span class="co">-- CASCADE ile ornek</span>
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> OrderItems (
+    order_item_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    order_id <span class="kw">INTEGER</span>,
+    product_id <span class="kw">INTEGER</span>,
+    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (<span class="kw">order_id</span>) <span class="kw">REFERENCES</span> Orders(<span class="kw">order_id</span>) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span>
+);</code></pre>
+                </div>
+                </p>
+            </section>
+            <section>
+                <h3 id="constraints-and-data-integrity">Kisitlamalar ve Veri Butunlugu</h3>
+                <p>Kisitlamalar, veri dogrulugunu ve tutarliligini zorlamak icin tablo sutunlarina uygulanan kurallardir.</p>
+                <p><strong>Yaygin Kisitlama Turleri</strong>:</p>
+                <ol type="1">
+                    <li>
+                        <p><strong><code>NOT NULL</code></strong>: Bir sutunun NULL deger iceremeyecegini garanti eder.
+                        <pre><code><span class="kw">CREATE</span> <span class="kw">TABLE</span> Users (
+    user_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    email <span class="kw">VARCHAR(100)</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
+);</code></pre>
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong><code>UNIQUE</code></strong>: Bir sutundaki (veya sutun kombinasyonundaki) tum degerlerin tum satirlarda benzersiz olmasini saglar. NULL'lara izin verir (genellikle yalnizca bir NULL'a izin verilir, davraniş degisebilir).
+                        <pre><code><span class="kw">CREATE</span> <span class="kw">TABLE</span> Users (
+    user_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    email <span class="kw">VARCHAR(100)</span> <span class="kw">UNIQUE</span>
+);</code></pre>
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong><code>PRIMARY KEY</code></strong>: <code>NOT NULL</code> ve
+                            <code>UNIQUE</code>'i birlestirir. Her satiri benzersiz olarak tanimlar.
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong><code>FOREIGN KEY</code></strong>: Tablolar arasinda referans butunlugunu zorlar.</p>
+                    </li>
+                    <li>
+                        <p><strong><code>CHECK</code></strong>: Bir sutuna eklenen veya guncellenen herhangi bir deger icin dogru olmasi gereken bir kosul belirtir.
+                        <pre><code><span class="kw">CREATE</span> <span class="kw">TABLE</span> Products (
+    product_id <span class="kw">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,
+    price <span class="kw">DECIMAL(10, 2)</span> <span class="kw">CHECK</span> (<span class="kw">price</span> &gt;= 0),
+    status <span class="kw">VARCHAR(10)</span> <span class="kw">CHECK</span> (<span class="kw">status</span> IN ("active", "inactive", "discontinued"))
+);</code></pre>
+                        </p>
+                    </li>
+                </ol>
+                <p><strong>Kisitlamalarin Faydalari</strong>: * Is kurallarini veritabani duzeyinde zorunlu kilar. * Gecersiz verilerin girilmesini engeller. * Ilgili tablolar arasinda tutarlilik saglar. * Veri kalitesini ve
+                    guvenilirligini arttirir.</p>
+                <p><strong>Uygulama</strong>: Kisitlamalar, tablo olusturuldugunda
+                    (<code>CREATE TABLE</code>) tanimlanabilir veya daha sonra eklenebilir (<code>ALTER TABLE ... ADD CONSTRAINT ...</code>). Kisitlamalari acikca adlandirmak (<code>CONSTRAINT constraint_name CHECK(...)</code>) daha kolay yonetim icin iyi bir uygulamadir.</p>
+                <p>Normalizasyon, net ER modelleme ve anahtar ve kisitlamalarin uygun kullanimini iceeren iyi veritabani tasarimi, saglam ve guvenilir veritabani uygulamalari icin temel olusturur.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>
+                <p>Veritabani tasariminda ustalasmaya hazir misiniz? Normalizasyon, ER modelleme, anahtar uygulamasi ve kisitlama tasarimini kapsayan uygulamali alistirmalarla pratik yapin.</p>
+                <p><a href="01_database_design_principles_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/01_database_design_principles.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

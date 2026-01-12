@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/03_database_extensibility_and_postgresql_extensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/code.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 3: Veritabani Genisletilebilirligi ve PostgreSQL Uzantilari</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="language-switcher">
+        <a href="03_database_extensibility_and_postgresql_extensions.html">EN</a>
+        <a href="03_database_extensibility_and_postgresql_extensions_tr.html" class="active">TR</a>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-database-extensibility-and-postgresql-extensions">Gun 3: Veritabani Genisletilebilirligi ve
+                    PostgreSQL
+                    Uzantilari</h1>
+                <h2 id="session-3-database-extensibility-and-postgresql-extensions-2-hours">Oturum 3: Veritabani
+                    Genisletilebilirligi ve PostgreSQL Uzantilari (2 saat)</h2>
+                <h3 id="the-concept-of-database-extensibility">Veritabani Genisletilebilirligi Kavrami</h3>
+                <p>Modern veritabani sistemlerinin, belirli uygulama gereksinimlerini karsilamak icin genellikle temel SQL standartlarinin ve yerlesik ozelliklerin otesine gecmesi gerekir. Veritabani genisletilebilirligi, bir
+                    RDBMS
+                    tarafindan temel veritabani motoru kodunu degistirmeden yeni islevsellik, veri turleri, operatorler, indeksleme yontemleri veya prosedural diller eklemek icin saglanan mekanizmalari ifade eder.</p>
+                <p><strong>Neden Bir Veritabanini Genisletelim?</strong></p>
+                <ul>
+                    <li><strong>Alana Ozgu Ihtiyaclar</strong>: CBS, biyoinformatik, finans vb. gibi belirli alanlar icin ozellestirilmis veri turleri veya fonksiyonlar eklemek.</li>
+                    <li><strong>Performans Optimizasyonu</strong>: Belirli is yukleri icin optimize edilmis ozel indeks turleri veya fonksiyonlar uygulamak.</li>
+                    <li><strong>Entegrasyon</strong>: Harici sistemler veya kutuphanelerle baglanti kurmak.</li>
+                    <li><strong>Yeni Ozellikler</strong>: Henuz standart SQL'in veya temel
+                        RDBMS'in parcasi olmayan islevselligi dahil etmek (ornegin, gelismis kriptografik fonksiyonlar, bulanik metin arama).</li>
+                    <li><strong>Kod Yeniden Kullanilabilirligi</strong>: Karmasik mantigi yeniden kullanilabilir fonksiyonlar veya prosedurler halinde paketlemek.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Veritabanlarinda Yaygin Genisletilebilirlik Mekanizmalari</strong>:</p>
+                <p>Uygulama detaylari buyuk olcude degismekle birlikte, yaygin yaklasimlar sunlardir:</p>
+                <ol type="1">
+                    <li><strong>Kullanici Tanimli Fonksiyonlar (UDF) ve Sakli Prosedurler</strong>: Cogu veritabani, kullanicilarin SQL, prosedural diller (PL/pgSQL, T-SQL,
+                        PL/SQL gibi) veya hatta harici diller (Python, Java, C#, C) kullanarak ozel fonksiyonlar ve prosedurler yazmasina izin verir.</li>
+                    <li><strong>Kullanici Tanimli Turler (UDT)</strong>: Mevcut turlere dayali veya
+                        bilesik yapilar olarak ozel veri turleri olusturmak.</li>
+                    <li><strong>Kullanici Tanimli Agregatlar (UDA)</strong>: Ozel agregat fonksiyonlari olusturmak.</li>
+                    <li><strong>Ozel Operatorler</strong>: Belirli veri turleri veya mantik icin yeni operatorler tanimlamak.</li>
+                    <li><strong>Eklenti/Uzanti Mimarileri</strong>: Ilgili islevselligi paketlemek ve yuklemek icin resmi sistemler (ornegin, PostgreSQL Uzantilari, MySQL Eklentileri).</li>
+                    <li><strong>Yabanci Veri Sarmalayicilari (FDW)</strong>: Veritabani disinda bulunan verilere yerel tablolarmis gibi erismek icin mekanizmalar (SQL/MED standardinin parcasi, PostgreSQL'de iyi desteklenmektedir).
+                    </li>
+                    <li><strong>Harici Dil Entegrasyonu</strong>: Veritabani icinden C, Java,
+                        Python vb. dillerde yazilmis kodu cagirmak (ornegin, SQL Server CLR Entegrasyonu, Oracle Harici
+                        Prosedurler, PostgreSQL PL/Python, PL/Perl, PL/Java).</li>
+                </ol>
+            </section>
+            <section>
+                <h3 id="extensibility-in-different-rdbms-brief-overview">Farkli RDBMS'lerde Genisletilebilirlik (Kisa Genel Bakis)
+                </h3>
+                <ul>
+                    <li><strong>PostgreSQL</strong>: Saglam bir <strong>Uzanti</strong> sistemine sahiptir. Uzantilar,
+                        turler, fonksiyonlar, operatorler, indeks turleri vb. ekleyebilen paketlenmis
+                        modullerdir. Ornekler arasinda PostGIS
+                        (mekansal), pg_trgm (bulanik arama), pgcrypto (kriptografi) bulunur. Ayrica cesitli dillerde
+                        UDF'leri destekler
+                        (PL/pgSQL, PL/Python, PL/Perl, PL/Tcl, PL/Java, C, vb.) ve FDW'ler.</li>
+                    <li><strong>Oracle</strong>: Prosedural mantik icin buyuk olcude <strong>PL/SQL</strong>'e,
+                        <strong>Paketler</strong>'e (ilgili prosedurler, fonksiyonlar, turleri gruplama), Java Sakli Prosedurler'e
+                        ve Harici Prosedurler'e (C kodu cagirma) dayanir.
+                    </li>
+                    <li><strong>SQL Server</strong>: Prosedural mantik icin <strong>T-SQL</strong>, <strong>CLR
+                            Entegrasyonu</strong> (yonetilen .NET kodunun veritabani icinde calismasina izin verir) ve Harici
+                        Betikler (ornegin, Python, R) kullanir.</li>
+                    <li><strong>MySQL</strong>: SQL'de Sakli Prosedurler/Fonksiyonlar, C/C++ ile yazilmis <strong>Kullanici Tanimli
+                            Fonksiyonlar
+                            (UDF)</strong> ve daha kapsamli eklemeler icin
+                        bir <strong>Eklenti API</strong>'si destekler
+                        (depolama motorlari veya tam metin ayristiricilari gibi).</li>
+                    <li><strong>Db2</strong>: SQL PL, Java Sakli Prosedurler ve harici UDF'leri destekler.</li>
+                </ul>
+            </section>
+            <section>
+                <h3 id="postgresql-extensions-a-case-study">PostgreSQL Uzantilari: Bir Ornek Calisma</h3>
+                <p>Bu calistay PostgreSQL kullandigi icin, guclu uzanti sistemine odaklanacagiz. Uzantilar,
+                    onemli yetenekler eklemek icin temiz, surumlu ve yonetilebilir bir yol saglar.</p>
+                <p><strong>PostgreSQL'de Uzantilari Yonetme</strong>:</p>
+                <ul>
+                    <li><strong>Kullanilabilirlik</strong>: Uzantilar once sunucu dosya sistemine yuklenmelidir
+                        (genellikle
+                        isletim sistemi paket yoneticisi araciligiyla, ornegin <code>apt install postgresql-14-postgis-3</code>).</li>
+                    <li><strong>Listeleme</strong>:
+                        <code>SELECT name, default_version, comment FROM pg_available_extensions;</code> bir veritabanina yuklemeye uygun
+                        uzantilari gosterir.
+                    </li>
+                    <li><strong>Yukleme</strong>:
+                        <code>CREATE EXTENSION extension_name [SCHEMA schema_name] [VERSION version_number];</code>
+                        uzantinin nesnelerini (tablolar, fonksiyonlar, turler) mevcut veritabanina, genellikle belirtilen veya varsayilan bir sema icine yukler.
+                    </li>
+                    <li><strong>Guncelleme</strong>:
+                        <code>ALTER EXTENSION extension_name UPDATE [TO version_number];</code>
+                        yuklenmis bir uzantiyi daha yeni bir surume yukseltir (yeni surumun dosyalarinin
+                        sunucuya yuklenmis olmasi gerekir).
+                    </li>
+                    <li><strong>Kaldirma</strong>: <code>DROP EXTENSION extension_name [CASCADE];</code> uzantinin
+                        nesnelerini veritabanindan kaldirir.</li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Yaygin ve Faydali PostgreSQL Uzantilari</strong>:</p>
+                <p><em>(Not: Bunlar PostgreSQL'in genisletilebilirlik modelinin gucunu gosteren PostgreSQL'e ozgu orneklerdir)</em>
+                </p>
+                <ol type="1">
+                    <li>
+                        <p><strong><code>pg_stat_statements</code></strong>: Tum SQL sorgulari icin yurutme istatistiklerini izler. Performans izleme ve ayarlama icin gereklidir.</p>
+                        <div class="sourceCode" id="cb2">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Yavas veya sik sorgular icin pg_stat_statements gorunumunu sorgula</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> pg_stat_statements;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">SELECT</span> query, calls, total_exec_time, rows <span class="kw">FROM</span> pg_stat_statements <span class="kw">ORDER BY</span> total_exec_time <span class="kw">DESC LIMIT</span> 10;</span></code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>pgcrypto</code></strong>: Kriptografik fonksiyonlar saglar (hashleme,
+                            sifreleme/sifre cozme).</p>
+                        <div class="sourceCode" id="cb2">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Kriptografik fonksiyonlari kullanma</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> pgcrypto;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">SELECT</span> crypt("password123", gen_salt("bf"));</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">SELECT</span> encrypt("sensitive data", "secret_key", "aes");</span></code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>uuid-ossp</code></strong>: Cesitli turde Evrensel Benzersiz Tanimlayicilar (UUID) olusturur.</p>
+                        <div class="sourceCode" id="code1" onclick="CopyToClipboard('code1')">
+                            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION</span> <span class="kw">IF NOT EXISTS</span> <span class="st">"uuid-ossp"</span>;
+<span class="co">-- Rastgele bir UUID olustur (Surum 4)</span>
+<span class="kw">SELECT</span> <span class="fu">uuid_generate_v4</span>();
+<span class="co">-- Birincil anahtar icin varsayilan deger olarak kullan</span>
+<span class="kw">CREATE TABLE</span> items (
+    item_id <span class="kw">UUID PRIMARY KEY DEFAULT</span> <span class="fu">uuid_generate_v4</span>(),
+    name <span class="kw">TEXT</span>
+);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Yaygin ve Faydali PostgreSQL Uzantilari</strong>:</p>
+                <p><em>(Not: Bunlar PostgreSQL'in genisletilebilirlik modelinin gucunu gosteren PostgreSQL'e ozgu orneklerdir)</em>
+                </p>
+                <ol type="1" start="4">
+                    <li>
+                        <p><strong><code>hstore</code></strong>: Anahtar-deger deposu veri turu saglar.
+                            Yari yapilandirilmis veriler icin kullanislidir (ancak <code>JSONB</code> artik genellikle tercih edilmektedir).</p>
+                        <div class="sourceCode" id="code2" onclick="CopyToClipboard('code2')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> hstore;<span class="kw">CREATE TABLE</span> products_legacy (
+    id <span class="kw">INT</span>,
+    attributes <span class="kw">HSTORE</span>
+);
+<span class="kw">INSERT INTO</span> products_legacy <span class="kw">VALUES</span> (1, <span class="st">'color=>red, size=>large'</span>);
+<span class="kw">SELECT</span> attributes -&gt; <span class="st">'color'</span> <span class="kw">FROM</span> products_legacy <span class="kw">WHERE</span> id = 1;</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>pg_trgm</code></strong>: Bulanik metin arama ve benzerlik olcumu icin trigram eslemesini destekler.</p>
+                        <div class="sourceCode" id="code3" onclick="CopyToClipboard('code3')">
+                            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> pg_trgm;
+<span class="co">-- Benzer isimleri bul</span>
+<span class="kw">SELECT</span> name, <span class="fu">similarity</span>(name, <span class="st">'PostgresQL'</span>)
+<span class="kw">FROM</span> products
+<span class="kw">WHERE</span> name % <span class="st">'PostgresQL'</span>;
+<span class="co">-- Performans icin *_trgm_ops kullanan bir GIN veya GiST indeksi gerektirir</span>
+<span class="kw">CREATE INDEX</span> idx_products_name_trgm
+<span class="kw">ON</span> products <span class="kw">USING</span> gin (name gin_trgm_ops);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Yaygin ve Faydali PostgreSQL Uzantilari</strong>:</p>
+                <p><em>(Not: Bunlar PostgreSQL'in genisletilebilirlik modelinin gucunu gosteren PostgreSQL'e ozgu orneklerdir)</em>
+                </p>
+                <ol type="1" start="6">
+                    <li>
+                        <p><strong><code>ltree</code></strong>: Hiyerarsik agac yapilarini temsil etmek ve sorgulamak icin veri turu (ornegin, kategoriler, organizasyon semalari).</p>
+                        <div class="sourceCode" id="code4" onclick="CopyToClipboard('code4')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> ltree;
+<span class="kw">CREATE TABLE</span> categories (
+    id <span class="kw">INT</span>,
+    path <span class="kw">LTREE</span>
+);
+<span class="kw">INSERT INTO</span> categories <span class="kw">VALUES</span> (1, <span class="st">'Top.Electronics.Computers.Laptops'</span>);
+<span class="co">-- Electronics'in tum alt ogelerini bul</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> categories <span class="kw">WHERE</span> path &lt;@ <span class="st">'Top.Electronics'</span>;</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong><code>tablefunc</code></strong>: Tablolar donduren fonksiyonlar saglar, ozellikle
+                            pivot tablolar olusturmak icin <code>crosstab</code>.
+                        </p>
+                        <div class="sourceCode" id="code5" onclick="CopyToClipboard('code5')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> tablefunc;
+<span class="co">-- Ornek: Satis verilerini yila gore pivotla</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> crosstab(
+    <span class="st">'SELECT product, year, sales FROM sales_summary ORDER BY 1,2'</span>,
+    <span class="st">'SELECT DISTINCT year FROM sales_summary ORDER BY 1'</span>
+) <span class="kw">AS</span> ct (product <span class="kw">TEXT</span>, year_2021 <span class="kw">NUMERIC</span>, year_2022 <span class="kw">NUMERIC</span>);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Yaygin ve Faydali PostgreSQL Uzantilari</strong>:</p>
+                <p><em>(Not: Bunlar PostgreSQL'in genisletilebilirlik modelinin gucunu gosteren PostgreSQL'e ozgu orneklerdir)</em>
+                </p>
+                <ol type="1" start="8">
+                    <li>
+                        <p><strong><code>intarray</code></strong>: Tamsayi dizilerini manipule etmek icin operatorler ve fonksiyonlar saglar (etiket sistemleri, izinler icin kullanisli).</p>
+                        <div class="sourceCode" id="code6" onclick="CopyToClipboard('code6')">
+                            <pre
+                                class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> intarray;
+<span class="co">-- Hem 1 VE 3 ile etiketlenmis ogeleri bul</span>
+<span class="kw">SELECT</span> item_id <span class="kw">FROM</span> items_with_tags <span class="kw">WHERE</span> tags @&gt; <span class="fu">ARRAY</span>[1, 3];
+<span class="co">-- 2 VEYA 4 ile etiketlenmis ogeleri bul</span>
+<span class="kw">SELECT</span> item_id <span class="kw">FROM</span> items_with_tags <span class="kw">WHERE</span> tags &amp;&amp; <span class="fu">ARRAY</span>[2, 4];</code></pre>
+                        </div>
+                    </li>
+                    <li>
+                        <p><strong>PostGIS</strong>: En onemli mekansal veritabani uzantisi, cografi nesneler, sorgular ve analiz icin kapsamli destek ekler.</p>
+                        <div class="sourceCode" id="code7" onclick="CopyToClipboard('code7')">
+                            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE EXTENSION IF NOT EXISTS</span> postgis;
+<span class="kw">CREATE TABLE</span> locations (
+    id <span class="kw">INT</span>,
+    name <span class="kw">TEXT</span>,
+    geom <span class="kw">GEOMETRY</span>(Point, 4326)
+);
+<span class="kw">INSERT INTO</span> locations <span class="kw">VALUES</span> (
+    1,
+    <span class="st">'City Hall'</span>,
+    <span class="fu">ST_SetSRID</span>(<span class="fu">ST_MakePoint</span>(-74.0, 40.7), 4326)
+);
+<span class="co">-- Belirli bir mesafe icindeki konumlari bul</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> locations
+<span class="kw">WHERE</span> <span class="fu">ST_DWithin</span>(
+    geom,
+    <span class="fu">ST_SetSRID</span>(<span class="fu">ST_MakePoint</span>(-74.1, 40.7), 4326)::geography,
+    5000
+);</code></pre>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+            <section>
+                <p><strong>Uzantilari Secme ve Kullanma</strong>: Uzantilar guclu ozellikler eklerken, su hususlari goz onunde bulundurun:</p>
+                <ul>
+                    <li><strong>Ihtiyac</strong>: Yalnizca gercekten ihtiyac duydugunuz uzantilari yukleyin.</li>
+                    <li><strong>Guvenilirlik</strong>: PostgreSQL ile birlikte gelen veya guvenilir kaynaklardan gelen uzantilari tercih edin.</li>
+                    <li><strong>Bakim</strong>: Uzantinin aktif olarak bakildigindan emin olun.</li>
+                    <li><strong>Performans Etkisi</strong>: Bazi uzantilar performansi etkileyebilir; uygun sekilde izleyin.</li>
+                    <li><strong>Bagimliliklar</strong>: Uzantilar arasindaki bagimliliklarin farkinda olun.</li>
+                </ul>
+                <p>Veritabani genisletilebilirligi, veritabanini belirli ihtiyaclara gore uyarlamaniza olanak tanir, ancak dikkatli kullanilmalidir. PostgreSQL'in uzanti sistemi, bunu basarmak icin ozellikle iyi entegre edilmis ve guclu bir mekanizma saglar.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>
+                <p>PostgreSQL uzantilarinda ustalasmaya hazir misiniz? pgcrypto, uuid-ossp, pg_trgm, ltree, PostGIS ve daha fazlasini kapsayan uygulamali alistirmalarla pratik yapin.</p>
+                <p><a href="03_database_extensibility_and_postgresql_extensions_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/03_database_extensibility_and_postgresql_extensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 
 <!-- Mirrored from code-mext.github.io/sql-training/day2/04_hands_on_workshop.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
@@ -14,7 +14,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 1: Hands-on Workshop</title>
+  <title>Gun 1: Uygulamali Calistay</title>
   <style>
     code {
       white-space: pre-wrap;
@@ -41,34 +41,6 @@
 
     ul.task-list {
       list-style: none;
-    }
-
-    .language-switcher {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .language-switcher a {
-      text-decoration: none;
-      padding: 5px 10px;
-      margin: 0 2px;
-      border-radius: 3px;
-      color: #333;
-    }
-
-    .language-switcher a.active {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .language-switcher a:hover:not(.active) {
-      background: #e9ecef;
     }
 
     pre>code.sourceCode {
@@ -311,15 +283,40 @@
     }
 
     /* Warning */
+    .language-switcher {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .language-switcher a {
+        text-decoration: none;
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 3px;
+        color: #333;
+    }
+    .language-switcher a.active {
+        background: #0d6efd;
+        color: #fff;
+    }
+    .language-switcher a:hover:not(.active) {
+        background: #e9ecef;
+    }
   </style>
 </head>
 
 <body>
   <div class="language-switcher">
-    <a href="04_hands_on_workshop.html" class="active">EN</a>
-    <a href="04_hands_on_workshop_tr.html">TR</a>
+    <a href="04_hands_on_workshop.html">EN</a>
+    <a href="04_hands_on_workshop_tr.html" class="active">TR</a>
   </div>
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
   </div>
@@ -339,22 +336,19 @@
     <div class="container">
       <section>
 
-        <h1 id="day-1-hands-on-workshop">Day 1: Hands-on Workshop</h1>
-        <h2 id="session-5-exploring-the-odoo-database-1.5-hours">Session 5: Exploring the Odoo Database (1.5 hours)</h2>
-        <h3 id="navigating-schemas-and-tables">Navigating Schemas and Tables</h3>
-        <p>In this hands-on workshop, we’ll explore the structure and content of the Odoo database, applying the SQL
-          concepts we’ve learned throughout the day. The Odoo database uses PostgreSQL’s schema capabilities to organize
-          its data model effectively.</p>
-        <p><strong>Understanding Odoo’s Schema Organization</strong>:</p>
-        <p>Odoo typically uses the following schema structure: - <code>public</code>: Contains the core application
-          tables
-          - Additional schemas may be created for specific modules or extensions</p>
-        <p>Let’s start by exploring the available schemas and tables:</p>
+        <h1 id="day-1-hands-on-workshop">Gun 1: Uygulamali Calistay</h1>
+        <h2 id="session-5-exploring-the-odoo-database-1.5-hours">Oturum 5: Odoo Veritabanini Kesfetme (1.5 saat)</h2>
+        <h3 id="navigating-schemas-and-tables">Semalarda ve Tablolarda Gezinme</h3>
+        <p>Bu uygulamali calistayda, gun boyunca ogrendigimiz SQL kavramlarini uygulayarak Odoo veritabaninin yapisini ve icerigini kesfedecegiz. Odoo veritabani, veri modelini etkili bir sekilde duzenlemek icin PostgreSQL'in sema yeteneklerini kullanir.</p>
+        <p><strong>Odoo'nun Sema Organizasyonunu Anlama</strong>:</p>
+        <p>Odoo genellikle asagidaki sema yapisini kullanir: - <code>public</code>: Temel uygulama tablolarini icerir
+          - Belirli moduller veya uzantilar icin ek semalar olusturulabilir</p>
+        <p>Mevcut semalari ve tablolari kesfederek baslayalim:</p>
         <div class="row">
           <div class="col-md-4">
             <div class="sourceCode" id="cb1" onclick="CopyToClipboard('cb1')">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- List all schemas in the database</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Veritabanindaki tum semalari listele</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> schema_name </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">FROM</span> information_schema.schemata</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> schema_name;</span></code></pre>
@@ -363,7 +357,7 @@
           <div class="col-md-4">
             <div class="sourceCode" id="cb2" onclick="CopyToClipboard('cb2')">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">-- List tables in the public schema</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co">-- Public semasindaki tablolari listele</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">SELECT</span> table_name</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw">FROM</span> information_schema.<span class="kw">tables</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">WHERE</span> table_schema <span class="op">=</span> <span class="st">&#39;public&#39;</span></span>
@@ -373,7 +367,7 @@
           <div class="col-md-4">
             <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">-- Count tables in each schema</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">-- Her semadaki tablo sayisini say</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">SELECT</span> table_schema, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">as</span> table_count</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="kw">FROM</span> information_schema.<span class="kw">tables</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="kw">WHERE</span> table_type <span class="op">=</span> <span class="st">&#39;BASE TABLE&#39;</span></span>
@@ -388,13 +382,13 @@
 
       </section>
       <section>
-        <p><strong>Exploring Table Structure</strong>:</p>
-        <p>Let’s examine the structure of some key tables in the Odoo database:</p>
+        <p><strong>Tablo Yapisini Inceleme</strong>:</p>
+        <p>Odoo veritabanindaki bazi onemli tablolarin yapisini inceleyelim:</p>
 
         <div class="row">
           <div class="col-md-6">
             <div class="sourceCode" id="cb22" style="width: 100%;" onclick="CopyToClipboard('cb22')">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Describe the res_partner table (contacts/customers)</span></span>
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- res_partner tablosunu tanimla (kisiler/musteriler)</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    column_name, </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    data_type, </span>
@@ -411,7 +405,7 @@
           </div>
           <div class="col-md-6">
             <div class="sourceCode" id="cb23" style="width: 100%;" onclick="CopyToClipboard('cb23')">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">-- Examine constraints on the sale_order table</span></span>
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">-- sale_order tablosundaki kisitlamalari incele</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>    tc.constraint_name, </span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>    tc.constraint_type, </span>
@@ -436,10 +430,10 @@
         </div>
       </section>
       <section>
-        <p><strong>Finding Relationships Between Tables</strong>:</p>
-        <p>Understanding table relationships is crucial for effective querying:</p>
+        <p><strong>Tablolar Arasindaki Iliskileri Bulma</strong>:</p>
+        <p>Tablo iliskilerini anlamak etkili sorgulama icin cok onemlidir:</p>
         <div class="sourceCode" id="cb31" onclick="CopyToClipboard('cb31')">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Find all tables that reference res_partner</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- res_partner'a referans veren tum tablolari bul</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    tc.table_name, </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    kcu.column_name</span>
@@ -460,46 +454,45 @@
         </div>
       </section>
       <section>
-        <h3 id="understanding-the-erp-data-model">Understanding the ERP Data Model</h3>
-        <p>Odoo’s data model is comprehensive and interconnected. Let’s explore some of the core business entities and
-          their relationships:</p>
-        <p><strong>Core Business Entities</strong>:</p>
+        <h3 id="understanding-the-erp-data-model">ERP Veri Modelini Anlama</h3>
+        <p>Odoo'nun veri modeli kapsamli ve birbirine baglidir. Bazi temel is varliklarini ve iliskilerini inceleyelim:</p>
+        <p><strong>Temel Is Varliklari</strong>:</p>
         <div class="row">
           <div class="col-md-6">
             <ol type="1">
-              <li><strong>Partners (res_partner)</strong>:
+              <li><strong>Partnerler (res_partner)</strong>:
                 <ul>
-                  <li>Represents customers, suppliers, employees, and other contacts</li>
-                  <li>Central to many business processes</li>
+                  <li>Musterileri, tedarikcileri, calisanlari ve diger kisileri temsil eder</li>
+                  <li>Bircok is surecinin merkezinde yer alir</li>
                 </ul>
               </li>
-              <li><strong>Products (product_template, product_product)</strong>:
+              <li><strong>Urunler (product_template, product_product)</strong>:
                 <ul>
-                  <li>product_template: Product definition (name, category, etc.)</li>
-                  <li>product_product: Product variants (specific configurations)</li>
+                  <li>product_template: Urun tanimi (ad, kategori, vb.)</li>
+                  <li>product_product: Urun varyantlari (belirli yapilandirmalar)</li>
                 </ul>
               </li>
-              <li><strong>Sales (sale_order, sale_order_line)</strong>:
+              <li><strong>Satislar (sale_order, sale_order_line)</strong>:
                 <ul>
-                  <li>sale_order: Header information for sales orders</li>
-                  <li>sale_order_line: Line items within sales orders</li>
+                  <li>sale_order: Satis siparisleri icin baslik bilgileri</li>
+                  <li>sale_order_line: Satis siparisleri icindeki kalem satirlari</li>
                 </ul>
               </li>
             </ol>
           </div>
           <div class="col-md-6">
             <ol type="1" start="4">
-              <li><strong>Inventory (stock_warehouse, stock_location, stock_quant)</strong>:
+              <li><strong>Envanter (stock_warehouse, stock_location, stock_quant)</strong>:
                 <ul>
-                  <li>stock_warehouse: Physical or logical warehouses</li>
-                  <li>stock_location: Locations within warehouses</li>
-                  <li>stock_quant: Actual inventory quantities</li>
+                  <li>stock_warehouse: Fiziksel veya mantiksal depolar</li>
+                  <li>stock_location: Depolar icindeki konumlar</li>
+                  <li>stock_quant: Gercek envanter miktarlari</li>
                 </ul>
               </li>
-              <li><strong>Accounting (account_move, account_move_line)</strong>:
+              <li><strong>Muhasebe (account_move, account_move_line)</strong>:
                 <ul>
-                  <li>account_move: Journal entries, invoices, bills</li>
-                  <li>account_move_line: Individual line items in journal entries</li>
+                  <li>account_move: Yevmiye kayitlari, faturalar</li>
+                  <li>account_move_line: Yevmiye kayitlarindaki bireysel kalem satirlari</li>
                 </ul>
               </li>
             </ol>
@@ -507,12 +500,12 @@
         </div>
       </section>
       <section>
-        <p>Let’s explore these entities with some queries:</p>
+        <p>Bu varliklari bazi sorgularla inceleyelim:</p>
         <div class="row">
           <div class="col-md-6">
             <div class="sourceCode" id="cb41" style="width: 100%;" onclick="CopyToClipboard('cb41')">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">-- Overview of partners by type</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">-- Partnerlerin ture gore genel gorunumu</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="cf">CASE</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>        <span class="cf">WHEN</span> customer_rank <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">&#39;Customer&#39;</span></span>
@@ -532,7 +525,7 @@
           <div class="col-md-6">
             <div class="sourceCode" id="cb42" style="width: 100%;" onclick="CopyToClipboard('cb42')">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co">-- Product categories hierarchy</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co">-- Urun kategorileri hiyerarsisi</span></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="kw">WITH</span> RECURSIVE category_tree <span class="kw">AS</span> (</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>    <span class="kw">SELECT</span> </span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>        <span class="kw">id</span>, </span>
@@ -564,12 +557,12 @@
 
       </section>
       <section>
-        <h3 id="writing-basic-queries-against-the-odoo-database">Writing Basic Queries Against the Odoo Database</h3>
-        <p>Now let’s practice writing queries that extract useful business information:</p>
-        <p><strong>Exercise 1: Customer Analysis</strong></p>
+        <h3 id="writing-basic-queries-against-the-odoo-database">Odoo Veritabanina Temel Sorgular Yazma</h3>
+        <p>Simdi faydali is bilgileri cikaran sorgular yazmayi pratik edelim:</p>
+        <p><strong>Alistirma 1: Musteri Analizi</strong></p>
         <div class="sourceCode" id="cb51" onclick="CopyToClipboard('cb51')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Top 10 customers by sales volume</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Satis hacmine gore en iyi 10 musteri</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    rp.name <span class="kw">AS</span> customer,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    rp.email,</span>
@@ -592,7 +585,7 @@
       <section>
         <div class="sourceCode" id="cb52" onclick="CopyToClipboard('cb52')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">-- Customers with no orders in the last 6 months</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="co">-- Son 6 ayda siparis vermeyen musteriler</span></span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    rp.name,</span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a>    rp.email,</span>
@@ -614,9 +607,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Exercise 2: Product Performance</strong></p>
+        <p><strong>Alistirma 2: Urun Performansi</strong></p>
         <div class="sourceCode" id="cb61" onclick="CopyToClipboard('cb61')">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- Best-selling products</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- En cok satan urunler</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    pc.name <span class="kw">AS</span> <span class="kw">category</span>,</span>
@@ -645,7 +638,7 @@
       <section>
         <div class="sourceCode" id="cb62" onclick="CopyToClipboard('cb62')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="co">-- Products with low inventory</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="co">-- Dusuk stoklu urunler</span></span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>    pt.list_price,</span>
@@ -658,7 +651,7 @@
 <span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a><span class="kw">FROM</span> </span>
 <span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a>    product_template pt</span>
 <span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a><span class="kw">JOIN</span> product_product pp <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span
-  class="kw">id</span></span> 
+  class="kw">id</span></span>
 <span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> stock_quant sq <span class="kw">ON</span> pp.<span class="kw">id</span> <span class="op">=</span> sq.product_id</span>
 <span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> stock_warehouse_orderpoint swo <span class="kw">ON</span> pp.<span class="kw">id</span> <span class="op">=</span> swo.product_id</span>
 <span id="cb6-41"><a href="#cb6-41" aria-hidden="true"></a><span class="kw">WHERE</span> pt.active <span class="op">=</span> <span class="kw">true</span> <span class="kw">AND</span> pt.<span class="kw">type</span> <span class="op">=</span> <span class="st">&#39;consu&#39;</span></span>
@@ -671,9 +664,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Exercise 3: Sales Analysis</strong></p>
+        <p><strong>Alistirma 3: Satis Analizi</strong></p>
         <div class="sourceCode" id="cb71" onclick="CopyToClipboard('cb71')">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Monthly sales trend</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Aylik satis trendi</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    DATE_TRUNC(<span class="st">&#39;month&#39;</span>, so.date_order) <span class="kw">AS</span> <span class="dt">month</span>,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> so.<span class="kw">id</span>) <span class="kw">AS</span> order_count,</span>
@@ -693,7 +686,7 @@
       <section>
         <div class="sourceCode" id="cb72" onclick="CopyToClipboard('cb72')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="co">-- Sales by country</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="co">-- Ulkeye gore satislar</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    c.name <span class="kw">AS</span> country,</span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> so.<span class="kw">id</span>) <span class="kw">AS</span> order_count,</span>
@@ -713,9 +706,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Exercise 4: Inventory Valuation</strong></p>
+        <p><strong>Alistirma 4: Envanter Degerlendirmesi</strong></p>
         <div class="sourceCode" id="cb81" onclick="CopyToClipboard('cb81')">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">-- Inventory value by warehouse</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">-- Depoya gore envanter degeri</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    sw.name <span class="kw">AS</span> warehouse,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity <span class="op">*</span> <span class="fu">CAST</span>(pp.standard_price->'1' <span class="kw">AS</span> <span class="kw">NUMERIC</span> )) <span class="kw">AS</span> inventory_value,</span>
@@ -742,7 +735,7 @@
       <!-- <section>
         <div class="sourceCode" id="cb82" onclick="CopyToClipboard('cb82')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a><span class="co">-- Products with inventory discrepancies</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a><span class="co">-- Envanter uyumsuzluklari olan urunler</span></span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity) <span class="kw">AS</span> system_quantity,</span>
@@ -767,22 +760,20 @@
         </div>
       </section> -->
       <section>
-        <h3 id="practical-exercises-with-real-data">Practical Exercises with Real Data</h3>
-        <p>Now it’s time for you to practice with some guided exercises. For each exercise, try to write the query
-          yourself before looking at the solution.</p>
-        <p><strong>Exercise 1: Find Unpaid Invoices</strong></p>
-        <p>Write a query to find all unpaid customer invoices that are overdue by more than 30 days. Include customer
-          name, invoice number, invoice date, due date, and amount due.</p>
-        <h4>Hints</h4>
+        <h3 id="practical-exercises-with-real-data">Gercek Verilerle Pratik Alistirmalar</h3>
+        <p>Simdi rehberli alistirmalarla pratik yapma zamani. Her alistirma icin, cozume bakmadan once sorguyu kendiniz yazmayi deneyin.</p>
+        <p><strong>Alistirma 1: Odenmemis Faturalari Bulma</strong></p>
+        <p>30 gundan fazla gecmis ve odenmemis tum musteri faturalarini bulan bir sorgu yazin. Musteri adi, fatura numarasi, fatura tarihi, vade tarihi ve odenmesi gereken tutari dahil edin.</p>
+        <h4>Ipuclari</h4>
         <ul>
-          <li>Use the <code>account_move</code> table to find all unpaid invoices.</li>
-          <li>Use the <code>res_partner</code> table to find the customer name.</li>
+          <li>Tum odenmemis faturalari bulmak icin <code>account_move</code> tablosunu kullanin.</li>
+          <li>Musteri adini bulmak icin <code>res_partner</code> tablosunu kullanin.</li>
         </ul>
       </section>
       <section>
         <details>
           <p>
-            <summary>Exercise 1: Find Unpaid Invoices - Solution</summary>
+            <summary>Alistirma 1: Odenmemis Faturalari Bulma - Cozum</summary>
           </p>
           <div class="sourceCode" id="cb91" onclick="CopyToClipboard('cb91')">
             <pre
@@ -808,23 +799,22 @@
         </details>
       </section>
       <section>
-        <h3 id="practical-exercises-with-real-data">Practical Exercises with Real Data</h3>
-        <p><strong>Exercise 2: Product Profitability Analysis</strong></p>
-        <p>Write a query to calculate the profit margin for each product sold in the last year. Include product name,
-          category, total quantity sold, total revenue, total cost, and profit margin percentage.</p>
-        <h4>Hints</h4>
+        <h3 id="practical-exercises-with-real-data">Gercek Verilerle Pratik Alistirmalar</h3>
+        <p><strong>Alistirma 2: Urun Karlilik Analizi</strong></p>
+        <p>Son yil icinde satilan her urun icin kar marjini hesaplayan bir sorgu yazin. Urun adi, kategori, toplam satilan miktar, toplam gelir, toplam maliyet ve kar marji yuzdesini dahil edin.</p>
+        <h4>Ipuclari</h4>
         <ul>
-          <li>Use the <code>sale_order_line</code></li>
-          <li>Use the <code>sale_order</code></li>
-          <li>Use the <code>product_product</code></li>
-          <li>Use the <code>product_template</code></li>
-          <li>Use the <code>product_category</code></li>
+          <li><code>sale_order_line</code> tablosunu kullanin</li>
+          <li><code>sale_order</code> tablosunu kullanin</li>
+          <li><code>product_product</code> tablosunu kullanin</li>
+          <li><code>product_template</code> tablosunu kullanin</li>
+          <li><code>product_category</code> tablosunu kullanin</li>
         </ul>
       </section>
       <section>
         <details>
           <p>
-            <summary>Exercise 2: Product Profitability Analysis - Solution</summary>
+            <summary>Alistirma 2: Urun Karlilik Analizi - Cozum</summary>
           </p>
           <div class="sourceCode" id="cb101" onclick="CopyToClipboard('cb101')">
             <pre
@@ -860,16 +850,14 @@
         </details>
       </section>
       <section>
-        <p><strong>Exercise 3: Customer Segmentation</strong></p>
-        <p>Write a query to segment customers based on their purchase behavior. Create segments for: - VIP customers
-          (more
-          than $10,000 in purchases) - Regular customers ($1,000 to $10,000 in purchases) - Occasional customers (less
-          than $1,000 in purchases) - Inactive customers (no purchases)</p>
+        <p><strong>Alistirma 3: Musteri Segmentasyonu</strong></p>
+        <p>Musterileri satin alma davranislarina gore segmentlere ayiran bir sorgu yazin. Su segmentleri olusturun: - VIP musteriler
+          (10.000 $'dan fazla satin alma) - Duzenli musteriler (1.000 $ ile 10.000 $ arasi satin alma) - Ara sira alisveri yapan musteriler (1.000 $'dan az satin alma) - Aktif olmayan musteriler (satin alma yok)</p>
       </section>
       <section>
         <details>
           <p>
-            <summary>Exercise 3: Customer Segmentation - Solution</summary>
+            <summary>Alistirma 3: Musteri Segmentasyonu - Cozum</summary>
           </p>
           <div class="sourceCode" id="cb111" onclick="CopyToClipboard('cb111')">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
@@ -910,15 +898,14 @@
         </details>
       </section>
       <section>
-        <p><strong>Exercise 4: Inventory Turnover</strong></p>
-        <p>Write a query to calculate inventory turnover for each product category over the last year. Inventory
-          turnover
-          is calculated as (Cost of Goods Sold / Average Inventory).</p>
+        <p><strong>Alistirma 4: Envanter Devir Hizi</strong></p>
+        <p>Son yil icinde her urun kategorisi icin envanter devir hizini hesaplayan bir sorgu yazin. Envanter devir hizi
+          (Satilan Mallarin Maliyeti / Ortalama Envanter) olarak hesaplanir.</p>
       </section>
       <section>
         <details>
           <p>
-            <summary>Exercise 4: Inventory Turnover - Solution</summary>
+            <summary>Alistirma 4: Envanter Devir Hizi - Cozum</summary>
           </p>
           <div class="sourceCode" id="cb121" onclick="CopyToClipboard('cb121')">
             <pre
@@ -979,17 +966,16 @@
         </details>
       </section>
       <section>
-        <p><strong>Exercise 5: Working with JSON Data</strong></p>
-        <p>Odoo stores some data in JSON format. Write a query to extract and analyze data from a JSON column. For
-          example, find all products with specific attributes stored in a JSON column.</p>
+        <p><strong>Alistirma 5: JSON Verileriyle Calisma</strong></p>
+        <p>Odoo bazi verileri JSON formatinda saklar. Bir JSON sutunundan veri cikarmak ve analiz etmek icin bir sorgu yazin. Ornegin, bir JSON sutununda saklanan belirli ozelliklere sahip tum urunleri bulun.</p>
         <details>
           <p>
-            <summary>Solution</summary>
+            <summary>Cozum</summary>
           </p>
           <div class="row">
             <div class="col-md-6">
               <div class="sourceCode" id="cb131" style="width: 100%;" onclick="CopyToClipboard('cb131')">
-                <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">-- Assuming product attributes are stored in a JSONB column called &#39;attributes_json&#39;</span></span>
+                <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">-- Urun ozelliklerinin 'attributes_json' adli bir JSONB sutununda saklandigi varsayilarak</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    pt.attributes_json<span class="op">-&gt;</span><span class="st">&#39;color&#39;</span> <span class="kw">AS</span> color,</span>
@@ -1006,7 +992,7 @@
             </div>
             <div class="col-md-6">
               <div class="sourceCode" id="cb132" style="width: 100%;" onclick="CopyToClipboard('cb132')">
-                <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a><span class="co">-- Alternative approach if attributes are in a different structure</span></span>
+                <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-14"><a href="#cb13-14" aria-hidden="true"></a><span class="co">-- Ozellikler farkli bir yapida ise alternatif yaklasim</span></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product,</span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true"></a>    jsonb_extract_path_text(pt.attributes_json, <span class="st">&#39;specifications&#39;</span>, <span class="st">&#39;dimensions&#39;</span>, <span class="st">&#39;height&#39;</span>) <span class="kw">AS</span> height,</span>
@@ -1026,27 +1012,24 @@
         </details>
       </section>
       <section>
-        <h3 id="conclusion-and-next-steps">Conclusion and Next Steps</h3>
-        <p>In this hands-on workshop, you’ve explored the Odoo database structure and practiced writing SQL queries to
-          extract valuable business insights. These skills will be essential for your role as a product owner, enabling
-          you to:</p>
+        <h3 id="conclusion-and-next-steps">Sonuc ve Sonraki Adimlar</h3>
+        <p>Bu uygulamali calistayda, Odoo veritabani yapisini kesfettiniz ve degerli is bilgileri cikarmak icin SQL sorgulari yazmayi pratik ettiniz. Bu beceriler, urun sahibi olarak rolunuz icin onemli olacak ve size su konularda yardimci olacaktir:</p>
         <ol type="1">
-          <li>Understand the data model underlying your ERP system</li>
-          <li>Extract specific information needed for decision-making</li>
-          <li>Validate system behavior by examining the actual data</li>
-          <li>Create custom reports that answer specific business questions</li>
-          <li>Communicate more effectively with technical team members</li>
+          <li>ERP sisteminizin altinda yatan veri modelini anlama</li>
+          <li>Karar verme icin gereken belirli bilgileri cikartma</li>
+          <li>Gercek verileri inceleyerek sistem davranisini dogrulama</li>
+          <li>Belirli is sorularini yanitleyan ozel raporlar olusturma</li>
+          <li>Teknik ekip uyeleriyle daha etkili iletisim kurma</li>
         </ol>
-        <p>Tomorrow, we’ll build on these fundamentals by exploring advanced querying techniques and data manipulation,
-          with a special focus on PostgreSQL’s powerful JSON capabilities.</p>
-        <!-- <p><strong>Homework Assignment</strong>:</p>
+        <p>Yarin, PostgreSQL'in guclu JSON yeteneklerine ozel bir odaklanma ile ileri sorgulama teknikleri ve veri manipulasyonunu kesfederek bu temeller uzerine insa edecegiz.</p>
+        <!-- <p><strong>Ev Odevi</strong>:</p>
         <ol type="1">
-          <li>Write a query to find the top 5 selling products in each category</li>
-          <li>Create a report showing sales trends by month for the past year</li>
-          <li>Identify customers who haven’t made a purchase in the last 3 months but were active before that</li>
-          <li>Calculate the average time between order placement and delivery for each shipping method</li>
+          <li>Her kategorideki en cok satan 5 urunu bulan bir sorgu yazin</li>
+          <li>Son yil icin aylik satis trendlerini gosteren bir rapor olusturun</li>
+          <li>Son 3 ayda satin alma yapmamis ancak daha once aktif olan musterileri belirleyin</li>
+          <li>Her kargo yontemi icin siparis verme ile teslimat arasindaki ortalama sureyi hesaplayin</li>
         </ol>
-        <p>Bring your solutions to tomorrow’s session for review and discussion.</p> -->
+        <p>Cozumlerinizi yarin inceleme ve tartisma icin oturuma getirin.</p> -->
       </section>
     </div>
   </div>

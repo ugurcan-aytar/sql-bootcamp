@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 3: Database Design Principles - Practical Examples</title>
+    <title>Gun 3: Veritabani Tasarim Ilkeleri - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -38,34 +38,6 @@
 
         ul.task-list {
             list-style: none;
-        }
-
-        .language-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .language-switcher a {
-            text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 3px;
-            color: #333;
-        }
-
-        .language-switcher a.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        .language-switcher a:hover:not(.active) {
-            background: #e9ecef;
         }
 
         .exercise-box {
@@ -117,7 +89,7 @@
         }
 
         .hint-box::before {
-            content: "Hint: ";
+            content: "Ipucu: ";
             font-weight: bold;
         }
 
@@ -130,7 +102,7 @@
         }
 
         .warning-box::before {
-            content: "Warning: ";
+            content: "Uyari: ";
             font-weight: bold;
         }
 
@@ -143,7 +115,7 @@
         }
 
         .concept-box::before {
-            content: "Concept: ";
+            content: "Kavram: ";
             font-weight: bold;
         }
 
@@ -226,7 +198,7 @@
         }
 
         .bad-design::before {
-            content: "Bad Design: ";
+            content: "Kotu Tasarim: ";
             font-weight: bold;
             color: #721c24;
         }
@@ -240,7 +212,7 @@
         }
 
         .good-design::before {
-            content: "Good Design: ";
+            content: "Iyi Tasarim: ";
             font-weight: bold;
             color: #155724;
         }
@@ -319,15 +291,44 @@
             padding: 15px;
             margin: 15px 0;
         }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
     </style>
 </head>
 
 <body>
     <div class="language-switcher">
-        <a href="01_database_design_principles_examples.html" class="active">EN</a>
-        <a href="01_database_design_principles_examples_tr.html">TR</a>
+        <a href="01_database_design_principles_examples.html">EN</a>
+        <a href="01_database_design_principles_examples_tr.html" class="active">TR</a>
     </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -347,54 +348,54 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1 id="design-principles-practical-examples">Database Design Principles - Practical Examples</h1>
-                <p><a href="01_database_design_principles.html">&larr; Back to Database Design Principles Lesson</a></p>
-                <p>This page provides hands-on exercises to master database design. Practice identifying normalization
-                    issues, designing entity relationships, implementing keys, and writing constraints.</p>
+                <h1 id="design-principles-practical-examples">Veritabani Tasarim Ilkeleri - Pratik Ornekler</h1>
+                <p><a href="01_database_design_principles_tr.html">&larr; Veritabani Tasarim Ilkeleri Dersine Don</a></p>
+                <p>Bu sayfa veritabani tasariminda ustalasmak icin uygulamali alistirmalar sunmaktadir. Normalizasyon
+                    sorunlarini tespit etme, varlik iliskilerini tasarlama, anahtarlari uygulama ve kisitlamalar yazma pratiği yapin.</p>
             </section>
 
-            <!-- Normal Forms Quick Reference -->
+            <!-- Normal Formlar Hizli Referans -->
             <section>
-                <h2 id="normal-forms-reference">Normal Forms Quick Reference</h2>
+                <h2 id="normal-forms-reference">Normal Formlar Hizli Referans</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
                             <th>Normal Form</th>
-                            <th>Rule</th>
-                            <th>Violation Example</th>
+                            <th>Kural</th>
+                            <th>Ihlal Ornegi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><span class="nf-badge nf-1nf">1NF</span></td>
-                            <td>Each cell contains atomic (single) values. No repeating groups.</td>
-                            <td>Phone column: "555-1234, 555-5678"</td>
+                            <td>Her hucre atomik (tekil) degerler icerir. Tekrarlayan gruplar yok.</td>
+                            <td>Phone sutunu: "555-1234, 555-5678"</td>
                         </tr>
                         <tr>
                             <td><span class="nf-badge nf-2nf">2NF</span></td>
-                            <td>In 1NF + No partial dependencies (non-key depends on part of composite key)</td>
-                            <td>OrderItems(OrderID, ProductID, ProductName) - ProductName depends only on ProductID</td>
+                            <td>1NF'de + Kismi bagimlilik yok (anahtar olmayan, bilesik anahtarin bir parcasina bagimli)</td>
+                            <td>OrderItems(OrderID, ProductID, ProductName) - ProductName sadece ProductID'ye bagimli</td>
                         </tr>
                         <tr>
                             <td><span class="nf-badge nf-3nf">3NF</span></td>
-                            <td>In 2NF + No transitive dependencies (non-key depends on another non-key)</td>
-                            <td>Employee(EmpID, DeptID, DeptLocation) - DeptLocation depends on DeptID</td>
+                            <td>2NF'de + Gecisli bagimlilik yok (anahtar olmayan baska anahtar olmayana bagimli)</td>
+                            <td>Employee(EmpID, DeptID, DeptLocation) - DeptLocation, DeptID'ye bagimli</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-            <!-- Exercise 1: Identifying Normalization Issues -->
+            <!-- Alistirma 1: Normalizasyon Sorunlarini Tespit Etme -->
             <section>
-                <h2 id="exercise-1">Exercise 1: Identifying Normalization Issues</h2>
-                <p>Learn to identify which normal form a table violates and how to fix it.</p>
+                <h2 id="exercise-1">Alistirma 1: Normalizasyon Sorunlarini Tespit Etme</h2>
+                <p>Bir tablonun hangi normal formu ihlal ettigini ve nasil duzeltilecegini ogrenmek.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: First Normal Form (1NF) Violations</h4>
-                    <p>Examine this table and identify the 1NF violation:</p>
+                    <h4>Alistirma 1.1: Birinci Normal Form (1NF) Ihlalleri</h4>
+                    <p>Bu tabloyu inceleyin ve 1NF ihlalini tespit edin:</p>
 
                     <div class="bad-design">
-                        <strong>students Table</strong>
+                        <strong>students Tablosu</strong>
                         <table class="dataset-table">
                             <thead>
                                 <tr>
@@ -427,36 +428,36 @@
                         </table>
                     </div>
 
-                    <p><strong>Tasks:</strong></p>
+                    <p><strong>Gorevler:</strong></p>
                     <ol>
-                        <li>Identify the 1NF violations</li>
-                        <li>Design a normalized schema that satisfies 1NF</li>
-                        <li>Write the CREATE TABLE statements</li>
+                        <li>1NF ihlallerini tespit edin</li>
+                        <li>1NF'yi karsilayan normallestirilmis bir sema tasarlayin</li>
+                        <li>CREATE TABLE ifadelerini yazin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
-                        <p><strong>1NF Violations:</strong></p>
+                        <p><strong>1NF Ihlalleri:</strong></p>
                         <ul>
-                            <li><code>courses</code> column contains multiple values (comma-separated list)</li>
-                            <li><code>phone_numbers</code> column contains multiple values</li>
+                            <li><code>courses</code> sutunu birden fazla deger icerir (virgul ayirmali liste)</li>
+                            <li><code>phone_numbers</code> sutunu birden fazla deger icerir</li>
                         </ul>
 
                         <div class="good-design">
-                            <strong>Normalized Schema:</strong>
-                            <pre><code class="language-sql">-- Main students table
+                            <strong>Normallestirilmis Sema:</strong>
+                            <pre><code class="language-sql">-- Ana students tablosu
 CREATE TABLE students (
     student_id INTEGER PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
--- Separate table for courses (many-to-many relationship)
+-- Dersler icin ayri tablo (coktan coka iliski)
 CREATE TABLE courses (
     course_id INTEGER PRIMARY KEY,
     course_name VARCHAR(100) NOT NULL UNIQUE
 );
 
--- Junction table for student-course relationship
+-- Ogrenci-ders iliskisi icin baglanti tablosu
 CREATE TABLE student_courses (
     student_id INTEGER,
     course_id INTEGER,
@@ -465,7 +466,7 @@ CREATE TABLE student_courses (
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );
 
--- Separate table for phone numbers (one-to-many)
+-- Telefon numaralari icin ayri tablo (birden coka)
 CREATE TABLE student_phones (
     phone_id INTEGER PRIMARY KEY,
     student_id INTEGER NOT NULL,
@@ -475,7 +476,7 @@ CREATE TABLE student_phones (
 );</code></pre>
                         </div>
 
-                        <p><strong>Normalized Data:</strong></p>
+                        <p><strong>Normallestirilmis Veriler:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th colspan="2">students</th>
@@ -542,11 +543,11 @@ CREATE TABLE student_phones (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Second Normal Form (2NF) Violations</h4>
-                    <p>Examine this table with a composite primary key:</p>
+                    <h4>Alistirma 1.2: Ikinci Normal Form (2NF) Ihlalleri</h4>
+                    <p>Bilesik birincil anahtari olan bu tabloyu inceleyin:</p>
 
                     <div class="bad-design">
-                        <strong>order_items Table (PK: order_id, product_id)</strong>
+                        <strong>order_items Tablosu (PK: order_id, product_id)</strong>
                         <table class="dataset-table">
                             <thead>
                                 <tr>
@@ -592,42 +593,42 @@ CREATE TABLE student_phones (
                     </div>
 
                     <div class="anomaly-box">
-                        <strong>Problems with this design:</strong>
+                        <strong>Bu tasarimdaki sorunlar:</strong>
                         <ul>
-                            <li><strong>Update Anomaly:</strong> If laptop price changes, you must update multiple rows</li>
-                            <li><strong>Redundancy:</strong> Product name and price are repeated for each order</li>
-                            <li><strong>Partial Dependency:</strong> product_name depends only on product_id, not the full key</li>
+                            <li><strong>Guncelleme Anomalisi:</strong> Laptop fiyati degisirse, birden fazla satiri guncellemeniz gerekir</li>
+                            <li><strong>Fazlalik:</strong> Urun adi ve fiyati her siparis icin tekrarlanir</li>
+                            <li><strong>Kismi Bagimlilik:</strong> product_name sadece product_id'ye bagimli, tam anahtara degil</li>
                         </ul>
                     </div>
 
-                    <p><strong>Task:</strong> Normalize this table to 2NF.</p>
+                    <p><strong>Gorev:</strong> Bu tabloyu 2NF'ye normalestirin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
-                        <p><strong>Analysis:</strong></p>
+                        <p><strong>Analiz:</strong></p>
                         <ul>
-                            <li><code>product_name</code>, <code>product_price</code> depend only on <code>product_id</code> (partial dependency)</li>
-                            <li><code>order_date</code>, <code>customer_name</code> depend only on <code>order_id</code> (partial dependency)</li>
-                            <li><code>quantity</code> depends on the full composite key (order_id, product_id)</li>
+                            <li><code>product_name</code>, <code>product_price</code> sadece <code>product_id</code>'ye bagimli (kismi bagimlilik)</li>
+                            <li><code>order_date</code>, <code>customer_name</code> sadece <code>order_id</code>'ye bagimli (kismi bagimlilik)</li>
+                            <li><code>quantity</code> tam bilesik anahtara bagimli (order_id, product_id)</li>
                         </ul>
 
                         <div class="good-design">
-                            <strong>Normalized to 2NF:</strong>
-                            <pre><code class="language-sql">-- Products table (product attributes)
+                            <strong>2NF'ye Normallestirildi:</strong>
+                            <pre><code class="language-sql">-- Urunler tablosu (urun ozellikleri)
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY,
     product_name VARCHAR(100) NOT NULL,
     product_price DECIMAL(10, 2) NOT NULL
 );
 
--- Orders table (order attributes)
+-- Siparisler tablosu (siparis ozellikleri)
 CREATE TABLE orders (
     order_id INTEGER PRIMARY KEY,
     order_date DATE NOT NULL,
     customer_name VARCHAR(100) NOT NULL
 );
 
--- Order items (only attributes depending on full composite key)
+-- Siparis kalemleri (sadece tam bilesik anahtara bagli ozellikler)
 CREATE TABLE order_items (
     order_id INTEGER,
     product_id INTEGER,
@@ -641,11 +642,11 @@ CREATE TABLE order_items (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.3: Third Normal Form (3NF) Violations</h4>
-                    <p>Examine this table for transitive dependencies:</p>
+                    <h4>Alistirma 1.3: Ucuncu Normal Form (3NF) Ihlalleri</h4>
+                    <p>Gecisli bagimliliklar icin bu tabloyu inceleyin:</p>
 
                     <div class="bad-design">
-                        <strong>employees Table</strong>
+                        <strong>employees Tablosu</strong>
                         <table class="dataset-table">
                             <thead>
                                 <tr>
@@ -686,25 +687,25 @@ CREATE TABLE order_items (
                         </table>
                     </div>
 
-                    <p><strong>Task:</strong> Identify the transitive dependency and normalize to 3NF.</p>
+                    <p><strong>Gorev:</strong> Gecisli bagimliligi tespit edin ve 3NF'ye normalestirin.</p>
 
                     <div class="hint-box">
-                        Look for non-key columns that depend on other non-key columns, not directly on the primary key.
+                        Birincil anahtara degil, diger anahtar olmayan sutunlara bagli olan anahtar olmayan sutunlari arayin.
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
                     <div id="solution1_3" class="solution-box">
-                        <p><strong>Transitive Dependencies Found:</strong></p>
+                        <p><strong>Bulunan Gecisli Bagimliliklar:</strong></p>
                         <ul>
-                            <li><code>dept_name</code> depends on <code>dept_id</code> (not directly on <code>emp_id</code>)</li>
-                            <li><code>dept_location</code> depends on <code>dept_id</code></li>
-                            <li><code>dept_manager</code> depends on <code>dept_id</code></li>
+                            <li><code>dept_name</code>, <code>dept_id</code>'ye bagimli (dogrudan <code>emp_id</code>'ye degil)</li>
+                            <li><code>dept_location</code>, <code>dept_id</code>'ye bagimli</li>
+                            <li><code>dept_manager</code>, <code>dept_id</code>'ye bagimli</li>
                         </ul>
-                        <p>Chain: emp_id → dept_id → dept_name/dept_location/dept_manager</p>
+                        <p>Zincir: emp_id → dept_id → dept_name/dept_location/dept_manager</p>
 
                         <div class="good-design">
-                            <strong>Normalized to 3NF:</strong>
-                            <pre><code class="language-sql">-- Departments table
+                            <strong>3NF'ye Normallestirildi:</strong>
+                            <pre><code class="language-sql">-- Departmanlar tablosu
 CREATE TABLE departments (
     dept_id INTEGER PRIMARY KEY,
     dept_name VARCHAR(100) NOT NULL,
@@ -712,7 +713,7 @@ CREATE TABLE departments (
     dept_manager VARCHAR(100)
 );
 
--- Employees table (only direct dependencies)
+-- Calisanlar tablosu (sadece dogrudan bagimliliklar)
 CREATE TABLE employees (
     emp_id INTEGER PRIMARY KEY,
     emp_name VARCHAR(100) NOT NULL,
@@ -721,63 +722,63 @@ CREATE TABLE employees (
 );</code></pre>
                         </div>
 
-                        <p><strong>Benefits:</strong></p>
+                        <p><strong>Faydalar:</strong></p>
                         <ul>
-                            <li>Department info stored once, not repeated for each employee</li>
-                            <li>Updating department location requires changing only one row</li>
-                            <li>No risk of inconsistent department data</li>
+                            <li>Departman bilgisi bir kez saklanir, her calisan icin tekrarlanmaz</li>
+                            <li>Departman konumu guncellemek sadece bir satir degistirir</li>
+                            <li>Tutarsiz departman verisi riski yok</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- Exercise 2: Entity-Relationship Modeling -->
+            <!-- Alistirma 2: Varlik-Iliski Modelleme -->
             <section>
-                <h2 id="exercise-2">Exercise 2: Entity-Relationship Modeling</h2>
-                <p>Practice identifying entities, relationships, and cardinality for real-world scenarios.</p>
+                <h2 id="exercise-2">Alistirma 2: Varlik-Iliski Modelleme</h2>
+                <p>Gercek dunya senaryolari icin varliklari, iliskileri ve kardinaliteyi tespit etme pratiği yapin.</p>
 
                 <div class="concept-box">
-                    Cardinality describes how many instances of one entity relate to another:
-                    <strong>1:1</strong> (one-to-one), <strong>1:N</strong> (one-to-many), <strong>M:N</strong> (many-to-many).
+                    Kardinalite, bir varligin kac orneginin bir baska varlikla iliskili oldugunu tanimlar:
+                    <strong>1:1</strong> (bire-bir), <strong>1:N</strong> (birden-coka), <strong>M:N</strong> (coktan-coka).
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: Library Management System</h4>
-                    <p>Design an ER model for a library with these requirements:</p>
+                    <h4>Alistirma 2.1: Kutuphane Yonetim Sistemi</h4>
+                    <p>Su gereksinimlere sahip bir kutuphane icin ER modeli tasarlayin:</p>
                     <ul>
-                        <li>The library has books with title, ISBN, publication year, and genre</li>
-                        <li>Each book can have one or more authors</li>
-                        <li>Authors have name, birth date, and nationality</li>
-                        <li>Members can borrow books</li>
-                        <li>Track when books are borrowed and returned</li>
-                        <li>Each book copy can be borrowed by one member at a time</li>
+                        <li>Kutuphanede baslik, ISBN, yayin yili ve tur bilgilerine sahip kitaplar vardir</li>
+                        <li>Her kitabin bir veya daha fazla yazari olabilir</li>
+                        <li>Yazarlarin adi, dogum tarihi ve uyruklari vardir</li>
+                        <li>Uyeler kitap odunc alabilir</li>
+                        <li>Kitaplarin ne zaman odunc alindigi ve iade edildigi takip edilir</li>
+                        <li>Her kitap kopyasi ayni anda bir uye tarafindan odunc alinabilir</li>
                     </ul>
 
-                    <p><strong>Tasks:</strong></p>
+                    <p><strong>Gorevler:</strong></p>
                     <ol>
-                        <li>Identify the entities</li>
-                        <li>Determine the cardinality of each relationship</li>
-                        <li>Write the CREATE TABLE statements</li>
+                        <li>Varliklari tespit edin</li>
+                        <li>Her iliskinin kardinalitesini belirleyin</li>
+                        <li>CREATE TABLE ifadelerini yazin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
-                        <p><strong>Entities Identified:</strong></p>
+                        <p><strong>Tespit Edilen Varliklar:</strong></p>
                         <ul>
-                            <li><strong>Books</strong> - represents book titles</li>
-                            <li><strong>Authors</strong> - represents book authors</li>
-                            <li><strong>Members</strong> - library members who borrow books</li>
-                            <li><strong>BookCopies</strong> - physical copies of books (a book can have multiple copies)</li>
-                            <li><strong>Loans</strong> - borrowing transactions</li>
+                            <li><strong>Books</strong> - kitap basliklarini temsil eder</li>
+                            <li><strong>Authors</strong> - kitap yazarlarini temsil eder</li>
+                            <li><strong>Members</strong> - kitap odunc alan kutuphane uyeleri</li>
+                            <li><strong>BookCopies</strong> - kitaplarin fiziksel kopyalari (bir kitabin birden fazla kopyasi olabilir)</li>
+                            <li><strong>Loans</strong> - odunc alma islemleri</li>
                         </ul>
 
                         <div class="cardinality-box">
-                            <strong>Relationships:</strong>
+                            <strong>Iliskiler:</strong>
                             <ul>
-                                <li>Book ↔ Author: <strong>M:N</strong> (a book can have multiple authors, an author can write multiple books)</li>
-                                <li>Book ↔ BookCopy: <strong>1:N</strong> (a book can have many copies)</li>
-                                <li>Member ↔ Loan: <strong>1:N</strong> (a member can have many loans)</li>
-                                <li>BookCopy ↔ Loan: <strong>1:N</strong> (a copy can be loaned many times, but one loan per copy at a time)</li>
+                                <li>Book ↔ Author: <strong>M:N</strong> (bir kitabin birden fazla yazari olabilir, bir yazar birden fazla kitap yazabilir)</li>
+                                <li>Book ↔ BookCopy: <strong>1:N</strong> (bir kitabin birden fazla kopyasi olabilir)</li>
+                                <li>Member ↔ Loan: <strong>1:N</strong> (bir uyenin birden fazla odunc almasi olabilir)</li>
+                                <li>BookCopy ↔ Loan: <strong>1:N</strong> (bir kopya birden fazla kez odunc alinabilir, ama ayni anda sadece bir odunc)</li>
                             </ul>
                         </div>
 
@@ -805,7 +806,7 @@ CREATE TABLE employees (
                     +-----------+
                         </div>
 
-                        <pre><code class="language-sql">-- Authors
+                        <pre><code class="language-sql">-- Yazarlar
 CREATE TABLE authors (
     author_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -813,7 +814,7 @@ CREATE TABLE authors (
     nationality VARCHAR(100)
 );
 
--- Books
+-- Kitaplar
 CREATE TABLE books (
     book_id INTEGER PRIMARY KEY,
     title VARCHAR(300) NOT NULL,
@@ -822,7 +823,7 @@ CREATE TABLE books (
     genre VARCHAR(50)
 );
 
--- Book-Author junction table (M:N)
+-- Kitap-Yazar baglanti tablosu (M:N)
 CREATE TABLE book_authors (
     book_id INTEGER,
     author_id INTEGER,
@@ -831,7 +832,7 @@ CREATE TABLE book_authors (
     FOREIGN KEY (author_id) REFERENCES authors(author_id)
 );
 
--- Book copies (physical copies)
+-- Kitap kopyalari (fiziksel kopyalar)
 CREATE TABLE book_copies (
     copy_id INTEGER PRIMARY KEY,
     book_id INTEGER NOT NULL,
@@ -840,7 +841,7 @@ CREATE TABLE book_copies (
     FOREIGN KEY (book_id) REFERENCES books(book_id)
 );
 
--- Members
+-- Uyeler
 CREATE TABLE members (
     member_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -848,7 +849,7 @@ CREATE TABLE members (
     join_date DATE DEFAULT CURRENT_DATE
 );
 
--- Loans
+-- Odunc Almalar
 CREATE TABLE loans (
     loan_id INTEGER PRIMARY KEY,
     member_id INTEGER NOT NULL,
@@ -863,210 +864,210 @@ CREATE TABLE loans (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: Identify Cardinality</h4>
-                    <p>For each pair of entities, identify the cardinality (1:1, 1:N, or M:N):</p>
+                    <h4>Alistirma 2.2: Kardinaliteyi Belirleme</h4>
+                    <p>Her varlik cifti icin kardinaliteyi belirleyin (1:1, 1:N veya M:N):</p>
 
                     <table class="dataset-table">
                         <thead>
                             <tr>
-                                <th>Entity A</th>
-                                <th>Relationship</th>
-                                <th>Entity B</th>
-                                <th>Your Answer</th>
+                                <th>Varlik A</th>
+                                <th>Iliski</th>
+                                <th>Varlik B</th>
+                                <th>Cevabiniz</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Country</td>
-                                <td>has</td>
-                                <td>Capital City</td>
+                                <td>Ulke</td>
+                                <td>sahiptir</td>
+                                <td>Baskent</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Doctor</td>
-                                <td>treats</td>
-                                <td>Patient</td>
+                                <td>Doktor</td>
+                                <td>tedavi eder</td>
+                                <td>Hasta</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Department</td>
-                                <td>employs</td>
-                                <td>Employee</td>
+                                <td>Departman</td>
+                                <td>calistirir</td>
+                                <td>Calisan</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Student</td>
-                                <td>enrolls in</td>
-                                <td>Course</td>
+                                <td>Ogrenci</td>
+                                <td>kayit olur</td>
+                                <td>Ders</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Person</td>
-                                <td>has</td>
-                                <td>Passport</td>
+                                <td>Kisi</td>
+                                <td>sahiptir</td>
+                                <td>Pasaport</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Order</td>
-                                <td>contains</td>
-                                <td>Product</td>
+                                <td>Siparis</td>
+                                <td>icerir</td>
+                                <td>Urun</td>
                                 <td>?</td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
                     <div id="solution2_2" class="solution-box">
                         <table class="dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Entity A</th>
-                                    <th>Relationship</th>
-                                    <th>Entity B</th>
-                                    <th>Cardinality</th>
-                                    <th>Explanation</th>
+                                    <th>Varlik A</th>
+                                    <th>Iliski</th>
+                                    <th>Varlik B</th>
+                                    <th>Kardinalite</th>
+                                    <th>Aciklama</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Country</td>
-                                    <td>has</td>
-                                    <td>Capital City</td>
+                                    <td>Ulke</td>
+                                    <td>sahiptir</td>
+                                    <td>Baskent</td>
                                     <td><strong>1:1</strong></td>
-                                    <td>Each country has exactly one capital; each capital belongs to one country</td>
+                                    <td>Her ulkenin tam olarak bir baskenti vardir; her baskent bir ulkeye aittir</td>
                                 </tr>
                                 <tr>
-                                    <td>Doctor</td>
-                                    <td>treats</td>
-                                    <td>Patient</td>
+                                    <td>Doktor</td>
+                                    <td>tedavi eder</td>
+                                    <td>Hasta</td>
                                     <td><strong>M:N</strong></td>
-                                    <td>A doctor treats many patients; a patient can see multiple doctors</td>
+                                    <td>Bir doktor bircok hastayi tedavi eder; bir hasta birden fazla doktora gidebilir</td>
                                 </tr>
                                 <tr>
-                                    <td>Department</td>
-                                    <td>employs</td>
-                                    <td>Employee</td>
+                                    <td>Departman</td>
+                                    <td>calistirir</td>
+                                    <td>Calisan</td>
                                     <td><strong>1:N</strong></td>
-                                    <td>A department has many employees; an employee belongs to one department</td>
+                                    <td>Bir departmanin bircok calisani vardir; bir calisan bir departmana aittir</td>
                                 </tr>
                                 <tr>
-                                    <td>Student</td>
-                                    <td>enrolls in</td>
-                                    <td>Course</td>
+                                    <td>Ogrenci</td>
+                                    <td>kayit olur</td>
+                                    <td>Ders</td>
                                     <td><strong>M:N</strong></td>
-                                    <td>A student takes many courses; a course has many students</td>
+                                    <td>Bir ogrenci bircok ders alir; bir dersin bircok ogrencisi vardir</td>
                                 </tr>
                                 <tr>
-                                    <td>Person</td>
-                                    <td>has</td>
-                                    <td>Passport</td>
+                                    <td>Kisi</td>
+                                    <td>sahiptir</td>
+                                    <td>Pasaport</td>
                                     <td><strong>1:1</strong></td>
-                                    <td>One person has one passport; one passport belongs to one person</td>
+                                    <td>Bir kisinin bir pasaportu vardir; bir pasaport bir kisiye aittir</td>
                                 </tr>
                                 <tr>
-                                    <td>Order</td>
-                                    <td>contains</td>
-                                    <td>Product</td>
+                                    <td>Siparis</td>
+                                    <td>icerir</td>
+                                    <td>Urun</td>
                                     <td><strong>M:N</strong></td>
-                                    <td>An order can contain many products; a product can be in many orders</td>
+                                    <td>Bir siparis bircok urun icerebilir; bir urun bircok sipariste olabilir</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <p><strong>Implementation Notes:</strong></p>
+                        <p><strong>Uygulama Notlari:</strong></p>
                         <ul>
-                            <li><strong>1:1</strong>: FK in either table, or merge tables</li>
-                            <li><strong>1:N</strong>: FK in the "many" side table</li>
-                            <li><strong>M:N</strong>: Requires junction table with FKs to both tables</li>
+                            <li><strong>1:1</strong>: Her iki tabloda FK veya tablolari birlestirme</li>
+                            <li><strong>1:N</strong>: "Cok" tarafindaki tabloda FK</li>
+                            <li><strong>M:N</strong>: Her iki tabloya FK'lari olan baglanti tablosu gerektirir</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- Exercise 3: Primary and Foreign Keys -->
+            <!-- Alistirma 3: Birincil ve Yabanci Anahtarlar -->
             <section>
-                <h2 id="exercise-3">Exercise 3: Implementing Keys</h2>
-                <p>Practice choosing appropriate key types and implementing referential integrity.</p>
+                <h2 id="exercise-3">Alistirma 3: Anahtarlari Uygulama</h2>
+                <p>Uygun anahtar turlerini secme ve referans butunlugunu uygulama pratiği yapin.</p>
 
                 <div class="concept-box">
-                    <strong>Surrogate keys</strong> (auto-generated IDs) are generally preferred over
-                    <strong>natural keys</strong> (business values) for stability and simplicity.
+                    <strong>Vekil anahtarlar</strong> (otomatik olusturulan ID'ler) genellikle kararlilik ve basitlik icin
+                    <strong>dogal anahtarlardan</strong> (is degerleri) tercih edilir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: Natural vs Surrogate Keys</h4>
-                    <p>For each table, decide whether to use a natural key or surrogate key and explain why:</p>
+                    <h4>Alistirma 3.1: Dogal vs Vekil Anahtarlar</h4>
+                    <p>Her tablo icin dogal anahtar mi yoksa vekil anahtar mi kullanacaginiza karar verin ve nedenini aciklayin:</p>
 
                     <ol>
-                        <li><strong>Countries table</strong> - with country code (US, UK, TR) and country name</li>
-                        <li><strong>Users table</strong> - with email, username, password</li>
-                        <li><strong>Products table</strong> - with SKU, name, price</li>
-                        <li><strong>Log entries table</strong> - with timestamp, event_type, message</li>
+                        <li><strong>Countries tablosu</strong> - ulke kodu (US, UK, TR) ve ulke adi ile</li>
+                        <li><strong>Users tablosu</strong> - e-posta, kullanici adi, sifre ile</li>
+                        <li><strong>Products tablosu</strong> - SKU, ad, fiyat ile</li>
+                        <li><strong>Log entries tablosu</strong> - zaman damgasi, olay_tipi, mesaj ile</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
-                        <pre><code class="language-sql">-- 1. Countries - Natural Key (country code is stable and standard)
+                        <pre><code class="language-sql">-- 1. Countries - Dogal Anahtar (ulke kodu kararli ve standart)
 CREATE TABLE countries (
-    country_code CHAR(2) PRIMARY KEY,  -- ISO standard, never changes
+    country_code CHAR(2) PRIMARY KEY,  -- ISO standardi, asla degismez
     country_name VARCHAR(100) NOT NULL UNIQUE
 );
 
--- 2. Users - Surrogate Key (email might change)
+-- 2. Users - Vekil Anahtar (e-posta degisebilir)
 CREATE TABLE users (
-    user_id INTEGER PRIMARY KEY,  -- Surrogate key
-    email VARCHAR(255) NOT NULL UNIQUE,  -- Natural key candidate, but can change
+    user_id INTEGER PRIMARY KEY,  -- Vekil anahtar
+    email VARCHAR(255) NOT NULL UNIQUE,  -- Dogal anahtar adayi, ama degisebilir
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL
 );
--- Reason: Emails can change; using surrogate key means FKs don't need updating
+-- Sebep: E-postalar degisebilir; vekil anahtar kullanmak FK'larin guncellenmesine gerek kalmamasini saglar
 
--- 3. Products - Surrogate Key with Natural Key as UNIQUE
+-- 3. Products - UNIQUE olarak Dogal Anahtar ile Vekil Anahtar
 CREATE TABLE products (
-    product_id INTEGER PRIMARY KEY,  -- Surrogate key for FKs
-    sku VARCHAR(50) NOT NULL UNIQUE,  -- Natural key, but might be reformatted
+    product_id INTEGER PRIMARY KEY,  -- FK'lar icin vekil anahtar
+    sku VARCHAR(50) NOT NULL UNIQUE,  -- Dogal anahtar, ama yeniden formatlanabilir
     name VARCHAR(200) NOT NULL,
     price DECIMAL(10, 2) NOT NULL
 );
--- Reason: SKUs might be reformatted or merged in acquisitions
+-- Sebep: SKU'lar yeniden formatlanabilir veya satinalmalarda birlesebilir
 
--- 4. Log entries - Surrogate Key (no natural unique identifier)
+-- 4. Log entries - Vekil Anahtar (dogal benzersiz tanimlayici yok)
 CREATE TABLE log_entries (
-    log_id BIGINT PRIMARY KEY,  -- Surrogate key (BIGINT for high volume)
+    log_id BIGINT PRIMARY KEY,  -- Vekil anahtar (yuksek hacim icin BIGINT)
     timestamp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     event_type VARCHAR(50) NOT NULL,
     message TEXT
 );
--- Reason: Multiple logs can occur at same timestamp; no natural key exists</code></pre>
+-- Sebep: Ayni zaman damgasinda birden fazla log olabilir; dogal anahtar mevcut degil</code></pre>
 
                         <table class="comparison-table">
                             <thead>
                                 <tr>
-                                    <th>Table</th>
-                                    <th>Key Type</th>
-                                    <th>Reasoning</th>
+                                    <th>Tablo</th>
+                                    <th>Anahtar Tipi</th>
+                                    <th>Gerekce</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Countries</td>
-                                    <td>Natural (country_code)</td>
-                                    <td>ISO codes are stable, universally known, and rarely change</td>
+                                    <td>Dogal (country_code)</td>
+                                    <td>ISO kodlari kararli, evrensel olarak bilinen ve nadiren degisir</td>
                                 </tr>
                                 <tr>
                                     <td>Users</td>
-                                    <td>Surrogate (user_id)</td>
-                                    <td>Emails can change; surrogate provides stability</td>
+                                    <td>Vekil (user_id)</td>
+                                    <td>E-postalar degisebilir; vekil anahtar kararlilik saglar</td>
                                 </tr>
                                 <tr>
                                     <td>Products</td>
-                                    <td>Surrogate (product_id)</td>
-                                    <td>SKUs might be reformatted; business logic shouldn't depend on internal IDs</td>
+                                    <td>Vekil (product_id)</td>
+                                    <td>SKU'lar yeniden formatlanabilir; is mantigi dahili ID'lere bagimli olmamali</td>
                                 </tr>
                                 <tr>
                                     <td>Log entries</td>
-                                    <td>Surrogate (log_id)</td>
-                                    <td>No natural unique identifier; timestamps aren't unique</td>
+                                    <td>Vekil (log_id)</td>
+                                    <td>Dogal benzersiz tanimlayici yok; zaman damgalari benzersiz degil</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1074,74 +1075,74 @@ CREATE TABLE log_entries (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: Referential Actions</h4>
-                    <p>Given these tables, choose the appropriate referential action for each foreign key:</p>
+                    <h4>Alistirma 3.2: Referans Eylemleri</h4>
+                    <p>Bu tablolar verildiginde, her yabanci anahtar icin uygun referans eylemini secin:</p>
 
-                    <pre><code class="language-sql">-- Scenario: E-commerce system
+                    <pre><code class="language-sql">-- Senaryo: E-ticaret sistemi
 
--- Customers can have orders
--- Orders have order items
--- Products are in categories
--- Products appear in order items</code></pre>
+-- Musterilerin siparisleri olabilir
+-- Siparislerin siparis kalemleri vardir
+-- Urunler kategorilerde bulunur
+-- Urunler siparis kalemlerinde gorunur</code></pre>
 
-                    <p><strong>Decide for each relationship:</strong></p>
+                    <p><strong>Her iliski icin karar verin:</strong></p>
                     <ol>
-                        <li>When a Customer is deleted, what should happen to their Orders?</li>
-                        <li>When an Order is deleted, what should happen to its OrderItems?</li>
-                        <li>When a Category is deleted, what should happen to its Products?</li>
-                        <li>When a Product is deleted, what should happen to OrderItems referencing it?</li>
+                        <li>Bir Musteri silindigi zaman, Siparislerine ne olmali?</li>
+                        <li>Bir Siparis silindigi zaman, SiparisKalemlerine ne olmali?</li>
+                        <li>Bir Kategori silindigi zaman, Urunlerine ne olmali?</li>
+                        <li>Bir Urun silindigi zaman, ona referans veren SiparisKalemlerine ne olmali?</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
-                        <pre><code class="language-sql">-- Customers table
+                        <pre><code class="language-sql">-- Musteriler tablosu
 CREATE TABLE customers (
     customer_id INTEGER PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL
 );
 
--- Categories table
+-- Kategoriler tablosu
 CREATE TABLE categories (
     category_id INTEGER PRIMARY KEY,
     category_name VARCHAR(100) NOT NULL
 );
 
--- Products table
+-- Urunler tablosu
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     category_id INTEGER,
-    -- When category deleted, set product's category to NULL
+    -- Kategori silindigi zaman, urunun kategorisini NULL yap
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
         ON DELETE SET NULL
         ON UPDATE CASCADE
 );
 
--- Orders table
+-- Siparisler tablosu
 CREATE TABLE orders (
     order_id INTEGER PRIMARY KEY,
     customer_id INTEGER,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    -- When customer deleted, keep order but set customer_id to NULL
-    -- OR use RESTRICT if orders must not exist without customer
+    -- Musteri silindigi zaman, siparisi sakla ama customer_id'yi NULL yap
+    -- VEYA siparisler musterisiz olmamali ise RESTRICT kullan
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
         ON DELETE SET NULL
         ON UPDATE CASCADE
 );
 
--- Order items table
+-- Siparis kalemleri tablosu
 CREATE TABLE order_items (
     order_item_id INTEGER PRIMARY KEY,
     order_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
-    unit_price DECIMAL(10, 2) NOT NULL,  -- Store price at time of order!
-    -- When order deleted, delete its items too
+    unit_price DECIMAL(10, 2) NOT NULL,  -- Siparis anindaki fiyati sakla!
+    -- Siparis silindigi zaman, kalemlerini de sil
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
         ON DELETE CASCADE,
-    -- When product deleted, RESTRICT (don't allow if in orders)
+    -- Urun silindigi zaman, RESTRICT (siparislerde varsa izin verme)
     FOREIGN KEY (product_id) REFERENCES products(product_id)
         ON DELETE RESTRICT
 );</code></pre>
@@ -1149,183 +1150,183 @@ CREATE TABLE order_items (
                         <table class="comparison-table">
                             <thead>
                                 <tr>
-                                    <th>Relationship</th>
-                                    <th>Action</th>
-                                    <th>Reasoning</th>
+                                    <th>Iliski</th>
+                                    <th>Eylem</th>
+                                    <th>Gerekce</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Customer → Orders</td>
                                     <td>SET NULL</td>
-                                    <td>Keep order history for accounting; orphaned orders are acceptable</td>
+                                    <td>Muhasebe icin siparis gecmisini sakla; yetim siparisler kabul edilebilir</td>
                                 </tr>
                                 <tr>
                                     <td>Order → OrderItems</td>
                                     <td>CASCADE</td>
-                                    <td>Order items have no meaning without their order; delete together</td>
+                                    <td>Siparis kalemleri siparisleri olmadan anlamsiz; birlikte sil</td>
                                 </tr>
                                 <tr>
                                     <td>Category → Products</td>
                                     <td>SET NULL</td>
-                                    <td>Products can exist without category; let them become "uncategorized"</td>
+                                    <td>Urunler kategori olmadan var olabilir; "kategorisiz" olmalarina izin ver</td>
                                 </tr>
                                 <tr>
                                     <td>Product → OrderItems</td>
                                     <td>RESTRICT</td>
-                                    <td>Don't allow deleting products that were ordered; historical integrity</td>
+                                    <td>Siparis edilmis urunlerin silinmesine izin verme; tarihsel butunluk</td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <div class="warning-box">
-                            Notice we store <code>unit_price</code> in order_items. This is intentional denormalization
-                            to preserve the price at the time of order, since product prices can change.
+                            order_items'da <code>unit_price</code> sakladigimiza dikkat edin. Bu, urun fiyatlari degisebilecegi icin
+                            siparis anindaki fiyati korumak icin kasitli bir denormalizasyondur.
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Exercise 4: Constraints -->
+            <!-- Alistirma 4: Kisitlamalar -->
             <section>
-                <h2 id="exercise-4">Exercise 4: Implementing Constraints</h2>
-                <p>Practice writing constraints to enforce business rules at the database level.</p>
+                <h2 id="exercise-4">Alistirma 4: Kisitlamalari Uygulama</h2>
+                <p>Veritabani duzeyinde is kurallarini uygulamak icin kisitlamalar yazma pratiği yapin.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.1: Write Constraints</h4>
-                    <p>Create tables with appropriate constraints for these business rules:</p>
+                    <h4>Alistirma 4.1: Kisitlamalar Yazma</h4>
+                    <p>Bu is kurallari icin uygun kisitlamalarla tablolar olusturun:</p>
 
                     <ol>
-                        <li><strong>Employees table:</strong>
+                        <li><strong>Employees tablosu:</strong>
                             <ul>
-                                <li>Employee ID is required and unique</li>
-                                <li>Email must be unique and in valid format</li>
-                                <li>Salary must be positive</li>
-                                <li>Hire date cannot be in the future</li>
-                                <li>Status must be 'active', 'inactive', or 'terminated'</li>
+                                <li>Calisan ID gerekli ve benzersiz</li>
+                                <li>E-posta benzersiz ve gecerli formatta olmali</li>
+                                <li>Maas pozitif olmali</li>
+                                <li>Ise alma tarihi gelecekte olamaz</li>
+                                <li>Durum 'active', 'inactive' veya 'terminated' olmali</li>
                             </ul>
                         </li>
-                        <li><strong>Products table:</strong>
+                        <li><strong>Products tablosu:</strong>
                             <ul>
-                                <li>Price must be non-negative</li>
-                                <li>Discount percentage must be between 0 and 100</li>
-                                <li>Stock quantity cannot be negative</li>
-                                <li>Product name must be at least 3 characters</li>
+                                <li>Fiyat negatif olmayan olmali</li>
+                                <li>Indirim yuzdesi 0 ile 100 arasinda olmali</li>
+                                <li>Stok miktari negatif olamaz</li>
+                                <li>Urun adi en az 3 karakter olmali</li>
                             </ul>
                         </li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
-                        <pre><code class="language-sql">-- 1. Employees table with constraints
+                        <pre><code class="language-sql">-- 1. Kisitlamalarla Employees tablosu
 CREATE TABLE employees (
     employee_id INTEGER PRIMARY KEY,
 
-    -- Email: unique, not null, basic format check
+    -- E-posta: benzersiz, bos olamaz, temel format kontrolu
     email VARCHAR(255) NOT NULL UNIQUE
         CONSTRAINT chk_email_format CHECK (email LIKE '%_@_%.__%'),
 
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
 
-    -- Salary: must be positive
+    -- Maas: pozitif olmali
     salary DECIMAL(12, 2) NOT NULL
         CONSTRAINT chk_salary_positive CHECK (salary > 0),
 
-    -- Hire date: cannot be in the future
+    -- Ise alma tarihi: gelecekte olamaz
     hire_date DATE NOT NULL
         CONSTRAINT chk_hire_date CHECK (hire_date <= CURRENT_DATE),
 
-    -- Status: limited to specific values
+    -- Durum: belirli degerlerle sinirli
     status VARCHAR(20) NOT NULL DEFAULT 'active'
         CONSTRAINT chk_status CHECK (status IN ('active', 'inactive', 'terminated'))
 );
 
--- 2. Products table with constraints
+-- 2. Kisitlamalarla Products tablosu
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY,
 
-    -- Product name: minimum length
+    -- Urun adi: minimum uzunluk
     product_name VARCHAR(200) NOT NULL
         CONSTRAINT chk_name_length CHECK (LENGTH(product_name) >= 3),
 
-    -- Price: non-negative
+    -- Fiyat: negatif olmayan
     price DECIMAL(10, 2) NOT NULL
         CONSTRAINT chk_price_non_negative CHECK (price >= 0),
 
-    -- Discount: between 0 and 100
+    -- Indirim: 0 ile 100 arasinda
     discount_percent DECIMAL(5, 2) DEFAULT 0
         CONSTRAINT chk_discount_range CHECK (discount_percent >= 0 AND discount_percent <= 100),
 
-    -- Stock: non-negative
+    -- Stok: negatif olmayan
     stock_quantity INTEGER NOT NULL DEFAULT 0
         CONSTRAINT chk_stock_non_negative CHECK (stock_quantity >= 0),
 
-    -- Computed effective price must be non-negative
+    -- Hesaplanan efektif fiyat negatif olmayan olmali
     CONSTRAINT chk_effective_price CHECK (price * (1 - discount_percent/100) >= 0)
 );</code></pre>
 
-                        <p><strong>Testing the constraints:</strong></p>
-                        <pre><code class="language-sql">-- These should FAIL:
+                        <p><strong>Kisitlamalari Test Etme:</strong></p>
+                        <pre><code class="language-sql">-- Bunlar BASARISIZ olmali:
 INSERT INTO employees (employee_id, email, first_name, last_name, salary, hire_date, status)
 VALUES (1, 'invalid-email', 'John', 'Doe', 50000, '2024-01-01', 'active');
--- Error: email format check fails
+-- Hata: e-posta format kontrolu basarisiz
 
 INSERT INTO employees (employee_id, email, first_name, last_name, salary, hire_date, status)
 VALUES (1, 'john@example.com', 'John', 'Doe', -1000, '2024-01-01', 'active');
--- Error: salary must be positive
+-- Hata: maas pozitif olmali
 
 INSERT INTO products (product_id, product_name, price, discount_percent, stock_quantity)
 VALUES (1, 'AB', 99.99, 0, 100);
--- Error: product name too short (< 3 chars)
+-- Hata: urun adi cok kisa (< 3 karakter)
 
 INSERT INTO products (product_id, product_name, price, discount_percent, stock_quantity)
 VALUES (1, 'Widget', 99.99, 150, 100);
--- Error: discount > 100</code></pre>
+-- Hata: indirim > 100</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.2: Multi-Column Constraints</h4>
-                    <p>Write constraints that involve multiple columns:</p>
+                    <h4>Alistirma 4.2: Cok Sutunlu Kisitlamalar</h4>
+                    <p>Birden fazla sutun iceren kisitlamalar yazin:</p>
 
                     <ol>
-                        <li><strong>Events table:</strong> end_date must be after start_date</li>
-                        <li><strong>Price history:</strong> No overlapping date ranges for the same product</li>
-                        <li><strong>Appointments:</strong> Unique combination of doctor, date, and time slot</li>
+                        <li><strong>Events tablosu:</strong> end_date, start_date'den sonra olmali</li>
+                        <li><strong>Price history:</strong> Ayni urun icin cakisan tarih araliklari olmamali</li>
+                        <li><strong>Appointments:</strong> Doktor, tarih ve zaman diliminin benzersiz kombinasyonu</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
-                        <pre><code class="language-sql">-- 1. Events: end must be after start
+                        <pre><code class="language-sql">-- 1. Events: bitis baslangictan sonra olmali
 CREATE TABLE events (
     event_id INTEGER PRIMARY KEY,
     event_name VARCHAR(200) NOT NULL,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
 
-    -- Multi-column constraint
+    -- Cok sutunlu kisitlama
     CONSTRAINT chk_dates_valid CHECK (end_date > start_date)
 );
 
--- 2. Price history with non-overlapping ranges
--- Note: True overlap prevention often requires triggers or exclusion constraints
+-- 2. Cakismayan aralikli fiyat gecmisi
+-- Not: Gercek cakisma onleme genellikle trigger veya disla kisitlamalari gerektirir
 CREATE TABLE price_history (
     price_id INTEGER PRIMARY KEY,
     product_id INTEGER NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     effective_from DATE NOT NULL,
-    effective_to DATE,  -- NULL means current/ongoing
+    effective_to DATE,  -- NULL suanki/devam eden anlamina gelir
 
     FOREIGN KEY (product_id) REFERENCES products(product_id),
 
-    -- Basic check: from must be before to
+    -- Temel kontrol: baslangic bitis tarihinden once olmali
     CONSTRAINT chk_date_range CHECK (
         effective_to IS NULL OR effective_from < effective_to
     )
 );
 
--- PostgreSQL: Use exclusion constraint for true overlap prevention
+-- PostgreSQL: Gercek cakisma onleme icin disla kisitlamasi kullanin
 -- CREATE TABLE price_history (
 --     ...
 --     EXCLUDE USING gist (
@@ -1334,49 +1335,49 @@ CREATE TABLE price_history (
 --     )
 -- );
 
--- 3. Appointments: unique doctor + date + time slot
+-- 3. Appointments: benzersiz doktor + tarih + zaman dilimi
 CREATE TABLE appointments (
     appointment_id INTEGER PRIMARY KEY,
     doctor_id INTEGER NOT NULL,
     patient_id INTEGER NOT NULL,
     appointment_date DATE NOT NULL,
-    time_slot VARCHAR(20) NOT NULL,  -- e.g., '09:00-09:30'
+    time_slot VARCHAR(20) NOT NULL,  -- orn., '09:00-09:30'
 
     FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
 
-    -- Composite unique constraint
+    -- Bilesik benzersiz kisitlama
     CONSTRAINT uk_doctor_schedule UNIQUE (doctor_id, appointment_date, time_slot)
 );</code></pre>
                     </div>
                 </div>
             </section>
 
-            <!-- Challenge Exercises -->
+            <!-- Meydan Okuma Alistirmalari -->
             <section>
-                <h2 id="challenge-exercises">Challenge Exercises</h2>
-                <p>Apply all concepts to design complete database schemas.</p>
+                <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
+                <p>Tam veritabani semalari tasarlamak icin tum kavramlari uygulayin.</p>
 
                 <div class="challenge-box">
-                    <h4>Challenge 1: Hotel Booking System</h4>
-                    <p>Design a database schema for a hotel booking system with these requirements:</p>
+                    <h4>Meydan Okuma 1: Otel Rezervasyon Sistemi</h4>
+                    <p>Su gereksinimlere sahip bir otel rezervasyon sistemi icin veritabani semasi tasarlayin:</p>
                     <ul>
-                        <li>Hotels have multiple rooms of different types (single, double, suite)</li>
-                        <li>Each room type has a base price per night</li>
-                        <li>Guests can make reservations for specific rooms</li>
-                        <li>Reservations have check-in and check-out dates</li>
-                        <li>Track payment status (pending, paid, refunded)</li>
-                        <li>A room cannot be double-booked for overlapping dates</li>
+                        <li>Otellerin farkli tiplerde (single, double, suit) birden fazla odasi vardir</li>
+                        <li>Her oda tipinin gecelik bir taban fiyati vardir</li>
+                        <li>Misafirler belirli odalar icin rezervasyon yapabilir</li>
+                        <li>Rezervasyonlarin giris ve cikis tarihleri vardir</li>
+                        <li>Odeme durumunu takip edin (beklemede, odendi, iade edildi)</li>
+                        <li>Bir oda cakisan tarihler icin cifte rezerve edilemez</li>
                     </ul>
 
-                    <p><strong>Deliverables:</strong></p>
+                    <p><strong>Ciktilar:</strong></p>
                     <ol>
-                        <li>Identify entities and relationships</li>
-                        <li>Determine cardinality</li>
-                        <li>Write normalized CREATE TABLE statements with all constraints</li>
+                        <li>Varliklari ve iliskileri tespit edin</li>
+                        <li>Kardinaliteyi belirleyin</li>
+                        <li>Tum kisitlamalarla normallestirilmis CREATE TABLE ifadeleri yazin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
                         <div class="er-diagram">
 +----------+       +------------+       +---------+
@@ -1403,7 +1404,7 @@ CREATE TABLE appointments (
                   +--------------+
                         </div>
 
-                        <pre><code class="language-sql">-- Hotels
+                        <pre><code class="language-sql">-- Oteller
 CREATE TABLE hotels (
     hotel_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -1415,7 +1416,7 @@ CREATE TABLE hotels (
     email VARCHAR(255)
 );
 
--- Room types (per hotel, as prices may differ)
+-- Oda tipleri (otel basina, fiyatlar farkli olabilecegi icin)
 CREATE TABLE room_types (
     type_id INTEGER PRIMARY KEY,
     hotel_id INTEGER NOT NULL,
@@ -1428,7 +1429,7 @@ CREATE TABLE room_types (
     UNIQUE (hotel_id, type_name)
 );
 
--- Individual rooms
+-- Bireysel odalar
 CREATE TABLE rooms (
     room_id INTEGER PRIMARY KEY,
     type_id INTEGER NOT NULL,
@@ -1438,11 +1439,11 @@ CREATE TABLE rooms (
     notes TEXT,
 
     FOREIGN KEY (type_id) REFERENCES room_types(type_id) ON DELETE RESTRICT,
-    -- Room number unique within its hotel (via type_id relationship)
+    -- Oda numarasi kendi oteli icerisinde benzersiz (type_id iliskisi araciligiyla)
     UNIQUE (type_id, room_number)
 );
 
--- Guests
+-- Misafirler
 CREATE TABLE guests (
     guest_id INTEGER PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
@@ -1454,7 +1455,7 @@ CREATE TABLE guests (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Reservations
+-- Rezervasyonlar
 CREATE TABLE reservations (
     reservation_id INTEGER PRIMARY KEY,
     guest_id INTEGER NOT NULL,
@@ -1471,15 +1472,15 @@ CREATE TABLE reservations (
     FOREIGN KEY (guest_id) REFERENCES guests(guest_id),
     FOREIGN KEY (room_id) REFERENCES rooms(room_id),
 
-    -- Check-out must be after check-in
+    -- Cikis giris tarihinden sonra olmali
     CONSTRAINT chk_dates CHECK (check_out_date > check_in_date),
 
-    -- Check-in cannot be in the past (for new bookings)
+    -- Giris tarihi gecmiste olamaz (yeni rezervasyonlar icin)
     CONSTRAINT chk_future_checkin CHECK (check_in_date >= CURRENT_DATE)
 );
 
--- Prevent double-booking (PostgreSQL with exclusion constraint)
--- For other databases, use triggers
+-- Cifte rezervasyonu onle (PostgreSQL disla kisitlamasi ile)
+-- Diger veritabanlari icin, trigger kullanin
 -- CREATE EXTENSION IF NOT EXISTS btree_gist;
 -- ALTER TABLE reservations ADD CONSTRAINT no_overlap
 --     EXCLUDE USING gist (
@@ -1488,18 +1489,18 @@ CREATE TABLE reservations (
 --     )
 --     WHERE (payment_status NOT IN ('cancelled', 'refunded'));
 
--- Index for availability searches
+-- Musaitlik aramalari icin indeks
 CREATE INDEX idx_reservations_room_dates
     ON reservations(room_id, check_in_date, check_out_date);</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 2: Identify and Fix Design Problems</h4>
-                    <p>This table has multiple design problems. Identify all issues and create a normalized design:</p>
+                    <h4>Meydan Okuma 2: Tasarim Sorunlarini Tespit Etme ve Duzeltme</h4>
+                    <p>Bu tablonun birden fazla tasarim sorunu var. Tum sorunlari tespit edin ve normallestirilmis bir tasarim olusturun:</p>
 
                     <div class="bad-design">
-                        <strong>invoices Table</strong>
+                        <strong>invoices Tablosu</strong>
                         <table class="dataset-table">
                             <thead>
                                 <tr>
@@ -1550,21 +1551,21 @@ CREATE INDEX idx_reservations_room_dates
                         </table>
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
                     <div id="challenge2" class="solution-box">
-                        <p><strong>Problems Identified:</strong></p>
+                        <p><strong>Tespit Edilen Sorunlar:</strong></p>
                         <ol>
-                            <li><span class="nf-badge nf-1nf">1NF Violation</span>: items, item_prices, item_quantities contain comma-separated values</li>
-                            <li><span class="nf-badge nf-2nf">2NF Violation</span>: Customer data doesn't depend on invoice (partial dependency)</li>
-                            <li><span class="nf-badge nf-3nf">3NF Violation</span>: salesperson_phone depends on salesperson, not invoice</li>
-                            <li><strong>Redundancy</strong>: Customer info repeated; salesperson info repeated</li>
-                            <li><strong>Missing constraints</strong>: No primary key defined; no referential integrity</li>
-                            <li><strong>Calculated field</strong>: total is redundantly stored (can be calculated)</li>
+                            <li><span class="nf-badge nf-1nf">1NF Ihlali</span>: items, item_prices, item_quantities virgul ayirmali degerler icerir</li>
+                            <li><span class="nf-badge nf-2nf">2NF Ihlali</span>: Musteri verileri faturaya bagimli degil (kismi bagimlilik)</li>
+                            <li><span class="nf-badge nf-3nf">3NF Ihlali</span>: salesperson_phone satici personele bagimli, faturaya degil</li>
+                            <li><strong>Fazlalik</strong>: Musteri bilgisi tekrarlaniyor; satici personel bilgisi tekrarlaniyor</li>
+                            <li><strong>Eksik kisitlamalar</strong>: Birincil anahtar tanimlanmamis; referans butunlugu yok</li>
+                            <li><strong>Hesaplanan alan</strong>: total fazlalik olarak saklanmis (hesaplanabilir)</li>
                         </ol>
 
                         <div class="good-design">
-                            <strong>Normalized Design:</strong>
-                            <pre><code class="language-sql">-- Customers (extracted from invoice)
+                            <strong>Normallestirilmis Tasarim:</strong>
+                            <pre><code class="language-sql">-- Musteriler (faturadan cikarildi)
 CREATE TABLE customers (
     customer_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -1572,14 +1573,14 @@ CREATE TABLE customers (
     address TEXT
 );
 
--- Products (for the items)
+-- Urunler (kalemler icin)
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     current_price DECIMAL(10, 2) NOT NULL CHECK (current_price >= 0)
 );
 
--- Salespeople
+-- Satis personeli
 CREATE TABLE salespeople (
     salesperson_id INTEGER PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -1587,7 +1588,7 @@ CREATE TABLE salespeople (
     commission_rate DECIMAL(4, 3) NOT NULL CHECK (commission_rate BETWEEN 0 AND 1)
 );
 
--- Invoices (header)
+-- Faturalar (baslik)
 CREATE TABLE invoices (
     invoice_id INTEGER PRIMARY KEY,
     invoice_number VARCHAR(20) UNIQUE NOT NULL,
@@ -1599,19 +1600,19 @@ CREATE TABLE invoices (
     FOREIGN KEY (salesperson_id) REFERENCES salespeople(salesperson_id)
 );
 
--- Invoice items (line items)
+-- Fatura kalemleri (satir ogeleri)
 CREATE TABLE invoice_items (
     item_id INTEGER PRIMARY KEY,
     invoice_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL CHECK (quantity > 0),
-    unit_price DECIMAL(10, 2) NOT NULL,  -- Price at time of sale
+    unit_price DECIMAL(10, 2) NOT NULL,  -- Satis anindaki fiyat
 
     FOREIGN KEY (invoice_id) REFERENCES invoices(invoice_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
--- View for invoice totals (instead of storing calculated value)
+-- Fatura toplamlari icin gorunum (hesaplanan degeri saklamak yerine)
 CREATE VIEW invoice_totals AS
 SELECT
     i.invoice_id,
@@ -1632,22 +1633,22 @@ GROUP BY i.invoice_id, i.invoice_number, i.invoice_date,
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 3: When to Denormalize</h4>
-                    <p>You have a fully normalized e-commerce database, but these queries are slow:</p>
+                    <h4>Meydan Okuma 3: Ne Zaman Denormalize Edilir</h4>
+                    <p>Tam normallestirilmis bir e-ticaret veritabaniniz var, ancak su sorgular yavas:</p>
 
                     <ol>
-                        <li>Dashboard showing total revenue per product category (runs every minute)</li>
-                        <li>Order history page showing customer name and address with each order</li>
-                        <li>Product listing showing average rating (calculated from reviews table)</li>
+                        <li>Urun kategorisi basina toplam geliri gosteren kontrol paneli (her dakika calisir)</li>
+                        <li>Her siparisla birlikte musteri adi ve adresini gosteren siparis gecmisi sayfasi</li>
+                        <li>Ortalama derecelendirmeyi gosteren urun listesi (yorumlar tablosundan hesaplanan)</li>
                     </ol>
 
-                    <p><strong>Task:</strong> Propose denormalization strategies for each scenario and write the DDL/DML to implement them.</p>
+                    <p><strong>Gorev:</strong> Her senaryo icin denormalizasyon stratejileri onerin ve bunlari uygulamak icin DDL/DML yazin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Cozumu Goster</button>
                     <div id="challenge3" class="solution-box">
-                        <pre><code class="language-sql">-- 1. Summary table for category revenue (materialized view or table)
+                        <pre><code class="language-sql">-- 1. Kategori geliri icin ozet tablo (gerceklestirilmis gorunum veya tablo)
 
--- Option A: Materialized View (PostgreSQL)
+-- Secenek A: Gerceklestirilmis Gorunum (PostgreSQL)
 CREATE MATERIALIZED VIEW category_revenue_summary AS
 SELECT
     c.category_id,
@@ -1661,10 +1662,10 @@ JOIN order_items oi ON p.product_id = oi.product_id
 JOIN orders o ON oi.order_id = o.order_id
 GROUP BY c.category_id, c.category_name, DATE_TRUNC('day', o.order_date);
 
--- Refresh periodically
+-- Periyodik olarak yenile
 REFRESH MATERIALIZED VIEW category_revenue_summary;
 
--- Option B: Summary table with trigger updates
+-- Secenek B: Trigger guncellemeleri ile ozet tablo
 CREATE TABLE category_daily_summary (
     category_id INTEGER,
     summary_date DATE,
@@ -1675,14 +1676,14 @@ CREATE TABLE category_daily_summary (
 );
 
 
--- 2. Denormalize customer info into orders
+-- 2. Musteri bilgisini siparislere denormalize et
 
--- Add redundant columns to orders table
+-- Siparisler tablosuna fazlalik sutunlari ekle
 ALTER TABLE orders ADD COLUMN customer_name VARCHAR(200);
 ALTER TABLE orders ADD COLUMN customer_email VARCHAR(255);
 ALTER TABLE orders ADD COLUMN shipping_address TEXT;
 
--- Populate from existing data
+-- Mevcut verilerden doldur
 UPDATE orders o
 SET
     customer_name = c.name,
@@ -1691,7 +1692,7 @@ SET
 FROM customers c
 WHERE o.customer_id = c.customer_id;
 
--- Create trigger to keep in sync
+-- Senkronize tutmak icin trigger olustur
 CREATE OR REPLACE FUNCTION sync_order_customer()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -1709,12 +1710,12 @@ CREATE TRIGGER trg_sync_order_customer
     FOR EACH ROW EXECUTE FUNCTION sync_order_customer();
 
 
--- 3. Add cached average rating to products
+-- 3. Urunlere onbelleklenmis ortalama derecelendirme ekle
 
 ALTER TABLE products ADD COLUMN avg_rating DECIMAL(3, 2) DEFAULT 0;
 ALTER TABLE products ADD COLUMN review_count INTEGER DEFAULT 0;
 
--- Update from existing reviews
+-- Mevcut yorumlardan guncelle
 UPDATE products p
 SET
     avg_rating = sub.avg_rating,
@@ -1729,7 +1730,7 @@ FROM (
 ) sub
 WHERE p.product_id = sub.product_id;
 
--- Trigger to update on new reviews
+-- Yeni yorumlarda guncellemek icin trigger
 CREATE OR REPLACE FUNCTION update_product_rating()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -1747,72 +1748,72 @@ CREATE TRIGGER trg_update_product_rating
     FOR EACH ROW EXECUTE FUNCTION update_product_rating();</code></pre>
 
                         <div class="warning-box">
-                            Denormalization Trade-offs:
+                            Denormalizasyon Odulesmeleri:
                             <ul>
-                                <li>Faster reads but more complex writes (must maintain consistency)</li>
-                                <li>Risk of stale data if triggers fail</li>
-                                <li>Increased storage requirements</li>
-                                <li>Document all denormalization decisions!</li>
+                                <li>Daha hizli okumalar ama daha karmasik yazmalar (tutarlilik saglanmali)</li>
+                                <li>Triggerlar basarisiz olursa eski veri riski</li>
+                                <li>Artan depolama gereksinimleri</li>
+                                <li>Tum denormalizasyon kararlarini belgeleyin!</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Key Takeaways -->
+            <!-- Temel Cikarilar -->
             <section>
-                <h2 id="key-takeaways">Key Takeaways</h2>
+                <h2 id="key-takeaways">Temel Cikarilar</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Concept</th>
-                            <th>Best Practice</th>
+                            <th>Kavram</th>
+                            <th>En Iyi Uygulama</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Normalization</td>
-                            <td>Start with 3NF; denormalize only when proven necessary for performance</td>
+                            <td>Normalizasyon</td>
+                            <td>3NF ile baslayin; sadece performans icin gerekli oldugu kanitlandiginda denormalize edin</td>
                         </tr>
                         <tr>
                             <td>1NF</td>
-                            <td>Each cell contains one value; no comma-separated lists</td>
+                            <td>Her hucre bir deger icerir; virgul ayirmali listeler yok</td>
                         </tr>
                         <tr>
                             <td>2NF</td>
-                            <td>No partial dependencies on composite keys</td>
+                            <td>Bilesik anahtarlarda kismi bagimlilik yok</td>
                         </tr>
                         <tr>
                             <td>3NF</td>
-                            <td>No transitive dependencies (non-key → non-key)</td>
+                            <td>Gecisli bagimlilik yok (anahtar olmayan → anahtar olmayan)</td>
                         </tr>
                         <tr>
-                            <td>Primary Keys</td>
-                            <td>Prefer surrogate keys for most tables; natural keys for stable reference data</td>
+                            <td>Birincil Anahtarlar</td>
+                            <td>Cogu tablo icin vekil anahtarlar tercih edin; kararli referans verileri icin dogal anahtarlar</td>
                         </tr>
                         <tr>
-                            <td>Foreign Keys</td>
-                            <td>Always define FK constraints; choose referential actions carefully</td>
+                            <td>Yabanci Anahtarlar</td>
+                            <td>Her zaman FK kisitlamalarini tanimlayin; referans eylemlerini dikkatli secin</td>
                         </tr>
                         <tr>
-                            <td>M:N Relationships</td>
-                            <td>Use junction tables with composite PKs or surrogate PK</td>
+                            <td>M:N Iliskileri</td>
+                            <td>Bilesik PK'lar veya vekil PK ile baglanti tablolari kullanin</td>
                         </tr>
                         <tr>
-                            <td>Constraints</td>
-                            <td>Enforce business rules at database level with CHECK, UNIQUE, NOT NULL</td>
+                            <td>Kisitlamalar</td>
+                            <td>Is kurallarini veritabani duzeyinde CHECK, UNIQUE, NOT NULL ile uygulayin</td>
                         </tr>
                         <tr>
-                            <td>Denormalization</td>
-                            <td>Document decisions; use triggers or materialized views to maintain consistency</td>
+                            <td>Denormalizasyon</td>
+                            <td>Kararlari belgeleyin; tutarlilik saglamak icin trigger veya gerceklestirilmis gorunumler kullanin</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-            <!-- Navigation -->
+            <!-- Navigasyon -->
             <section>
-                <p><a href="01_database_design_principles.html">&larr; Back to Database Design Principles Lesson</a></p>
+                <p><a href="01_database_design_principles_tr.html">&larr; Veritabani Tasarim Ilkeleri Dersine Don</a></p>
             </section>
         </div>
     </div>
@@ -1827,10 +1828,10 @@ CREATE TRIGGER trg_update_product_rating
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -10,7 +10,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 1: Working with Multiple Tables - Practical Examples</title>
+  <title>Gun 1: Birden Fazla Tablo ile Calisma - Pratik Ornekler</title>
   <style>
     code {
       white-space: pre-wrap;
@@ -37,34 +37,6 @@
 
     ul.task-list {
       list-style: none;
-    }
-
-    .language-switcher {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .language-switcher a {
-      text-decoration: none;
-      padding: 5px 10px;
-      margin: 0 2px;
-      border-radius: 3px;
-      color: #333;
-    }
-
-    .language-switcher a.active {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .language-switcher a:hover:not(.active) {
-      background: #e9ecef;
     }
 
     pre>code.sourceCode {
@@ -432,15 +404,44 @@
       color: #6c757d;
       margin-bottom: 10px;
     }
+
+    .language-switcher {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .language-switcher a {
+      text-decoration: none;
+      padding: 5px 10px;
+      margin: 0 2px;
+      border-radius: 3px;
+      color: #333;
+    }
+
+    .language-switcher a.active {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    .language-switcher a:hover:not(.active) {
+      background: #e9ecef;
+    }
   </style>
 </head>
 
 <body>
   <div class="language-switcher">
-    <a href="04_working_with_multiple_tables_examples.html" class="active">EN</a>
-    <a href="04_working_with_multiple_tables_examples_tr.html">TR</a>
+    <a href="04_working_with_multiple_tables_examples.html">EN</a>
+    <a href="04_working_with_multiple_tables_examples_tr.html" class="active">TR</a>
   </div>
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
@@ -461,28 +462,25 @@
   <div class="content-container">
     <div class="container">
       <div class="back-link">
-        <a href="04_working_with_multiple_tables.html">&larr; Back to Working with Multiple Tables</a>
+        <a href="04_working_with_multiple_tables_tr.html">&larr; Birden Fazla Tablo ile Calismaya Geri Don</a>
       </div>
 
       <section>
-        <h1 id="multiple-tables-examples">Working with Multiple Tables - Practical Examples</h1>
-        <p>This page provides hands-on exercises to master JOIN operations. Practice combining data from multiple tables
-          using the sample datasets below.</p>
+        <h1 id="multiple-tables-examples">Birden Fazla Tablo ile Calisma - Pratik Ornekler</h1>
+        <p>Bu sayfa, JOIN islemlerinde ustalasmak icin uygulamali alistirmalar sunmaktadir. Asagidaki ornek veri setlerini kullanarak birden fazla tablodan veri birlestirme pratiği yapin.</p>
       </section>
 
       <section>
-        <h2 id="sample-datasets">Sample Datasets</h2>
-        <p>The following related tables will be used throughout the exercises. Pay attention to the foreign key
-          relationships between tables.</p>
+        <h2 id="sample-datasets">Ornek Veri Setleri</h2>
+        <p>Asagidaki iliskili tablolar alistirmalar boyunca kullanilacaktir. Tablolar arasindaki yabanci anahtar (foreign key) iliskilerine dikkat edin.</p>
 
         <div class="relationship-box">
-          <h4>Table Relationships</h4>
+          <h4>Tablo Iliskileri</h4>
           <ul>
-            <li><code>orders.customer_id</code> &rarr; <code>customers.id</code> (Many orders belong to one customer)
+            <li><code>orders.customer_id</code> &rarr; <code>customers.id</code> (Birden fazla siparis bir musteriye aittir)
             </li>
-            <li><code>orders.product_id</code> &rarr; <code>products.id</code> (Each order references one product)</li>
-            <li><code>products.category_id</code> &rarr; <code>categories.id</code> (Each product belongs to one
-              category)</li>
+            <li><code>orders.product_id</code> &rarr; <code>products.id</code> (Her siparis bir urune referans verir)</li>
+            <li><code>products.category_id</code> &rarr; <code>categories.id</code> (Her urun bir kategoriye aittir)</li>
           </ul>
         </div>
 
@@ -731,25 +729,24 @@
         </div>
 
         <div class="warning-box">
-          <strong>Note:</strong> Customers 6, 7, and 8 (Macy Marquez, Hamish Rodgers, Henry Douglas) have NOT placed any
-          orders.
-          This is intentional for practicing LEFT/RIGHT JOIN scenarios.
+          <strong>Not:</strong> Musteriler 6, 7 ve 8 (Macy Marquez, Hamish Rodgers, Henry Douglas) hic siparis VERMEMISTIR.
+          Bu, LEFT/RIGHT JOIN senaryolarini pratik yapmak icin bilerek yapilmistir.
         </div>
       </section>
 
       <section>
-        <h2 id="exercise-1">Exercise 1: INNER JOIN Basics</h2>
+        <h2 id="exercise-1">Alistirma 1: INNER JOIN Temelleri</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 1.1: Simple Two-Table JOIN</h4>
-          <p>Write a query to display all orders with the customer name. Show <code>order_id</code>,
-            <code>customer_name</code>, and <code>order_date</code>.
+          <h4>Alistirma 1.1: Basit Iki Tablo JOIN</h4>
+          <p>Tum siparisleri musteri adiyla birlikte gosteren bir sorgu yazin. <code>order_id</code>,
+            <code>customer_name</code> ve <code>order_date</code> alanlarini gosterin.
           </p>
           <div class="hint-box">
-            <strong>Hint:</strong> Join the <code>orders</code> table with the <code>customers</code> table using
-            <code>customer_id</code>.
+            <strong>Ipucu:</strong> <code>orders</code> tablosunu <code>customers</code> tablosuyla
+            <code>customer_id</code> kullanarak birlestirin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Cozumu Goster</button>
           <div id="sol1-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -759,16 +756,16 @@
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 8 rows showing all orders with their customer names.</p>
+            <p><strong>Beklenen Sonuc:</strong> Tum siparisleri musteri adlariyla gosteren 8 satir.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.2: JOIN with Product Information</h4>
-          <p>Display orders with product names. Show <code>order_id</code>, <code>product_name</code>,
-            <code>quantity</code>, and <code>order_total</code>.
+          <h4>Alistirma 1.2: Urun Bilgisiyle JOIN</h4>
+          <p>Siparisleri urun adlariyla gosterin. <code>order_id</code>, <code>product_name</code>,
+            <code>quantity</code> ve <code>order_total</code> alanlarini gosterin.
           </p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Cozumu Goster</button>
           <div id="sol1-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
               <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -783,15 +780,15 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.3: JOIN with Aliases</h4>
-          <p>Rewrite Exercise 1.1 using meaningful column aliases: "Order Number", "Customer", and "Date Ordered".</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <h4>Alistirma 1.3: Takma Adlarla JOIN</h4>
+          <p>Alistirma 1.1'i anlamli sutun takma adlari kullanarak yeniden yazin: "Siparis Numarasi", "Musteri" ve "Siparis Tarihi".</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Cozumu Goster</button>
           <div id="sol1-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
               <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    o.order_id <span class="kw">AS</span> <span class="st">"Order Number"</span>,
-    c.customer_name <span class="kw">AS</span> <span class="st">"Customer"</span>,
-    o.order_date <span class="kw">AS</span> <span class="st">"Date Ordered"</span>
+    o.order_id <span class="kw">AS</span> <span class="st">"Siparis Numarasi"</span>,
+    c.customer_name <span class="kw">AS</span> <span class="st">"Musteri"</span>,
+    o.order_date <span class="kw">AS</span> <span class="st">"Siparis Tarihi"</span>
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
             </div>
@@ -799,9 +796,9 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.4: JOIN with WHERE Filter</h4>
-          <p>Find all orders placed by customers from Turkey. Display customer name, order ID, and order total.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <h4>Alistirma 1.4: WHERE Filtresiyle JOIN</h4>
+          <p>Turkiye'deki musteriler tarafindan verilen tum siparisleri bulun. Musteri adi, siparis ID ve siparis toplamini gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Cozumu Goster</button>
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -812,22 +809,22 @@
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
 <span class="kw">WHERE</span> c.country = <span class="st">'Turkey'</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Orders from Cansu (3 orders) and TTC (2 orders).</p>
+            <p><strong>Beklenen Sonuc:</strong> Cansu'dan (3 siparis) ve TTC'den (2 siparis) siparisler.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="exercise-2">Exercise 2: LEFT JOIN</h2>
+        <h2 id="exercise-2">Alistirma 2: LEFT JOIN</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 2.1: Finding All Customers with Their Orders</h4>
-          <p>List ALL customers and any orders they have placed. Include customers who haven't placed any orders.
-            Display customer name, city, and order_id (will be NULL for customers with no orders).</p>
+          <h4>Alistirma 2.1: Tum Musterileri Siparisleriyle Bulma</h4>
+          <p>TUM musterileri ve verdikleri siparisleri listeleyin. Hic siparis vermemis musterileri de dahil edin.
+            Musteri adi, sehir ve order_id'yi gosterin (siparis olmayan musteriler icin NULL olacaktir).</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use LEFT JOIN to keep all customers, even those without matching orders.
+            <strong>Ipucu:</strong> Eslesen siparisi olmayanlar dahil tum musterileri tutmak icin LEFT JOIN kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Cozumu Goster</button>
           <div id="sol2-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
               <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -837,18 +834,17 @@
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 11 rows (8 orders + 3 customers with NULL order_id: Macy, Hamish,
-              Henry).</p>
+            <p><strong>Beklenen Sonuc:</strong> 11 satir (8 siparis + NULL order_id'li 3 musteri: Macy, Hamish, Henry).</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.2: Finding Customers WITHOUT Orders</h4>
-          <p>Find customers who have NEVER placed an order. Display only their name and city.</p>
+          <h4>Alistirma 2.2: Siparisi OLMAYAN Musterileri Bulma</h4>
+          <p>Hic siparis VERMEMIS musterileri bulun. Sadece adlarini ve sehirlerini gosterin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use LEFT JOIN and then filter WHERE the order_id IS NULL.
+            <strong>Ipucu:</strong> LEFT JOIN kullanin ve ardindan order_id IS NULL ile filtreleyin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Cozumu Goster</button>
           <div id="sol2-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
               <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -858,15 +854,15 @@
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
 <span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 3 customers - Macy Marquez, Hamish Rodgers, Henry Douglas.</p>
+            <p><strong>Beklenen Sonuc:</strong> 3 musteri - Macy Marquez, Hamish Rodgers, Henry Douglas.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.3: Products and Their Categories</h4>
-          <p>List all products with their category names. Use LEFT JOIN in case any product has no category assigned.
+          <h4>Alistirma 2.3: Urunler ve Kategorileri</h4>
+          <p>Tum urunleri kategori adlariyla listeleyin. Kategorisi atanmamis urunler icin LEFT JOIN kullanin.
           </p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Cozumu Goster</button>
           <div id="sol2-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -881,16 +877,16 @@
       </section>
 
       <section>
-        <h2 id="exercise-3">Exercise 3: RIGHT JOIN and FULL OUTER JOIN</h2>
+        <h2 id="exercise-3">Alistirma 3: RIGHT JOIN ve FULL OUTER JOIN</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 3.1: RIGHT JOIN Example</h4>
-          <p>Rewrite Exercise 2.1 using RIGHT JOIN instead of LEFT JOIN to achieve the same result
-            (all customers with their orders).</p>
+          <h4>Alistirma 3.1: RIGHT JOIN Ornegi</h4>
+          <p>Alistirma 2.1'i, ayni sonucu elde etmek icin LEFT JOIN yerine RIGHT JOIN kullanarak yeniden yazin
+            (tum musteriler siparisleriyle).</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Swap the table order and use RIGHT JOIN instead of LEFT JOIN.
+            <strong>Ipucu:</strong> Tablo sirasini degistirin ve LEFT JOIN yerine RIGHT JOIN kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Cozumu Goster</button>
           <div id="sol3-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
               <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -900,16 +896,15 @@
 <span class="kw">FROM</span> orders o
 <span class="kw">RIGHT JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
             </div>
-            <p><strong>Note:</strong> This produces the same result as the LEFT JOIN version, just with tables swapped.
+            <p><strong>Not:</strong> Bu, LEFT JOIN versiyonuyla ayni sonucu uretir, sadece tablolar yer degistirmistir.
             </p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.2: Categories with Product Count</h4>
-          <p>List all categories and show how many products belong to each. Include categories with zero products (if
-            any).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <h4>Alistirma 3.2: Urun Sayisiyla Kategoriler</h4>
+          <p>Tum kategorileri ve her birine ait kac urun oldugunu gosterin. Sifir urunu olan kategorileri de dahil edin (varsa).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Cozumu Goster</button>
           <div id="sol3-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
               <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -920,18 +915,18 @@
 <span class="kw">GROUP BY</span> cat.id, cat.category_name
 <span class="kw">ORDER BY</span> product_count <span class="kw">DESC</span>;</code></pre>
             </div>
-            <p><strong>Note:</strong> This uses GROUP BY which you may cover in a later session.</p>
+            <p><strong>Not:</strong> Bu, sonraki oturumlarda isleyeceginiz GROUP BY'i kullanmaktadir.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.3: FULL OUTER JOIN (PostgreSQL)</h4>
-          <p>Write a query using FULL OUTER JOIN to show all customers and all orders, matched where possible.
-            This will show customers without orders AND orders without customers (if any existed).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <h4>Alistirma 3.3: FULL OUTER JOIN (PostgreSQL)</h4>
+          <p>Tum musterileri ve tum siparisleri, mumkun oldugunca eslestirilmis sekilde gosteren bir FULL OUTER JOIN sorgusu yazin.
+            Bu, siparisi olmayan musterileri VE musterisi olmayan siparisleri (varsa) gosterecektir.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Cozumu Goster</button>
           <div id="sol3-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
-              <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL / SQL Server / Oracle syntax</span>
+              <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL / SQL Server / Oracle sozdizimi</span>
 <span class="kw">SELECT</span>
     c.customer_name,
     o.order_id,
@@ -940,7 +935,7 @@
 <span class="kw">FULL OUTER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
             <div class="warning-box">
-              <strong>MySQL Note:</strong> MySQL doesn't support FULL OUTER JOIN directly. You would need to use UNION:
+              <strong>MySQL Notu:</strong> MySQL dogrudan FULL OUTER JOIN'i desteklemez. UNION kullanmaniz gerekir:
               <pre><code>SELECT c.customer_name, o.order_id FROM customers c LEFT JOIN orders o ON c.id = o.customer_id
 UNION
 SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id;</code></pre>
@@ -950,16 +945,16 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
       </section>
 
       <section>
-        <h2 id="exercise-4">Exercise 4: Joining Multiple Tables</h2>
+        <h2 id="exercise-4">Alistirma 4: Birden Fazla Tabloyu Birlestirme</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 4.1: Three-Table JOIN</h4>
-          <p>Display complete order information: customer name, product name, quantity, and order total.</p>
+          <h4>Alistirma 4.1: Uc Tablo JOIN</h4>
+          <p>Tam siparis bilgisini gosterin: musteri adi, urun adi, miktar ve siparis toplami.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> You need to join <code>orders</code> with both <code>customers</code> AND
-            <code>products</code>.
+            <strong>Ipucu:</strong> <code>orders</code> tablosunu hem <code>customers</code> HEM DE
+            <code>products</code> ile birlestirmeniz gerekiyor.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Cozumu Goster</button>
           <div id="sol4-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
               <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -975,9 +970,9 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.2: Four-Table JOIN</h4>
-          <p>Display orders with customer name, product name, AND category name. Sort by order date.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <h4>Alistirma 4.2: Dort Tablo JOIN</h4>
+          <p>Siparisleri musteri adi, urun adi VE kategori adiyla gosterin. Siparis tarihine gore siralayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Cozumu Goster</button>
           <div id="sol4-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
               <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -996,10 +991,10 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.3: Mixed JOIN Types</h4>
-          <p>List ALL customers with their order details including product and category names.
-            Customers without orders should still appear (with NULL values for order columns).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <h4>Alistirma 4.3: Karisik JOIN Turleri</h4>
+          <p>TUM musterileri, urun ve kategori adlari dahil siparis detaylariyla listeleyin.
+            Siparisi olmayan musteriler de gorunmeli (siparis sutunlari icin NULL degerleriyle).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Cozumu Goster</button>
           <div id="sol4-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
               <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1014,18 +1009,17 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">ORDER BY</span> c.customer_name;</code></pre>
             </div>
-            <p><strong>Note:</strong> All JOINs after the first LEFT JOIN should also be LEFT JOINs to preserve
-              customers without orders.</p>
+            <p><strong>Not:</strong> Siparisi olmayan musterileri korumak icin ilk LEFT JOIN'den sonraki tum JOIN'ler de LEFT JOIN olmalidir.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="exercise-5">Exercise 5: Predict the Output</h2>
-        <p>For these exercises, try to predict what the query will return before checking the answer.</p>
+        <h2 id="exercise-5">Alistirma 5: Ciktiyi Tahmin Et</h2>
+        <p>Bu alistirmalar icin, cevabi kontrol etmeden once sorgunun ne dondurecegini tahmin etmeye calisin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 5.1: What will this return?</h4>
+          <h4>Alistirma 5.1: Bu ne dondurecek?</h4>
           <div class="sourceCode">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> c.customer_name, <span class="fu">COUNT</span>(o.order_id) <span class="kw">AS</span> order_count
 <span class="kw">FROM</span> customers c
@@ -1034,55 +1028,54 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
 <span class="kw">ORDER BY</span> order_count <span class="kw">DESC</span>;</code></pre>
           </div>
           <div class="predict-output">
-            <h5>What do you think this query returns?</h5>
-            <p>Think about: How many rows? What values?</p>
+            <h5>Bu sorgunun ne dondurecegini dusunuyorsunuz?</h5>
+            <p>Dusunun: Kac satir? Hangi degerler?</p>
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Answer</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Cevabi Goster</button>
           <div id="sol5-1" class="solution-content">
-            <p><strong>Answer:</strong> This returns 8 rows - one for each customer - with a count of their orders:</p>
+            <p><strong>Cevap:</strong> Bu 8 satir dondurur - her musteri icin bir tane - siparis sayilariyla:</p>
             <ul>
-              <li>Cansu: 3 orders</li>
-              <li>TTC: 2 orders</li>
-              <li>MEXT, Audra Berg, Avram Guthrie: 1 order each</li>
-              <li>Macy Marquez, Hamish Rodgers, Henry Douglas: 0 orders each</li>
+              <li>Cansu: 3 siparis</li>
+              <li>TTC: 2 siparis</li>
+              <li>MEXT, Audra Berg, Avram Guthrie: her biri 1 siparis</li>
+              <li>Macy Marquez, Hamish Rodgers, Henry Douglas: her biri 0 siparis</li>
             </ul>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 5.2: INNER vs LEFT - What's the difference?</h4>
-          <p>Compare these two queries. How many rows does each return?</p>
+          <h4>Alistirma 5.2: INNER vs LEFT - Fark nedir?</h4>
+          <p>Bu iki sorguyu karsilastirin. Her biri kac satir dondurur?</p>
           <div class="sourceCode">
-            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Query A</span>
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Sorgu A</span>
 <span class="kw">SELECT</span> c.customer_name, o.order_id
 <span class="kw">FROM</span> customers c
 <span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;
 
-<span class="co">-- Query B</span>
+<span class="co">-- Sorgu B</span>
 <span class="kw">SELECT</span> c.customer_name, o.order_id
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Answer</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Cevabi Goster</button>
           <div id="sol5-2" class="solution-content">
-            <p><strong>Answer:</strong></p>
+            <p><strong>Cevap:</strong></p>
             <ul>
-              <li><strong>Query A (INNER JOIN):</strong> Returns 8 rows - only customers who have orders</li>
-              <li><strong>Query B (LEFT JOIN):</strong> Returns 11 rows - all 8 customers, but 3 of them (Macy, Hamish,
-                Henry) have NULL for order_id</li>
+              <li><strong>Sorgu A (INNER JOIN):</strong> 8 satir dondurur - sadece siparisi olan musteriler</li>
+              <li><strong>Sorgu B (LEFT JOIN):</strong> 11 satir dondurur - tum 8 musteri, ancak 3'u (Macy, Hamish, Henry) order_id icin NULL degerine sahip</li>
             </ul>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="challenge-exercises">Challenge Exercises</h2>
+        <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
 
         <div class="challenge-box">
-          <h4>Challenge 1: Top Spending Customers</h4>
-          <p>Find the total amount spent by each customer. Show customer name, city, country, and total spent.
-            Order by total spent descending. Include all customers (even those with $0 spent).</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <h4>Meydan Okuma 1: En Cok Harcayan Musteriler</h4>
+          <p>Her musterinin harcadigi toplam tutari bulun. Musteri adi, sehir, ulke ve toplam harcamayi gosterin.
+            Toplam harcamaya gore azalan sirada siralayin. Tum musterileri dahil edin (0$ harcayanlar bile).</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Cozumu Goster</button>
           <div id="chal1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1095,15 +1088,15 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
 <span class="kw">GROUP BY</span> c.id, c.customer_name, c.city, c.country
 <span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;</code></pre>
             </div>
-            <p><strong>Note:</strong> COALESCE replaces NULL with 0 for customers without orders.</p>
+            <p><strong>Not:</strong> COALESCE, siparisi olmayan musteriler icin NULL'u 0 ile degistirir.</p>
           </div>
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 2: Popular Categories</h4>
-          <p>Find out how many times products from each category have been ordered.
-            Show category name and total quantity ordered. Sort by quantity descending.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <h4>Meydan Okuma 2: Populer Kategoriler</h4>
+          <p>Her kategoriden urunlerin kac kez siparis edildigi bulun.
+            Kategori adi ve siparis edilen toplam miktari gosterin. Miktara gore azalan sirada siralayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Cozumu Goster</button>
           <div id="chal2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
               <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1119,11 +1112,11 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 3: Customer Order Details Report</h4>
-          <p>Create a comprehensive order report showing:
-            Customer name, country, order ID, product name, category, unit price, quantity, and line total.
-            Only include orders from 2024. Sort by customer name, then order date.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <h4>Meydan Okuma 3: Musteri Siparis Detaylari Raporu</h4>
+          <p>Asagidakileri gosteren kapsamli bir siparis raporu olusturun:
+            Musteri adi, ulke, siparis ID, urun adi, kategori, birim fiyat, miktar ve satir toplami.
+            Sadece 2024 siparislerini dahil edin. Musteri adina, sonra siparis tarihine gore siralayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Cozumu Goster</button>
           <div id="chal3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
               <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1147,10 +1140,10 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 4: Find Missing Relationships</h4>
-          <p>Write a query to find any products that have NEVER been ordered.
-            Display product name, category name, and price.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <h4>Meydan Okuma 4: Eksik Iliskileri Bulma</h4>
+          <p>Hic siparis edilmemis urunleri bulan bir sorgu yazin.
+            Urun adi, kategori adi ve fiyati gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Cozumu Goster</button>
           <div id="chal4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
               <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1162,16 +1155,15 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Products that haven't been ordered (depends on sample data - in our
-              case, all products have orders).</p>
+            <p><strong>Beklenen Sonuc:</strong> Siparis edilmemis urunler (ornek veriye bagli - bizim durumumuzda tum urunlerin siparisi var).</p>
           </div>
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 5: Electronics Orders from UK Customers</h4>
-          <p>Find all orders for products in the 'Electronics' category placed by customers from the UK.
-            Display customer name, product name, order date, and order total.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
+          <h4>Meydan Okuma 5: UK Musterilerinden Elektronik Siparisleri</h4>
+          <p>UK'deki musteriler tarafindan 'Electronics' kategorisindeki urunler icin verilen tum siparisleri bulun.
+            Musteri adi, urun adi, siparis tarihi ve siparis toplamini gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal5')">Cozumu Goster</button>
           <div id="chal5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
               <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1191,24 +1183,20 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
       </section>
 
       <section>
-        <h2 id="summary">Key Takeaways</h2>
+        <h2 id="summary">Onemli Cikarimlar</h2>
         <ul>
-          <li><strong>INNER JOIN</strong>: Returns only matching rows from both tables - use when you need data that
-            exists in both tables</li>
-          <li><strong>LEFT JOIN</strong>: Returns all rows from the left table - use when you want to include records
-            even without matches</li>
-          <li><strong>RIGHT JOIN</strong>: Returns all rows from the right table - can usually be rewritten as LEFT JOIN
-          </li>
-          <li><strong>FULL OUTER JOIN</strong>: Returns all rows from both tables - use for complete picture (not
-            supported in MySQL)</li>
-          <li><strong>Table Aliases</strong>: Use short aliases (o, c, p) to make queries readable</li>
-          <li><strong>Multiple JOINs</strong>: Chain JOINs to connect more than two tables</li>
-          <li><strong>IS NULL with LEFT JOIN</strong>: Find records without matches in the other table</li>
-          <li><strong>JOIN Order</strong>: The table order matters for LEFT/RIGHT JOIN but not for INNER JOIN</li>
+          <li><strong>INNER JOIN</strong>: Her iki tablodan yalnizca eslesen satirlari dondurur - her iki tabloda da var olan verilere ihtiyaciniz oldugunda kullanin</li>
+          <li><strong>LEFT JOIN</strong>: Sol tablodan tum satirlari dondurur - eslesmesi olmayanlar dahil kayitlari dahil etmek istediginizde kullanin</li>
+          <li><strong>RIGHT JOIN</strong>: Sag tablodan tum satirlari dondurur - genellikle LEFT JOIN olarak yeniden yazilabilir</li>
+          <li><strong>FULL OUTER JOIN</strong>: Her iki tablodan tum satirlari dondurur - tam resim icin kullanin (MySQL'de desteklenmez)</li>
+          <li><strong>Tablo Takma Adlari</strong>: Sorgulari okunabilir yapmak icin kisa takma adlar (o, c, p) kullanin</li>
+          <li><strong>Coklu JOIN'ler</strong>: Ikiden fazla tabloyu baglamak icin JOIN'leri zincirleyin</li>
+          <li><strong>LEFT JOIN ile IS NULL</strong>: Diger tabloda eslesmesi olmayan kayitlari bulun</li>
+          <li><strong>JOIN Sirasi</strong>: Tablo sirasi LEFT/RIGHT JOIN icin onemlidir ancak INNER JOIN icin onemli degildir</li>
         </ul>
 
         <div class="back-link" style="margin-top: 30px;">
-          <a href="04_working_with_multiple_tables.html">&larr; Back to Working with Multiple Tables</a>
+          <a href="04_working_with_multiple_tables_tr.html">&larr; Birden Fazla Tablo ile Calismaya Geri Don</a>
         </div>
       </section>
 
@@ -1226,10 +1214,10 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
       var element = document.getElementById(id);
       if (element.classList.contains('show')) {
         element.classList.remove('show');
-        event.target.textContent = 'Show Solution';
+        event.target.textContent = 'Cozumu Goster';
       } else {
         element.classList.add('show');
-        event.target.textContent = 'Hide Solution';
+        event.target.textContent = 'Cozumu Gizle';
       }
     }
   </script>

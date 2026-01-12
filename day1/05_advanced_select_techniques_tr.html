@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/05_advanced_select_techniques.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/code.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Gun 1: Gelismis SELECT Teknikleri</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BaseN */
+    code span.bu {}
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+
+    .language-switcher {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .language-switcher a {
+        text-decoration: none;
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 3px;
+        color: #333;
+    }
+    .language-switcher a.active {
+        background: #0d6efd;
+        color: #fff;
+    }
+    .language-switcher a:hover:not(.active) {
+        background: #e9ecef;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <a href="05_advanced_select_techniques.html">EN</a>
+    <a href="05_advanced_select_techniques_tr.html" class="active">TR</a>
+  </div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+        <h1 id="day-2-advanced-select-techniques">Gun 1: Gelismis SELECT Teknikleri</h1>
+        <h2 id="session-1-advanced-select-techniques-1.5-hours">Oturum 1: Gelismis SELECT Teknikleri (1.5 saat)</h2>
+        <p>Temel sorgularin uzerine insa ederek, bu oturum SQL icerisinde verileri ozetleme, gruplama ve analiz etme tekniklerini kesfeder, cesitli veritabani sistemlerinde uygulanabilir.</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb2" onclick="CopyToClipboard('cb2')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornegi: Bir kategorideki urunlerin virgule ayrilmis listesi</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> category (category_name) <span class="kw">VALUES</span></span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Electronics'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Books'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Clothing'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Toys'),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Groceries');</span></code></pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb22-2" onclick="CopyToClipboard('cb22-2')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornegi: Bir kategorideki urunlerin virgule ayrilmis listesi</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> products (product_name, categ_id) <span class="kw">VALUES</span></span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Smartphone', 1),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Laptop', 1),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Novel', 2),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('T-shirt', 3),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Action Figure', 4),</span>
+    <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>('Apple', 5);</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h3 id="aggregate-functions-standard-sql-and-extensions">Toplama Fonksiyonlari (Standart SQL ve Uzantilar)</h3>
+        <p>Toplama fonksiyonlari bir satir kumesi uzerinde hesaplamalar yapar ve tek bir ozet deger dondurur. Raporlama ve veri analizi icin cok onemlidirler.</p>
+        <p><strong>Yaygin Standart SQL Toplama Fonksiyonlari</strong>:</p>
+        <div class="row">
+          <div class="col-md-6">
+            <ol type="1">
+              <li>
+                <p><strong><code>COUNT()</code></strong>: Satirlari veya NULL olmayan degerleri sayar.</p>
+                <ul>
+                  <li><code>COUNT(*)</code>: Bir gruptaki toplam satir sayisini sayar.</li>
+                  <li><code>COUNT(sutun_adi)</code>: <code>sutun_adi</code> NULL olmayan satirlarin sayisini sayar.
+                  </li>
+                  <li><code>COUNT(DISTINCT sutun_adi)</code>: <code>sutun_adi</code> icindeki benzersiz NULL olmayan degerlerin sayisini sayar.
+                  </li>
+                </ul>
+                <div class="sourceCode" id="code1" onclick="CopyToClipboard('code1')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standart SQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> orders; <span class="co">-- Toplam siparis</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(shipped_date) <span class="kw">FROM</span> orders; <span class="co">-- Gonderilmis siparisler</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">FROM</span> orders; <span class="co">-- Siparis veren benzersiz musteri sayisi</span></span></code></pre>
+                </div>
+              </li>
+              <li>
+                <p><strong><code>SUM(sayisal_sutun)</code></strong>: NULL olmayan sayisal degerlerin toplamini hesaplar.</p>
+                <div class="sourceCode" id="code2" onclick="CopyToClipboard('code1')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standart SQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Tamamlanmis siparislerin toplami</span></span></code></pre>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="col-md-6">
+            <ol type="1" start="3">
+              <li>
+                <p><strong><code>AVG(sayisal_sutun)</code></strong>: NULL olmayan sayisal degerlerin ortalamasini hesaplar.
+                </p>
+                <div class="sourceCode" id="code3" onclick="CopyToClipboard('code3')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standart SQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Ortalama siparis degeri</span></span></code></pre>
+                </div>
+              </li>
+              <li>
+                <p><strong><code>MIN(sutun)</code></strong>: Bir sutundaki minimum NULL olmayan degeri bulur (sayisal, metin, tarih turleri icin calisir).</p>
+                <div class="sourceCode" id="code4" onclick="CopyToClipboard('code4')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standart SQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- En erken siparis tarihi</span></span></code></pre>
+                </div>
+              </li>
+              <li>
+                <p><strong><code>MAX(sutun)</code></strong>: Bir sutundaki maksimum NULL olmayan degeri bulur.
+                </p>
+                <div class="sourceCode" id="code5" onclick="CopyToClipboard('code5')">
+                  <pre
+                    class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standart SQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders; <span class="co">-- En yuksek siparis toplami</span></span></code></pre>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+      </section>
+      <section>
+        <p><strong>Yaygin Toplama Fonksiyonu Uzantilari (Soz Dizimi/Kullanilabilirlik Degisir)</strong>:</p>
+        <p>Bu fonksiyonlar yaygin olarak desteklenir ancak veritabani sistemleri arasinda farkli adlara veya soz dizimine sahip olabilir.</p>
+        <ul>
+          <li><strong>Metin Birlestirme</strong>: Birden fazla satirdaki metinleri tek bir metinde birlestirir.
+            <ul>
+              <li><strong>PostgreSQL/Db2/Oracle (11g+)</strong>:
+                <code>STRING_AGG(ifade, ayirici [ORDER BY ...])</code>
+              </li>
+              <li><strong>MySQL/SQLite</strong>:
+                <code>GROUP_CONCAT(ifade [ORDER BY ...] [SEPARATOR ayirici])</code>
+              </li>
+              <li><strong>SQL Server (2017+)</strong>:
+                <code>STRING_AGG(ifade, ayirici) WITHIN GROUP (ORDER BY ...)</code>
+              </li>
+            </ul>
+            <div class="sourceCode" id="code6" onclick="CopyToClipboard('code6')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornegi: Bir kategorideki urunlerin virgule ayrilmis listesi</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_name, STRING_AGG(product_name, <span class="ot">&quot;, &quot;</span> <span class="kw">ORDER</span> <span class="kw">BY</span> product_name)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">FROM</span> products</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> category_name;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Dizi Birlestirme</strong>: Degerleri bir dizide toplar (daha az yaygin, PostgreSQL gibi sistemlere ozgu).
+            <ul>
+              <li><strong>PostgreSQL</strong>: <code>ARRAY_AGG(ifade [ORDER BY ...])</code></li>
+            </ul>
+            <div class="sourceCode" id="code7" onclick="CopyToClipboard('code7')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornegi: Kategori basina urun ID'lerinin dizisi</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_id, ARRAY_AGG(product_id <span class="kw">ORDER</span> <span class="kw">BY</span> product_id)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> products</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> category_id;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Istatistiksel Fonksiyonlar</strong>: Standart sapma (<code>STDDEV_SAMP</code>,
+            <code>STDDEV_POP</code>), varyans (<code>VAR_SAMP</code>, <code>VAR_POP</code>), korelasyon
+            (<code>CORR</code>), vb. Kullanilabilirlik ve tam isimler degisebilir.
+          </li>
+        </ul>
+        <p><strong>NULL Degerlerinin Islenmesi</strong>: Standart toplama fonksiyonlari (<code>SUM</code>, <code>AVG</code>,
+          <code>MIN</code>, <code>MAX</code>) <code>NULL</code> degerlerini yok sayar. <code>COUNT(*)</code> tum satirlari sayar,
+          <code>COUNT(sutun)</code> ise o sutundaki yalnizca NULL olmayan satirlari sayar.
+        </p>
+      </section>
+      <section>
+        <h3 id="grouping-data-with-group-by-standard-sql">GROUP BY ile Verileri Gruplama (Standart SQL)</h3>
+        <p><code>GROUP BY</code> cumlesini, belirtilen bir veya daha fazla sutunda ayni degerlere sahip satirlari bir ozet satirinda gruplar. Toplama fonksiyonlari daha sonra her gruba bagimsiz olarak uygulanir.</p>
+        <p><strong>Standart SQL Soz Dizimi</strong>:</p>
+        <div class="sourceCode" id="code8" onclick="CopyToClipboard('code8')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    gruplama_sutunu1, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    gruplama_sutunu2, <span class="op">..</span>., </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    toplama_fonksiyonu(<span class="kw">sutun</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    tablo_adi</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    filtre_kosulu <span class="co">-- Istege bagli: Gruplamadan ONCE satirlari filtreler</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    gruplama_sutunu1, </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    gruplama_sutunu2, <span class="op">..</span>.</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="op">..</span>.; <span class="co">-- Istege bagli: Gruplanmis sonuclari siralar</span></span></code></pre>
+        </div>
+        <p><strong>Onemli Kural (Standart SQL)</strong>: <code>SELECT</code> listesindeki herhangi bir toplanmamis sutun
+          <em>mutlaka</em> <code>GROUP BY</code> cumlesinde yer almalidir. (Eski MySQL surumlerinin gevsetilmis bir varsayilan modu vardi, ancak buna guvenemk standart degil ve genellikle belirsiz sonuclara yol acar).
+        </p>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="code9" onclick="CopyToClipboard('code9')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Musteri basina siparis sayisini say</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    customer_id, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> siparis_sayisi</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    orders</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    customer_id;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="code10" onclick="CopyToClipboard('code10')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">-- Standart SQL: Urun kategorisi basina toplam satis tutari</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    p.category_id, </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    c.category_name, <span class="co">-- category_name SELECT'te oldugu icin GROUP BY'a dahil edin</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.unit_price) <span class="kw">AS</span> toplam_kategori_satislari</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>    order_items oi</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    products p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    p.category_id, c.category_name <span class="co">-- Hem ID hem de ada gore grupla</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    toplam_kategori_satislari <span class="kw">DESC</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="code11" onclick="CopyToClipboard('code11')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a><span class="co">-- Standart SQL: Tarih parcasina gore gruplama (fonksiyon soz dizimi biraz degisebilir)</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a>    <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> siparis_yili, <span class="co">-- Standart fonksiyon</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> yillik_siparis_sayisi</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a>    orders</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>    <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>    siparis_yili;</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a><span class="co">-- Not: DATE_TRUNC (PostgreSQL) veya satici-ozgu tarih bicimlendirme fonksiyonlari gibi fonksiyonlar burada sikca kullanilir.</span></span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Gelismis Gruplama: <code>GROUPING SETS</code>, <code>ROLLUP</code>, <code>CUBE</code> (Standart SQL
+            Uzantilari)</strong>:</p>
+        <p>Tablolarimizi olusturalim ve dolduralim. SQLite degil PostgreSQL kullanmalisiniz</p>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb332" onclick="CopyToClipboard('cb332')">
+              <pre><code class="language-sql">-- Yabanci anahtar tanimlamak icin standart SQL soz dizimi
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> sales_data (</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>product <span class="kw">TEXT,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>region <span class="kw">TEXT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>year <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>quarter <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>month <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>sales <span class="kw">NUMERIC(10,2)</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- diger sutunlar...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+</code></pre>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="sourceCode" id="cb333" onclick="CopyToClipboard('cb333')">
+              <pre><code class="language-sql">-- Yabanci anahtar tanimlamak icin standart SQL soz dizimi
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">INSERT INTO</span> sales_data (product, region, year, quarter, month, sales) <span class="kw">VALUES</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Smartphone', 'North', 2024, 1, 1, 15000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Smartphone', 'South', 2024, 1, 2, 12000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Laptop', 'North', 2024, 1, 1, 18000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Laptop', 'East', 2024, 2, 4, 22000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Novel', 'West', 2024, 2, 5, 8000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('T-shirt', 'South', 2024, 3, 7, 5000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Action Figure', 'North', 2024, 3, 8, 7000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Apple', 'East', 2024, 4, 10, 9000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Apple', 'West', 2024, 4, 11, 11000.00),</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>('Smartphone', 'North', 2025, 1, 1, 16000.00);</span>
+                    </code></pre>
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <section>
+        <p><strong>Gelismis Gruplama: <code>GROUPING SETS</code>, <code>ROLLUP</code>, <code>CUBE</code> (Standart SQL
+            Uzantilari)</strong>:</p>
+        <p>Bu cumleler daha karmasik gruplama yetenekleri saglar ve tek bir sorguda birden fazla gruplama duzeyine veya kombinasyonuna izin verir. Daha sonraki SQL standartlarinin bir parcasidir (SQL:1999/SQL:2003) ve cogu buyuk modern veritabani (PostgreSQL, Oracle, SQL Server, Db2) tarafindan desteklenir, ancak soz dizimi detaylari veya sinirlamalar olabilir.</p>
+        <ol type="1">
+          <li><strong><code>GROUPING SETS</code></strong>: Birden fazla bagimsiz <code>GROUP BY</code> cumlesi belirtmeye izin verir.
+            <div class="sourceCode" id="code32" onclick="CopyToClipboard('code32')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>-- Ornek: (Urun)'e, (Bolge)'ye ve genel toplama gore satis toplamlari</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> product, region, <span class="fu">SUM</span>(sales) <span class="kw">AS</span> toplam_satislar</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>FROM sales_data</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">GROUP BY</span> GROUPING SETS ((product),(region));</span></code></pre>
+            </div>
+          </li>
+          <li><strong><code>ROLLUP</code></strong>: Hiyerarsik ozetler icin gruplamalar olusturur (ornegin, Yil -&gt;
+            Ceyrek -&gt; Ay, Ulke -&gt; Bolge -&gt; Sehir).
+            <div class="sourceCode" id="code33" onclick="CopyToClipboard('code33')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>-- Ornek: (Urun)'e, (Bolge)'ye ve genel toplama gore satis toplamlari</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> year, quarter, month, <span class="fu">SUM</span>(sales) <span class="kw">AS</span> toplam_satislar</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>FROM sales_data</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">GROUP BY</span> ROLLUP(year, quarter, month);</span></code></pre>
+            </div>
+          </li>
+          <li><strong><code>CUBE</code></strong>: Belirtilen sutunlarin tum olasi kombinasyonlari icin gruplamalar olusturur.
+            <div class="sourceCode" id="code34" onclick="CopyToClipboard('code34')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>-- Ornek: (Urun)'e, (Bolge)'ye ve genel toplama gore satis toplamlari</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> product, region, <span class="fu">SUM</span>(sales) <span class="kw">AS</span> toplam_satislar</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>FROM sales_data</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">GROUP BY</span> CUBE(product, region);</span></code></pre>
+            </div>
+            Bunlar veri ambarlama ve OLAP tarzindaki sorgular icin guclu araclardir ancak daha ileri duzey konulardir.
+          </li>
+        </ol>
+      </section>
+      <section>
+        <h3 id="filtering-groups-with-having-standard-sql">HAVING ile Gruplari Filtreleme (Standart SQL)</h3>
+        <p><code>HAVING</code> cumlesi bir <code>GROUP BY</code> sorgusunun sonuclarini filtreler. Kosullari genellikle toplama fonksiyonlari iceren <em>gruplarin</em> kendilerine uygular.</p>
+        <p><strong>Standart SQL Soz Dizimi</strong>:</p>
+        <div class="sourceCode" id="code12" onclick="CopyToClipboard('code12')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    gruplama_sutunu1, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    toplama_fonksiyonu(<span class="kw">sutun</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    tablo_adi</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    satir_filtre_kosulu <span class="co">-- Istege bagli: Gruplamadan ONCE satirlari filtreler</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>    gruplama_sutunu1</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>    grup_filtre_kosulu; <span class="co">-- Gruplamadan SONRA gruplari filtreler</span></span></code></pre>
+        </div>
+        <p><strong><code>WHERE</code> ve <code>HAVING</code> Karsilastirmasi</strong>: - <code>WHERE</code> bireysel satirlari <code>GROUP BY</code> tarafindan islenmeden <em>once</em> filtreler. - <code>HAVING</code> <code>GROUP BY</code> tarafindan olusturulduktan ve toplamalar hesaplandiktan <em>sonra</em> tum gruplari filtreler. - <code>HAVING</code> icindeki kosullar genellikle toplama fonksiyonlari icerir; <code>WHERE</code> icindeki kosullar iceremez (cunku toplamalar henuz olusturulmamis gruplar uzerinde calisir).
+        </p>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="code13" onclick="CopyToClipboard('code13')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Standart SQL: 5'ten fazla siparisi olan musterileri bul</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    customer_id, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> siparis_sayisi</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    orders</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    customer_id</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">5</span>; <span class="co">-- Toplama COUNT'a gore gruplari filtrele</span></span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="code14" onclick="CopyToClipboard('code14')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a><span class="co">-- Standart SQL: Ortalama urun fiyati 100$'in uzerinde olan urun kategorilerini bul</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    p.category_id, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>    c.category_name,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.list_price) <span class="kw">AS</span> ortalama_fiyat</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    products p</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>    p.category_id, c.category_name</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.list_price) <span class="op">&gt;</span> <span class="dv">100</span>;</span>
+</code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="code15" onclick="CopyToClipboard('code15')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a><span class="co">-- Standart SQL: WHERE ve HAVING'i birlestirme</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a><span class="co">-- 2023'te 3'ten fazla siparis veren 'USA'daki musterileri bul</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a>    o.customer_id,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a>    c.customer_name,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> siparis_sayisi_2023</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true"></a>    orders o</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a>    customers c <span class="kw">ON</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a>    c.country <span class="op">=</span> <span class="st">&#39;USA&#39;</span> </span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a>    <span class="kw">AND</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> o.order_date) <span class="op">=</span> <span class="dv">2023</span> <span class="co">-- Satirlari once filtrele</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a>    o.customer_id, c.customer_name</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">3</span>; <span class="co">-- Saymadan sonra gruplari filtrele</span></span></code></pre>
+        </div>
+      </section>
+      <section>
+        <h3 id="introduction-to-window-functions-standard-sql">Pencere Fonksiyonlarina Giris (Standart SQL)</h3>
+        <p>Pencere fonksiyonlari, mevcut satirla bir sekilde iliskili olan bir tablo satir kumesi ("pencere" olarak adlandirilir) uzerinde hesaplamalar yapar. <code>GROUP BY</code> ile birlikte toplama fonksiyonlarindan farkli olarak, pencere fonksiyonlari satirlari daraltmaz; pencereye dayali olarak <em>her</em> satir icin bir deger dondurur.</p>
+        <p>Pencere fonksiyonlari standart SQL'in bir parcasidir (SQL:2003 ve sonrasi) ve cogu modern RDBMS (PostgreSQL, Oracle, SQL Server, Db2, MySQL 8+, SQLite 3.25+) tarafindan desteklenir, ancak belirli fonksiyon kullanilabilirligi veya soz dizimi detaylari biraz degisebilir.</p>
+        <p><strong>Standart SQL Soz Dizimi</strong>:</p>
+        <div class="sourceCode" id="code16" onclick="CopyToClipboard('code16')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>pencere_fonksiyonu(argumanlar) <span class="kw">OVER</span> (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    [<span class="kw">PARTITION</span> <span class="kw">BY</span> bolumleme_sutunu1, bolumleme_sutunu2, <span class="op">..</span>.] <span class="co">-- Istege bagli: Satirlari bolumlere (gruplara) ayirir</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    [<span class="kw">ORDER</span> <span class="kw">BY</span> siralama_sutunu1 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], siralama_sutunu2 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], <span class="op">..</span>.] <span class="co">-- Istege bagli: Her bolum icindeki satirlari siralar</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    [cerceve_cumlesi] <span class="co">-- Istege bagli: Bolum icindeki satirlarin alt kumesini tanimlar (pencere cercevesi)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>)</span></code></pre>
+        </div>
+        <p><strong>Temel Kavramlar</strong>: - <strong><code>OVER()</code> Cumlesi</strong>: Bir pencere fonksiyonunu belirten zorunlu cumle. - <strong><code>PARTITION BY</code></strong>: Satirlari bagimsiz bolumlere ayirir. Pencere fonksiyonu her bolume ayri ayri uygulanir. Atlanirsa, tum sonuc kumesi tek bir bolum olarak kabul edilir. - <strong><code>ORDER BY</code></strong>: Her bolum <em>icindeki</em> satirlarin sirasini belirler. Siralama ve sira bagli fonksiyonlar (<code>LAG</code>, <code>LEAD</code>, kumulatif toplamlar) icin cok onemlidir. - <strong><code>cerceve_cumlesi</code></strong>: Fonksiyonun hesaplamasina dahil edilecek, bolum icindeki mevcut satira gore satirlarin kumesini belirtir (ornegin, <code>ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING</code>). Atlanirsa, varsayilan cerceve genellikle fonksiyona ve <code>ORDER BY</code> varligina baglidir.
+        </p>
+      </section>
+      <section>
+        <p><strong>Yaygin Pencere Fonksiyonu Turleri (Cogunlukla Standart SQL)</strong>:</p>
+        <ol type="1">
+          <li>
+            <p><strong>Siralama Fonksiyonlari</strong>:</p>
+            <ul>
+              <li><code>ROW_NUMBER()</code>: Bolumu icindeki her satira benzersiz bir ardisik tamsayi atar (ornegin, 1, 2, 3, 4).</li>
+              <li><code>RANK()</code>: <code>ORDER BY</code> cumlesine gore siralama atar. Esitliklerden sonra siralamalari atlar (ornegin, 1, 2, 2, 4).</li>
+              <li><code>DENSE_RANK()</code>: Esitliklerden sonra bosluk olmadan siralama atar (ornegin, 1, 2, 2, 3).</li>
+              <li><code>NTILE(n)</code>: Bolumu <code>n</code> kabaca esit gruba (kova) boler ve bir kova numarasi (1 ile <code>n</code> arasi) atar.</li>
+            </ul>
+            <div class="sourceCode" id="code17" onclick="CopyToClipboard('code17')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Calisanlari her departman icinde maasa gore sirala</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    employee_name, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    department_name, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    salary,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> department_name <span class="kw">ORDER</span> <span class="kw">BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dept_maas_sirasi</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">FROM</span> employees;</span></code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Yaygin Pencere Fonksiyonu Turleri (Cogunlukla Standart SQL)</strong>:</p>
+        <ol type="1" start="2">
+          <li>
+            <p><strong>Deger Fonksiyonlari (Offset Fonksiyonlari)</strong>:</p>
+            <ul>
+              <li><code>LAG(ifade, [offset], [varsayilan])</code>: <code>ORDER BY</code>'a gore bolum icindeki onceki bir satirdaki veriye erisir.</li>
+              <li><code>LEAD(ifade, [offset], [varsayilan])</code>: Sonraki bir satirdaki veriye erisir.</li>
+              <li><code>FIRST_VALUE(ifade)</code>: Pencere cercevesindeki ilk satirdaki ifadenin degerini alir.</li>
+              <li><code>LAST_VALUE(ifade)</code>: Pencere cercevesindeki son satirdaki degeri alir.</li>
+            </ul>
+            <div class="sourceCode" id="code18" onclick="CopyToClipboard('code18')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Onceki aya kiyasla satis buyumesini hesapla</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    sales_month, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    monthly_total,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="fu">LAG</span>(monthly_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> sales_month) <span class="kw">AS</span> onceki_ay_toplami</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="kw">FROM</span> monthly_sales_summary;</span></code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Yaygin Pencere Fonksiyonu Turleri (Cogunlukla Standart SQL)</strong>:</p>
+        <ol type="1" start="3">
+          <li>
+            <p><strong>Pencere Fonksiyonlari Olarak Toplama Fonksiyonlari</strong>: Standart toplama fonksiyonlari (<code>SUM</code>,
+              <code>AVG</code>, <code>COUNT</code>, <code>MIN</code>, <code>MAX</code>) <code>OVER()</code> cumlesi eklenerek pencere fonksiyonlari olarak kullanilabilir. Her satir icin pencere cercevesi uzerinde calisirlar.
+            </p>
+            <div class="sourceCode" id="code19" onclick="CopyToClipboard('code19')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Zaman icerisinde satislarin kumulatif toplamini hesapla</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    order_date, </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    order_total,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> order_date <span class="kw">ROWS</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span>) <span class="kw">AS</span> kumulatif_toplam_satislar</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="co">-- Standart SQL: Her siiparisin toplam satislardaki yuzdesini hesapla</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    order_id, </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>    order_total,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> () <span class="kw">AS</span> genel_toplam_satislar, <span class="co">-- Pencere tum sonuc kumesi</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    (order_total <span class="op">/</span> <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> ()) <span class="op">*</span> <span class="dv">100</span> <span class="kw">AS</span> toplam_yuzde</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span></code></pre>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Pencere Cercevesi Cumlesi (Standart SQL)</strong>: Mevcut satira gore hesaplama icin kullanilan bolum icindeki satirlarin alt kumesini tanimlar. Yaygin secenekler: - <code>ROWS UNBOUNDED PRECEDING</code>: Bolumun basindan mevcut satira kadar. - <code>ROWS BETWEEN &lt;n&gt; PRECEDING AND &lt;m&gt; FOLLOWING</code>: Mevcut satir etrafinda belirli bir aralik. - <code>RANGE BETWEEN ...</code>: Mevcut satirin <code>ORDER BY</code> degerine gore deger aralik (daha karmasik).</p>
+        <div class="sourceCode" id="code20" onclick="CopyToClipboard('code20')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Satislarin 3 gunluk hareketli ortalamasi</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    sales_date,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    daily_total,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="fu">AVG</span>(daily_total) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> sales_date <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="dv">2</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span>) <span class="kw">AS</span> hareketli_ort_3gun</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="kw">FROM</span> daily_sales;</span></code></pre>
+        </div>
+        <p><strong>Pratik Uygulamalar</strong>: Pencere fonksiyonlari su durumlar icin son derece gucludur: - Kumulatif toplamlar, hareketli ortalamalar hesaplama. - Gruplar icinde sonuclari siralama (En-N sorguları). - Satirlari onceki veya sonraki satirlarla karsilastirma (farklari, buyume oranlarini hesaplama). - Toplam yuzdeleri hesaplama.</p>
+        <p>Toplama fonksiyonlarini, <code>GROUP BY</code>, <code>HAVING</code> ve pencere fonksiyonlarini ustaca kullanmak, karmasik veri analizi ve raporlamayi dogrudan veritabaninda yapma yeteneginizi onemli olcude arttirir.</p>
+      </section>
+      <section>
+        <h3 id="practice-exercises">Ogrendiklerinizi Uygulayın</h3>
+        <p>Gelismis SELECT tekniklerinde ustalasmaya hazir misiniz? Toplama fonksiyonlari, GROUP BY, HAVING ve pencere fonksiyonlarini kapsayan uygulamali alistirmalarla pratik yapin.</p>
+        <p><a href="05_advanced_select_techniques_examples_tr.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+      </section>
+    </div>
+  </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/05_advanced_select_techniques.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/01_introduction_to_databases.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/code.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 1: Veritabanlarina ve SQL Kavramlarina Giris</title>
+    <style>
+        /* Pandoc default styles might conflict, keep minimal */
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="language-switcher">
+        <a href="01_introduction_to_databases.html">EN</a>
+        <a href="01_introduction_to_databases_tr.html" class="active">TR</a>
+    </div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-1-introduction-to-databases-and-sql">Gun 1: Veritabanlarina ve SQL'e Giris</h1>
+                <h2 id="session-1-introduction-to-databases-and-sql-1-hour">Oturum 1: Veritabanlarina ve SQL'e Giris
+                    (1 saat)</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 id="relational-database-concepts">Iliskisel Veritabani Kavramlari</h3>
+                        <p>Veritabanlari, genellikle bir bilgisayar sisteminde elektronik olarak depolanan, yapilandirilmis
+                            bilgi veya verilerin duzenlenmis koleksiyonlaridir. Iliskisel veritabani, ozellikle verileri
+                            satirlar ve sutunlardan olusan tablolar (veya iliskiler) halinde duzenlier. Her satir benzersiz
+                            bir kaydi temsil eder ve her sutun kayittaki bir alani temsil eder. Bu model, is uygulamalarinda
+                            kullanilan cogu modern veritabani sisteminin temelidir.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rd_structure.png" alt="">
+                    </div>
+                </div>
+
+            </section>
+
+
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Temel iliskisel veritabani kavramlari sunlardir:</p>
+                        <ul>
+                            <li><strong>Sema (Schema)</strong>: Verilerin nasil duzenlendigi ve veriler arasindaki
+                                iliskilerin nasil ele alindigini tanimlayan veritabaninin plani veya yapisidir.</li>
+                            <li><strong>Tablolar</strong>: Iliskisel veritabanindaki temel yapidir. Tablolar,
+                                elektronik tablolara benzer sekilde satirlar ve sutunlardan olusur. Varliklari
+                                (musteriler, urunler, siparisler gibi) temsil ederler.</li>
+                            <li><strong>Satirlar (Kayitlar/Demetler)</strong>: Tablodaki her satir, tablonun temsil
+                                ettigi varligin benzersiz bir ornegini temsil eder (ornegin, belirli bir musteri,
+                                belirli bir urun).</li>
+                            <li><strong>Sutunlar (Alanlar/Nitelikler)</strong>: Her sutun, varlik hakkinda belirli
+                                bir ozellik veya veri parcasini temsil eder (ornegin, musteri adi, urun fiyati,
+                                siparis tarihi).</li>
+                            <li><strong>Veri Tipleri</strong>: Her sutun, depolayabilecegi veri turunu ve nasil
+                                depolandigini belirleyen belirli bir veri tipiyle (ornegin, INTEGER, VARCHAR, DATE,
+                                BOOLEAN, JSON) tanimlanir. Veri tipleri farkli veritabani sistemleri arasinda
+                                biraz farklilik gosterebilir.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rds_components.png" alt="">
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Birincil Anahtarlar (PK)</strong>: Tablodaki her satiri benzersiz olarak
+                                tanimlayan bir sutun veya sutun kombinasyonu. Varlik butunlugunu saglar.</li>
+                            <li><strong>Yabanci Anahtarlar (FK)</strong>: Bir tablodaki, baska bir tablonun birincil
+                                anahtarina atifta bulunan, tablolar arasinda bir baglanti veya iliski kuran ve
+                                uygulayan bir sutun veya sutun kombinasyonu. Referans butunlugunu saglar.</li>
+                            <li><strong>Kisitlamalar (Constraints)</strong>: Veri butunlugunu ve is kurallarini
+                                uygulamak icin sutunlar veya tablolar uzerinde tanimlanan kurallar. Yaygin
+                                kisitlamalar sunlardir: <code>NOT NULL</code>, <code>UNIQUE</code>,
+                                <code>CHECK</code>, <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>.</li>
+                            <li><strong>Normalizasyon</strong>: Veri tekrarini azaltmak ve veri butunlugunu
+                                iyilestirmek icin veritabani tablolarini duzenleme sureci.</li>
+                            <li><strong>Iliskiler</strong>: Tablolar arasindaki baglantilar, genellikle Bire-Bir,
+                                Bire-Cok veya Coka-Cok olarak kategorize edilir.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rds_power_components.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Sema hakkinda daha fazla bilgi</strong>: Bir sema sunlari icerir:
+                                <ul>
+                                    <li>Tablo tanimlari (adlar, sutunlar, veri tipleri)</li>
+                                    <li>Tablolar arasindaki iliskiler</li>
+                                    <li>Kisitlamalar ve kurallar</li>
+                                    <li>Performans optimizasyonu icin indeksler</li>
+                                    <li>Gorunumler ve sakli prosedurler</li>
+                                    <li>Guvenlik ve erisim izinleri</li>
+                                </ul>
+                                Sema, veritabani nesneleri icin mantiksal bir kapsayici gorevi gorur ve veritabani
+                                oegelerini duzenleme ve yonetme yolu saglar. Hangi tablolarin var oldugu, her tablonun
+                                hangi sutunlara sahip oldugu ve tablolarin birbirleriyle nasil iliskili oldugu dahil
+                                olmak uzere veritabaninin yapisini tanimlar. Semalar sunlarda yardimci olur:
+                                <ul>
+                                    <li>Veritabani nesnelerini mantiksal gruplara duzenleme</li>
+                                    <li>Erisim izinlerini yonetme</li>
+                                    <li>Veri butunlugunu koruma</li>
+                                    <li>Birden fazla kullanici ve uygulamayi destekleme</li>
+                                    <li>Veritabani bakimi ve guncellemelerini kolaylastirma</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-rds_schema.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="text-center my-4">
+                    <img src="../static/relational_model.svg"
+                        alt="Musteriler ve Siparisler tablolarini PK/FK iliskisiyle gosteren Iliskisel Model Diyagrami"
+                        class="img-fluid border rounded shadow-sm" style="max-width: 1000px;">
+                    <p class="text-muted small mt-2">Sekil 1: Musteriler ve Siparisler tablolariyla ornek Iliskisel
+                        Model.</p>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 id="sql-history">SQL Tarihi</h3>
+                        <p>SQL (Yapilandirilmis Sorgu Dili) 1970'lere dayanan zengin bir gecmise sahiptir:</p>
+
+                        <h4>1970'ler - SQL'in Dogusu</h4>
+                        <ul>
+                            <li>1970'lerin baslarinda IBM'de Donald D. Chamberlin ve Raymond F. Boyce tarafindan
+                                gelistirildi</li>
+                            <li>Baslangicta SEQUEL (Yapilandirilmis Ingilizce Sorgu Dili) olarak adlandirildi</li>
+                            <li>Ilk olarak IBM'in System R projesinde uygulandi</li>
+                            <li>IBM'in System R veritabaninda depolanan verileri manipule etmek ve almak icin
+                                tasarlandi</li>
+                        </ul>
+                        <h4>1980'ler - Standardizasyon ve Buyume</h4>
+                        <ul>
+                            <li>1986: ANSI tarafindan ilk SQL standardi yayinlandi (SQL-86 veya SQL-87)</li>
+                            <li>1989: Standardin ilk revizyonu (SQL-89)</li>
+                            <li>IBM, ilk ticari SQL veritabani olan DB2'yi piyasaya surdu</li>
+                            <li>Oracle, Sybase ve diger saticilar urunlerinde SQL uygulamaya basladi</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-sql1970-80.png" alt="">
+                    </div>
+                </div>
+
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>1990'lar - Olgunluk ve Genisleme</h4>
+                        <ul>
+                            <li>1992: Standardin buyuk revizyonu (SQL-92 veya SQL2)</li>
+                            <li>Joinler, alt sorgular ve islem yonetimi gibi yeni ozelliklerin tanitimi</li>
+                            <li>1999: SQL:1999 standardi nesne yonelimli ozellikler ve ozyinelemeli sorgular sunar</li>
+                            <li>Buyuk veritabani saticilari SQL-92 ozelliklerini uygular</li>
+                        </ul>
+                        <h4>2000'ler - Modern Gelismeler</h4>
+                        <ul>
+                            <li>2003: SQL:2003 standardi XML destegi ve pencere fonksiyonlari ekler</li>
+                            <li>2006: SQL:2006 standardi XML yeteneklerini gelistirir</li>
+                            <li>2008: SQL:2008 standardi TRUNCATE TABLE ve INSTEAD OF tetikleyicileri sunar</li>
+                            <li>2011: SQL:2011 standardi zamansal veritabani ozellikleri ekler</li>
+                            <li>2016: SQL:2016 standardi JSON destegi ve satir deseni esletirme sunar</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-sql1990-00.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Onemli Kilometre Taslari</h4>
+                        <ul>
+                            <li>SQL 1987'de ISO standardi oldu</li>
+                            <li>Dil geriye donuk uyumlulugu koruyarak gelisti</li>
+                            <li>Farkli veritabani saticilari cesitli SQL lehceleri uyguladi</li>
+                            <li>SQL bugun hala en yaygin kullanilan veritabani dili olmaya devam ediyor</li>
+                        </ul>
+
+                        <h4>Etki ve Miras</h4>
+                        <ul>
+                            <li>SQL, iliskisel veritabani yonetim sistemleri icin standart dil haline geldi</li>
+                            <li>Dunya genelinde milyonlarca gelistirici tarafindan kullaniliyor</li>
+                            <li>Modern veritabani sistemlerinin temelini olusturuyor</li>
+                            <li>Yeni veri yonetimi zorluklarini karsilamak icin gelismeye devam ediyor</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-sqlEvolvImpact.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+
+                <h3 id="sql-structured-query-language">SQL (Yapilandirilmis Sorgu Dili)</h3>
+                <p>SQL, iliskisel veritabanlariyla iletisim kurmak icin kullanilan standart dildir. Kullanicilarin
+                    veri olusturmasina, almasina, guncellemesine ve silmesine (CRUD islemleri) ve ayrica veritabani
+                    yapisini yonetmesine olanak tanir. SQL komutlari genel olarak kategorize edilir:</p>
+
+                <img class="sub-image" src="session1_content/session1-sqlOperationsOw.png" alt="">
+
+            </section>
+            <section>
+                <img class="sub-image" src="session1_content/session1-sql-ddl-dml-dcl.png" alt="">
+                <ul>
+                    <li><strong>DDL (Veri Tanimlama Dili)</strong>: Veritabani yapisini tanimlamak veya degistirmek
+                        icin kullanilir (ornegin, <code>CREATE TABLE</code>, <code>ALTER TABLE</code>,
+                        <code>DROP TABLE</code>).</li>
+                    <li><strong>DML (Veri Manipulasyon Dili)</strong>: Veri sorgulamak ve degistirmek icin kullanilir
+                        (ornegin, <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>,
+                        <code>DELETE</code>).</li>
+                    <li><strong>DCL (Veri Kontrol Dili)</strong>: Izinleri ve erisim kontrolunu yonetmek icin
+                        kullanilir (ornegin, <code>GRANT</code>, <code>REVOKE</code>).</li>
+                </ul>
+
+            </section>
+            <section>
+                <h3 id="the-broader-rdbms-landscape">Daha Genis RDBMS Manzarasi</h3>
+                <p>SQL standart dil olmakla birlikte, farkli saticilar ozellikler, performans ozellikleri, lisanslama
+                    ve kucuk SQL sozdizimi farkliliklari (lehceler) ile RDBMS uygular. RDBMS pazarindaki buyuk
+                    oyuncularin farkinda olmak onemlidir.</p>
+                <p>Karsilastirmadan onemli cikarimlar:</p>
+                <ul>
+                    <li><strong>PostgreSQL</strong>: Standartlara uyumlulugu, genisletilebilirligi ve zengin
+                        ozellik seti ile taninir.</li>
+                    <li><strong>MySQL</strong>: Ozellikle web uygulamalari icin yaygin olarak populerdir.</li>
+                    <li><strong>Oracle Database</strong>: Kurumsal alanda pazar lideri, saglamligi ile taninir.</li>
+                    <li><strong>Microsoft SQL Server</strong>: Ozellikle Windows ortamlarinda guclu rakip.</li>
+                    <li><strong>IBM Db2</strong>: Uzun suredir kurumsal veritabani, genellikle buyuk sirketlerde.</li>
+                </ul>
+                <p>Bu farkliliklari anlamak dogru veritabanini secmede ve SQL becerilerini uyarlamada yardimci olur.</p>
+            </section>
+            <section>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 id="role-of-databases-in-erp-systems">ERP Sistemlerinde Veritabanlarinin Rolu</h3>
+                        <p>Odoo gibi Kurumsal Kaynak Planlama (ERP) sistemleri buyuk olcude saglam veritabani
+                            sistemlerine dayanir.</p>
+                        <ul>
+                            <li><strong>Merkezi Veri Deposu</strong>: Cesitli departmanlardan verileri birlestirir.</li>
+                            <li><strong>Veri Butunlugu ve Tutarliligi</strong>: Is kurallarini ve kisitlamalari uygular.</li>
+                            <li><strong>Surec Otomasyonu ve Is Akisi</strong>: Verilere dayali otomatik is akislarini
+                                yonlendirir.</li>
+                            <li><strong>Raporlama ve Is Zekasi</strong>: Guclu sorgulama ve analitik saglar.</li>
+                            <li><strong>Guvenlik ve Erisim Kontrolu</strong>: Kullanici izinlerini yonetir.</li>
+                            <li><strong>Olceklenebilirlik ve Performans</strong>: Buyuk veri hacimlerini ve islem
+                                oranlarini yonetir.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="side-image" src="session1_content/session1-odoosql.png" alt="">
+                    </div>
+                </div>
+            </section>
+            <section>
+                <p><strong>Ozel Ornek: Odoo ve PostgreSQL</strong>: Odoo, semalar, zengin veri tipleri (JSONB),
+                    islemler ve genisletilebilirlik gibi ozellikleri kullanarak PostgreSQL kullanir. Odoo semasi
+                    karmasiktir ve birbirine bagli cesitli is nesnelerini temsil eder.</p>
+                <p>Veritabani yapisini anlamak urun sahipleri icin cok onemlidir:</p>
+                <ul>
+                    <li>Veri bagimliklarini anlamak.</li>
+                    <li>Gereksinimleri dogru bir sekilde tanimlamak.</li>
+                    <li>Raporlama ihtiyaclarini etkili bir sekilde belirlemek.</li>
+                    <li>Teknik ekiplerle net iletisim kurmak.</li>
+                    <li>Performans hususlarini takdir etmek.</li>
+                </ul>
+                <p>Sonraki oturumlarda, uygulamali calisma icin PostgreSQL veritabanini (ozellikle bir Odoo ornek
+                    semasi) kullanarak pratik SQL becerilerine dalacagiz ve uygun oldugunda diger sistemlerdeki
+                    farkliliklari vurgulayacagiz.</p>
+            </section>
+        </div> <!-- /container -->
+    </div> <!-- /content-container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        // Add smooth scrolling behavior
+        document.addEventListener('DOMContentLoaded', function () {
+            const contentContainer = document.querySelector('.content-container');
+            contentContainer.style.scrollBehavior = 'smooth';
+
+            // Add keyboard navigation support
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const sections = document.querySelectorAll('section');
+                    const currentSection = document.elementFromPoint(
+                        window.innerWidth / 2,
+                        window.innerHeight / 2
+                    ).closest('section');
+
+                    let targetIndex = Array.from(sections).indexOf(currentSection);
+                    if (e.key === 'ArrowDown' && targetIndex < sections.length - 1) {
+                        sections[targetIndex + 1].scrollIntoView({ behavior: 'smooth' });
+                    } else if (e.key === 'ArrowUp' && targetIndex > 0) {
+                        sections[targetIndex - 1].scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day1/01_introduction_to_databases.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:30 GMT -->
+</html>

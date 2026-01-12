@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/02_schema_management_and_organization.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 3: Sema Yonetimi ve Organizasyonu</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="language-switcher">
+        <a href="02_schema_management_and_organization.html">EN</a>
+        <a href="02_schema_management_and_organization_tr.html" class="active">TR</a>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-schema-management-and-organization">Gun 3: Sema Yonetimi ve Organizasyonu</h1>
+                <h2 id="session-2-schema-management-and-organization-1.5-hours">Oturum 2: Sema Yonetimi ve
+                    Organizasyonu (1.5 saat)</h2>
+                <p>Veritabanlari buyudukce, veritabani nesnelerini (tablolar, gorunumler, fonksiyonlar vb.) organize etmek
+                    yonetilebilirlik, guvenlik ve adlandirma cakismalarini onlemek icin kritik hale gelir. Bu oturum,
+                    sema
+                    (veya esdeger ad alanlari) kavramini ve adlandirma kurallari ile veritabani yapisindaki degisiklikleri
+                    yonetmek (sema migrasyonlari) icin en iyi uygulamalari inceler.</p>
+            </section>
+            <section>
+                <h3 id="organizing-database-objects-schemas-and-namespaces">Veritabani Nesnelerini Organize Etme: Semalar ve
+                    Ad Alanlari</h3>
+                <p>Cogu iliskisel veritabani sistemi, iliskili nesneleri mantiksal kapsayicilar veya
+                    ad alanlari icinde gruplama yolu saglar.</p>
+                <ul>
+                    <li><strong>PostgreSQL, Oracle, SQL Server</strong>: <strong>Sema</strong> kavramini kullanir. Bir
+                        veritabani birden fazla sema icerir ve her sema tablolar, gorunumler gibi nesneleri icerir.
+                        Nesnelere <code>schema_name.object_name</code> kullanilarak basvurulur.</li>
+                    <li><strong>MySQL</strong>: Birincil gruplama mekanizmasi olarak <strong>Database</strong> terimini kullanir. Bir
+                        MySQL sunucusu birden fazla veritabani barindirır ve tablolar dogrudan bir veritabanina aittir.
+                        <code>USE database_name;</code> varsayilan veritabanini secer ve nesnelere
+                        <code>database_name.table_name</code> veya varsayilan bir veritabani secilmisse sadece <code>table_name</code> olarak basvurulur.
+                    </li>
+                </ul>
+                <p>Terminoloji farkliliklarina ragmen, temel fikir aynidir: ana veritabani sunucusu orneginin altinda
+                    bir ad alani seviyesi saglamak.</p>
+            </section>
+            <section>
+                <p><strong>Sema/Ad Alani Kullanmanin Faydalari</strong>:</p>
+                <ol type="1">
+                    <li><strong>Organizasyon</strong>: Iliskili nesneleri grupla (ornegin, satis ile ilgili tum tablolar, belirli bir
+                        uygulama modulu icin tum nesneler).</li>
+                    <li><strong>Ad Cakismasini Onleme</strong>: Farkli semalar/veritabanlari ayni
+                        ada sahip nesneler icerebilir (ornegin, <code>sales.customers</code> ve <code>marketing.customers</code>).</li>
+                    <li><strong>Erisim Kontrolu</strong>: Izinler genellikle sema/veritabani
+                        seviyesinde verilebilir veya reddedilebilir, guvenlik yonetimini basitlestir.</li>
+                    <li><strong>Coklu Kiralama</strong>: Tek bir veritabani ornegi icinde farkli kiracilar/musteriler icin verileri veya nesneleri izole et (PostgreSQL/Oracle/SQL Server'da semalar kullanilarak yaygin).</li>
+                    <li><strong>Uzantilari/Modulleri Yonetme</strong>: Ucuncu taraf uzantilari tarafindan olusturulan nesneleri
+                        temel uygulama nesnelerinden ayri tut.</li>
+                </ol>
+                <p><strong>Varsayilan Sema/Veritabani</strong>: Cogu sistemde, belirtilmezse nesnelerin olusturuldugu
+                    varsayilan bir kapsayici vardir (ornegin, PostgreSQL'de <code>public</code> semasi, MySQL'de
+                    <code>USE</code> ile secilen veritabani).
+                </p>
+                <p><strong>Sema/Veritabani Olusturma ve Yonetme</strong>:</p>
+                <p>Sozdizimi degisir, ancak kavramlar benzerdir.</p>
+                <ul>
+                    <li><strong>PostgreSQL</strong>: <code>CREATE SCHEMA schema_name;</code>,
+                        <code>DROP SCHEMA schema_name [CASCADE];</code>,
+                        <code>ALTER SCHEMA schema_name RENAME TO new_name;</code>
+                    </li>
+                    <li><strong>MySQL</strong>: <code>CREATE DATABASE database_name;</code>,
+                        <code>DROP DATABASE database_name;</code>, <code>ALTER DATABASE database_name ...;</code>
+                        (Yeniden adlandirma daha karmasik).
+                    </li>
+                    <li><strong>SQL Server</strong>: <code>CREATE SCHEMA schema_name;</code>,
+                        <code>DROP SCHEMA schema_name;</code>,
+                        <code>ALTER SCHEMA new_schema TRANSFER old_schema.object_name;</code>
+                    </li>
+                    <li><strong>Oracle</strong>: Semalar Kullanicilarla sikica baglantilidir.
+                        <code>CREATE USER username IDENTIFIED BY password;</code> etkili bir sekilde o
+                        kullaniciya ait bir sema olusturur.
+                    </li>
+                </ul>
+                <p><strong>Arama Yolu / Varsayilan Veritabani</strong>: Bir sema/veritabani adi acikca belirtilmediginde
+                    veritabaninin nesneleri nerede arayacagini belirler. Bu genellikle oturum veya kullanici basina yapilandirilabilir. *
+                    <strong>PostgreSQL</strong>: <code>SHOW search_path;</code>,
+                    <code>SET search_path TO schema1, schema2, public;</code> * <strong>MySQL</strong>:
+                    <code>USE database_name;</code>, <code>SELECT DATABASE();</code> * <strong>SQL Server</strong>:
+                    Kullaniciyla iliskilendirilmis varsayilan sema veya <code>USE database_name;</code> kullan. * <strong>Oracle</strong>:
+                    Varsayilan sema kullanicinin kendi semasidir.
+                    <code>ALTER SESSION SET CURRENT_SCHEMA = other_schema;</code>
+                </p>
+                <p><strong>Nesnelere Basvurma</strong>: Belirsizligi onlemek icin, ozellikle birden fazla sema/veritabani ile calisirken, betiklerde ve
+                    uygulama kodunda her zaman tam nitelikli adlari
+                    (<code>schema_name.object_name</code> veya <code>database_name.object_name</code>) kullanmayi tercih edin.</p>
+            </section>
+            <section>
+                <h3 id="object-naming-conventions">Nesne Adlandirma Kurallari</h3>
+                <p>Tutarli adlandirma kurallari okunabilirlik ve surudurulebilirlik icin hayati onem tasir. Standartlar degiskenlik gosterse de,
+                    bir proje icinde tutarlilik anahtardir.</p>
+                <p><strong>Genel Ilkeler</strong>:</p>
+                <ul>
+                    <li><strong>Tutarlilik</strong>: Bir stil secin ve ona bagli kalin.</li>
+                    <li><strong>Netlik</strong>: Adlar nesnenin amacini acikca belirtmelidir.</li>
+                    <li><strong>Ozluluk</strong>: Asiri uzunluktan kacinin, ancak netlikten odun vermeyin.</li>
+                    <li><strong>Ayrilmis Sozcuklerden Kacinin</strong>: Belirli RDBMS'iniz icin ayrilmis sozcuklerin listesini kontrol edin.
+                    </li>
+                    <li><strong>Buyuk/Kucuk Harf Duyarliligi</strong>: Veritabanlari buyuk/kucuk harfi farkli sekilde ele alir. PostgreSQL, tirnak icine alinmadikca
+                        varsayilan olarak kucuk harfe donusturur. MySQL davranisi isletim sistemine baglidir. SQL Server genellikle varsayilan olarak buyuk/kucuk harf duyarsizdir.
+                        <code>snake_case</code> (alt cizgi ile ayrilmis kucuk harfli sozcukler) kullanmak genellikle en guvenli ve en
+                        tasinabilir yaklasimdir.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Yaygin Kurallar (<code>snake_case</code> kullanan Ornekler)</strong>:</p>
+                <ul>
+                    <li><strong>Tablolar</strong>: Cogul isimler kullanin (ornegin, <code>customers</code>, <code>products</code>,
+                        <code>orders</code>) veya tekil isimler (ornegin, <code>customer</code>, <code>product</code>,
+                        <code>order</code>). Birini secin ve tutarli olun. Baglanti tablolari genellikle adlari birlestirir
+                        (ornegin,
+                        <code>order_items</code>, <code>user_roles</code>).
+                    </li>
+                    <li><strong>Sutunlar</strong>: Ozelligi tanimlayan tekil isimler kullanin (ornegin,
+                        <code>first_name</code>, <code>order_date</code>, <code>unit_price</code>).
+                    </li>
+                    <li><strong>Birincil Anahtarlar</strong>: Genellikle <code>id</code> veya <code>table_name_id</code> (ornegin,
+                        <code>product_id</code>).
+                    </li>
+                    <li><strong>Yabanci Anahtarlar</strong>: Genellikle <code>referenced_table_name_id</code> (ornegin,
+                        <code>customers</code> tablosuna basvuran <code>orders</code> tablosundaki <code>customer_id</code>).
+                    </li>
+                    <li><strong>Indeksler</strong>: Tablo, sutun(lar) ve muhtemelen tipi belirtin (ornegin,
+                        <code>idx_orders_customer_id</code>, <code>uq_products_sku</code>).
+                    </li>
+                    <li><strong>Gorunumler</strong>: Genellikle <code>v_</code> veya <code>vw_</code> onekiyle (ornegin,
+                        <code>v_active_customers</code>).
+                    </li>
+                    <li><strong>Saklanan Prosedurler/Fonksiyonlar</strong>: Fiil-isim ciftleri kullanin (ornegin,
+                        <code>calculate_order_total</code>, <code>get_customer_details</code>).
+                    </li>
+                    <li><strong>Tetikleyiciler</strong>: Tablo, zamanlama ve olayi belirtin (ornegin,
+                        <code>trg_orders_before_update</code>).
+                    </li>
+                </ul>
+                <p><strong>Kurallari Belgeleme</strong>: Proje ekibi icin secilen adlandirma kurallarini iceren bir belge tutun.</p>
+            </section>
+            <section>
+                <h3 id="schema-migration-strategies">Sema Migrasyon Stratejileri</h3>
+                <p>Sema migrasyonu (veya veritabani degisiklik yonetimi), veritabani semanizda artimsal, surumlu
+                    degisiklikleri kontrol ve otomatik bir sekilde yonetme pratigidir. Manuel degisiklikler hataya aciktir
+                    ve izlemesi zordur.</p>
+                <p><strong>Neden Sema Migrasyonlari Kullanilmali?</strong>
+                <ul>
+                    <li><strong>Surum Kontrolu</strong>: Sema degisikliklerini
+                        uygulama koduyla birlikte takip edin.</li>
+                    <li><strong>Tekrarlanabilirlik</strong>: Semanin farkli ortamlarda (gelistirme, test, uretim) guvenilir sekilde
+                        olusturulabilmesini veya guncellenebilmesini saglayin.</li>
+                    <li><strong>Otomasyon</strong>:
+                        Sema degisikliklerini dagitim boru hatlarina entegre edin.</li>
+                    <li><strong>Is Birligi</strong>: Birden fazla
+                        gelistirici tarafindan yapilan degisiklikleri yonetin.</li>
+                    <li><strong>Geri Alma Yetenegi</strong>: Degisikliklerin nasil geri alinacagini tanimlayin (mumkun
+                        oldugunda).</li>
+                </ul>
+                </p>
+                <p><strong>Temel Ilkeler</strong>:</p>
+                <ul>
+                    <li><strong>Surumlu Betikler</strong>: Her degisiklik veya iliskili degisiklikler
+                        kumesi, benzersiz bir surum numarasi veya zaman damgasiyla tanimlanan bir betikte bulunur.</li>
+                    <li><strong>Durum
+                            Izleme</strong>: Veritabani, hangi migrasyon betiklerinin zaten uygulandigini takip eder.</li>
+                    <li><strong>Yukari/Asagi Migrasyonlari</strong>: Her migrasyon betigi ideal olarak bir "yukari" bolumu (degisikligi uygula) ve bir "asagi" bolumu (degisikligi geri al) icerir.</li>
+                    <li><strong>Idempotentlik</strong>: Ayni
+                        migrasyonu birden fazla kez uygulamak olumsuz bir etkiye sahip olmamalidir (araclar genellikle yeniden uygulamayi engeller).</li>
+                </ul>
+            </section>
+            <section>
+                <p><strong>Sema Degisikligi Turleri ve Dikkat Edilecekler</strong>:</p>
+                <ul>
+                    <li><strong>Ekleyici
+                            Degisiklikler</strong>:
+                        Genellikle guvenlidir (ornegin, <code>CREATE TABLE</code>, <code>ADD COLUMN</code> (nullable veya varsayilanli),
+                        <code>CREATE INDEX</code>).
+                    </li>
+                    <li><strong>Yikici Degisiklikler</strong>: Yuksek riskli, dikkatli
+                        planlama gerektirir
+                        (ornegin, <code>DROP TABLE</code>, <code>DROP COLUMN</code>). Genellikle once veri migrasyonu veya
+                        arsivleme gerektirir. </li>
+                    <li><strong>Veri Tipi Degisiklikleri</strong>: Karmasik olabilir, yeni bir sutun olusturmayi,
+                        veri tasimayi ve ardindan eski sutunu silmeyi gerektirebilir. </li>
+                    <li><strong>Yeniden Adlandirma</strong>: Bagimliliklari bozabilir;
+                        genellikle ekle+tasi+sil olarak ele alinir. </li>
+                    <li><strong>Kisitlama Degisiklikleri</strong>: Mevcut bir sutuna
+                        <code>NOT NULL</code>
+                        eklemek, hicbir NULL deger olmadigindan emin olmayi gerektirir.
+                    </li>
+                </ul>
+                <p><strong>Migrasyon Araclari</strong>: Bu sureci yonetmek icin cok sayida arac vardir. Genellikle
+                    veritabanina baglanir, uygulanan migrasyon surumlerini kontrol eder ve bekleyen migrasyon betiklerini calistirir. *
+                    <strong>Flyway</strong>: Populer Java tabanli arac, surum numaralariyla adlandirilmis SQL betiklerini kullanir. *
+                    <strong>Liquibase</strong>: Degisiklik kumelerini tanimlamak icin XML, YAML, JSON veya SQL formatlarini destekler.
+                    Flyway'den daha zengin ozelliklere sahiptir. * <strong>Sqitch</strong>: Saf SQL betikleri kullanir, veritabani
+                    gelistiricileri dusunulerek tasarlanmistir. * <strong>Framework'e Ozel Araclar</strong>: Bircok uygulama framework'unun
+                    yerlesik migrasyon araclari vardir (ornegin, Python/SQLAlchemy icin Alembic, Ruby on
+                    Rails icin Active Record Migrations, .NET icin Entity Framework Migrations).
+                </p>
+            </section>
+            <section>
+                <p><strong>Is Akisi Ornegi (Kavramsal)</strong>:</p>
+                <ol type="1">
+                    <li>Gelistirici yeni bir migrasyon betigi olusturur (ornegin,
+                        <code>V002__Add_phone_to_customers.sql</code>).
+                    </li>
+                    <li>Betik <code>ALTER TABLE customers ADD COLUMN phone_number VARCHAR(20);</code> icerir. </li>
+                    <li>Gelistirici migrasyonu yerel ortamda test eder. </li>
+                    <li>Kod ve migrasyon betigi surum kontrolune kaydedilir. </li>
+                    <li>CI/CD boru hatti, migrasyon aracini test veritabaninda calistirir. </li>
+                    <li>Testler gecerse, dagitim sirasinda migrasyon araci uretim veritabaninda calistirilir.
+                    </li>
+                    <li>Migrasyon araci, <code>V002</code>'nin uygulandigini kaydetmek icin veritabanindaki izleme tablosunu gunceller.</li>
+                </ol>
+                <p><strong>En Iyi Uygulamalar</strong>:</p>
+                <ul>
+                    <li>Ozel bir migrasyon araci kullanin.</li>
+                    <li>Migrasyonlari kucuk ve tek bir mantiksal degisiklige odakli tutun.</li>
+                    <li>Mumkunse her zaman geri alma adimlari (<code>down</code> migrasyonlari) ekleyin.</li>
+                    <li>Migrasyonlari uretime benzeyen bir hazirlama ortaminda iyice test edin.</li>
+                    <li>Paylasilan bir ortama uygulandiktan sonra asla bir migrasyon betigini duzenleyin (duzeltmek icin yeni bir
+                        betik olusturun).</li>
+                    <li>Sema degisikliklerini uygulama kodu dagitimlariyla koordine edin.</li>
+                    <li>Veri tasima veya potansiyel kesinti iceren karmasik degisiklikler icin dikkatli planlama yapin (ornegin,
+                        genislet-daralt deseni).
+                </ul>
+                <p>Duzgun sema organizasyonu ve saglam bir migrasyon stratejisi, uygulama yasam dongusu boyunca veritabani evrimini
+                    etkili bir sekilde yonetmek icin onemlidir.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Ogrendiklerinizi Uygulama</h3>
+                <p>Sema yonetiminde ustalasmaya hazir misiniz? Sema organizasyonu, adlandirma kurallari ve migrasyon stratejilerini kapsayan uygulamali aliştirmalarla pratik yapin.</p>
+                <p><a href="02_schema_management_and_organization_examples_tr.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day3/02_schema_management_and_organization.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

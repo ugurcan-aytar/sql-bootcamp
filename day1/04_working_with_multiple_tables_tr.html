@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 
 <!-- Mirrored from code-mext.github.io/sql-training/day1/04_working_with_multiple_tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
@@ -13,7 +13,7 @@
     <meta charset="utf-8" />
     <meta name="generator" content="pandoc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 1: Working with Multiple Tables (JOIN)</title>
+    <title>Gun 1: Birden Fazla Tablo ile Calisma (JOIN)</title>
     <style>
         /* Minimal Pandoc styles */
         code {
@@ -56,6 +56,7 @@
             padding: 2rem 0;
         }
 
+        /* Language switcher styles */
         .language-switcher {
             position: fixed;
             top: 10px;
@@ -66,32 +67,14 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-
-        .language-switcher a {
-            text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 3px;
-            color: #333;
-        }
-
-        .language-switcher a.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        .language-switcher a:hover:not(.active) {
-            background: #e9ecef;
-        }
     </style>
 </head>
 
 <body>
     <div class="language-switcher">
-        <a href="04_working_with_multiple_tables.html" class="active">EN</a>
-        <a href="04_working_with_multiple_tables_tr.html">TR</a>
+        <a href="04_working_with_multiple_tables.html">EN</a> | <a href="04_working_with_multiple_tables_tr.html"><strong>TR</strong></a>
     </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
     </div>
@@ -111,72 +94,71 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1 id="day-1-working-with-multiple-tables">Day 1: Working with Multiple Tables</h1>
-                <h2 id="session-4-working-with-multiple-tables-2-hours">Session 4: Working with Multiple Tables (2
-                    hours)
+                <h1 id="day-1-working-with-multiple-tables">Gun 1: Birden Fazla Tablo ile Calisma</h1>
+                <h2 id="session-4-working-with-multiple-tables-2-hours">Oturum 4: Birden Fazla Tablo ile Calisma (2
+                    saat)
                 </h2>
-                <h3 id="understanding-table-relationships-standard-concept">Understanding Table Relationships (Standard
-                    Concept)
+                <h3 id="understanding-table-relationships-standard-concept">Tablo Iliskilerini Anlama (Standart
+                    Kavram)
                 </h3>
-                <p>Relational databases excel at managing relationships between different pieces of information. Data is
-                    typically split across multiple tables to reduce redundancy (normalization), and these tables are
-                    linked
-                    using relationships.</p>
-                <p><strong>Types of Relationships</strong>:</p>
+                <p>Iliskisel veritabanlari, farkli bilgi parcalari arasindaki iliskileri yonetmede ustunluk saglar. Veriler
+                    genellikle fazlaligi azaltmak (normalizasyon) icin birden fazla tabloya bolunur ve bu tablolar
+                    iliskiler
+                    kullanilarak birbirine baglanir.</p>
+                <p><strong>Iliski Turleri</strong>:</p>
                 <ul>
-                    <li><strong>One-to-One (1:1)</strong>: Each record in Table A corresponds to exactly one record in
-                        Table
-                        B.
+                    <li><strong>Bire-Bir (1:1)</strong>: Tablo A'daki her kayit, Tablo B'deki tam olarak bir kayda karsilik
+                        gelir.
                     </li>
-                    <li><strong>One-to-Many (1:N)</strong>: A record in Table A can relate to many records in Table B.
-                        (Most
-                        common).</li>
-                    <li><strong>Many-to-Many (M:N)</strong>: Records in Table A can relate to many records in Table B,
-                        and
-                        vice-versa. Requires a junction table.</li>
+                    <li><strong>Bire-Cok (1:N)</strong>: Tablo A'daki bir kayit, Tablo B'deki bircok kayitla iliskili
+                        olabilir.
+                        (En yaygin).</li>
+                    <li><strong>Coka-Cok (M:N)</strong>: Tablo A'daki kayitlar, Tablo B'deki bircok kayitla iliskili
+                        olabilir ve
+                        bunun tersi de gecerlidir. Bir baglanti tablosu gerektirir.</li>
                 </ul>
             </section>
             <section>
-                <p><strong>Foreign Keys (Standard Concept)</strong>:</p>
-                <p>Relationships are implemented using <strong>foreign keys</strong>. A foreign key in one table refers
-                    to
-                    the
-                    primary key of another table, ensuring referential integrity.</p>
+                <p><strong>Yabanci Anahtarlar (Standart Kavram)</strong>:</p>
+                <p>Iliskiler, <strong>yabanci anahtarlar</strong> kullanilarak uygulanir. Bir tablodaki yabanci anahtar,
+                    baska
+                    bir
+                    tablonun birincil anahtarina referans verir ve referans butunlugunu saglar.</p>
                 <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
                     <pre class="sourceCode sql">
-<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
+<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Odoo semasini kullanan ornek (PostgreSQL)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
                 </div>
                 <p>
-                    <strong>Example: SQLite</strong>
+                    <strong>Ornek: SQLite</strong>
                 </p>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="sourceCode" id="cb33" onclick="CopyToClipboard('cb33')">
-                            <pre><code class="language-sql">-- Standard SQL syntax for creating tables
+                            <pre><code class="language-sql">-- Tablo olusturmak icin standart SQL sozdizimi
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> customers (</span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>id <span class="kw">INTEGER PRIMARY KEY,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>customer_name <span class="kw">VARCHAR</span>(100)</span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- diger sutunlar...</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> category (</span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>id <span class="kw">INTEGER PRIMARY KEY,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>category_name <span class="kw">VARCHAR</span>(100)</span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- diger sutunlar...</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
 </code></pre>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="sourceCode" id="cb332" onclick="CopyToClipboard('cb332')">
-                            <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+                            <pre><code class="language-sql">-- Yabanci anahtar tanimlamak icin standart SQL sozdizimi
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> products (</span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>id <span class="kw">INTEGER PRIMARY KEY,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>product_name <span class="kw">TEXT</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>categ_id <span class="kw">INTEGER</span> <span class="kw">REFERENCES</span> category(id)</span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- diger sutunlar...</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
 </code></pre>
@@ -184,7 +166,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="sourceCode" id="cb333" onclick="CopyToClipboard('cb333')">
-                            <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+                            <pre><code class="language-sql">-- Yabanci anahtar tanimlamak icin standart SQL sozdizimi
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> orders (</span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>order_id <span class="kw">INTEGER PRIMARY KEY,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>customer_id <span class="kw">INTEGER NOT NULL,</span></span>
@@ -192,9 +174,9 @@
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>order_date <span class="kw">DATE NOT NULL,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>order_total <span class="kw">NUMERIC(10,2) NOT NULL,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>shipped_date <span class="kw">DATE,</span></span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">FOREIGN KEY</span> (customer_id) <span class="kw">REFERENCES</span> customers(customer_id) -- Constraint definition</span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">FOREIGN KEY</span> (product_id) <span class="kw">REFERENCES</span> products(id) -- Constraint definition</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- diger sutunlar...</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">FOREIGN KEY</span> (customer_id) <span class="kw">REFERENCES</span> customers(customer_id) -- Kisitlama tanimi</span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">FOREIGN KEY</span> (product_id) <span class="kw">REFERENCES</span> products(id) -- Kisitlama tanimi</span>
 );</span>
                     </code></pre>
                         </div>
@@ -249,24 +231,24 @@
                 </div>
             </section>
             <section>
-                <h3 id="join-operations-standard-sql">JOIN Operations (Standard SQL)</h3>
-                <p><code>JOIN</code> clauses combine rows from two or more tables based on a related column.</p>
+                <h3 id="join-operations-standard-sql">JOIN Islemleri (Standart SQL)</h3>
+                <p><code>JOIN</code> ifadeleri, iliskili bir sutuna dayali olarak iki veya daha fazla tablodaki satirlari birlestirir.</p>
                 <ul>
                     <li>
                         <strong>INNER JOIN: </strong>
-                        Returns only rows where the join condition is met in both tables.
+                        Yalnizca birlesim kosulunun her iki tabloda da karsilandigi satirlari dondurur.
                     </li>
                     <li>
                         <strong>LEFT JOIN: </strong>
-                        Returns all rows from the left table and matching rows from the right table.
+                        Sol tablodaki tum satirlari ve sag tablodaki eslesen satirlari dondurur.
                     </li>
                     <li>
                         <strong>RIGHT JOIN: </strong>
-                        Returns all rows from the right table and matching rows from the left table.
+                        Sag tablodaki tum satirlari ve sol tablodaki eslesen satirlari dondurur.
                     </li>
                     <li>
                         <strong>FULL OUTER JOIN: </strong>
-                        Returns all rows from both tables.
+                        Her iki tablodaki tum satirlari dondurur.
                     </li>
                 </ul>
 
@@ -281,7 +263,7 @@
                                     stroke="none" />
                             </svg>
                             <p class="text-sm mt-1 font-semibold text-blue-200">INNER JOIN</p>
-                            <p class="text-xs text-gray-400">Matching rows only</p>
+                            <p class="text-xs text-gray-400">Yalnizca eslesen satirlar</p>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -295,7 +277,7 @@
                                     stroke="none" />
                             </svg>
                             <p class="text-sm mt-1 font-semibold text-blue-200">LEFT JOIN</p>
-                            <p class="text-xs text-gray-400">All left + matching right</p>
+                            <p class="text-xs text-gray-400">Tum sol + eslesen sag</p>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -308,7 +290,7 @@
                                     stroke="none" />
                             </svg>
                             <p class="text-sm mt-1 font-semibold text-blue-200">RIGHT JOIN</p>
-                            <p class="text-xs text-gray-400">All right + matching left</p>
+                            <p class="text-xs text-gray-400">Tum sag + eslesen sol</p>
                         </div>
 
                     </div>
@@ -322,7 +304,7 @@
                                     stroke="none" />
                             </svg>
                             <p class="text-sm mt-1 font-semibold text-blue-200">FULL JOIN</p>
-                            <p class="text-xs text-gray-400">All rows from both tables</p>
+                            <p class="text-xs text-gray-400">Her iki tablodaki tum satirlar</p>
                         </div>
 
                     </div>
@@ -333,16 +315,16 @@
 
                 <p><strong>INNER JOIN</strong>:</p>
                 <ul>
-                    <li>Returns only rows where the join condition is met in <em>both</em> tables.</li>
+                    <li><em>Her iki</em> tabloda da birlesim kosulunun karsilandigi yalnizca satirlari dondurur.</li>
                 </ul>
                 <div class="sourceCode" id="cb4" onclick="CopyToClipboard('cb4')">
                     <pre
-                        class="language-sql"><code class="language-sql"><span class="co">-- Standard Syntax</span>
+                        class="language-sql"><code class="language-sql"><span class="co">-- Standart Sozdizimi</span>
 <span class="kw">SELECT</span> t1.columnA, t2.columnB
 <span class="kw">FROM</span> table1 t1
 <span class="kw">INNER JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
                 </div>
-                <p><em>Example: Get orders and the names of the customers who placed them.</em></p>
+                <p><em>Ornek: Siparisleri ve siparisi veren musterilerin adlarini alin.</em></p>
                 <div class="sourceCode" id="cb5" onclick="CopyToClipboard('cb5')">
                     <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
     o.order_id,
@@ -356,23 +338,22 @@
             </section>
             <section>
 
-                <p><strong>LEFT JOIN (or LEFT OUTER JOIN)</strong>:</p>
+                <p><strong>LEFT JOIN (veya LEFT OUTER JOIN)</strong>:</p>
                 <ul>
-                    <li>Returns <em>all</em> rows from the <strong>left</strong> table and matching rows from the
-                        right
-                        table.
+                    <li><strong>Sol</strong> tablodaki <em>tum</em> satirlari ve sag tablodaki eslesen satirlari
+                        dondurur.
                     </li>
-                    <li>If no match, right table columns are <code>NULL</code>.</li>
+                    <li>Eslesme yoksa, sag tablo sutunlari <code>NULL</code> olur.</li>
                 </ul>
                 <div class="sourceCode" id="cb6" onclick="CopyToClipboard('cb6')">
                     <pre
-                        class="language-sql"><code class="language-sql"><span class="co">-- Standard Syntax</span>
+                        class="language-sql"><code class="language-sql"><span class="co">-- Standart Sozdizimi</span>
 <span class="kw">SELECT</span> t1.columnA, t2.columnB
 <span class="kw">FROM</span> table1 t1
 <span class="kw">LEFT JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
                 </div>
 
-                <p><em>Example: List all customers and any orders they may have placed.</em></p>
+                <p><em>Ornek: Tum musterileri ve verdikleri siparisleri listeleyin.</em></p>
                 <div class="sourceCode" id="cb7" onclick="CopyToClipboard('cb7')">
                     <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
     c.customer_name,
@@ -385,43 +366,42 @@
                 </div>
             </section>
             <section>
-                <p><strong>RIGHT JOIN (or RIGHT OUTER JOIN)</strong>:</p>
+                <p><strong>RIGHT JOIN (veya RIGHT OUTER JOIN)</strong>:</p>
                 <ul>
-                    <li>Returns <em>all</em> rows from the <strong>right</strong> table and matching rows from the
-                        left
-                        table.
+                    <li><strong>Sag</strong> tablodaki <em>tum</em> satirlari ve sol tablodaki eslesen satirlari
+                        dondurur.
                     </li>
-                    <li>If no match, left table columns are <code>NULL</code>.</li>
-                    <li>Less common; can often be rewritten as a <code>LEFT JOIN</code>.</li>
+                    <li>Eslesme yoksa, sol tablo sutunlari <code>NULL</code> olur.</li>
+                    <li>Daha az yaygindir; genellikle <code>LEFT JOIN</code> olarak yeniden yazilabilir.</li>
                 </ul>
                 <div class="sourceCode" id="cb8" onclick="CopyToClipboard('cb8')">
                     <pre
-                        class="language-sql"><code class="language-sql"><span class="co">-- Standard Syntax</span>
+                        class="language-sql"><code class="language-sql"><span class="co">-- Standart Sozdizimi</span>
 <span class="kw">SELECT</span> t1.columnA, t2.columnB
 <span class="kw">FROM</span> table1 t1
 <span class="kw">RIGHT JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
                 </div>
             </section>
             <section>
-                <p><strong>FULL OUTER JOIN (or FULL JOIN)</strong>:</p>
+                <p><strong>FULL OUTER JOIN (veya FULL JOIN)</strong>:</p>
                 <ul>
-                    <li>Returns <em>all</em> rows from <em>both</em> tables.</li>
-                    <li>If a row in one table has no match in the other, the columns from the other table will be
-                        <code>NULL</code>.
+                    <li><em>Her iki</em> tablodaki <em>tum</em> satirlari dondurur.</li>
+                    <li>Bir tablodaki bir satirin digerinde eslesme yoksa, diger tablonun sutunlari
+                        <code>NULL</code> olacaktir.
                     </li>
-                    <li>Supported by PostgreSQL, SQL Server, Oracle. MySQL does not directly support
-                        <code>FULL OUTER JOIN</code> (can be simulated using <code>UNION</code> of <code>LEFT</code>
-                        and
-                        <code>RIGHT</code> joins).
+                    <li>PostgreSQL, SQL Server, Oracle tarafindan desteklenir. MySQL dogrudan
+                        <code>FULL OUTER JOIN</code> desteklemez (<code>LEFT</code>
+                        ve
+                        <code>RIGHT</code> joinlerin <code>UNION</code>'u ile simule edilebilir).
                     </li>
                 </ul>
                 <div class="sourceCode" id="cb9" onclick="CopyToClipboard('cb9')">
-                    <pre><code class="language-sql">-- Standard Syntax (Not supported by MySQL directly)
+                    <pre><code class="language-sql">-- Standart Sozdizimi (MySQL tarafindan dogrudan desteklenmez)
 <span class="kw">SELECT</span> t1.columnA, t2.columnB
 <span class="kw">FROM</span> table1 t1
 <span class="kw">FULL OUTER JOIN</span> table2 t2 <span class="kw">ON</span> t1.common_column = t2.common_column;</code></pre>
                 </div>
-                <p><em>Example: List all customers and all orders, matching them where possible.</em></p>
+                <p><em>Ornek: Tum musterileri ve tum siparisleri listeleyin, mumkun oldugunda eslestirin.</em></p>
                 <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
                     <pre><code class="language-sql">-- PostgreSQL / SQL Server / Oracle
 <span class="kw">SELECT</span>
@@ -434,11 +414,11 @@
                 </div>
             </section>
             <section>
-                <h3 id="joining-multiple-tables">Joining Multiple Tables</h3>
-                <p>You can join more than two tables by chaining <code>JOIN</code> clauses.</p>
-                <p><em>Example: Get order details, customer name, and product name (assuming an
+                <h3 id="joining-multiple-tables">Birden Fazla Tabloyu Birlestirme</h3>
+                <p><code>JOIN</code> ifadelerini zincirleme yaparak ikiden fazla tabloyu birlestirebilirsiniz.</p>
+                <p><em>Ornek: Siparis detaylarini, musteri adini ve urun adini alin (bir
                         <code>order_items</code>
-                        junction table and a <code>products</code> table).</em></p>
+                        baglanti tablosu ve bir <code>products</code> tablosu oldugunu varsayarak).</em></p>
                 <div class="sourceCode" id="cb11" onclick="CopyToClipboard('cb11')">
                     <pre><code class="language-sql"><span class="kw">SELECT</span>
     o.order_id,
@@ -454,64 +434,62 @@
 <span class="kw">INNER JOIN</span>
     products p <span class="kw">ON</span> oi.product_id = p.product_id
 <span class="kw">WHERE</span>
-    o.order_date >= '2025-01-01'; -- Example filter</code></pre>
+    o.order_date >= '2025-01-01'; -- Ornek filtre</code></pre>
                 </div>
             </section>
             <section>
-                <h3 id="table-aliases">Table Aliases</h3>
-                <p>Using aliases (short names) for tables makes queries shorter and more readable, especially when
-                    joining
-                    multiple tables or the same table to itself (self-join).</p>
+                <h3 id="table-aliases">Tablo Takma Adlari</h3>
+                <p>Tablolar icin takma adlar (kisa isimler) kullanmak, sorulari daha kisa ve okunakli hale getirir, ozellikle
+                    birden fazla tabloyu veya ayni tabloyu kendisine birlestirirken (self-join).</p>
                 <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
-                    <pre><code class="language-sql">-- Using aliases 'o' for orders and 'c' for customers
+                    <pre><code class="language-sql">-- orders icin 'o' ve customers icin 'c' takma adlarini kullanma
 <span class="kw">SELECT</span> o.order_id, c.customer_name
 <span class="kw">FROM</span> orders AS o
 <span class="kw">INNER JOIN</span> customers AS c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
                 </div>
                 <ul>
-                    <li>The <code>AS</code> keyword is optional for table aliases in most SQL dialects (including
-                        PostgreSQL).
+                    <li><code>AS</code> anahtar kelimesi, cogu SQL lehcesinde (PostgreSQL dahil) tablo takma adlari icin istege baglidir.
                     </li>
                 </ul>
             </section>
             <section>
-                <h3 id="practical-examples-in-odoo-schema-postgresql">Practical Examples in Odoo Schema (PostgreSQL)
+                <h3 id="practical-examples-in-odoo-schema-postgresql">Odoo Semasinda Pratik Ornekler (PostgreSQL)
                 </h3>
-                <p>The Odoo database uses extensive relationships. Common tables to join include:</p>
+                <p>Odoo veritabani kapsamli iliskiler kullanir. Birlestirilecek yaygin tablolar sunlardir:</p>
                 <ul>
-                    <li><code>res_partner</code> (Customers, Suppliers, Contacts)</li>
-                    <li><code>sale_order</code> (Sales Orders)</li>
-                    <li><code>sale_order_line</code> (Lines within a Sales Order)</li>
-                    <li><code>product_product</code> (Specific Product Variants)</li>
-                    <li><code>product_template</code> (General Product Templates)</li>
-                    <li><code>account_move</code> (Invoices, Journal Entries)</li>
-                    <li><code>account_move_line</code> (Lines within Invoices/Entries)</li>
-                    <li><code>stock_picking</code> (Warehouse Transfers)</li>
-                    <li><code>stock_move</code> (Stock Movements)</li>
+                    <li><code>res_partner</code> (Musteriler, Tedarikciler, Kisiler)</li>
+                    <li><code>sale_order</code> (Satis Siparisleri)</li>
+                    <li><code>sale_order_line</code> (Satis Siparisi icindeki Satirlar)</li>
+                    <li><code>product_product</code> (Belirli Urun Varyantlari)</li>
+                    <li><code>product_template</code> (Genel Urun Sablonlari)</li>
+                    <li><code>account_move</code> (Faturalar, Yevmiye Kayitlari)</li>
+                    <li><code>account_move_line</code> (Faturalar/Kayitlar icindeki Satirlar)</li>
+                    <li><code>stock_picking</code> (Depo Transferleri)</li>
+                    <li><code>stock_move</code> (Stok Hareketleri)</li>
                 </ul>
             </section>
             <section>
 
-                <p><em>Example: Get Sales Order numbers and the Customer names.</em></p>
+                <p><em>Ornek: Satis Siparisi numaralarini ve Musteri adlarini alin.</em></p>
                 <div class="sourceCode" id="cb13" onclick="CopyToClipboard('cb13')">
-                    <pre><code class="language-sql">-- Odoo Example (PostgreSQL)
+                    <pre><code class="language-sql">-- Odoo Ornegi (PostgreSQL)
 <span class="kw">SELECT</span>
-    so.name <span class="kw">AS</span> sales_order_ref, -- Odoo often uses 'name' for user-visible identifiers
+    so.name <span class="kw">AS</span> sales_order_ref, -- Odoo genellikle kullaniciya gorunen tanimlamalar icin 'name' kullanir
     rp.name <span class="kw">AS</span> customer_name,
     so.date_order,
     so.amount_total
 <span class="kw">FROM</span>
     sale_order so
 <span class="kw">LEFT JOIN</span>
-    res_partner rp <span class="kw">ON</span> so.partner_id = rp.id -- Join sale_order to res_partner on customer ID
+    res_partner rp <span class="kw">ON</span> so.partner_id = rp.id -- sale_order'i musteri ID'si uzerinden res_partner'a bagla
 <span class="kw">WHERE</span>
-    so.state = 'sale'; -- Filter for confirmed sales orders</code></pre>
+    so.state = 'sale'; -- Onaylanmis satis siparisleri icin filtrele</code></pre>
                 </div>
             </section>
             <section>
-                <p><em>Example: Get Sales Order lines showing Product and Quantity.</em></p>
+                <p><em>Ornek: Urun ve Miktari gosteren Satis Siparisi satirlarini alin.</em></p>
                 <div class="sourceCode" id="cb14" onclick="CopyToClipboard('cb14')">
-                    <pre><code class="language-sql">-- Odoo Example (PostgreSQL)
+                    <pre><code class="language-sql">-- Odoo Ornegi (PostgreSQL)
 <span class="kw">SELECT</span>
     so.name <span class="kw">AS</span> sales_order_ref,
     pt.name <span class="kw">AS</span> product_name,
@@ -530,15 +508,13 @@
 <span class="kw">ORDER BY</span>
     so.name, pt.name;</code></pre>
                 </div>
-                <p>These examples demonstrate how JOINs are essential for retrieving meaningful information by
-                    combining
-                    data
-                    spread across different tables in a normalized database like Odoo's.</p>
+                <p>Bu ornekler, Odoo'nun normalize edilmis veritabani gibi farkli tablolara yayilmis verileri birlestirerek
+                    anlamli bilgiler almak icin JOIN'lerin ne kadar gerekli oldugunu gostermektedir.</p>
             </section>
             <section>
-                <h3 id="practice-exercises">Practice What You Learned</h3>
-                <p>Ready to master JOIN operations? Practice with hands-on exercises using the concepts covered in this lesson.</p>
-                <p><a href="04_working_with_multiple_tables_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+                <h3 id="practice-exercises">Ogrendiklerinizi Uygulayın</h3>
+                <p>JOIN islemlerinde ustalasmaya hazir misiniz? Bu derste islenen kavramlari kullanarak uygulamali alistirmalar yapin.</p>
+                <p><a href="04_working_with_multiple_tables_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
             </section>
         </div>
     </div>

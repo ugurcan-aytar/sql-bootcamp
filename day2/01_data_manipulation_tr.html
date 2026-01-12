@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/01_data_manipulation.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    rel="shortcut icon" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Gun 2: Veri Manipulasyonu (DML)</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BaseN */
+    code span.bu {}
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+
+    .language-switcher {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .language-switcher a {
+        text-decoration: none;
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 3px;
+        color: #333;
+    }
+    .language-switcher a.active {
+        background: #0d6efd;
+        color: #fff;
+    }
+    .language-switcher a:hover:not(.active) {
+        background: #e9ecef;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <a href="01_data_manipulation.html">EN</a>
+    <a href="01_data_manipulation_tr.html" class="active">TR</a>
+  </div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+        <h1 id="day-2-data-manipulation">Gun 2: Veri Manipulasyonu (DML)</h1>
+        <h2 id="session-2-data-manipulation-2-hours">Oturum 1: Veri Manipulasyonu (2 saat)</h2>
+        <p>Bu oturum, tablolara veri eklemek, degistirmek ve silmek icin kullanilan SQL komutlarini kapsar: <code>INSERT</code>,
+          <code>UPDATE</code> ve <code>DELETE</code>. Ayrica bu islemler sirasinda veri butunlugunu saglamak icin kritik oneme sahip
+          islem (transaction) yonetimini de tartisacagiz.
+        </p>
+      </section>
+      <section>
+        <h3 id="insert-statements-adding-data">INSERT Ifadeleri (Veri Ekleme)</h3>
+        <p><code>INSERT</code> ifadesi bir tabloya yeni satirlar (kayitlar) ekler.</p>
+        <p><strong>Standart SQL Sozdizimi</strong>:</p>
+        <ol type="1">
+          <li>
+            <p><strong>Tek Satir Ekleme</strong>: Tabloyu, doldurulacak sutunlari ve karsilik gelen degerleri belirtin.
+            <div class="sourceCode" id="cb1" onclick="CopyToClipboard('cb1')">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Tek satir ekle</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> table_name (column1, column2) <span class="kw">VALUES</span> (value1, value2);</span></code></pre>
+            </div>
+            </p>
+            <ul>
+              <li>Eger <em>tum</em> sutunlar icin tanimli siralarinda deger sagliyorsaniz, sutun listesi bazen atlanabilir,
+                ancak sutunlari acikca listelemek daha guvenli ve okunabilirdir.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Birden Fazla Satir Ekleme</strong>: Cogu veritabani, birden fazla deger demeti kullanarak tek bir
+              <code>INSERT</code> ifadesiyle birden fazla satir eklemeyi destekler.
+            <div class="sourceCode" id="cb2" onclick="CopyToClipboard('cb2')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Birden fazla satir ekle</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> table_name (column1, column2) <span class="kw">VALUES</span>
+(value1a, value2a),
+(value1b, value2b),
+(value1c, value2c);</span></code></pre>
+            </div>
+            </p>
+          </li>
+          <li>
+            <p><strong>Sorgudan Ekleme</strong>: Bir <code>SELECT</code> ifadesinin sonucuna dayali olarak satirlar ekleyin.
+            <div class="sourceCode" id="cb03" onclick="CopyToClipboard('cb03')">
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Birden fazla satir ekle</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> table_name (column1, column2)
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">SELECT</span> source_column1, source_column2
+<span class="kw">FROM</span> source_table
+<span class="kw">WHERE</span> condition;</span></code></pre>
+            </div>
+            </p>
+          </li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Varsayilan Degerlerin Islenmesi (Standart SQL)</strong>:</p>
+        <p>Eger bir sutunun tanimli bir varsayilan degeri varsa, onu <code>INSERT</code> ifadesinden cikarabilir
+          (sutunlari acikca listelerseniz) veya <code>DEFAULT</code> anahtar kelimesini kullanabilirsiniz.</p>
+        <div class="sourceCode" id="cb04" onclick="CopyToClipboard('cb04')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- column3'un varsayilan bir degeri oldugunu varsayarak</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> table_name (column1, column2) <span class="kw">VALUES</span> (value1, value2); <span class="co">-- column3'u atlayarak</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> table_name (column1, column2, column3) </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">VALUES</span> (value1, value2, <span class="kw">DEFAULT</span>); <span class="co">-- Acikca DEFAULT kullanarak</span></span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Olusturulan Degerleri Alma (Sozdizimi Degisir)</strong>:</p>
+        <p>Cogu zaman, bir eklemeden sonra otomatik olusturulan bir anahtarin (ID gibi) degerini almaniz gerekir.</p>
+        <ul>
+          <li><strong>PostgreSQL/Oracle</strong>: <code>RETURNING</code> yan tumcesini kullanin.
+            <div class="sourceCode" id="cb05" onclick="CopyToClipboard('cb05')">
+              <pre class="sourceCode sql">
+<code><span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"></span>-- PostgreSQL/Oracle Ornegi</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> products (product_name, price)
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw">VALUES</span> (<span class="ot">&quot;New Gadget&quot;</span>, <span class="fl">99.99</span>)
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">RETURNING</span> product_id;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>SQL Server</strong>: <code>OUTPUT</code> yan tumcesini kullanin.
+            <div class="sourceCode" id="cb06" onclick="CopyToClipboard('cb06')">
+              <pre class="sourceCode sql">
+<code><span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co"></span>-- SQL Server Ornegi</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> products (product_name, price)
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">OUTPUT</span> inserted.product_id
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">VALUES</span> (<span class="ot">&quot;New Gadget&quot;</span>, <span class="fl">99.99</span>);</span></code></pre>
+            </div>
+          </li>
+          <li><strong>MySQL</strong>: Sonraki bir sorguda (ayni oturum icinde) <code>LAST_INSERT_ID()</code> fonksiyonunu kullanin.
+            <div class="sourceCode" id="cb07" onclick="CopyToClipboard('cb07')">
+              <pre class="sourceCode sql">
+<code><span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="co"></span>-- MySQL Ornegi</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> products (product_name, price)
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="kw">VALUES</span> (<span class="ot">&quot;New Gadget&quot;</span>, <span class="fl">99.99</span>);</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="kw">SELECT</span> LAST_INSERT_ID();</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Standart SQL</strong>: <code>IDENTITY()</code> fonksiyonu tanimlidir, ancak satici destegi ve
+            kullanimi degisir.</li>
+        </ul>
+      </section>
+      <section>
+        <p><strong>Ornekler (Odoo/PostgreSQL Semasini Kullanarak)</strong>:</p>
+        <div class="sourceCode" id="cb08" onclick="CopyToClipboard('cb08')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Tek bir urun kategorisi ekle</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> product_category (name, parent_id) <span class="kw">VALUES</span> (<span class="ot">&quot;Wearables&quot;</span>, <span class="dv">1</span>);</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co">-- Birden fazla partner ekle</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> res_partner (name, email, customer_rank)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">VALUES</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    (<span class="ot">&quot;Alice Smith&quot;</span>, <span class="ot">&quot;alice@example.com&quot;</span>, <span class="dv">1</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    (<span class="ot">&quot;Bob Johnson&quot;</span>, <span class="ot">&quot;bob@sample.org&quot;</span>, <span class="dv">1</span>);</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co">-- DEFAULT ve RETURNING kullanarak ekle (PostgreSQL)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> product_template (name, list_price, <span class="kw">type</span>, categ_id, uom_id, uom_po_id, active)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="kw">VALUES</span> (<span class="ot">&quot;Basic Widget&quot;</span>, <span class="fl">19.95</span>, <span class="ot">&quot;product&quot;</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="kw">DEFAULT</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="kw">RETURNING</span> <span class="kw">id</span>, name;</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">-- Sorgudan ekle (bazi kategorilerin kopyalarini olustur)</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> product_category (name, parent_id)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a><span class="kw">SELECT</span> name <span class="op">||</span> <span class="ot">&quot; (Backup)&quot;</span>, parent_id</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="kw">FROM</span> product_category</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a><span class="kw">WHERE</span> <span class="kw">id</span> <span class="op">&lt;</span> <span class="dv">5</span>;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <h3 id="update-statements-modifying-data">UPDATE Ifadeleri (Veri Degistirme)</h3>
+        <p><code>UPDATE</code> ifadesi bir tablodaki mevcut satirlari degistirir.</p>
+        <p><strong>Standart SQL Sozdizimi</strong>:</p>
+        <div class="sourceCode" id="cb09" onclick="CopyToClipboard('cb09')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">UPDATE</span> table_name</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SET</span> column1 <span class="op">=</span> value1, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    column2 <span class="op">=</span> value2, <span class="op">..</span>.</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">WHERE</span> condition; <span class="co">-- KRITIK: Hangi satirlarin guncelleneceqini filtreler</span></span></code></pre>
+        </div>
+        <p><strong>Onemli</strong>: Tablodaki <em>her satiri</em> guncellemeyi kastetmiyorsaniz <strong>her zaman bir <code>WHERE</code> yan tumcesi kullanin</strong>.
+          <code>WHERE</code> yan tumcesini unutmak yaygin ve tehlikeli bir hatadir.
+        </p>
+      </section>
+      <section>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Belirli bir musterinin e-postasini guncelle</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="kw">UPDATE</span> customers</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">SET</span> email <span class="op">=</span> <span class="ot">&quot;new.email@example.com&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="kw">WHERE</span> customer_id <span class="op">=</span> <span class="dv">123</span>;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co">-- Standart SQL: Bir urun kategorisi icin fiyati artir</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="kw">UPDATE</span> products</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="kw">SET</span> price <span class="op">=</span> price <span class="op">*</span> <span class="fl">1.10</span> <span class="co">-- %10 artir</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="kw">WHERE</span> category_id <span class="op">=</span> <span class="dv">5</span>;</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="co">-- Standart SQL: Mevcut degerlere dayali guncelleme</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="kw">UPDATE</span> inventory</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="kw">SET</span> quantity <span class="op">=</span> quantity <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="kw">WHERE</span> product_id <span class="op">=</span> <span class="dv">456</span> <span class="kw">AND</span> quantity <span class="op">&gt;</span> <span class="dv">0</span>;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Baska Bir Tablodan Guncelleme (Sozdizimi Degisir)</strong>:</p>
+        <p>Bir tablodaki satirlari baska bir tablodaki degerlere dayali olarak guncellemek yaygindir, ancak sozdizimi onemli olcude degisir.
+        </p>
+        <ul>
+          <li><strong>PostgreSQL/SQL Server</strong>: <code>UPDATE</code> ifadesinde bir <code>FROM</code> yan tumcesi kullanin.
+            <div class="sourceCode" id="cb11" onclick="CopyToClipboard('cb11')">
+              <pre class="sourceCode sql">
+<code><span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a><span class="co"></span>-- PostgreSQL/SQL Server Ornegi: Tedarikci maliyetlerine dayali urun fiyatlarini guncelle</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="kw">UPDATE</span> products p
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="kw">SET</span> price = s.cost * 1.5
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="kw">FROM</span> suppliers s
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="kw">WHERE</span> p.supplier_id = s.supplier_id <span class="kw">AND</span> p.category_id = 10;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Oracle/Db2</strong>: Iliskili alt sorgu veya <code>MERGE</code> kullanin.
+            <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
+              <pre class="sourceCode sql">
+<code><span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co"></span>-- Oracle Ornegi (Iliskili Alt Sorgu)</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a><span class="kw">UPDATE</span> products p
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="kw">SET</span> price = (SELECT s.cost * 1.5 FROM suppliers s WHERE p.supplier_id = s.supplier_id)
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a><span class="kw">WHERE</span> p.category_id = 10 <span class="kw">AND EXISTS</span> (SELECT 1 FROM suppliers s WHERE p.supplier_id = s.supplier_id);</span></code></pre>
+            </div>
+          </li>
+          <li><strong>MySQL</strong>: <code>UPDATE</code> ifadesinde dogrudan bir <code>JOIN</code> kullanin.
+            <div class="sourceCode" id="cb13" onclick="CopyToClipboard('cb13')">
+              <pre class="sourceCode sql">
+<code><span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="co"></span>-- MySQL Ornegi</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a><span class="kw">UPDATE</span> products p
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a><span class="kw">JOIN</span> suppliers s <span class="kw">ON</span> p.supplier_id = s.supplier_id
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a><span class="kw">SET</span> p.price = s.cost * 1.5
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a><span class="kw">WHERE</span> p.category_id = 10;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Standart SQL <code>MERGE</code></strong>: <code>MERGE</code> ifadesi (UPSERT altinda ele alinir)
+            birlesmelere dayali guncellemeleri de isliyebilir.</li>
+        </ul>
+      </section>
+      <section>
+        <p><strong>Guncellenen Degerleri Alma (Sozdizimi Degisir)</strong>: <code>INSERT</code>'e benzer sekilde, guncellemeden sonra
+          degerleri gormek isteyebilirsiniz. * <strong>PostgreSQL/Oracle</strong>: <code>RETURNING</code> yan tumcesi. *
+          <strong>SQL Server</strong>: <code>OUTPUT</code> yan tumcesi. * <strong>MySQL</strong>: Genellikle sonraki bir
+          <code>SELECT</code> gerektirir.
+        </p>
+        <p><strong><code>UPDATE</code> icin En Iyi Uygulamalar</strong>: 1. Tum satirlari guncellemeyi kastetmiyorsaniz <strong>her zaman <code>WHERE</code> kullanin</strong>.
+          2. <strong>Once <code>SELECT</code> ile test edin</strong>: <code>UPDATE</code>'i calistirmadan once hangi satirlarin etkilenecegini dogrulamak icin
+          ayni <code>WHERE</code> yan tumcesiyle bir <code>SELECT</code> sorgusu yazin.
+          3. <strong>Islemler (Transaction) Kullanin</strong>: Ozellikle karmasik veya birden fazla satiri etkileyen guncellemeleri,
+          guvenlik icin bir islem (<code>BEGIN</code>/<code>COMMIT</code>/<code>ROLLBACK</code>) icine sarin.
+          4. <strong>Performansi Dikkate Alin</strong>: Indeksli sutunlar veya buyuk tablolar uzerindeki guncellemeler yavas olabilir.
+          Gerekirse toplu islemlerle guncelleyin.
+        </p>
+      </section>
+      <section>
+        <h3 id="delete-statements-removing-data">DELETE Ifadeleri (Veri Silme)</h3>
+        <p><code>DELETE</code> ifadesi bir tablodan satirlari siler.</p>
+        <p><strong>Standart SQL Sozdizimi</strong>:</p>
+        <div class="sourceCode" id="cb14" onclick="CopyToClipboard('cb14')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> table_name</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">WHERE</span> condition; <span class="co">-- KRITIK: Hangi satirlarin silinecegini filtreler</span></span></code></pre>
+        </div>
+        <p><strong>Onemli</strong>: <code>UPDATE</code> gibi, <em>tum</em> satirlari silmeyi kastetmiyorsaniz <strong>her zaman bir <code>WHERE</code> yan tumcesi kullanin</strong>.
+          <code>DELETE</code> ifadesinde <code>WHERE</code>'i unutmak son derece tehlikelidir.</p>
+        <p><strong>Ornekler</strong>:</p>
+        <div class="sourceCode" id="cb15" onclick="CopyToClipboard('cb15')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- Standart SQL: Belirli bir siparisi sil</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> orders</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">WHERE</span> order_id <span class="op">=</span> <span class="dv">9876</span>;</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="co">-- Standart SQL: Bir yildir giris yapmayan inaktif kullanicilari sil</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> users</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="kw">WHERE</span> status <span class="op">=</span> <span class="ot">&quot;inactive&quot;</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="kw">AND</span> last_login_date <span class="op">&lt;</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="ot">&quot;1&quot;</span> <span class="dt">YEAR</span>; <span class="co">-- Aralik sozdizimi degisebilir</span></span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Diger Tablolara Dayali Silme (Sozdizimi Degisir)</strong>: <code>UPDATE</code>'e benzer sekilde, birlesmelere
+          dayali satirlari silmek farkli sozdizimi gerektirir. * <strong>PostgreSQL/SQL Server</strong>: Bir <code>USING</code>
+          (PostgreSQL) veya <code>FROM</code> (SQL Server) yan tumcesi kullanin.
+        <div class="sourceCode" id="cb16" onclick="CopyToClipboard('cb16')">
+          <pre class="sourceCode sql">
+<code><span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="co"></span>-- PostgreSQL Ornegi: 'bad_debt' olarak isaretlenen musterilerden siparisleri sil</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> orders o
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="kw">USING</span> customers c
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="kw">WHERE</span> o.customer_id = c.customer_id <span class="kw">AND</span> c.status = "bad_debt";</span></code></pre>
+        </div>
+        * <strong>Oracle/Db2/MySQL</strong>: Genellikle <code>IN</code> veya <code>EXISTS</code> ile alt sorgular kullanir.
+        <div class="sourceCode" id="cb17" onclick="CopyToClipboard('cb17')">
+          <pre class="sourceCode sql">
+<code><span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="co"></span>-- Ornek (Alt Sorgu): 'bad_debt' olarak isaretlenen musterilerden siparisleri sil</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> orders
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="kw">WHERE</span> customer_id IN (<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = "bad_debt");</span></code></pre>
+        </div>
+        </p>
+        <p><strong>Silinen Degerleri Alma (Sozdizimi Degisir)</strong>: * <strong>PostgreSQL/Oracle</strong>:
+          <code>RETURNING</code> yan tumcesi. * <strong>SQL Server</strong>: <code>OUTPUT</code> yan tumcesi. *
+          <strong>MySQL</strong>: Dogrudan desteklenmez.
+        </p>
+      </section>
+      <section>
+        <h3 id="truncate-table-removing-all-data-quickly">TRUNCATE TABLE (Tum Verileri Hizlica Silme)</h3>
+        <p><code>TRUNCATE TABLE</code> ifadesi bir tablodan <em>tum</em> satirlari cok hizli bir sekilde siler. Genellikle
+          <code>DELETE FROM table_name;</code>'den cok daha hizlidir cunku cogu zaman bireysel satir silme
+          mekanizmalarini atlar.</p>
+        <p><strong>Standart SQL Sozdizimi</strong>:</p>
+        <div class="sourceCode" id="cb18" onclick="CopyToClipboard('cb18')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">TRUNCATE</span> <span class="kw">TABLE</span> table_name; </span></code></pre>
+        </div>
+        <p><strong>Temel Farklar: <code>DELETE</code> vs. <code>TRUNCATE</code></strong>:</p>
+        <table>
+          <colgroup>
+            <col style="width: 24%" />
+            <col style="width: 37%" />
+            <col style="width: 37%" />
+          </colgroup>
+          <thead>
+            <tr class="header">
+              <th style="text-align: left;">Ozellik</th>
+              <th style="text-align: left;"><code>DELETE FROM table WHERE ...</code></th>
+              <th style="text-align: left;"><code>TRUNCATE TABLE table</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <td style="text-align: left;"><strong>Hiz</strong></td>
+              <td style="text-align: left;">Daha Yavas (satirlari tarar/kaydeder)</td>
+              <td style="text-align: left;">Cok Daha Hizli (genellikle yer ayirir)</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: left;"><strong><code>WHERE</code> Yan Tumcesi</strong></td>
+              <td style="text-align: left;">Evet</td>
+              <td style="text-align: left;">Hayir (Her zaman tum satirlari siler)</td>
+            </tr>
+            <tr class="odd">
+              <td style="text-align: left;"><strong>Islem Kaydi</strong></td>
+              <td style="text-align: left;">Her silinen satiri kaydeder</td>
+              <td style="text-align: left;">Minimal kayit (genellikle)</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: left;"><strong>Tetikleyiciler</strong></td>
+              <td style="text-align: left;"><code>DELETE</code> tetikleyicilerini calistirir</td>
+              <td style="text-align: left;">Genellikle tetikleyicileri <em>calistirmaz</em></td>
+            </tr>
+            <tr class="odd">
+              <td style="text-align: left;"><strong>Donus Degeri</strong></td>
+              <td style="text-align: left;">Silinen satirlari dondurabilir</td>
+              <td style="text-align: left;">Hayir</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: left;"><strong>Izinler</strong></td>
+              <td style="text-align: left;"><code>DELETE</code> izni gerekli</td>
+              <td style="text-align: left;">Genellikle daha yuksek yetkiler gerektirir (<code>TRUNCATE</code>, <code>ALTER</code>,
+                <code>DROP</code>)
+              </td>
+            </tr>
+            <tr class="odd">
+              <td style="text-align: left;"><strong>Kimlik Sifirlama</strong></td>
+              <td style="text-align: left;">Hayir</td>
+              <td style="text-align: left;">Genellikle otomatik artis sayaclarini sifirlar (ornegin, PostgreSQL'de <code>RESTART IDENTITY</code>
+                secenegi)</td>
+            </tr>
+            <tr class="even">
+              <td style="text-align: left;"><strong>Yabanci Anahtarlar</strong></td>
+              <td style="text-align: left;">Standart kontroller uygulanir</td>
+              <td style="text-align: left;">FK'lar tarafindan referans gosteriliyorsa basarisiz olabilir, <code>CASCADE</code> kullanilmadikca
+                (tehlikeli!)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Kullanim Alanlari</strong>: <code>TRUNCATE</code> oncelikli olarak yeni veri yuklemeden once gecici veya hazirlama
+          tablolarini hizlica temizlemek icin kullanilir. Kosullu silme, tetikleyicilerin calismasi veya
+          satir duzeyinde kayit gerektiginde <code>DELETE</code> kullanin.</p>
+      </section>
+      <section>
+        <h3 id="transaction-management-standard-sql">Islem (Transaction) Yonetimi (Standart SQL)</h3>
+        <p>Islemler, bir dizi SQL operasyonunun tek, atomik bir calisma birimi olarak ele alinmasini saglar. Ya
+          islem icindeki tum operasyonlar basarili olur ve kalici hale getirilir (<code>COMMIT</code>), ya da hicbiri
+          (<code>ROLLBACK</code>). Bu, <strong>ACID</strong> ozelliklerini (Atomiklik, Tutarlilik,
+          Izolasyon, Dayaniklilik) garanti eder.</p>
+        <p><strong>Standart SQL Komutlari</strong>:</p>
+        <ol type="1">
+          <li><strong><code>BEGIN TRANSACTION</code></strong> (veya genellikle sadece <code>BEGIN</code>): Yeni bir
+            islem baslatir.</li>
+          <li><strong><code>COMMIT</code></strong>: <code>BEGIN</code>'den bu yana yapilan tum degisiklikleri kalici hale getirir ve
+            islemi sonlandirir.</li>
+          <li><strong><code>ROLLBACK</code></strong>: <code>BEGIN</code>'den bu yana yapilan tum degisiklikleri iptal eder ve
+            islemi sonlandirir.</li>
+          <li><strong><code>SAVEPOINT savepoint_name</code></strong>: Bir islem icinde adlandirilmis bir nokta olusturur.</li>
+          <li><strong><code>ROLLBACK TO SAVEPOINT savepoint_name</code></strong>: Belirtilen kayit noktasindan sonra yapilan degisiklikleri iptal eder,
+            ancak islemi aktif tutar.</li>
+        </ol>
+      </section>
+      <section>
+        <p><strong>Ornek</strong>: Hesaplar arasi para transferi (atomik olarak gerceklesmeli).</p>
+        <div class="sourceCode" id="cb19" onclick="CopyToClipboard('cb19')">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="cf">BEGIN</span> <span class="kw">TRANSACTION</span>;</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="co">-- Hesap A'dan tutari cikar</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="kw">UPDATE</span> accounts</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> <span class="fl">100.00</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="kw">WHERE</span> account_id <span class="op">=</span> <span class="ot">&quot;A123&quot;</span>;</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a><span class="co">-- Hesap B'ye tutari ekle</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="kw">UPDATE</span> accounts</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> <span class="fl">100.00</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="kw">WHERE</span> account_id <span class="op">=</span> <span class="ot">&quot;B456&quot;</span>;</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="co">-- Burada hatalari veya kosullari kontrol edin...</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="co">-- Her sey yolundaysa, kalici hale getirin</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="kw">COMMIT</span>;</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a><span class="co">-- Bir seyler yanlış gittiyse (ornegin, commit'ten once yetersiz bakiye tespit edildiyse),</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a><span class="co">-- tum degisiklikleri iptal edin:</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a><span class="co">-- ROLLBACK;</span></span></code></pre>
+        </div>
+        <p><strong>Otomatik Onay (Auto-Commit)</strong>: Varsayilan olarak, bircok SQL araci ve veritabani baglantisi "otomatik onay"
+          modunda calisir; burada her bireysel SQL ifadesi kendi islemi olarak ele alinir. Coklu ifade
+          islemleri gerceklestirmek icin, genellikle <code>BEGIN</code> ile acikca bir islem baslatmaniz gerekir.</p>
+        <p><strong>Izolasyon Seviyeleri</strong>: Standart SQL, degisikliklerin gorunurlugu konusunda
+          islemlerin birbirleriyle nasil etkilesecegini kontrol eden izolasyon seviyelerini (<code>READ UNCOMMITTED</code>,
+          <code>READ COMMITTED</code>, <code>REPEATABLE READ</code>, <code>SERIALIZABLE</code>) tanimlar. <code>READ COMMITTED</code> en yaygin
+          varsayilandir.
+        </p>
+      </section>
+      <section>
+        <h3 id="upsert-operations-insert-or-update">UPSERT Islemleri (INSERT veya UPDATE)</h3>
+        <p>"UPSERT", bir anahtar catismasina dayali olarak bir satir yoksa eklemek veya varsa guncellemek kavramidir. Standart SQL yolu <code>MERGE</code>'dir, ancak belirli veritabanlarinin kendilerine ozgu sozdizimi vardir.</p>
+        <p><strong>Standart SQL <code>MERGE</code> Ifadesi</strong>:</p>
+        <p><code>MERGE</code> ifadesi, bir kaynak ve hedef tablo arasindaki eslesen verilere dayali olarak kosullu eklemeler, guncellemeler veya silmeler gerceklestirmek icin standart bir yol saglar. Gucludur ancak karmasik olabilir.</p>
+        <div class="sourceCode" id="cb20" onclick="CopyToClipboard('cb20')">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Standart MERGE Sozdizimi (Kavramsal)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">MERGE</span> <span class="kw">INTO</span> target_table <span class="kw">AS</span> T</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">USING</span> source_table <span class="kw">AS</span> S</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">ON</span> (T.match_column <span class="op">=</span> S.match_column)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="cf">WHEN</span> MATCHED <span class="cf">THEN</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="kw">UPDATE</span> <span class="kw">SET</span> T.column1 <span class="op">=</span> S.value1, T.column2 <span class="op">=</span> S.value2</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="cf">WHEN</span> <span class="kw">NOT</span> MATCHED <span class="cf">THEN</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="kw">INSERT</span> (column1, column2, match_column)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    <span class="kw">VALUES</span> (S.value1, S.value2, S.match_column);</span></code></pre>
+        </div>
+        <ul>
+          <li><code>MERGE</code> icin destek ve kesin sozdizimi detaylari veritabanlari arasinda degisir (Oracle,
+            SQL Server, Db2 tarafindan iyi desteklenir; PostgreSQL daha yeni ekledi).</li>
+        </ul>
+      </section>
+      <section>
+        <p><strong>Saticiya Ozgu UPSERT Sozdizimi</strong>:</p>
+        <ul>
+          <li><strong>PostgreSQL</strong>: <code>INSERT ... ON CONFLICT ... DO UPDATE SET ...</code> veya
+            <code>DO NOTHING</code>.
+            <div class="sourceCode" id="cb21" onclick="CopyToClipboard('cb21')">
+              <pre class="sourceCode sql">
+<code><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornegi: Urun envanter sayisini ekle veya guncelle</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> product_inventory (product_id, quantity)
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">VALUES</span> (101, 10)
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">ON</span> CONFLICT (product_id)
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="kw">DO</span> <span class="kw">UPDATE</span> <span class="kw">SET</span> quantity = product_inventory.quantity + EXCLUDED.quantity;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>MySQL</strong>: <code>INSERT ... ON DUPLICATE KEY UPDATE ...</code>.
+            <div class="sourceCode" id="cb22" onclick="CopyToClipboard('cb22')">
+              <pre class="sourceCode sql">
+<code><span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="co">-- MySQL Ornegi: Urun envanter sayisini ekle veya guncelle</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> product_inventory (product_id, quantity)
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="kw">VALUES</span> (101, 10)
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a><span class="kw">ON</span> DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity);</span></code></pre>
+            </div>
+          </li>
+          <li><strong>SQLite</strong>: <code>INSERT ... ON CONFLICT ... DO UPDATE SET ...</code> (PostgreSQL'e benzer).
+            <div class="sourceCode" id="cb23" onclick="CopyToClipboard('cb23')">
+              <pre class="sourceCode sql">
+<code><span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a><span class="co">-- SQLite Ornegi: Urun envanter sayisini ekle veya guncelle</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> product_inventory (product_id, quantity)
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a><span class="kw">VALUES</span> (101, 10)
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a><span class="kw">ON</span> CONFLICT (product_id)
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a>    <span class="kw">DO</span> <span class="kw">UPDATE</span> <span class="kw">SET</span> quantity = product_inventory.quantity + EXCLUDED.quantity;</span></code></pre>
+            </div>
+          </li>
+        </ul>
+        <p><strong>Kullanim Alanlari</strong>: UPSERT/MERGE, veri senkronizasyonu, harici kaynaklardan veri yukleme, sayaclari guncelleme veya yapilandirma tablolarini korumak icin cok kullanislidir.</p>
+        <p>Bu DML (Veri Manipulasyon Dili) ifadelerini ve islem kontrolunu anlamak, veritabanlariyla guvenilir bir sekilde etkilesen uygulamalar olusturmak icin temeldir.</p>
+      </section>
+      <section>
+        <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>
+        <p>Veri manipulasyonunda ustalasmaya hazir misiniz? INSERT, UPDATE, DELETE ve islemleri kapsayan uygulamali aliştirmalarla pratik yapin.</p>
+        <p><a href="01_data_manipulation_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+      </section>
+    </div>
+  </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity=<script
+  src="../static/script.js"></script>
+
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/01_data_manipulation.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

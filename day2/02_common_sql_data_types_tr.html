@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/02_common_sql_data_types.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style_bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 2: Yaygin SQL Veri Tipleri</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="language-switcher">
+        <a href="02_common_sql_data_types.html">EN</a>
+        <a href="02_common_sql_data_types_tr.html" class="active">TR</a>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-2-common-sql-data-types">Gun 2: Yaygin SQL Veri Tipleri</h1>
+                <h2 id="session-3-common-sql-data-types-1.5-hours">Oturum 3: Yaygin SQL Veri Tipleri (1.5 saat)</h2>
+                <p>Her sutun icin dogru veri tipini secmek, etkili veritabani tasariminin temelidir. Bu,
+                    veri butunlugunu saglar, depolama alanini optimize eder ve sorgu performansini arttirir. Standart SQL yaygin veri tiplerini tanimlarken, her veritabani sistemi (RDBMS) genellikle kendine ozgu isimler, varyasyonlar veya uzantilar icerir.</p>
+                <p>Bu oturum, en yaygin SQL veri tipi kategorilerini kapsar ve PostgreSQL, MySQL, Oracle, SQL Server ve Db2 gibi buyuk sistemlerdeki farkliliklara deginir.</p>
+            </section>
+            <section>
+
+                <h3 id="numeric-types">Sayisal Tipler</h3>
+                <p>Sayisal verileri depolamak icin kullanilir.</p>
+                <h4>1. Tamsayi Tipleri (Kesin Tam Sayilar)</h4>
+                <p>Sayimlar, miktarlar, kimlikler vb. icin kullanilir.</p>
+                <p><strong>Standart Kavramlar</strong>: Farkli araliklar icin farkli boyutlar (kucuk, normal, buyuk).</p>
+                <p><strong>Yaygin Uygulamalar</strong>: * <code>SMALLINT</code>: Tipik olarak 2 bayt (-32,768 ile 32,767 arasi).
+                    * <code>INTEGER</code> veya <code>INT</code>: Tipik olarak 4 bayt (yaklasik -2.1 milyar ile +2.1 milyar arasi). *
+                    <code>BIGINT</code>: Tipik olarak 8 bayt (cok genis aralik).
+                </p>
+                <p><strong>Otomatik Artirilan/Kimlik Sutunlari</strong>: Benzersiz birincil anahtarlar olusturmak icin kullanilir.
+                <ul>
+                    <li><strong>Standart SQL</strong>: <code>GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY</code></li>
+                    <li><strong>PostgreSQL</strong>:
+                        <code>SERIAL</code> (eski),
+                        <code>BIGSERIAL</code> (eski),
+                        <code>GENERATED ... AS IDENTITY</code> (standart).
+                    </li>
+                    <li><strong>MySQL</strong>:
+                        <code>AUTO_INCREMENT</code> ozelligi.
+                    </li>
+                    <li><strong>SQL Server</strong>:
+                        <code>IDENTITY(seed, increment)</code> ozelligi.
+                    </li>
+                    <li><strong>Oracle</strong>:
+                        <code>GENERATED AS IDENTITY</code> veya Sequences.
+                    </li>
+                    <li><strong>Db2</strong>:
+                        <code>GENERATED ALWAYS AS IDENTITY</code>.
+                    </li>
+                </ul>
+                </p>
+            </section>
+            <section>
+                <h4>2. Sabit Noktali Ondalik Tipler (Kesin Ondalik Sayilar)</h4>
+                <p>Para birimi, finansal hesaplamalar, kesin hassasiyet gerektiren olcumler icin kullanilir.</p>
+                <p><strong>Standart SQL</strong>:
+                    <code>DECIMAL(p, s)</code>, <code>NUMERIC(p, s)</code> * <code>p</code> (hassasiyet): Toplam basamak sayisi (ondalik noktadan once ve sonra). * <code>s</code> (olcek): Ondalik noktadan <em>sonraki</em> basamak sayisi. - <strong>Uygulama</strong>: <code>DECIMAL</code> ve <code>NUMERIC</code> genis olcude desteklenir ve genellikle birbirinin yerine kullanilabilir. - <strong>Para Birimi Tipleri</strong>: Bazi sistemlerde ozel para birimi tipleri vardir (ornegin, PostgreSQL ve SQL Server'da <code>MONEY</code>), ancak daha iyi kontrol ve tasinabilirlik icin <code>DECIMAL</code>/<code>NUMERIC</code> kullanilmasi genellikle tercih edilir.
+                </p>
+                <h4>3. Kayan Noktali Tipler (Yaklasik Ondalik Sayilar)</h4>
+                <p>Bilimsel hesaplamalar veya kesin hassasiyetin kritik olmadigi ve genis bir aralik gerekli oldugu durumlar icin kullanilir.
+                </p>
+                <p><strong>Standart SQL</strong>: <code>FLOAT(p)</code>, <code>REAL</code>,
+                    <code>DOUBLE PRECISION</code> *
+                    <code>REAL</code>: Dusuk hassasiyet (tipik olarak 4 bayt). * <code>DOUBLE PRECISION</code>: Yuksek hassasiyet (tipik olarak 8 bayt). * <code>FLOAT(p)</code>: <code>p</code> hassasiyeti, <code>REAL</code> veya <code>DOUBLE PRECISION</code>'a eslenip eslenmeyecegini belirler. - <strong>Dikkat</strong>: Kayan noktali tipler yuvarlama hatalarina tabidir. <strong>Kesinligin gerekli oldugu finansal hesaplamalar icin bunlari kullanmayin.</strong> Bunun yerine <code>DECIMAL</code> veya <code>NUMERIC</code> kullanin.
+                </p>
+            </section>
+            <section>
+                <h3 id="character-string-types">Metin Tipleri</h3>
+                <p>Metin verilerini depolamak icin kullanilir.</p>
+                <h4>1. Sabit Uzunluklu Dizeler</h4>
+                - <strong>Standart SQL</strong>: <code>CHARACTER(n)</code> veya
+                <code>CHAR(n)</code> - Tam olarak <code>n</code> karakter uzunlugunda dizeler depolar. Daha kisa dizeler <code>n</code> uzunluguna ulasmak icin doldurulur (genellikle bosluk ile). Daha uzun dizeler hata verir. - Kullanim alanlari nadirdir; genellikle sadece veri <em>her zaman</em> sabit uzunlukta oldugunda (ornegin, 2 harfli ulke kodlari).
+                </p>
+                <h4>2. Degisken Uzunluklu Dizeler</h4>
+                - <strong>Standart SQL</strong>:
+                <code>CHARACTER VARYING(n)</code> veya <code>VARCHAR(n)</code> * Maksimum <code>n</code> karakter uzunluguna kadar dizeler depolar. Doldurma yapilmaz. * Bu en yaygin dize tipidir. - <strong>Sinirsiz Uzunluklu Metin</strong>: Cogu sistem, onceden tanimlanmis bir sinir olmadan (veya cok buyuk bir sinirla) degisken uzunluklu dizeler icin bir tip saglar. * <strong>Standart SQL</strong>: <code>CLOB</code> (Character Large Object) - genellikle cok buyuk metin icin kullanilir. * <strong>PostgreSQL</strong>: <code>TEXT</code> (<code>n</code> olmadan <code>VARCHAR</code>'a tercih edilir). * <strong>MySQL</strong>: <code>TEXT</code>,
+                <code>MEDIUMTEXT</code>, <code>LONGTEXT</code>. * <strong>SQL Server</strong>:
+                <code>VARCHAR(MAX)</code>, <code>NVARCHAR(MAX)</code> (Unicode icin). * <strong>Oracle</strong>:
+                <code>VARCHAR2(size)</code>, <code>CLOB</code>. * <strong>Db2</strong>: <code>VARCHAR(size)</code>,
+                <code>CLOB</code>.
+                </p>
+                <h4>3. Karakter Setleri ve Harmanlamalar</h4>
+                <p><strong>Karakter Setleri ve Harmanlamalar</strong>: Veritabanlari karakter kodlamasini (ornegin, UTF-8, Latin1) ve harmanlamayi (dize siralama ve karsilastirma kurallari, ornegin, buyuk/kucuk harf duyarli veya duyarsiz) yonetir. Bu ayarlar uluslararasilastirma ve dogru dize karsilastirmalari icin kritik oneme sahiptir.</p>
+            </section>
+            <section>
+                <h3 id="boolean-type">Boolean Tipi</h3>
+                <p>Dogru/yanlis degerlerini depolamak icin kullanilir.</p>
+                <ul>
+                    <li><strong>Standart SQL</strong>: <code>BOOLEAN</code></li>
+                    <li><strong>Uygulama</strong>: Genis olcude desteklenir.
+                        <ul>
+                            <li><code>TRUE</code>, <code>FALSE</code>, <code>1</code>,
+                                <code>0</code>, <code>'yes'</code>, <code>'no'</code>, <code>'on'</code>,
+                                <code>'off'</code> gibi cesitli girisleri kabul eder (belirli literaller degisir).
+                            </li>
+                            <li>Dahili olarak tek bir bit veya bayt olarak depolar.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Alternatifler</strong>: Bazi eski sistemler veya tasarimlar <code>INTEGER</code>
+                        (0/1) veya
+                        <code>CHAR(1)</code> (<code>T</code>/<code>F</code>, <code>Y</code>/<code>N</code>) kullanabilir ancak mevcut oldugunda <code>BOOLEAN</code> tercih edilir.
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h3 id="binary-data-types">Ikili Veri Tipleri</h3>
+                <p>Resimler, dosyalar veya seriestirilmis nesneler gibi ham bayt dizilerini depolamak icin kullanilir.</p>
+                <ul>
+                    <li><strong>Standart SQL</strong>: <code>BLOB</code> (Binary Large Object), <code>BINARY(n)</code>,
+                        <code>VARBINARY(n)</code>
+                    </li>
+                    <li><strong>Uygulamalar</strong>:
+                        <ul>
+                            <li><code>BINARY(n)</code> / <code>VARBINARY(n)</code>: Sabit veya degisken uzunluklu ikili dizeler (daha az yaygin).</li>
+                            <li>Buyuk ikili veriler icin <code>BLOB</code> veya esdegeri:</li>
+                            <li><strong>PostgreSQL</strong>: <code>BYTEA</code></li>
+                            <li><strong>MySQL</strong>: <code>BLOB</code>, <code>MEDIUMBLOB</code>,
+                                <code>LONGBLOB</code>
+                            </li>
+                            <li><strong>SQL Server</strong>: <code>VARBINARY(MAX)</code></li>
+                            <li><strong>Oracle</strong>: <code>BLOB</code>, <code>RAW</code></li>
+                            <li><strong>Db2</strong>: <code>BLOB</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Kullanim</strong>: Buyuk ikili nesneleri dogrudan veritabaninda depolamak performansi ve yedekleme boyutunu etkileyebilir. Genellikle, dosyayi baska bir yerde (dosya sistemi, nesne depolama) depolamak ve yalnizca yolu veya tanimlayiciyi veritabaninda kaydetmek daha iyidir.</li>
+                </ul>
+            </section>
+            <section>
+                <h3 id="date-and-time-types">Tarih ve Zaman Tipleri</h3>
+                <p>Tarihleri, saatleri, zaman damgalarini ve araliklari depolamak icin kullanilir.</p>
+                <p><strong>Yaygin Standart SQL Tipleri</strong>:</p>
+                <ol type="1">
+                    <li><strong><code>DATE</code></strong>: Yil, ay ve gunu depolar.</li>
+                    <li><strong><code>TIME</code></strong>: Saat, dakika ve saniyeyi (ve kesirli saniyeleri) depolar.
+                    </li>
+                    <li><strong><code>TIMESTAMP</code></strong>: Tarih ve saati birlikte depolar.
+                        <ul>
+                            <li><strong><code>TIMESTAMP</code> (saat dilimi olmadan)</strong>: Saat dilimine referans olmadan belirli bir zaman noktasini temsil eder. Yorumlama oturumun saat dilimine baglidir.</li>
+                            <li><strong><code>TIMESTAMP WITH TIME ZONE</code></strong>: Tarih ve saatle birlikte UTC ofseti veya saat dilimi bilgisini depolayarak belirli bir zaman noktasini temsil eder. Belirsizligi onlemek icin zaman damgalarini depolamak icin <strong>genellikle onerilir</strong>.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong><code>INTERVAL</code></strong>: Bir sure veya zaman dilimini depolar (ornegin, '2 saat', '3 ay', '1 yil 5 gun').</li>
+                </ol>
+                <p><strong>Uygulama Notlari</strong>: - Cogu modern veritabani bu standart tipleri iyi destekler. -
+                    <code>TIMESTAMP WITH TIME ZONE</code> (ornegin, PostgreSQL'de <code>TIMESTAMPTZ</code>) birden fazla saat dilimindeki kullanicilar veya verilerle ilgilenen uygulamalar icin kritik oneme sahiptir. Genellikle degeri dahili olarak UTC'de depolar ve alindiginda oturumun saat dilimine donusturur. - Gecerli tarih/saati almak icin fonksiyonlar (<code>CURRENT_DATE</code>, <code>CURRENT_TIME</code>, <code>CURRENT_TIMESTAMP</code>,
+                    <code>NOW()</code>) standarttir, ancak kesin davranis (ornegin, islem vs. ifade zaman damgasi) degisebilir. - Parcalari ayiklamak (<code>EXTRACT</code>), bicmlendirmek (<code>TO_CHAR</code>,
+                    <code>FORMAT</code>) ve aritmetik islemler yapmak (<code>+</code>, <code>-</code>, <code>AGE</code>,
+                    <code>DATEDIFF</code>) icin fonksiyonlar vardir ancak sozdizimi genellikle degisir.
+                </p>
+            </section>
+            <section>
+                <h3 id="other-important-data-types-often-extensions-or-less-standard">Diger Onemli Veri Tipleri (Genellikle Uzantilar veya Daha Az Standart)</h3>
+                <p><strong>1. JSON Tipleri</strong>: - Yari yapilandirilmis verileri depolamak icin giderek daha onemli hale geliyor. -
+                    <strong>Uygulamalar</strong>: * <strong>PostgreSQL</strong>: <code>JSON</code> (metinsel),
+                    <code>JSONB</code> (ikili, indeksli - genellikle tercih edilir). * <strong>MySQL</strong>:
+                    <code>JSON</code> (5.7'den beri ikili format). * <strong>SQL Server</strong>: Ozel tip yok, ancak JSON fonksiyonlariyla (<code>JSON_VALUE</code>, <code>JSON_QUERY</code>,
+                    <code>OPENJSON</code>) <code>NVARCHAR(MAX)</code> uzerinden mukemmel destek. * <strong>Oracle</strong>: <code>JSON</code> tipi (<code>VARCHAR2</code>, <code>CLOB</code>, <code>BLOB</code> olarak depolanabilir), kapsamli fonksiyon destegi. *
+                    <strong>Db2</strong>: Fonksiyonlar araciligiyla JSON destegi, genellikle <code>VARCHAR</code>,
+                    <code>CLOB</code> veya <code>BLOB</code>'da depolanir. - <strong>Sorgulama</strong>: JSON verilerini sorgulamak ve manipule etmek icin ozel operatorler (<code>-&gt;</code>, <code>-&gt;&gt;</code>) ve fonksiyonlar vardir, veritabanlari arasinda onemli olcude degisir.
+                </p>
+                <p><strong>2. UUID Tipi</strong>: - Evrensel Benzersiz Tanimlayici (128-bit deger). - Merkezi bir dizi gerektirmeden dagitik sistemlerde benzersiz anahtarlar olusturmak icin kullanislidir. -
+                    <strong>Uygulamalar</strong>: PostgreSQL'de <code>UUID</code> tipi, SQL Server'da
+                    <code>UNIQUEIDENTIFIER</code>, digerlerinde genellikle <code>CHAR(36)</code> veya <code>BINARY(16)</code> olarak depolanir. <code>UUID()</code> (MySQL) veya <code>NEWID()</code> (SQL Server) gibi fonksiyonlar deger olusturur.
+                </p>
+                <p><strong>3. Dizi Tipleri</strong>: - Tek bir sutunda ayni tipte birden fazla degerin depolanmasina izin verir. -
+                    <strong>PostgreSQL</strong>: Cogu yerlesik tip icin dizilere yerel destek (<code>integer[]</code>,
+                    <code>text[]</code>, vb.) zengin operatorlerle. - <strong>Diger Veritabanlari</strong>: Daha az yaygin yerel destek. Genellikle iliskili tablolar veya JSON dizileri kullanilarak taklit edilir.
+                </p>
+                <p><strong>4. Mekansal/Geometrik Tipler</strong>: - Cografi veya geometrik verileri (noktalar, cizgiler, cokgenler) depolamak icin. - <strong>PostgreSQL</strong>: Yerlesik geometrik tipler (<code>point</code>,
+                    <code>polygon</code>, vb.) ve tam CBS yetenekleri icin guclu <strong>PostGIS</strong> uzantisi. - <strong>Diger Veritabanlari</strong>: Genellikle mekansal uzantilar gerektirir (ornegin, MySQL Spatial Extensions, SQL Server Spatial Types, Oracle Spatial).
+                </p>
+                <p><strong>5. Aralik Tipleri (PostgreSQL'e Ozgu)</strong>: - Bir deger araligini temsil eder (<code>int4range</code>, <code>daterange</code>, <code>tsrange</code>, vb.). - Ozel operatorlerle (<code>@&gt;</code>,
+                    <code>&amp;&amp;</code>) zamanlama, zaman dilimleri, fiyat araliklari icin kullanislidir.
+                </p>
+                <p><strong>6. Bilesik Tipler (PostgreSQL'e Ozgu)</strong>: - Bir struct gibi birden fazla alani bir araya getiren kullanici tanimli tipler.</p>
+                <p><strong>7. Etki Alani Tipleri (Standart SQL)</strong>: - Mevcut tiplere dayanan ancak eklenmis kisitlamalarla kullanici tanimli tipler (ornegin, <code>CHECK</code> kisitlamasyla <code>VARCHAR</code> tabanli bir <code>postal_code</code> etki alani).
+                </p>
+            </section>
+            <section>
+                <h3 id="choosing-the-right-data-type">Dogru Veri Tipini Secmek</h3>
+                <ul>
+                    <li><strong>Spesifik Olun</strong>: Veriyi en dogru sekilde temsil eden en spesifik tipi kullanin (ornegin, tam sayilar icin <code>INTEGER</code>, tarihler icin <code>DATE</code>, dogru/yanlis icin <code>BOOLEAN</code>).
+                    </li>
+                    <li><strong>Araligi Dikkate Alin</strong>: Potansiyel degerleri tutacak kadar buyuk ancak yer israf etmeyecek kadar kucuk sayisal tipler secin.</li>
+                    <li><strong>Kesin vs. Yaklasik</strong>: Finansal veriler icin <code>DECIMAL</code>/<code>NUMERIC</code> kullanin, <code>FLOAT</code>/<code>REAL</code> sadece yaklasim kabul edilebilir oldugunda.</li>
+                    <li><strong>Metin Uzunlugu</strong>: Uygulanabilirse makul bir sinirla <code>VARCHAR(n)</code> kullanin veya uzunluk cok degisken veya potansiyel olarak cok buyukse <code>TEXT</code> (veya esdegeri) kullanin.
+                    </li>
+                    <li><strong>Saat Dilimleri</strong>: Ozel bir nedeniniz yoksa cogu zaman damgasi ihtiyaci icin <code>TIMESTAMP WITH TIME ZONE</code> kullanin.</li>
+                    <li><strong>Performans</strong>: Daha kucuk veri tipleri genellikle daha kucuk tablolara, daha hizli indekslemeye ve daha iyi onbellek kullanimina yol acar.</li>
+                    <li><strong>Gelecek Ihtiyaclari</strong>: Tipleri secerken potansiyel gelecek gereksinimleri dikkate alin.</li>
+                </ul>
+                <p>Hedef veritabani sisteminizdeki mevcut veri tiplerini anlamak ve uygun sekilde secmek, veritabani tasarimi ve gelistirme icin kritik bir beceridir.</p>
+            </section>
+            <section>
+                <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>
+                <p>SQL veri tiplerinde ustalasmaya hazir misiniz? Tip secimi, hassasiyet yonetimi, tarih/zaman islemleri ve JSON sorgulari kapsayan uygulamali alistirmalarla pratik yapin.</p>
+                <p><a href="02_common_sql_data_types_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+    </div> <!-- /container -->
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/02_common_sql_data_types.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

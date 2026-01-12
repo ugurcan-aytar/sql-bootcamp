@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 3: Schema Management and Organization - Practical Examples</title>
+    <title>Gun 3: Sema Yonetimi ve Organizasyonu - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -38,34 +38,6 @@
 
         ul.task-list {
             list-style: none;
-        }
-
-        .language-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .language-switcher a {
-            text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 3px;
-            color: #333;
-        }
-
-        .language-switcher a.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        .language-switcher a:hover:not(.active) {
-            background: #e9ecef;
         }
 
         .exercise-box {
@@ -117,7 +89,7 @@
         }
 
         .hint-box::before {
-            content: "Hint: ";
+            content: "Ipucu: ";
             font-weight: bold;
         }
 
@@ -130,7 +102,7 @@
         }
 
         .warning-box::before {
-            content: "Warning: ";
+            content: "Uyari: ";
             font-weight: bold;
         }
 
@@ -143,7 +115,7 @@
         }
 
         .concept-box::before {
-            content: "Concept: ";
+            content: "Kavram: ";
             font-weight: bold;
         }
 
@@ -156,7 +128,7 @@
         }
 
         .best-practice-box::before {
-            content: "Best Practice: ";
+            content: "En Iyi Uygulama: ";
             font-weight: bold;
             color: #155724;
         }
@@ -344,15 +316,35 @@
             background-color: #dc3545;
             color: white;
         }
+
+        .language-switcher {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .language-switcher a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .language-switcher a:hover {
+            text-decoration: underline;
+        }
+
+        .language-switcher a.active {
+            font-weight: bold;
+            color: #343a40;
+        }
     </style>
 </head>
 
 <body>
-    <div class="language-switcher">
-        <a href="02_schema_management_and_organization_examples.html" class="active">EN</a>
-        <a href="02_schema_management_and_organization_examples_tr.html">TR</a>
-    </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -371,20 +363,26 @@
     </div>
     <div class="content-container">
         <div class="container">
+            <!-- Language Switcher -->
+            <div class="language-switcher">
+                <span>Dil / Language:</span>
+                <a href="02_schema_management_and_organization_examples.html">English</a>
+                <a href="02_schema_management_and_organization_examples_tr.html" class="active">Turkce</a>
+            </div>
+
             <section>
-                <h1 id="schema-management-practical-examples">Schema Management and Organization - Practical Examples</h1>
-                <p><a href="02_schema_management_and_organization.html">&larr; Back to Schema Management Lesson</a></p>
-                <p>This page provides hands-on exercises to master schema organization, naming conventions, and
-                    migration strategies. Practice creating schemas, applying naming standards, and writing migration scripts.</p>
+                <h1 id="schema-management-practical-examples">Sema Yonetimi ve Organizasyonu - Pratik Ornekler</h1>
+                <p><a href="02_schema_management_and_organization.html">&larr; Sema Yonetimi Dersine Don</a></p>
+                <p>Bu sayfa, sema organizasyonu, adlandirma kurallari ve migrasyon stratejilerini ustalasmak icin uygulamali alistirmalar sunmaktadir. Sema olusturmayi, adlandirma standartlarini uygulamayi ve migrasyon betikleri yazmayi pratik edin.</p>
             </section>
 
             <!-- Schema Terminology Reference -->
             <section>
-                <h2 id="terminology-reference">Schema Terminology Across Databases</h2>
+                <h2 id="terminology-reference">Veritabanlari Arasinda Sema Terminolojisi</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Concept</th>
+                            <th>Kavram</th>
                             <th><span class="db-badge db-postgresql">PostgreSQL</span></th>
                             <th><span class="db-badge db-mysql">MySQL</span></th>
                             <th><span class="db-badge db-sqlserver">SQL Server</span></th>
@@ -392,31 +390,31 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Namespace for objects</td>
+                            <td>Nesneler icin ad alani</td>
                             <td>Schema</td>
                             <td>Database</td>
                             <td>Schema</td>
                         </tr>
                         <tr>
-                            <td>Create namespace</td>
+                            <td>Ad alani olusturma</td>
                             <td><code>CREATE SCHEMA</code></td>
                             <td><code>CREATE DATABASE</code></td>
                             <td><code>CREATE SCHEMA</code></td>
                         </tr>
                         <tr>
-                            <td>Default namespace</td>
+                            <td>Varsayilan ad alani</td>
                             <td><code>public</code></td>
-                            <td>Selected via <code>USE</code></td>
+                            <td><code>USE</code> ile secilir</td>
                             <td><code>dbo</code></td>
                         </tr>
                         <tr>
-                            <td>Set current namespace</td>
+                            <td>Gecerli ad alanini ayarlama</td>
                             <td><code>SET search_path TO</code></td>
                             <td><code>USE database_name</code></td>
                             <td><code>USE database_name</code></td>
                         </tr>
                         <tr>
-                            <td>Full object reference</td>
+                            <td>Tam nesne referansi</td>
                             <td><code>schema.table</code></td>
                             <td><code>database.table</code></td>
                             <td><code>database.schema.table</code></td>
@@ -427,36 +425,35 @@
 
             <!-- Exercise 1: Creating and Managing Schemas -->
             <section>
-                <h2 id="exercise-1">Exercise 1: Creating and Managing Schemas</h2>
-                <p>Learn to create schemas for organizing database objects by functional area or application module.</p>
+                <h2 id="exercise-1">Alistirma 1: Sema Olusturma ve Yonetme</h2>
+                <p>Veritabani nesnelerini islevsel alana veya uygulama modulune gore organize etmek icin sema olusturmayi ogrenin.</p>
 
                 <div class="concept-box">
-                    Schemas help organize objects, prevent naming conflicts, and enable fine-grained access control.
-                    Use them to separate different application modules or multi-tenant data.
+                    Semalar nesneleri organize etmeye, adlandirma cakismalarini onlemeye ve ayrintili erisim kontrolu saglamaya yardimci olur. Farkli uygulama modullerini veya cok kiracilik verilerini ayirmak icin kullanin.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Create Application Schemas</h4>
-                    <p>You're designing a database for an e-commerce platform. Create separate schemas for:</p>
+                    <h4>Alistirma 1.1: Uygulama Semalari Olusturma</h4>
+                    <p>Bir e-ticaret platformu icin veritabani tasarliyorsunuz. Asagidakiler icin ayri semalar olusturun:</p>
                     <ul>
-                        <li><strong>sales</strong> - orders, order items, invoices</li>
-                        <li><strong>inventory</strong> - products, stock levels, warehouses</li>
-                        <li><strong>customers</strong> - customer profiles, addresses, preferences</li>
-                        <li><strong>analytics</strong> - reports, summaries, materialized views</li>
+                        <li><strong>sales</strong> - siparisler, siparis kalemleri, faturalar</li>
+                        <li><strong>inventory</strong> - urunler, stok seviyeleri, depolar</li>
+                        <li><strong>customers</strong> - musteri profilleri, adresler, tercihler</li>
+                        <li><strong>analytics</strong> - raporlar, ozetler, materyalize gorunumler</li>
                     </ul>
-                    <p><strong>Task:</strong> Write the SQL to create these schemas and one sample table in each.</p>
+                    <p><strong>Gorev:</strong> Bu semalari ve her birinde bir ornek tablo olusturmak icin SQL yazin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- Create schemas
+-- Semalari olustur
 CREATE SCHEMA sales;
 CREATE SCHEMA inventory;
 CREATE SCHEMA customers;
 CREATE SCHEMA analytics;
 
--- Sample table in sales schema
+-- sales semasinda ornek tablo
 CREATE TABLE sales.orders (
     order_id SERIAL PRIMARY KEY,
     customer_id INTEGER NOT NULL,
@@ -473,7 +470,7 @@ CREATE TABLE sales.order_items (
     unit_price DECIMAL(10, 2) NOT NULL
 );
 
--- Sample table in inventory schema
+-- inventory semasinda ornek tablo
 CREATE TABLE inventory.products (
     product_id SERIAL PRIMARY KEY,
     sku VARCHAR(50) UNIQUE NOT NULL,
@@ -497,7 +494,7 @@ CREATE TABLE inventory.stock_levels (
     PRIMARY KEY (product_id, warehouse_id)
 );
 
--- Sample table in customers schema
+-- customers semasinda ornek tablo
 CREATE TABLE customers.profiles (
     customer_id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -516,7 +513,7 @@ CREATE TABLE customers.addresses (
     postal_code VARCHAR(20)
 );
 
--- Sample view in analytics schema
+-- analytics semasinda ornek gorunum
 CREATE TABLE analytics.daily_sales_summary (
     summary_date DATE PRIMARY KEY,
     total_orders INTEGER,
@@ -525,18 +522,18 @@ CREATE TABLE analytics.daily_sales_summary (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Cross-schema foreign key (orders reference customers)
+-- Semalar arasi yabanci anahtar (siparisler musterilere referans verir)
 ALTER TABLE sales.orders
 ADD CONSTRAINT fk_orders_customer
 FOREIGN KEY (customer_id) REFERENCES customers.profiles(customer_id);
 
--- Cross-schema foreign key (order_items reference products)
+-- Semalar arasi yabanci anahtar (siparis kalemleri urunlere referans verir)
 ALTER TABLE sales.order_items
 ADD CONSTRAINT fk_order_items_product
 FOREIGN KEY (product_id) REFERENCES inventory.products(product_id);</code></pre>
 
                         <div class="schema-diagram">
-Database: ecommerce
+Veritabani: ecommerce
 ├── Schema: sales
 │   ├── orders
 │   └── order_items
@@ -554,34 +551,34 @@ Database: ecommerce
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Working with Search Path</h4>
-                    <p>You have tables in multiple schemas. Write queries that:</p>
+                    <h4>Alistirma 1.2: Search Path ile Calisma</h4>
+                    <p>Birden fazla semada tablolariniz var. Asagidakileri yapan sorgular yazin:</p>
                     <ol>
-                        <li>Show the current search path</li>
-                        <li>Set the search path to prioritize the <code>sales</code> schema</li>
-                        <li>Query a table without specifying the schema name</li>
-                        <li>Query tables from multiple schemas in one query</li>
+                        <li>Gecerli search path'i gosterin</li>
+                        <li>Search path'i <code>sales</code> semasini onceliklendirmek icin ayarlayin</li>
+                        <li>Sema adini belirtmeden bir tabloyu sorgulayın</li>
+                        <li>Tek bir sorguda birden fazla semayi sorgulayın</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- 1. Show current search path
+-- 1. Gecerli search path'i goster
 SHOW search_path;
--- Default result: "$user", public
+-- Varsayilan sonuc: "$user", public
 
--- 2. Set search path to prioritize sales schema
+-- 2. Search path'i sales semasini onceliklendirmek icin ayarla
 SET search_path TO sales, inventory, customers, public;
 
--- For permanent change (per user):
+-- Kalici degisiklik icin (kullanici basina):
 ALTER USER myuser SET search_path TO sales, inventory, customers, public;
 
--- 3. Query without schema name (uses search path)
--- With search_path set to sales first, this finds sales.orders
+-- 3. Sema adi olmadan sorgula (search path kullanir)
+-- search_path once sales olarak ayarlandigi icin, bu sales.orders'i bulur
 SELECT * FROM orders WHERE order_date >= CURRENT_DATE - INTERVAL '7 days';
 
--- 4. Cross-schema query with explicit schema names (recommended)
+-- 4. Acik sema adlariyla semalar arasi sorgu (onerilen)
 SELECT
     o.order_id,
     o.order_date,
@@ -595,35 +592,33 @@ JOIN sales.order_items oi ON o.order_id = oi.order_id
 JOIN inventory.products p ON oi.product_id = p.product_id
 WHERE o.status = 'completed';
 
--- MySQL equivalent (using databases)
-USE ecommerce_sales;  -- Set default database
+-- MySQL esdegeri (veritabanlarini kullanarak)
+USE ecommerce_sales;  -- Varsayilan veritabanini ayarla
 
 SELECT
     o.order_id,
     o.order_date,
     c.email AS customer_email,
     p.name AS product_name
-FROM orders o  -- Uses current database
+FROM orders o  -- Gecerli veritabanini kullanir
 JOIN ecommerce_customers.profiles c ON o.customer_id = c.customer_id
 JOIN ecommerce_inventory.products p ON o.product_id = p.product_id;</code></pre>
 
                         <div class="best-practice-box">
-                            Always use fully qualified names (<code>schema.table</code>) in application code
-                            and scripts to avoid ambiguity and make the code self-documenting.
+                            Belirsizligi onlemek ve kodu kendi kendini belgeleyen hale getirmek icin uygulama kodunda ve betiklerde her zaman tam nitelikli adlar (<code>schema.table</code>) kullanin.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.3: Multi-Tenant Schema Design</h4>
-                    <p>Design a schema structure for a SaaS application where each tenant (customer) has isolated data.
-                        Create schemas for two tenants and shared reference data.</p>
+                    <h4>Alistirma 1.3: Cok Kiracili Sema Tasarimi</h4>
+                    <p>Her kiracinin (musterinin) izole verilere sahip oldugu bir SaaS uygulamasi icin bir sema yapisi tasarlayin. Iki kiraci ve paylasilan referans verileri icin semalar olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
                     <div id="solution1_3" class="solution-box">
-                        <pre><code class="language-sql">-- PostgreSQL Multi-Tenant Schema Design
+                        <pre><code class="language-sql">-- PostgreSQL Cok Kiracili Sema Tasarimi
 
--- Shared schema for common reference data
+-- Ortak referans verileri icin paylasilan sema
 CREATE SCHEMA shared;
 
 CREATE TABLE shared.countries (
@@ -644,12 +639,12 @@ CREATE TABLE shared.subscription_plans (
     features JSONB
 );
 
--- Tenant-specific schemas
+-- Kiraciya ozel semalar
 CREATE SCHEMA tenant_acme;
 CREATE SCHEMA tenant_globex;
 
--- Template for tenant tables (create in each tenant schema)
--- Tenant: ACME Corp
+-- Kiraci tablolari icin sablon (her kiraci semasinda olustur)
+-- Kiraci: ACME Corp
 CREATE TABLE tenant_acme.users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -666,7 +661,7 @@ CREATE TABLE tenant_acme.projects (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Same structure for tenant_globex
+-- tenant_globex icin ayni yapi
 CREATE TABLE tenant_globex.users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -683,7 +678,7 @@ CREATE TABLE tenant_globex.projects (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Function to dynamically set schema based on tenant
+-- Kiraciya gore dinamik olarak sema ayarlama fonksiyonu
 CREATE OR REPLACE FUNCTION set_tenant(tenant_name TEXT)
 RETURNS VOID AS $$
 BEGIN
@@ -691,30 +686,30 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Usage: SELECT set_tenant('acme');
--- Now queries automatically use tenant_acme schema</code></pre>
+-- Kullanim: SELECT set_tenant('acme');
+-- Artik sorgular otomatik olarak tenant_acme semasini kullanir</code></pre>
 
                         <div class="schema-diagram">
-Database: saas_app
-├── Schema: shared (reference data)
+Veritabani: saas_app
+├── Schema: shared (referans verileri)
 │   ├── countries
 │   ├── currencies
 │   └── subscription_plans
-├── Schema: tenant_acme (Tenant 1)
+├── Schema: tenant_acme (Kiraci 1)
 │   ├── users
 │   └── projects
-├── Schema: tenant_globex (Tenant 2)
+├── Schema: tenant_globex (Kiraci 2)
 │   ├── users
 │   └── projects
-└── Schema: public (system tables)
+└── Schema: public (sistem tablolari)
                         </div>
 
-                        <p><strong>Benefits of this approach:</strong></p>
+                        <p><strong>Bu yaklaşimin faydalari:</strong></p>
                         <ul>
-                            <li>Complete data isolation between tenants</li>
-                            <li>Easy to backup/restore individual tenants</li>
-                            <li>Simple to add new tenants (create schema, copy table structure)</li>
-                            <li>Shared reference data prevents duplication</li>
+                            <li>Kiracılar arasında tam veri izolasyonu</li>
+                            <li>Bireysel kiracıları yedeklemek/geri yuklemek kolay</li>
+                            <li>Yeni kiracı eklemek basit (sema olustur, tablo yapisini kopyala)</li>
+                            <li>Paylaşılan referans verileri tekrarlamayı onler</li>
                         </ul>
                     </div>
                 </div>
@@ -722,72 +717,71 @@ Database: saas_app
 
             <!-- Exercise 2: Naming Conventions -->
             <section>
-                <h2 id="exercise-2">Exercise 2: Object Naming Conventions</h2>
-                <p>Practice applying consistent naming conventions to database objects.</p>
+                <h2 id="exercise-2">Alistirma 2: Nesne Adlandirma Kurallari</h2>
+                <p>Veritabani nesnelerine tutarli adlandirma kurallarini uygulamayi pratik edin.</p>
 
                 <div class="concept-box">
-                    Use <code>snake_case</code> for maximum portability. PostgreSQL lowercases unquoted identifiers,
-                    MySQL behavior varies by OS, SQL Server is typically case-insensitive.
+                    Maksimum tasinabilirlik icin <code>snake_case</code> kullanin. PostgreSQL tirnak icine alinmamis tanimlayicilari kucuk harfe cevirir, MySQL davranisi isletim sistemine gore degisir, SQL Server genellikle buyuk/kucuk harf duyarsizdir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: Fix Bad Names</h4>
-                    <p>The following object names violate naming conventions. Identify the issues and provide better names:</p>
+                    <h4>Alistirma 2.1: Kotu Adlari Duzeltme</h4>
+                    <p>Asagidaki nesne adlari adlandirma kurallarini ihlal ediyor. Sorunlari tanimlayin ve daha iyi adlar saglayin:</p>
 
                     <table class="dataset-table">
                         <thead>
                             <tr>
-                                <th>Object Type</th>
-                                <th>Bad Name</th>
-                                <th>Issues</th>
-                                <th>Better Name</th>
+                                <th>Nesne Turu</th>
+                                <th>Kotu Ad</th>
+                                <th>Sorunlar</th>
+                                <th>Daha Iyi Ad</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Table</td>
+                                <td>Tablo</td>
                                 <td><span class="bad-name">tblCustomerData</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Column</td>
+                                <td>Sutun</td>
                                 <td><span class="bad-name">CustFirstName</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Table</td>
+                                <td>Tablo</td>
                                 <td><span class="bad-name">Order</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Column</td>
+                                <td>Sutun</td>
                                 <td><span class="bad-name">isdeleted</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Index</td>
+                                <td>Indeks</td>
                                 <td><span class="bad-name">index1</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Foreign Key</td>
+                                <td>Yabanci Anahtar</td>
                                 <td><span class="bad-name">FK1</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>View</td>
+                                <td>Gorunum</td>
                                 <td><span class="bad-name">CustomerOrdersView</span></td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>Stored Procedure</td>
+                                <td>Sakli Prosedur</td>
                                 <td><span class="bad-name">sp_GetData</span></td>
                                 <td>?</td>
                                 <td>?</td>
@@ -795,64 +789,64 @@ Database: saas_app
                         </tbody>
                     </table>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
                         <table class="dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Object Type</th>
-                                    <th>Bad Name</th>
-                                    <th>Issues</th>
-                                    <th>Better Name</th>
+                                    <th>Nesne Turu</th>
+                                    <th>Kotu Ad</th>
+                                    <th>Sorunlar</th>
+                                    <th>Daha Iyi Ad</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Table</td>
+                                    <td>Tablo</td>
                                     <td><span class="bad-name">tblCustomerData</span></td>
-                                    <td>Hungarian notation (tbl prefix), CamelCase, redundant "Data"</td>
+                                    <td>Macar notasyonu (tbl oneki), CamelCase, gereksiz "Data"</td>
                                     <td><span class="good-name">customers</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Column</td>
+                                    <td>Sutun</td>
                                     <td><span class="bad-name">CustFirstName</span></td>
-                                    <td>Abbreviation, CamelCase, redundant prefix</td>
+                                    <td>Kisaltma, CamelCase, gereksiz onek</td>
                                     <td><span class="good-name">first_name</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Table</td>
+                                    <td>Tablo</td>
                                     <td><span class="bad-name">Order</span></td>
-                                    <td>Reserved word in SQL, singular</td>
+                                    <td>SQL'de ayrilmis kelime, tekil</td>
                                     <td><span class="good-name">orders</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Column</td>
+                                    <td>Sutun</td>
                                     <td><span class="bad-name">isdeleted</span></td>
-                                    <td>No word separation</td>
+                                    <td>Kelime ayirimi yok</td>
                                     <td><span class="good-name">is_deleted</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Index</td>
+                                    <td>Indeks</td>
                                     <td><span class="bad-name">index1</span></td>
-                                    <td>Non-descriptive, no indication of table/column</td>
+                                    <td>Tanimlayici degil, tablo/sutun gostergesi yok</td>
                                     <td><span class="good-name">idx_orders_customer_id</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Foreign Key</td>
+                                    <td>Yabanci Anahtar</td>
                                     <td><span class="bad-name">FK1</span></td>
-                                    <td>Non-descriptive</td>
+                                    <td>Tanimlayici degil</td>
                                     <td><span class="good-name">fk_orders_customer_id</span></td>
                                 </tr>
                                 <tr>
-                                    <td>View</td>
+                                    <td>Gorunum</td>
                                     <td><span class="bad-name">CustomerOrdersView</span></td>
-                                    <td>CamelCase, "View" suffix redundant</td>
+                                    <td>CamelCase, "View" soneki gereksiz</td>
                                     <td><span class="good-name">v_customer_orders</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Stored Procedure</td>
+                                    <td>Sakli Prosedur</td>
                                     <td><span class="bad-name">sp_GetData</span></td>
-                                    <td>sp_ prefix reserved in SQL Server, vague name</td>
+                                    <td>sp_ oneki SQL Server'da ayrilmis, belirsiz ad</td>
                                     <td><span class="good-name">get_customer_order_history</span></td>
                                 </tr>
                             </tbody>
@@ -861,15 +855,14 @@ Database: saas_app
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: Apply Naming Convention</h4>
-                    <p>Create a complete set of database objects for a blog system following proper naming conventions.
-                        Include tables, columns, indexes, foreign keys, and a view.</p>
+                    <h4>Alistirma 2.2: Adlandirma Kuralini Uygulama</h4>
+                    <p>Uygun adlandirma kuralllarini izleyerek bir blog sistemi icin eksiksiz bir veritabani nesneleri seti olusturun. Tablolar, sutunlar, indeksler, yabanci anahtarlar ve bir gorunum ekleyin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
                     <div id="solution2_2" class="solution-box">
-                        <pre><code class="language-sql">-- Blog System with Proper Naming Conventions
+                        <pre><code class="language-sql">-- Uygun Adlandirma Kurallariyla Blog Sistemi
 
--- Tables: plural nouns, snake_case
+-- Tablolar: cogul isimler, snake_case
 CREATE TABLE authors (
     author_id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
@@ -879,7 +872,7 @@ CREATE TABLE authors (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
 
-    -- Named constraints
+    -- Adlandirilmis kisitlamalar
     CONSTRAINT uq_authors_username UNIQUE (username),
     CONSTRAINT uq_authors_email UNIQUE (email)
 );
@@ -912,7 +905,7 @@ CREATE TABLE posts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     view_count INTEGER DEFAULT 0,
 
-    -- Named foreign key constraints
+    -- Adlandirilmis yabanci anahtar kisitlamalari
     CONSTRAINT fk_posts_author
         FOREIGN KEY (author_id)
         REFERENCES authors(author_id)
@@ -923,14 +916,14 @@ CREATE TABLE posts (
         REFERENCES categories(category_id)
         ON DELETE SET NULL,
 
-    -- Check constraints
+    -- Kontrol kisitlamalari
     CONSTRAINT chk_posts_status
         CHECK (status IN ('draft', 'published', 'archived')),
 
     CONSTRAINT uq_posts_slug UNIQUE (slug)
 );
 
--- Junction table: combines both entity names
+-- Baglanti tablosu: her iki varlik adini birlestirir
 CREATE TABLE post_tags (
     post_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
@@ -969,19 +962,19 @@ CREATE TABLE comments (
         ON DELETE CASCADE
 );
 
--- Indexes: idx_tablename_columnname(s)
+-- Indeksler: idx_tabloadi_sutunadi(lar)
 CREATE INDEX idx_posts_author_id ON posts(author_id);
 CREATE INDEX idx_posts_category_id ON posts(category_id);
 CREATE INDEX idx_posts_status ON posts(status);
 CREATE INDEX idx_posts_published_at ON posts(published_at DESC);
 CREATE INDEX idx_comments_post_id ON comments(post_id);
 
--- Composite index
+-- Bilesik indeks
 CREATE INDEX idx_posts_status_published
     ON posts(status, published_at)
     WHERE status = 'published';
 
--- Views: v_ prefix
+-- Gorunumler: v_ oneki
 CREATE VIEW v_published_posts AS
 SELECT
     p.post_id,
@@ -1009,7 +1002,7 @@ FROM authors a
 LEFT JOIN posts p ON a.author_id = p.author_id
 GROUP BY a.author_id, a.display_name;
 
--- Function: verb_noun pattern
+-- Fonksiyon: fiil_isim kalıbı
 CREATE OR REPLACE FUNCTION get_post_comment_count(p_post_id INTEGER)
 RETURNS INTEGER AS $$
     SELECT COUNT(*)::INTEGER
@@ -1017,7 +1010,7 @@ RETURNS INTEGER AS $$
     WHERE post_id = p_post_id AND is_approved = TRUE;
 $$ LANGUAGE SQL;
 
--- Trigger: trg_tablename_timing_event
+-- Tetikleyici: trg_tabloadi_zamanlama_olay
 CREATE OR REPLACE FUNCTION update_post_timestamp()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -1031,66 +1024,66 @@ CREATE TRIGGER trg_posts_before_update
     FOR EACH ROW
     EXECUTE FUNCTION update_post_timestamp();</code></pre>
 
-                        <h5>Naming Convention Summary:</h5>
+                        <h5>Adlandirma Kurali Ozeti:</h5>
                         <table class="dataset-table">
                             <tr>
-                                <th>Object</th>
-                                <th>Pattern</th>
-                                <th>Example</th>
+                                <th>Nesne</th>
+                                <th>Kalip</th>
+                                <th>Ornek</th>
                             </tr>
                             <tr>
-                                <td>Tables</td>
-                                <td>plural_noun</td>
+                                <td>Tablolar</td>
+                                <td>cogul_isim</td>
                                 <td>posts, authors, categories</td>
                             </tr>
                             <tr>
-                                <td>Junction Tables</td>
-                                <td>entity1_entity2</td>
+                                <td>Baglanti Tablolari</td>
+                                <td>varlik1_varlik2</td>
                                 <td>post_tags, user_roles</td>
                             </tr>
                             <tr>
-                                <td>Primary Key</td>
-                                <td>singular_id</td>
+                                <td>Birincil Anahtar</td>
+                                <td>tekil_id</td>
                                 <td>post_id, author_id</td>
                             </tr>
                             <tr>
-                                <td>Foreign Key Column</td>
-                                <td>referenced_table_id</td>
+                                <td>Yabanci Anahtar Sutunu</td>
+                                <td>referans_tablo_id</td>
                                 <td>author_id, category_id</td>
                             </tr>
                             <tr>
-                                <td>FK Constraint</td>
-                                <td>fk_table_column</td>
+                                <td>YA Kisitlamasi</td>
+                                <td>fk_tablo_sutun</td>
                                 <td>fk_posts_author</td>
                             </tr>
                             <tr>
-                                <td>Unique Constraint</td>
-                                <td>uq_table_column</td>
+                                <td>Benzersiz Kisitlama</td>
+                                <td>uq_tablo_sutun</td>
                                 <td>uq_authors_email</td>
                             </tr>
                             <tr>
-                                <td>Check Constraint</td>
-                                <td>chk_table_description</td>
+                                <td>Kontrol Kisitlamasi</td>
+                                <td>chk_tablo_aciklama</td>
                                 <td>chk_posts_status</td>
                             </tr>
                             <tr>
-                                <td>Index</td>
-                                <td>idx_table_column(s)</td>
+                                <td>Indeks</td>
+                                <td>idx_tablo_sutun(lar)</td>
                                 <td>idx_posts_author_id</td>
                             </tr>
                             <tr>
-                                <td>View</td>
-                                <td>v_description</td>
+                                <td>Gorunum</td>
+                                <td>v_aciklama</td>
                                 <td>v_published_posts</td>
                             </tr>
                             <tr>
-                                <td>Function</td>
-                                <td>verb_noun</td>
+                                <td>Fonksiyon</td>
+                                <td>fiil_isim</td>
                                 <td>get_post_comment_count</td>
                             </tr>
                             <tr>
-                                <td>Trigger</td>
-                                <td>trg_table_timing_event</td>
+                                <td>Tetikleyici</td>
+                                <td>trg_tablo_zamanlama_olay</td>
                                 <td>trg_posts_before_update</td>
                             </tr>
                         </table>
@@ -1100,22 +1093,21 @@ CREATE TRIGGER trg_posts_before_update
 
             <!-- Exercise 3: Schema Migrations -->
             <section>
-                <h2 id="exercise-3">Exercise 3: Schema Migration Scripts</h2>
-                <p>Practice writing versioned migration scripts for evolving database schemas.</p>
+                <h2 id="exercise-3">Alistirma 3: Sema Migrasyon Betikleri</h2>
+                <p>Gelisen veritabani semalari icin surumlu migrasyon betikleri yazmayi pratik edin.</p>
 
                 <div class="concept-box">
-                    Migration scripts should be versioned, idempotent where possible, and include both
-                    "up" (apply) and "down" (rollback) sections.
+                    Migrasyon betikleri surumlu olmali, mumkun oldugunda idempotent olmali ve hem "up" (uygula) hem de "down" (geri al) bolumleri icermelidir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: Write Migration Scripts</h4>
-                    <p>Create migration scripts for the following changes to a <code>users</code> table:</p>
+                    <h4>Alistirma 3.1: Migrasyon Betikleri Yazma</h4>
+                    <p>Bir <code>users</code> tablosundaki asagidaki degisiklikler icin migrasyon betikleri olusturun:</p>
                     <ol>
-                        <li>V001: Create initial users table</li>
-                        <li>V002: Add phone_number column</li>
-                        <li>V003: Add last_login_at column and index</li>
-                        <li>V004: Rename column email to email_address</li>
+                        <li>V001: Baslangic users tablosunu olustur</li>
+                        <li>V002: phone_number sutunu ekle</li>
+                        <li>V003: last_login_at sutunu ve indeks ekle</li>
+                        <li>V004: email sutununu email_address olarak yeniden adlandir</li>
                     </ol>
 
                     <div class="file-tree">
@@ -1126,14 +1118,14 @@ CREATE TRIGGER trg_posts_before_update
 └── <span class="file">V004__rename_email_column.sql</span>
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
                         <pre><code class="language-sql">-- V001__create_users_table.sql
--- Description: Create initial users table
--- Author: DBA Team
--- Date: 2024-03-15
+-- Aciklama: Baslangic users tablosunu olustur
+-- Yazar: DBA Ekibi
+-- Tarih: 2024-03-15
 
--- UP Migration
+-- UP Migrasyonu
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -1148,69 +1140,69 @@ CREATE TABLE users (
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_is_active ON users(is_active);
 
--- DOWN Migration (in separate file or comments for reference)
+-- DOWN Migrasyonu (ayri dosyada veya referans icin yorumlarda)
 -- DROP TABLE IF EXISTS users CASCADE;</code></pre>
 
                         <pre><code class="language-sql">-- V002__add_phone_number.sql
--- Description: Add phone_number column to users
--- Author: DBA Team
--- Date: 2024-03-18
+-- Aciklama: users tablosuna phone_number sutunu ekle
+-- Yazar: DBA Ekibi
+-- Tarih: 2024-03-18
 
--- UP Migration
+-- UP Migrasyonu
 ALTER TABLE users
 ADD COLUMN phone_number VARCHAR(20);
 
--- Optional: Add index if frequently queried
+-- Istege bagli: Sik sorgulaniyorsa indeks ekle
 CREATE INDEX idx_users_phone ON users(phone_number);
 
--- DOWN Migration
+-- DOWN Migrasyonu
 -- DROP INDEX IF EXISTS idx_users_phone;
 -- ALTER TABLE users DROP COLUMN phone_number;</code></pre>
 
                         <pre><code class="language-sql">-- V003__add_last_login.sql
--- Description: Add last_login_at tracking
--- Author: DBA Team
--- Date: 2024-03-20
+-- Aciklama: last_login_at takibi ekle
+-- Yazar: DBA Ekibi
+-- Tarih: 2024-03-20
 
--- UP Migration
+-- UP Migrasyonu
 ALTER TABLE users
 ADD COLUMN last_login_at TIMESTAMP;
 
--- Index for queries like "users who logged in recently"
+-- "Yakinda giris yapan kullanicilar" gibi sorgular icin indeks
 CREATE INDEX idx_users_last_login ON users(last_login_at DESC NULLS LAST);
 
--- DOWN Migration
+-- DOWN Migrasyonu
 -- DROP INDEX IF EXISTS idx_users_last_login;
 -- ALTER TABLE users DROP COLUMN last_login_at;</code></pre>
 
                         <pre><code class="language-sql">-- V004__rename_email_column.sql
--- Description: Rename email to email_address for clarity
--- Author: DBA Team
--- Date: 2024-03-22
+-- Aciklama: Netlik icin email'i email_address olarak yeniden adlandir
+-- Yazar: DBA Ekibi
+-- Tarih: 2024-03-22
 
--- UP Migration
+-- UP Migrasyonu
 
--- Step 1: Add new column
+-- Adim 1: Yeni sutun ekle
 ALTER TABLE users ADD COLUMN email_address VARCHAR(255);
 
--- Step 2: Copy data
+-- Adim 2: Verileri kopyala
 UPDATE users SET email_address = email;
 
--- Step 3: Add constraints to new column
+-- Adim 3: Yeni sutuna kisitlamalar ekle
 ALTER TABLE users
 ALTER COLUMN email_address SET NOT NULL;
 
 ALTER TABLE users
 ADD CONSTRAINT uq_users_email_address UNIQUE (email_address);
 
--- Step 4: Drop old column and index
+-- Adim 4: Eski sutunu ve indeksi kaldir
 DROP INDEX IF EXISTS idx_users_email;
 ALTER TABLE users DROP COLUMN email;
 
--- Step 5: Create new index
+-- Adim 5: Yeni indeks olustur
 CREATE INDEX idx_users_email_address ON users(email_address);
 
--- DOWN Migration
+-- DOWN Migrasyonu
 -- ALTER TABLE users ADD COLUMN email VARCHAR(255);
 -- UPDATE users SET email = email_address;
 -- ALTER TABLE users ALTER COLUMN email SET NOT NULL;
@@ -1221,23 +1213,21 @@ CREATE INDEX idx_users_email_address ON users(email_address);
 -- ALTER TABLE users DROP COLUMN email_address;</code></pre>
 
                         <div class="warning-box">
-                            Renaming columns is complex because it can break application code.
-                            The expand-contract pattern (add new → migrate data → update app → drop old)
-                            is safer for production systems.
+                            Sutunlari yeniden adlandirmak karmasiktir cunku uygulama kodunu bozabilir. Genislet-daralt kalıbı (yeni ekle -> veri tasi -> uygulamayi guncelle -> eskiyi kaldir) uretim sistemleri icin daha guvenlidir.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: Classify Schema Changes</h4>
-                    <p>Classify each change as Safe, Caution, or Danger, and explain why:</p>
+                    <h4>Alistirma 3.2: Sema Degisikliklerini Siniflandirma</h4>
+                    <p>Her degisikligi Guvenli, Dikkatli veya Tehlikeli olarak siniflandirin ve nedenini aciklayin:</p>
 
                     <table class="dataset-table">
                         <thead>
                             <tr>
-                                <th>Change</th>
-                                <th>Risk Level</th>
-                                <th>Reason</th>
+                                <th>Degisiklik</th>
+                                <th>Risk Seviyesi</th>
+                                <th>Neden</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1252,7 +1242,7 @@ CREATE INDEX idx_users_email_address ON users(email_address);
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>ALTER TABLE ADD COLUMN (NOT NULL, no default)</td>
+                                <td>ALTER TABLE ADD COLUMN (NOT NULL, varsayilan yok)</td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
@@ -1277,12 +1267,12 @@ CREATE INDEX idx_users_email_address ON users(email_address);
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>ALTER COLUMN TYPE (widen)</td>
+                                <td>ALTER COLUMN TYPE (genislet)</td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
                             <tr>
-                                <td>ALTER COLUMN TYPE (narrow)</td>
+                                <td>ALTER COLUMN TYPE (daralt)</td>
                                 <td>?</td>
                                 <td>?</td>
                             </tr>
@@ -1294,117 +1284,116 @@ CREATE INDEX idx_users_email_address ON users(email_address);
                         </tbody>
                     </table>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
                         <table class="dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Change</th>
-                                    <th>Risk Level</th>
-                                    <th>Reason</th>
+                                    <th>Degisiklik</th>
+                                    <th>Risk Seviyesi</th>
+                                    <th>Neden</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>CREATE TABLE</td>
-                                    <td><span class="change-type change-safe">SAFE</span></td>
-                                    <td>Additive change, no impact on existing objects</td>
+                                    <td><span class="change-type change-safe">GUVENLI</span></td>
+                                    <td>Eklemeli degisiklik, mevcut nesnelere etkisi yok</td>
                                 </tr>
                                 <tr>
                                     <td>ADD COLUMN (nullable)</td>
-                                    <td><span class="change-type change-safe">SAFE</span></td>
-                                    <td>Additive, nullable allows existing rows to have NULL</td>
+                                    <td><span class="change-type change-safe">GUVENLI</span></td>
+                                    <td>Eklemeli, nullable mevcut satirlarin NULL olmasina izin verir</td>
                                 </tr>
                                 <tr>
-                                    <td>ADD COLUMN (NOT NULL, no default)</td>
-                                    <td><span class="change-type change-danger">DANGER</span></td>
-                                    <td>Will fail if table has existing rows (no value for new column)</td>
+                                    <td>ADD COLUMN (NOT NULL, varsayilan yok)</td>
+                                    <td><span class="change-type change-danger">TEHLIKELI</span></td>
+                                    <td>Tabloda mevcut satirlar varsa basarisiz olur (yeni sutun icin deger yok)</td>
                                 </tr>
                                 <tr>
                                     <td>DROP TABLE</td>
-                                    <td><span class="change-type change-danger">DANGER</span></td>
-                                    <td>Permanent data loss, cannot be undone</td>
+                                    <td><span class="change-type change-danger">TEHLIKELI</span></td>
+                                    <td>Kalici veri kaybi, geri alinamaz</td>
                                 </tr>
                                 <tr>
                                     <td>DROP COLUMN</td>
-                                    <td><span class="change-type change-danger">DANGER</span></td>
-                                    <td>Permanent data loss, may break dependent objects</td>
+                                    <td><span class="change-type change-danger">TEHLIKELI</span></td>
+                                    <td>Kalici veri kaybi, bagli nesneleri bozabilir</td>
                                 </tr>
                                 <tr>
                                     <td>CREATE INDEX</td>
-                                    <td><span class="change-type change-caution">CAUTION</span></td>
-                                    <td>Locks table during creation on large tables</td>
+                                    <td><span class="change-type change-caution">DIKKATLI</span></td>
+                                    <td>Buyuk tablolarda olusturma sirasinda tabloyu kilitler</td>
                                 </tr>
                                 <tr>
                                     <td>CREATE INDEX CONCURRENTLY</td>
-                                    <td><span class="change-type change-safe">SAFE</span></td>
-                                    <td>PostgreSQL: No lock, builds index in background</td>
+                                    <td><span class="change-type change-safe">GUVENLI</span></td>
+                                    <td>PostgreSQL: Kilit yok, indeksi arka planda olusturur</td>
                                 </tr>
                                 <tr>
-                                    <td>ALTER TYPE (widen, e.g., VARCHAR(50)→VARCHAR(100))</td>
-                                    <td><span class="change-type change-safe">SAFE</span></td>
-                                    <td>Expanding capacity, all existing data fits</td>
+                                    <td>ALTER TYPE (genislet, orn. VARCHAR(50)->VARCHAR(100))</td>
+                                    <td><span class="change-type change-safe">GUVENLI</span></td>
+                                    <td>Kapasite genisletme, tum mevcut veriler sigar</td>
                                 </tr>
                                 <tr>
-                                    <td>ALTER TYPE (narrow, e.g., VARCHAR(100)→VARCHAR(50))</td>
-                                    <td><span class="change-type change-danger">DANGER</span></td>
-                                    <td>May truncate data or fail if data too long</td>
+                                    <td>ALTER TYPE (daralt, orn. VARCHAR(100)->VARCHAR(50))</td>
+                                    <td><span class="change-type change-danger">TEHLIKELI</span></td>
+                                    <td>Verileri kesebilir veya veri cok uzunsa basarisiz olabilir</td>
                                 </tr>
                                 <tr>
                                     <td>ADD FOREIGN KEY</td>
-                                    <td><span class="change-type change-caution">CAUTION</span></td>
-                                    <td>Will fail if orphan records exist; locks tables</td>
+                                    <td><span class="change-type change-caution">DIKKATLI</span></td>
+                                    <td>Yetim kayitlar varsa basarisiz olur; tablolari kilitler</td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <div class="best-practice-box">
-                            Before running dangerous migrations in production:
+                            Uretimde tehlikeli migrasyonlari calistirmadan once:
                             <ul>
-                                <li>Back up the database or affected tables</li>
-                                <li>Test on a staging environment with production-like data</li>
-                                <li>Plan for rollback</li>
-                                <li>Consider scheduling during low-traffic periods</li>
+                                <li>Veritabanini veya etkilenen tablolari yedekleyin</li>
+                                <li>Uretim benzeri verilerle hazırlık ortaminda test edin</li>
+                                <li>Geri alma icin plan yapin</li>
+                                <li>Dusuk trafik donemlerinde zamanlamayi dusunun</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.3: Zero-Downtime Migration</h4>
-                    <p>You need to split a <code>full_name</code> column into <code>first_name</code> and <code>last_name</code>
-                        without downtime. Write the migration steps using the expand-contract pattern.</p>
+                    <h4>Alistirma 3.3: Kesintisiz Migrasyon</h4>
+                    <p>Kesinti olmadan bir <code>full_name</code> sutununu <code>first_name</code> ve <code>last_name</code> olarak ayirmaniz gerekiyor. Genislet-daralt kalibi kullanarak migrasyon adimlarini yazin.</p>
 
-                    <p><strong>Current state:</strong></p>
+                    <p><strong>Mevcut durum:</strong></p>
                     <pre><code>users (user_id, email, full_name, created_at)</code></pre>
 
-                    <p><strong>Target state:</strong></p>
+                    <p><strong>Hedef durum:</strong></p>
                     <pre><code>users (user_id, email, first_name, last_name, created_at)</code></pre>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Cozumu Goster</button>
                     <div id="solution3_3" class="solution-box">
                         <div class="migration-flow">
-                            <span class="migration-step">1. Expand</span>
-                            <span class="migration-arrow">→</span>
-                            <span class="migration-step">2. Migrate</span>
-                            <span class="migration-arrow">→</span>
-                            <span class="migration-step">3. Update App</span>
-                            <span class="migration-arrow">→</span>
-                            <span class="migration-step">4. Contract</span>
+                            <span class="migration-step">1. Genislet</span>
+                            <span class="migration-arrow">-></span>
+                            <span class="migration-step">2. Tasi</span>
+                            <span class="migration-arrow">-></span>
+                            <span class="migration-step">3. Uygulamayi Guncelle</span>
+                            <span class="migration-arrow">-></span>
+                            <span class="migration-step">4. Daralt</span>
                         </div>
 
-                        <pre><code class="language-sql">-- PHASE 1: EXPAND (Add new columns)
--- Migration: V005__add_name_columns.sql
+                        <pre><code class="language-sql">-- AŞAMA 1: GENISLET (Yeni sutunlar ekle)
+-- Migrasyon: V005__add_name_columns.sql
 
 ALTER TABLE users ADD COLUMN first_name VARCHAR(100);
 ALTER TABLE users ADD COLUMN last_name VARCHAR(100);
 
--- Create trigger to sync old column to new columns (for writes during transition)
+-- Eski sutunu yeni sutunlara senkronize etmek icin tetikleyici olustur (gecis sirasinda yazmalar icin)
 CREATE OR REPLACE FUNCTION sync_name_columns()
 RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.full_name IS NOT NULL AND NEW.first_name IS NULL THEN
-        -- Split full_name into first_name and last_name
+        -- full_name'i first_name ve last_name'e bol
         NEW.first_name := split_part(NEW.full_name, ' ', 1);
         NEW.last_name := substring(NEW.full_name from position(' ' in NEW.full_name) + 1);
     END IF;
@@ -1418,10 +1407,10 @@ CREATE TRIGGER trg_users_sync_names
     EXECUTE FUNCTION sync_name_columns();
 
 
--- PHASE 2: MIGRATE (Backfill existing data)
--- Migration: V006__backfill_name_columns.sql
+-- ASAMA 2: TASI (Mevcut verileri doldur)
+-- Migrasyon: V006__backfill_name_columns.sql
 
--- Backfill in batches to avoid long locks
+-- Uzun kilitleri onlemek icin gruplar halinde doldur
 DO $$
 DECLARE
     batch_size INT := 1000;
@@ -1447,73 +1436,73 @@ BEGIN
         GET DIAGNOSTICS rows_updated = ROW_COUNT;
         EXIT WHEN rows_updated = 0;
 
-        -- Optional: Add small delay to reduce load
+        -- Istege bagli: Yuku azaltmak icin kucuk gecikme ekle
         PERFORM pg_sleep(0.1);
     END LOOP;
 END $$;
 
 
--- PHASE 3: UPDATE APPLICATION
--- Update application code to:
--- 1. Read from first_name/last_name columns
--- 2. Write to first_name/last_name columns
--- 3. Remove references to full_name
--- Deploy application changes
+-- ASAMA 3: UYGULAMAYI GUNCELLE
+-- Uygulama kodunu guncelle:
+-- 1. first_name/last_name sutunlarindan oku
+-- 2. first_name/last_name sutunlarina yaz
+-- 3. full_name referanslarini kaldir
+-- Uygulama degisikliklerini dagit
 
 
--- PHASE 4: CONTRACT (Remove old column)
--- Migration: V007__remove_full_name.sql
--- Only run AFTER application is updated and tested
+-- ASAMA 4: DARALT (Eski sutunu kaldir)
+-- Migrasyon: V007__remove_full_name.sql
+-- Yalnizca uygulama guncellendikten ve test edildikten SONRA calistir
 
--- First remove the sync trigger
+-- Once senkronizasyon tetikleyicisini kaldir
 DROP TRIGGER IF EXISTS trg_users_sync_names ON users;
 DROP FUNCTION IF EXISTS sync_name_columns();
 
--- Add NOT NULL constraints if needed
+-- Gerekirse NOT NULL kisitlamalari ekle
 ALTER TABLE users ALTER COLUMN first_name SET NOT NULL;
--- last_name can stay nullable for single-name users
+-- last_name tek isimli kullanicilar icin nullable kalabilir
 
--- Drop old column
+-- Eski sutunu kaldir
 ALTER TABLE users DROP COLUMN full_name;
 
--- Add index on new columns if needed
+-- Gerekirse yeni sutunlara indeks ekle
 CREATE INDEX idx_users_last_name ON users(last_name);</code></pre>
 
-                        <p><strong>Timeline for Zero-Downtime Migration:</strong></p>
+                        <p><strong>Kesintisiz Migrasyon Zaman Cizelgesi:</strong></p>
                         <table class="dataset-table">
                             <tr>
-                                <th>Phase</th>
-                                <th>Database State</th>
-                                <th>Application Reads</th>
-                                <th>Application Writes</th>
+                                <th>Asama</th>
+                                <th>Veritabani Durumu</th>
+                                <th>Uygulama Okur</th>
+                                <th>Uygulama Yazar</th>
                             </tr>
                             <tr>
-                                <td>Before</td>
-                                <td>full_name only</td>
+                                <td>Once</td>
+                                <td>yalnizca full_name</td>
                                 <td>full_name</td>
                                 <td>full_name</td>
                             </tr>
                             <tr>
-                                <td>After Phase 1</td>
+                                <td>Asama 1 Sonrasi</td>
                                 <td>full_name + first/last (nullable)</td>
                                 <td>full_name</td>
-                                <td>full_name (trigger syncs)</td>
+                                <td>full_name (tetikleyici senkronize eder)</td>
                             </tr>
                             <tr>
-                                <td>After Phase 2</td>
-                                <td>All columns populated</td>
+                                <td>Asama 2 Sonrasi</td>
+                                <td>Tum sutunlar dolu</td>
                                 <td>full_name</td>
-                                <td>full_name (trigger syncs)</td>
+                                <td>full_name (tetikleyici senkronize eder)</td>
                             </tr>
                             <tr>
-                                <td>After Phase 3</td>
-                                <td>All columns populated</td>
+                                <td>Asama 3 Sonrasi</td>
+                                <td>Tum sutunlar dolu</td>
                                 <td>first/last</td>
                                 <td>first/last</td>
                             </tr>
                             <tr>
-                                <td>After Phase 4</td>
-                                <td>first/last only</td>
+                                <td>Asama 4 Sonrasi</td>
+                                <td>yalnizca first/last</td>
                                 <td>first/last</td>
                                 <td>first/last</td>
                             </tr>
@@ -1524,26 +1513,26 @@ CREATE INDEX idx_users_last_name ON users(last_name);</code></pre>
 
             <!-- Challenge Exercises -->
             <section>
-                <h2 id="challenge-exercises">Challenge Exercises</h2>
-                <p>Apply all concepts to real-world schema management scenarios.</p>
+                <h2 id="challenge-exercises">Zorluk Alistirmalari</h2>
+                <p>Tum kavramlari gercek dunya sema yonetimi senaryolarina uygulayın.</p>
 
                 <div class="challenge-box">
-                    <h4>Challenge 1: Design Multi-Schema Application</h4>
-                    <p>Design a complete schema organization for a project management SaaS with:</p>
+                    <h4>Zorluk 1: Coklu Sema Uygulama Tasarimi</h4>
+                    <p>Asagidakileri iceren bir proje yonetimi SaaS icin eksiksiz bir sema organizasyonu tasarlayin:</p>
                     <ul>
-                        <li>Shared configuration and lookup tables</li>
-                        <li>Core application tables (projects, tasks, users)</li>
-                        <li>Reporting/analytics tables (read-optimized)</li>
-                        <li>Audit log tables (append-only)</li>
-                        <li>Integration tables (for external API data)</li>
+                        <li>Paylasilan yapilandirma ve arama tablolari</li>
+                        <li>Temel uygulama tablolari (projeler, gorevler, kullanicilar)</li>
+                        <li>Raporlama/analitik tablolari (okuma icin optimize edilmis)</li>
+                        <li>Denetim gunlugu tablolari (yalnizca ekleme)</li>
+                        <li>Entegrasyon tablolari (dis API verileri icin)</li>
                     </ul>
-                    <p><strong>Deliverables:</strong> Schema design, sample tables, access patterns, and migration for initial setup.</p>
+                    <p><strong>Ciktilar:</strong> Sema tasarimi, ornek tablolar, erisim kaliplari ve baslangic kurulumu icin migrasyon.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
-                        <pre><code class="language-sql">-- Schema Organization for Project Management SaaS
+                        <pre><code class="language-sql">-- Proje Yonetimi SaaS icin Sema Organizasyonu
 
--- 1. CORE Schema - Main application tables
+-- 1. CORE Semasi - Ana uygulama tablolari
 CREATE SCHEMA core;
 
 CREATE TABLE core.users (
@@ -1588,7 +1577,7 @@ CREATE TABLE core.project_members (
 );
 
 
--- 2. CONFIG Schema - Shared configuration and lookups
+-- 2. CONFIG Semasi - Paylasilan yapilandirma ve aramalar
 CREATE SCHEMA config;
 
 CREATE TABLE config.task_statuses (
@@ -1599,10 +1588,10 @@ CREATE TABLE config.task_statuses (
 );
 
 INSERT INTO config.task_statuses VALUES
-    ('todo', 'To Do', 1, FALSE),
-    ('in_progress', 'In Progress', 2, FALSE),
-    ('review', 'In Review', 3, FALSE),
-    ('done', 'Done', 4, TRUE);
+    ('todo', 'Yapilacak', 1, FALSE),
+    ('in_progress', 'Devam Ediyor', 2, FALSE),
+    ('review', 'Inceleniyor', 3, FALSE),
+    ('done', 'Tamamlandi', 4, TRUE);
 
 CREATE TABLE config.priority_levels (
     priority_code VARCHAR(20) PRIMARY KEY,
@@ -1619,7 +1608,7 @@ CREATE TABLE config.app_settings (
 );
 
 
--- 3. ANALYTICS Schema - Read-optimized reporting tables
+-- 3. ANALYTICS Semasi - Okuma icin optimize edilmis raporlama tablolari
 CREATE SCHEMA analytics;
 
 CREATE TABLE analytics.daily_project_metrics (
@@ -1640,7 +1629,7 @@ CREATE TABLE analytics.user_activity_summary (
     PRIMARY KEY (summary_date, user_id)
 );
 
--- Materialized view for dashboard
+-- Gosterge paneli icin materyalize gorunum
 CREATE MATERIALIZED VIEW analytics.mv_project_overview AS
 SELECT
     p.project_id,
@@ -1661,7 +1650,7 @@ GROUP BY p.project_id, p.name, p.status, p.owner_id, u.display_name;
 CREATE UNIQUE INDEX ON analytics.mv_project_overview(project_id);
 
 
--- 4. AUDIT Schema - Append-only audit logs
+-- 4. AUDIT Semasi - Yalnizca ekleme denetim gunlukleri
 CREATE SCHEMA audit;
 
 CREATE TABLE audit.activity_log (
@@ -1681,12 +1670,12 @@ CREATE INDEX idx_audit_log_timestamp ON audit.activity_log(timestamp DESC);
 CREATE INDEX idx_audit_log_user ON audit.activity_log(user_id, timestamp DESC);
 CREATE INDEX idx_audit_log_entity ON audit.activity_log(entity_type, entity_id);
 
--- Partition audit log by month for better performance
+-- Daha iyi performans icin denetim gunlugunu aya gore bolumleme
 -- CREATE TABLE audit.activity_log_2024_03 PARTITION OF audit.activity_log
 --     FOR VALUES FROM ('2024-03-01') TO ('2024-04-01');
 
 
--- 5. INTEGRATION Schema - External API data
+-- 5. INTEGRATION Semasi - Dis API verileri
 CREATE SCHEMA integration;
 
 CREATE TABLE integration.external_users (
@@ -1713,37 +1702,37 @@ CREATE TABLE integration.webhook_deliveries (
 );
 
 
--- 6. Set up default search paths for application roles
--- Application role uses core + config
+-- 6. Uygulama rolleri icin varsayilan search path'leri ayarla
+-- Uygulama rolu core + config kullanir
 CREATE ROLE app_user;
 ALTER ROLE app_user SET search_path TO core, config, public;
 
--- Analytics role for reporting
+-- Raporlama icin analitik rolu
 CREATE ROLE analytics_user;
 ALTER ROLE analytics_user SET search_path TO analytics, core, config, public;
 
--- Admin role has access to all
+-- Admin rolu tum semalara erisebilir
 CREATE ROLE admin_user;
 ALTER ROLE admin_user SET search_path TO core, config, analytics, audit, integration, public;</code></pre>
 
                         <div class="schema-diagram">
-Database: project_mgmt
-├── Schema: core (main application)
+Veritabani: project_mgmt
+├── Schema: core (ana uygulama)
 │   ├── users
 │   ├── projects
 │   ├── tasks
 │   └── project_members
-├── Schema: config (shared settings)
+├── Schema: config (paylasilan ayarlar)
 │   ├── task_statuses
 │   ├── priority_levels
 │   └── app_settings
-├── Schema: analytics (reporting)
+├── Schema: analytics (raporlama)
 │   ├── daily_project_metrics
 │   ├── user_activity_summary
 │   └── mv_project_overview
-├── Schema: audit (logging)
-│   └── activity_log (partitioned)
-└── Schema: integration (external)
+├── Schema: audit (gunlukleme)
+│   └── activity_log (bolumlu)
+└── Schema: integration (dis)
     ├── external_users
     └── webhook_deliveries
                         </div>
@@ -1751,17 +1740,17 @@ Database: project_mgmt
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 2: Migration Sequence</h4>
-                    <p>Plan a migration sequence for these interdependent changes. Determine the correct order and any required intermediate steps:</p>
+                    <h4>Zorluk 2: Migrasyon Sirasi</h4>
+                    <p>Bu birbirine bagli degisiklikler icin bir migrasyon sirasi planlayin. Dogru sirayi ve gerekli ara adimlari belirleyin:</p>
                     <ul>
-                        <li>Add new <code>categories</code> table</li>
-                        <li>Add <code>category_id</code> foreign key to <code>products</code> table</li>
-                        <li>Migrate existing product categories from a comma-separated <code>tags</code> column</li>
-                        <li>Drop the old <code>tags</code> column from products</li>
-                        <li>Add NOT NULL constraint to <code>category_id</code></li>
+                        <li>Yeni <code>categories</code> tablosu ekle</li>
+                        <li><code>products</code> tablosuna <code>category_id</code> yabanci anahtari ekle</li>
+                        <li>Mevcut urun kategorilerini virgullerle ayrilmis <code>tags</code> sutunundan tasi</li>
+                        <li>Eski <code>tags</code> sutununu products'tan kaldir</li>
+                        <li><code>category_id</code>'ye NOT NULL kisitlamasi ekle</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
                     <div id="challenge2" class="solution-box">
                         <pre><code class="language-sql">-- V010__create_categories_table.sql
 CREATE TABLE categories (
@@ -1774,7 +1763,7 @@ CREATE TABLE categories (
 -- V011__add_category_to_products.sql
 ALTER TABLE products ADD COLUMN category_id INTEGER;
 
--- Add FK constraint (without NOT NULL initially)
+-- YA kisitlamasi ekle (baslangicta NOT NULL olmadan)
 ALTER TABLE products
 ADD CONSTRAINT fk_products_category
 FOREIGN KEY (category_id) REFERENCES categories(category_id);
@@ -1782,7 +1771,7 @@ FOREIGN KEY (category_id) REFERENCES categories(category_id);
 CREATE INDEX idx_products_category ON products(category_id);
 
 -- V012__migrate_tags_to_categories.sql
--- First, extract unique categories from existing tags
+-- Once mevcut etiketlerden benzersiz kategorileri cikar
 INSERT INTO categories (name, slug)
 SELECT DISTINCT
     TRIM(unnest(string_to_array(tags, ','))) AS name,
@@ -1791,36 +1780,36 @@ FROM products
 WHERE tags IS NOT NULL AND tags != ''
 ON CONFLICT (name) DO NOTHING;
 
--- Then, update products with the first matching category
+-- Sonra urunleri ilk esleyen kategoriyle guncelle
 UPDATE products p
 SET category_id = c.category_id
 FROM categories c
 WHERE c.name = TRIM(split_part(p.tags, ',', 1))
   AND p.tags IS NOT NULL;
 
--- Handle products without tags - assign to "Uncategorized"
-INSERT INTO categories (name, slug) VALUES ('Uncategorized', 'uncategorized')
+-- Etiketi olmayan urunleri isle - "Kategorisiz"e ata
+INSERT INTO categories (name, slug) VALUES ('Kategorisiz', 'kategorisiz')
 ON CONFLICT DO NOTHING;
 
 UPDATE products
-SET category_id = (SELECT category_id FROM categories WHERE slug = 'uncategorized')
+SET category_id = (SELECT category_id FROM categories WHERE slug = 'kategorisiz')
 WHERE category_id IS NULL;
 
 -- V013__make_category_required.sql
--- Only run after verifying all products have category_id
+-- Yalnizca tum urunlerin category_id'si oldugunu dogruladiktan sonra calistir
 ALTER TABLE products ALTER COLUMN category_id SET NOT NULL;
 
 -- V014__drop_tags_column.sql
--- Only run after application no longer uses tags column
+-- Yalnizca uygulama artik tags sutununu kullanmadiktan sonra calistir
 ALTER TABLE products DROP COLUMN tags;</code></pre>
 
-                        <p><strong>Migration Order Reasoning:</strong></p>
+                        <p><strong>Migrasyon Sirasi Mantigi:</strong></p>
                         <ol>
-                            <li><strong>V010</strong>: Create categories first (dependency for FK)</li>
-                            <li><strong>V011</strong>: Add nullable column + FK (allows gradual population)</li>
-                            <li><strong>V012</strong>: Migrate data (populate all category_id values)</li>
-                            <li><strong>V013</strong>: Add NOT NULL (only after all rows have values)</li>
-                            <li><strong>V014</strong>: Drop old column (only after app updated)</li>
+                            <li><strong>V010</strong>: Once kategorileri olustur (YA icin bagimlilik)</li>
+                            <li><strong>V011</strong>: Nullable sutun + YA ekle (kademeli doldurmaya izin verir)</li>
+                            <li><strong>V012</strong>: Veri tasi (tum category_id degerlerini doldur)</li>
+                            <li><strong>V013</strong>: NOT NULL ekle (yalnizca tum satirlarda deger olduktan sonra)</li>
+                            <li><strong>V014</strong>: Eski sutunu kaldir (yalnizca uygulama guncellendikten sonra)</li>
                         </ol>
                     </div>
                 </div>
@@ -1828,50 +1817,50 @@ ALTER TABLE products DROP COLUMN tags;</code></pre>
 
             <!-- Key Takeaways -->
             <section>
-                <h2 id="key-takeaways">Key Takeaways</h2>
+                <h2 id="key-takeaways">Temel Cikarimlar</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Concept</th>
-                            <th>Best Practice</th>
+                            <th>Kavram</th>
+                            <th>En Iyi Uygulama</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Schema Organization</td>
-                            <td>Group related objects into schemas by module, function, or tenant</td>
+                            <td>Sema Organizasyonu</td>
+                            <td>Ilgili nesneleri modul, islev veya kiraciya gore semalara gruplandirin</td>
                         </tr>
                         <tr>
-                            <td>Object References</td>
-                            <td>Use fully qualified names (<code>schema.table</code>) in code for clarity</td>
+                            <td>Nesne Referanslari</td>
+                            <td>Netlik icin kodda tam nitelikli adlar (<code>schema.table</code>) kullanin</td>
                         </tr>
                         <tr>
-                            <td>Naming Style</td>
-                            <td>Use <code>snake_case</code> for portability; be consistent</td>
+                            <td>Adlandirma Stili</td>
+                            <td>Tasinabilirlik icin <code>snake_case</code> kullanin; tutarli olun</td>
                         </tr>
                         <tr>
-                            <td>Table Names</td>
-                            <td>Plural nouns (<code>customers</code>) or singular consistently</td>
+                            <td>Tablo Adlari</td>
+                            <td>Cogul isimler (<code>customers</code>) veya tutarli olarak tekil</td>
                         </tr>
                         <tr>
-                            <td>Constraint Names</td>
-                            <td>Descriptive prefixes: <code>pk_</code>, <code>fk_</code>, <code>uq_</code>, <code>chk_</code></td>
+                            <td>Kisitlama Adlari</td>
+                            <td>Aciklayici onekler: <code>pk_</code>, <code>fk_</code>, <code>uq_</code>, <code>chk_</code></td>
                         </tr>
                         <tr>
-                            <td>Migration Scripts</td>
-                            <td>Version with timestamps or sequence numbers; keep atomic</td>
+                            <td>Migrasyon Betikleri</td>
+                            <td>Zaman damgalari veya sira numaralariyla surumleme; atomik tutun</td>
                         </tr>
                         <tr>
-                            <td>Additive Changes</td>
-                            <td>Generally safe; prefer nullable columns initially</td>
+                            <td>Eklemeli Degisiklikler</td>
+                            <td>Genellikle guvenli; baslangicta nullable sutunlari tercih edin</td>
                         </tr>
                         <tr>
-                            <td>Destructive Changes</td>
-                            <td>Use expand-contract pattern; never run without backup</td>
+                            <td>Yikici Degisiklikler</td>
+                            <td>Genislet-daralt kalibini kullanin; asla yedekleme olmadan calistirmayin</td>
                         </tr>
                         <tr>
-                            <td>Migration Testing</td>
-                            <td>Always test on staging with production-like data first</td>
+                            <td>Migrasyon Testi</td>
+                            <td>Her zaman once uretim benzeri verilerle hazirlik ortaminda test edin</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1879,7 +1868,7 @@ ALTER TABLE products DROP COLUMN tags;</code></pre>
 
             <!-- Navigation -->
             <section>
-                <p><a href="02_schema_management_and_organization.html">&larr; Back to Schema Management Lesson</a></p>
+                <p><a href="02_schema_management_and_organization.html">&larr; Sema Yonetimi Dersine Don</a></p>
             </section>
         </div>
     </div>
@@ -1894,10 +1883,10 @@ ALTER TABLE products DROP COLUMN tags;</code></pre>
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>

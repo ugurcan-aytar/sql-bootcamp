@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -10,7 +10,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 1: Advanced SELECT Techniques - Practical Examples</title>
+  <title>Gun 1: Gelismis SELECT Teknikleri - Pratik Ornekler</title>
   <style>
     code {
       white-space: pre-wrap;
@@ -37,34 +37,6 @@
 
     ul.task-list {
       list-style: none;
-    }
-
-    .language-switcher {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .language-switcher a {
-      text-decoration: none;
-      padding: 5px 10px;
-      margin: 0 2px;
-      border-radius: 3px;
-      color: #333;
-    }
-
-    .language-switcher a.active {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .language-switcher a:hover:not(.active) {
-      background: #e9ecef;
     }
 
     pre>code.sourceCode {
@@ -445,15 +417,44 @@
       border: 1px solid #dee2e6;
       padding: 10px;
     }
+
+    .language-switcher {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .language-switcher a {
+      text-decoration: none;
+      padding: 5px 10px;
+      margin: 0 2px;
+      border-radius: 3px;
+      color: #333;
+    }
+
+    .language-switcher a.active {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    .language-switcher a:hover:not(.active) {
+      background: #e9ecef;
+    }
   </style>
 </head>
 
 <body>
   <div class="language-switcher">
-    <a href="05_advanced_select_techniques_examples.html" class="active">EN</a>
-    <a href="05_advanced_select_techniques_examples_tr.html">TR</a>
+    <a href="05_advanced_select_techniques_examples.html">EN</a>
+    <a href="05_advanced_select_techniques_examples_tr.html" class="active">TR</a>
   </div>
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
@@ -473,17 +474,17 @@
   <div class="content-container">
     <div class="container">
       <div class="back-link">
-        <a href="05_advanced_select_techniques.html">&larr; Back to Advanced SELECT Techniques</a>
+        <a href="05_advanced_select_techniques_tr.html">&larr; Gelismis SELECT Tekniklerine Geri Don</a>
       </div>
 
       <section>
-        <h1 id="advanced-select-examples">Advanced SELECT Techniques - Practical Examples</h1>
-        <p>This page provides hands-on exercises to master aggregate functions, GROUP BY, HAVING, and window functions.
-          Practice with the sample datasets below.</p>
+        <h1 id="advanced-select-examples">Gelismis SELECT Teknikleri - Pratik Ornekler</h1>
+        <p>Bu sayfa, toplama fonksiyonlari, GROUP BY, HAVING ve pencere fonksiyonlarini ustalasmak icin uygulamali alistirmalar sunmaktadir.
+          Asagidaki ornek veri setleriyle pratik yapin.</p>
       </section>
 
       <section>
-        <h2 id="sample-datasets">Sample Datasets</h2>
+        <h2 id="sample-datasets">Ornek Veri Setleri</h2>
 
         <h3 id="employees-table">employees</h3>
         <div class="dataset-table">
@@ -571,57 +572,57 @@
       </section>
 
       <section>
-        <h2 id="exercise-1">Exercise 1: Aggregate Functions</h2>
+        <h2 id="exercise-1">Alistirma 1: Toplama Fonksiyonlari</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 1.1: Basic COUNT</h4>
-          <p>Count the total number of orders in the orders table.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Show Solution</button>
+          <h4>Alistirma 1.1: Temel COUNT</h4>
+          <p>orders tablosundaki toplam siparis sayisini sayiniz.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Cozumu Goster</button>
           <div id="sol1-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 10</p>
+            <p><strong>Beklenen Sonuc:</strong> 10</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.2: COUNT with Column vs COUNT(*)</h4>
-          <p>Write two queries: one counting all orders, and one counting only orders that have been shipped
-            (shipped_date is not NULL). Compare the results.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
+          <h4>Alistirma 1.2: COUNT(sutun) ve COUNT(*) Karsilastirmasi</h4>
+          <p>Iki sorgu yazin: biri tum siparisleri sayan, digeri sadece kargolanan siparisleri
+            (shipped_date NULL degil) sayan. Sonuclari karsilastirin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Cozumu Goster</button>
           <div id="sol1-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
-              <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="co">-- Count all orders</span>
+              <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="co">-- Tum siparisleri say</span>
 <span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
 <span class="kw">FROM</span> orders;
 
-<span class="co">-- Count only shipped orders (shipped_date is NOT NULL)</span>
+<span class="co">-- Sadece kargolanan siparisleri say (shipped_date NULL DEGIL)</span>
 <span class="kw">SELECT</span> <span class="fu">COUNT</span>(shipped_date) <span class="kw">AS</span> shipped_orders
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Expected Results:</strong> 10 total orders, 7 shipped orders (3 have NULL shipped_date).</p>
+            <p><strong>Beklenen Sonuc:</strong> 10 toplam siparis, 7 kargolanan siparis (3 tanesinde shipped_date NULL).</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.3: COUNT DISTINCT</h4>
-          <p>How many unique customers have placed orders?</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Show Solution</button>
+          <h4>Alistirma 1.3: COUNT DISTINCT</h4>
+          <p>Kac farkli musteri siparis vermis?</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Cozumu Goster</button>
           <div id="sol1-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
               <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> unique_customers
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 5 unique customers (101, 102, 103, 104, 105).</p>
+            <p><strong>Beklenen Sonuc:</strong> 5 benzersiz musteri (101, 102, 103, 104, 105).</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.4: SUM and AVG</h4>
-          <p>Calculate the total revenue and average order value for completed orders only.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
+          <h4>Alistirma 1.4: SUM ve AVG</h4>
+          <p>Sadece tamamlanan siparisler icin toplam geliri ve ortalama siparis degerini hesaplayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Cozumu Goster</button>
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -634,10 +635,10 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.5: MIN and MAX</h4>
-          <p>Find the lowest and highest salaries in the employees table, along with the earliest and latest hire
-            dates.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-5')">Show Solution</button>
+          <h4>Alistirma 1.5: MIN ve MAX</h4>
+          <p>employees tablosundaki en dusuk ve en yuksek maaslari, ayrica en erken ve en gec ise alim
+            tarihlerini bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-5')">Cozumu Goster</button>
           <div id="sol1-5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-5-code')">
               <pre class="sourceCode sql" id="sol1-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -647,16 +648,16 @@
     <span class="fu">MAX</span>(hire_date) <span class="kw">AS</span> latest_hire
 <span class="kw">FROM</span> employees;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Min salary: 62000, Max salary: 95000, Earliest: 2018-02-14, Latest:
+            <p><strong>Beklenen Sonuc:</strong> Min maas: 62000, Max maas: 95000, En erken: 2018-02-14, En gec:
               2023-01-15</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.6: Combining Multiple Aggregates</h4>
-          <p>Create a summary report for the employees table showing: total employees, total salary expenditure, average
-            salary, min salary, and max salary.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol1-6')">Show Solution</button>
+          <h4>Alistirma 1.6: Birden Fazla Toplama Fonksiyonunu Birlestirme</h4>
+          <p>employees tablosu icin bir ozet raporu olusturun: toplam calisan sayisi, toplam maas gideri, ortalama
+            maas, minimum maas ve maksimum maas gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol1-6')">Cozumu Goster</button>
           <div id="sol1-6" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-6-code')">
               <pre class="sourceCode sql" id="sol1-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -672,17 +673,17 @@
       </section>
 
       <section>
-        <h2 id="exercise-2">Exercise 2: GROUP BY</h2>
+        <h2 id="exercise-2">Alistirma 2: GROUP BY</h2>
 
         <div class="concept-box">
-          <h4>Remember the GROUP BY Rule</h4>
-          <p>Any non-aggregated column in the SELECT list <strong>must</strong> be included in the GROUP BY clause.</p>
+          <h4>GROUP BY Kuralini Unutmayin</h4>
+          <p>SELECT listesindeki toplanmamis her sutun <strong>mutlaka</strong> GROUP BY yan tumcesinde yer almalidir.</p>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.1: Basic Grouping</h4>
-          <p>Count the number of employees in each department.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Show Solution</button>
+          <h4>Alistirma 2.1: Temel Gruplama</h4>
+          <p>Her departmandaki calisan sayisini sayiniz.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Cozumu Goster</button>
           <div id="sol2-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
               <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -691,14 +692,14 @@
 <span class="kw">FROM</span> employees
 <span class="kw">GROUP BY</span> department;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Engineering: 4, Marketing: 3, Sales: 3</p>
+            <p><strong>Beklenen Sonuc:</strong> Engineering: 4, Marketing: 3, Sales: 3</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.2: Grouping with Aggregates</h4>
-          <p>Calculate the average salary for each department. Order by average salary descending.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Show Solution</button>
+          <h4>Alistirma 2.2: Toplama Fonksiyonlari ile Gruplama</h4>
+          <p>Her departman icin ortalama maasi hesaplayin. Ortalama maasa gore azalan sirada siralayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Cozumu Goster</button>
           <div id="sol2-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
               <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -712,10 +713,10 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.3: Multiple Aggregates per Group</h4>
-          <p>For each department, show the number of employees, total salary, average salary, min salary, and max
-            salary.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
+          <h4>Alistirma 2.3: Grup Basina Birden Fazla Toplama</h4>
+          <p>Her departman icin calisan sayisini, toplam maasi, ortalama maasi, minimum maasi ve maksimum
+            maasi gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Cozumu Goster</button>
           <div id="sol2-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -733,9 +734,9 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.4: Grouping by Customer</h4>
-          <p>Find the total amount spent and number of orders for each customer. Only consider completed orders.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Show Solution</button>
+          <h4>Alistirma 2.4: Musteriye Gore Gruplama</h4>
+          <p>Her musterinin harcadigi toplam tutari ve siparis sayisini bulun. Sadece tamamlanan siparisleri dikkate alin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Cozumu Goster</button>
           <div id="sol2-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-4-code')">
               <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -751,9 +752,9 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.5: Grouping by Multiple Columns</h4>
-          <p>Calculate total sales for each product in each region from the sales_data table.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Show Solution</button>
+          <h4>Alistirma 2.5: Birden Fazla Sutuna Gore Gruplama</h4>
+          <p>sales_data tablosundan her bolgedeki her urun icin toplam satislari hesaplayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Cozumu Goster</button>
           <div id="sol2-5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-5-code')">
               <pre class="sourceCode sql" id="sol2-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -768,12 +769,12 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.6: Grouping by Date Part</h4>
-          <p>Count the number of orders placed in each month of 2024. Use EXTRACT to get the month.</p>
+          <h4>Alistirma 2.6: Tarih Parcasina Gore Gruplama</h4>
+          <p>2024 yilinin her ayinda verilen siparis sayisini sayiniz. Ayi almak icin EXTRACT kullanin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use EXTRACT(MONTH FROM order_date) to get the month number.
+            <strong>Ipucu:</strong> Ay numarasini almak icin EXTRACT(MONTH FROM order_date) kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol2-6')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol2-6')">Cozumu Goster</button>
           <div id="sol2-6" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-6-code')">
               <pre class="sourceCode sql" id="sol2-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -790,10 +791,10 @@
       </section>
 
       <section>
-        <h2 id="exercise-3">Exercise 3: HAVING Clause</h2>
+        <h2 id="exercise-3">Alistirma 3: HAVING Yan Tumcesi</h2>
 
         <div class="concept-box">
-          <h4>WHERE vs HAVING</h4>
+          <h4>WHERE ve HAVING Karsilastirmasi</h4>
           <div class="comparison-table">
             <table>
               <tr>
@@ -801,25 +802,25 @@
                 <th>HAVING</th>
               </tr>
               <tr>
-                <td>Filters individual rows BEFORE grouping</td>
-                <td>Filters groups AFTER grouping</td>
+                <td>Gruplama ONCESINDE tek tek satirlari filtreler</td>
+                <td>Gruplama SONRASINDA gruplari filtreler</td>
               </tr>
               <tr>
-                <td>Cannot use aggregate functions</td>
-                <td>Typically uses aggregate functions</td>
+                <td>Toplama fonksiyonlari kullanilamaz</td>
+                <td>Genellikle toplama fonksiyonlari kullanir</td>
               </tr>
               <tr>
-                <td>Processed first</td>
-                <td>Processed after GROUP BY</td>
+                <td>Once islenir</td>
+                <td>GROUP BY'dan sonra islenir</td>
               </tr>
             </table>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.1: Basic HAVING</h4>
-          <p>Find departments that have more than 3 employees.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Show Solution</button>
+          <h4>Alistirma 3.1: Temel HAVING</h4>
+          <p>3'ten fazla calisani olan departmanlari bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Cozumu Goster</button>
           <div id="sol3-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
               <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -829,14 +830,14 @@
 <span class="kw">GROUP BY</span> department
 <span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">3</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Engineering with 4 employees.</p>
+            <p><strong>Beklenen Sonuc:</strong> Engineering 4 calisanla.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.2: HAVING with Average</h4>
-          <p>Find departments where the average salary is greater than $70,000.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Show Solution</button>
+          <h4>Alistirma 3.2: Ortalama ile HAVING</h4>
+          <p>Ortalama maasi 70.000$'dan fazla olan departmanlari bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Cozumu Goster</button>
           <div id="sol3-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
               <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -846,14 +847,14 @@
 <span class="kw">GROUP BY</span> department
 <span class="kw">HAVING</span> <span class="fu">AVG</span>(salary) > <span class="dv">70000</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Engineering and Sales.</p>
+            <p><strong>Beklenen Sonuc:</strong> Engineering ve Sales.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.3: Finding High-Value Customers</h4>
-          <p>Find customers who have placed more than 2 orders with a total spending of over $500.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Show Solution</button>
+          <h4>Alistirma 3.3: Yuksek Degerli Musterileri Bulma</h4>
+          <p>2'den fazla siparis veren ve toplam harcamasi 500$'in uzerinde olan musterileri bulun.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Cozumu Goster</button>
           <div id="sol3-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
               <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -864,44 +865,44 @@
 <span class="kw">GROUP BY</span> customer_id
 <span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">2</span> <span class="kw">AND</span> <span class="fu">SUM</span>(order_total) > <span class="dv">500</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Customer 101 with 4 orders and high total spending.</p>
+            <p><strong>Beklenen Sonuc:</strong> Musteri 101, 4 siparis ve yuksek toplam harcamayla.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.4: Combining WHERE and HAVING</h4>
-          <p>Find products with total sales over $30,000, but only consider sales from Q1 and Q2 (quarters 1 and 2).</p>
+          <h4>Alistirma 3.4: WHERE ve HAVING'i Birlestirme</h4>
+          <p>Toplam satisi 30.000$'in uzerinde olan urunleri bulun, ancak sadece C1 ve C2'deki (1. ve 2. ceyrekler) satislari dikkate alin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use WHERE to filter by quarter first, then HAVING to filter by total sales.
+            <strong>Ipucu:</strong> Once ceyrege gore filtrelemek icin WHERE kullanin, sonra toplam satisa gore filtrelemek icin HAVING kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Cozumu Goster</button>
           <div id="sol3-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-4-code')">
               <pre class="sourceCode sql" id="sol3-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     product,
     <span class="fu">SUM</span>(sales) <span class="kw">AS</span> total_sales
 <span class="kw">FROM</span> sales_data
-<span class="kw">WHERE</span> quarter <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>)  <span class="co">-- Filter rows BEFORE grouping</span>
+<span class="kw">WHERE</span> quarter <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>)  <span class="co">-- Gruplama ONCESINDE satirlari filtrele</span>
 <span class="kw">GROUP BY</span> product
-<span class="kw">HAVING</span> <span class="fu">SUM</span>(sales) > <span class="dv">30000</span>;  <span class="co">-- Filter groups AFTER grouping</span></code></pre>
+<span class="kw">HAVING</span> <span class="fu">SUM</span>(sales) > <span class="dv">30000</span>;  <span class="co">-- Gruplama SONRASINDA gruplari filtrele</span></code></pre>
             </div>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="exercise-4">Exercise 4: Window Functions</h2>
+        <h2 id="exercise-4">Alistirma 4: Pencere Fonksiyonlari</h2>
 
         <div class="concept-box">
-          <h4>Window Functions vs GROUP BY</h4>
-          <p>Window functions perform calculations across rows but <strong>do not collapse rows</strong> like GROUP BY.
-            Each row retains its identity while getting access to aggregated or ranked values.</p>
+          <h4>Pencere Fonksiyonlari ve GROUP BY Karsilastirmasi</h4>
+          <p>Pencere fonksiyonlari satirlar uzerinde hesaplamalar yapar ancak GROUP BY gibi <strong>satirlari daraltmaz</strong>.
+            Her satir kimligini korurken toplanmis veya siralanmis degerlere erisebilir.</p>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.1: ROW_NUMBER</h4>
-          <p>Assign a row number to each employee ordered by salary (highest first).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
+          <h4>Alistirma 4.1: ROW_NUMBER</h4>
+          <p>Her calisana maasa gore (en yuksekten baslayarak) bir satir numarasi atayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Cozumu Goster</button>
           <div id="sol4-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
               <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -915,12 +916,12 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.2: ROW_NUMBER with PARTITION BY</h4>
-          <p>Rank employees by salary within each department. Show department, name, salary, and rank.</p>
+          <h4>Alistirma 4.2: PARTITION BY ile ROW_NUMBER</h4>
+          <p>Her departman icinde calisanlari maasa gore siralayin. Departman, isim, maas ve sirayi gosterin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use PARTITION BY department to restart numbering for each department.
+            <strong>Ipucu:</strong> Her departman icin numaralandirmayi yeniden baslatmak icin PARTITION BY department kullanin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Cozumu Goster</button>
           <div id="sol4-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
               <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -938,9 +939,9 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.3: RANK vs DENSE_RANK</h4>
-          <p>Compare ROW_NUMBER, RANK, and DENSE_RANK on employee salaries (there might be ties in real data).</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Show Solution</button>
+          <h4>Alistirma 4.3: RANK ve DENSE_RANK Karsilastirmasi</h4>
+          <p>Calisan maaslari uzerinde ROW_NUMBER, RANK ve DENSE_RANK fonksiyonlarini karsilastirin (gercek veride esitlikler olabilir).</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Cozumu Goster</button>
           <div id="sol4-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
               <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -952,20 +953,20 @@
 <span class="kw">FROM</span> employees;</code></pre>
             </div>
             <div class="info-box">
-              <strong>Difference:</strong>
+              <strong>Fark:</strong>
               <ul>
-                <li><strong>ROW_NUMBER:</strong> Always unique (1, 2, 3, 4...)</li>
-                <li><strong>RANK:</strong> Ties get same rank, then skip (1, 2, 2, 4...)</li>
-                <li><strong>DENSE_RANK:</strong> Ties get same rank, no skip (1, 2, 2, 3...)</li>
+                <li><strong>ROW_NUMBER:</strong> Her zaman benzersiz (1, 2, 3, 4...)</li>
+                <li><strong>RANK:</strong> Esitler ayni sirayi alir, sonra atlar (1, 2, 2, 4...)</li>
+                <li><strong>DENSE_RANK:</strong> Esitler ayni sirayi alir, atlamaz (1, 2, 2, 3...)</li>
               </ul>
             </div>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.4: Running Total with SUM</h4>
-          <p>Calculate a running total of order amounts, ordered by order date.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-4')">Show Solution</button>
+          <h4>Alistirma 4.4: SUM ile Kumulatif Toplam</h4>
+          <p>Siparis tarihine gore sirali olarak siparis tutarlarinin kumulatif toplamini hesaplayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-4')">Cozumu Goster</button>
           <div id="sol4-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-4-code')">
               <pre class="sourceCode sql" id="sol4-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -983,9 +984,9 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.5: LAG Function - Comparing to Previous Row</h4>
-          <p>Show each order with the previous order's total to calculate the difference between consecutive orders.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-5')">Show Solution</button>
+          <h4>Alistirma 4.5: LAG Fonksiyonu - Onceki Satirla Karsilastirma</h4>
+          <p>Her siparisi onceki sipariszin tutariyla gostererek ardisik siparisler arasindaki farki hesaplayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-5')">Cozumu Goster</button>
           <div id="sol4-5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-5-code')">
               <pre class="sourceCode sql" id="sol4-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -997,15 +998,14 @@
 <span class="kw">FROM</span> orders
 <span class="kw">ORDER BY</span> order_date;</code></pre>
             </div>
-            <p><strong>Note:</strong> LAG(column, offset, default) - offset is how many rows back (default 1), default
-              value used for first row.</p>
+            <p><strong>Not:</strong> LAG(sutun, offset, varsayilan) - offset kac satir geriye gidilecegi (varsayilan 1), varsayilan deger ilk satir icin kullanilir.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.6: Percentage of Total</h4>
-          <p>Calculate what percentage each order contributes to the total of all orders.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-6')">Show Solution</button>
+          <h4>Alistirma 4.6: Toplamin Yuzdesini Hesaplama</h4>
+          <p>Her sipariszin tum siparislerin toplamina olan yuzdesel katkilisini hesaplayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-6')">Cozumu Goster</button>
           <div id="sol4-6" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-6-code')">
               <pre class="sourceCode sql" id="sol4-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1018,14 +1018,14 @@
     ) <span class="kw">AS</span> percentage_of_total
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Note:</strong> Empty OVER() means the window is the entire result set.</p>
+            <p><strong>Not:</strong> Bos OVER() pencere fonksiyonunun tum sonuc kumesini kapsamasi anlamina gelir.</p>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.7: Moving Average</h4>
-          <p>Calculate a 3-row moving average of sales from sales_data, ordered by month.</p>
-          <button class="solution-toggle" onclick="toggleSolution('sol4-7')">Show Solution</button>
+          <h4>Alistirma 4.7: Hareketli Ortalama</h4>
+          <p>sales_data tablosundan aya gore sirali olarak 3 satirlik hareketli ortalama hesaplayin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('sol4-7')">Cozumu Goster</button>
           <div id="sol4-7" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-7-code')">
               <pre class="sourceCode sql" id="sol4-7-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1047,10 +1047,10 @@
       </section>
 
       <section>
-        <h2 id="exercise-5">Exercise 5: Predict the Output</h2>
+        <h2 id="exercise-5">Alistirma 5: Ciktiyi Tahmin Edin</h2>
 
         <div class="exercise-box">
-          <h4>Exercise 5.1: What's wrong with this query?</h4>
+          <h4>Alistirma 5.1: Bu sorguda yanlis olan ne?</h4>
           <div class="sourceCode">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
     department,
@@ -1059,16 +1059,16 @@
 <span class="kw">FROM</span> employees
 <span class="kw">GROUP BY</span> department;</code></pre>
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Answer</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Cevabi Goster</button>
           <div id="sol5-1" class="solution-content">
-            <p><strong>Error:</strong> <code>employee_name</code> is in SELECT but not in GROUP BY and not an aggregate.
+            <p><strong>Hata:</strong> <code>employee_name</code> SELECT'te var ancak GROUP BY'da yok ve bir toplama fonksiyonu degil.
             </p>
-            <p>When using GROUP BY, every column in SELECT must either:</p>
+            <p>GROUP BY kullanirken, SELECT'teki her sutun ya:</p>
             <ul>
-              <li>Be listed in GROUP BY, OR</li>
-              <li>Be used inside an aggregate function</li>
+              <li>GROUP BY'da listelenmeli, YA DA</li>
+              <li>Bir toplama fonksiyonu icinde kullanilmalidir</li>
             </ul>
-            <p><strong>Correct version:</strong></p>
+            <p><strong>Dogru versiyon:</strong></p>
             <div class="sourceCode">
               <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
     department,
@@ -1080,39 +1080,39 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 5.2: WHERE or HAVING?</h4>
-          <p>Which clause should you use to:</p>
+          <h4>Alistirma 5.2: WHERE mi HAVING mi?</h4>
+          <p>Hangisini kullanmalisiniz:</p>
           <ol>
-            <li>Only include orders from 2024 in your analysis?</li>
-            <li>Only show customers who have spent more than $1000 total?</li>
+            <li>Analizinize sadece 2024'teki siparisleri dahil etmek icin?</li>
+            <li>Sadece toplam harcamasi 1000$'in uzerinde olan musterileri gostermek icin?</li>
           </ol>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Answer</button>
+          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Cevabi Goster</button>
           <div id="sol5-2" class="solution-content">
             <ol>
-              <li><strong>WHERE</strong> - filtering individual rows before grouping</li>
-              <li><strong>HAVING</strong> - filtering groups based on aggregate (SUM)</li>
+              <li><strong>WHERE</strong> - gruplama oncesinde tek tek satirlari filtreleme</li>
+              <li><strong>HAVING</strong> - toplama (SUM) bazli gruplari filtreleme</li>
             </ol>
             <div class="sourceCode">
               <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
     customer_id,
     <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
 <span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) = <span class="dv">2024</span>  <span class="co">-- Filter rows first</span>
+<span class="kw">WHERE</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) = <span class="dv">2024</span>  <span class="co">-- Once satirlari filtrele</span>
 <span class="kw">GROUP BY</span> customer_id
-<span class="kw">HAVING</span> <span class="fu">SUM</span>(order_total) > <span class="dv">1000</span>;  <span class="co">-- Filter groups</span></code></pre>
+<span class="kw">HAVING</span> <span class="fu">SUM</span>(order_total) > <span class="dv">1000</span>;  <span class="co">-- Gruplari filtrele</span></code></pre>
             </div>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 id="challenge-exercises">Challenge Exercises</h2>
+        <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
 
         <div class="challenge-box">
-          <h4>Challenge 1: Department Salary Report</h4>
-          <p>Create a comprehensive salary report showing for each employee: their name, department, salary, department
-            average salary, and how much they earn above or below the department average.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal1')">Show Solution</button>
+          <h4>Meydan Okuma 1: Departman Maas Raporu</h4>
+          <p>Her calisan icin kapsamli bir maas raporu olusturun: isim, departman, maas, departman
+            ortalama maasi ve departman ortalamasinin ne kadar ustunde veya altinda kazandigi.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal1')">Cozumu Goster</button>
           <div id="chal1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1128,12 +1128,12 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 2: Top Performer per Department</h4>
-          <p>Find the highest-paid employee in each department. Show department, employee name, and salary.</p>
+          <h4>Meydan Okuma 2: Departmandaki En Iyi Performans</h4>
+          <p>Her departmandaki en yuksek maasli calisani bulun. Departman, calisan adi ve maasi gosterin.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use ROW_NUMBER with PARTITION BY, then filter for rank = 1.
+            <strong>Ipucu:</strong> PARTITION BY ile ROW_NUMBER kullanin, sonra rank = 1 olanlari filtreleyin.
           </div>
-          <button class="solution-toggle" onclick="toggleSolution('chal2')">Show Solution</button>
+          <button class="solution-toggle" onclick="toggleSolution('chal2')">Cozumu Goster</button>
           <div id="chal2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
               <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span> department, employee_name, salary
@@ -1154,10 +1154,9 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 3: Sales Growth Analysis</h4>
-          <p>For each month in sales_data, show the total sales, previous month's sales, and the percentage growth from
-            the previous month.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal3')">Show Solution</button>
+          <h4>Meydan Okuma 3: Satis Buyume Analizi</h4>
+          <p>sales_data'daki her ay icin toplam satislari, onceki ayin satislarini ve onceki aya gore yuzdesel buyumeyi gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal3')">Cozumu Goster</button>
           <div id="chal3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
               <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
@@ -1183,9 +1182,9 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 4: Cumulative Sales by Region</h4>
-          <p>Show cumulative (running) sales for each region separately, ordered by month.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal4')">Show Solution</button>
+          <h4>Meydan Okuma 4: Bolgeye Gore Kumulatif Satislar</h4>
+          <p>Her bolge icin ayri ayri aya gore sirali kumulatif (artan) satislari gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal4')">Cozumu Goster</button>
           <div id="chal4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
               <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
@@ -1205,10 +1204,10 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 5: Customer Order Frequency Analysis</h4>
-          <p>Categorize customers based on their order count: 'Frequent' (3+ orders), 'Regular' (2 orders), 'New' (1
-            order). Show the count of customers in each category.</p>
-          <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
+          <h4>Meydan Okuma 5: Musteri Siparis Sikligi Analizi</h4>
+          <p>Musterileri siparis sayilarina gore kategorize edin: 'Sik' (3+ siparis), 'Duzenli' (2 siparis), 'Yeni' (1
+            siparis). Her kategorideki musteri sayisini gosterin.</p>
+          <button class="solution-toggle" onclick="toggleSolution('chal5')">Cozumu Goster</button>
           <div id="chal5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
               <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">WITH</span> customer_orders <span class="kw">AS</span> (
@@ -1216,9 +1215,9 @@
         customer_id,
         <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
         <span class="kw">CASE</span>
-            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) >= <span class="dv">3</span> <span class="kw">THEN</span> <span class="st">'Frequent'</span>
-            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) = <span class="dv">2</span> <span class="kw">THEN</span> <span class="st">'Regular'</span>
-            <span class="kw">ELSE</span> <span class="st">'New'</span>
+            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) >= <span class="dv">3</span> <span class="kw">THEN</span> <span class="st">'Sik'</span>
+            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) = <span class="dv">2</span> <span class="kw">THEN</span> <span class="st">'Duzenli'</span>
+            <span class="kw">ELSE</span> <span class="st">'Yeni'</span>
         <span class="kw">END</span> <span class="kw">AS</span> customer_category
     <span class="kw">FROM</span> orders
     <span class="kw">GROUP BY</span> customer_id
@@ -1235,27 +1234,22 @@
       </section>
 
       <section>
-        <h2 id="summary">Key Takeaways</h2>
+        <h2 id="summary">Onemli Cikarimlar</h2>
         <ul>
-          <li><strong>Aggregate Functions</strong>: COUNT, SUM, AVG, MIN, MAX operate on sets of rows to produce single
-            values</li>
-          <li><strong>COUNT(*) vs COUNT(column)</strong>: COUNT(*) counts all rows; COUNT(column) counts non-NULL values
-          </li>
-          <li><strong>GROUP BY</strong>: Groups rows with same values; all non-aggregated SELECT columns must be in
-            GROUP BY</li>
-          <li><strong>HAVING</strong>: Filters groups after aggregation; use for conditions on aggregate results</li>
-          <li><strong>WHERE vs HAVING</strong>: WHERE filters rows before grouping; HAVING filters groups after
-            aggregation</li>
-          <li><strong>Window Functions</strong>: Perform calculations across related rows without collapsing them</li>
-          <li><strong>PARTITION BY</strong>: Divides rows into partitions for window function calculations</li>
-          <li><strong>ROW_NUMBER, RANK, DENSE_RANK</strong>: Different ranking behaviors for ties</li>
-          <li><strong>LAG/LEAD</strong>: Access previous/next row values for comparisons</li>
-          <li><strong>Frame Clause</strong>: Define the window of rows for aggregate window functions (e.g., running
-            totals)</li>
+          <li><strong>Toplama Fonksiyonlari</strong>: COUNT, SUM, AVG, MIN, MAX satir kumeleri uzerinde islem yaparak tekil degerler uretir</li>
+          <li><strong>COUNT(*) ve COUNT(sutun)</strong>: COUNT(*) tum satirlari sayar; COUNT(sutun) NULL olmayan degerleri sayar</li>
+          <li><strong>GROUP BY</strong>: Ayni degerlere sahip satirlari gruplar; toplanmamis tum SELECT sutunlari GROUP BY'da olmalidir</li>
+          <li><strong>HAVING</strong>: Toplamadan sonra gruplari filtreler; toplama sonuclari uzerindeki kosullar icin kullanilir</li>
+          <li><strong>WHERE ve HAVING</strong>: WHERE gruplama oncesinde satirlari filtreler; HAVING gruplama sonrasinda gruplari filtreler</li>
+          <li><strong>Pencere Fonksiyonlari</strong>: Iliskili satirlar uzerinde satirlari daraltmadan hesaplamalar yapar</li>
+          <li><strong>PARTITION BY</strong>: Satirlari pencere fonksiyonu hesaplamalari icin bolumlere ayirir</li>
+          <li><strong>ROW_NUMBER, RANK, DENSE_RANK</strong>: Esitlikler icin farkli siralama davranislari</li>
+          <li><strong>LAG/LEAD</strong>: Karsilastirmalar icin onceki/sonraki satir degerlerine erisim</li>
+          <li><strong>Cerceve Yan Tumcesi</strong>: Toplama pencere fonksiyonlari icin satir penceresini tanimlar (ornegin kumulatif toplamlar)</li>
         </ul>
 
         <div class="back-link" style="margin-top: 30px;">
-          <a href="05_advanced_select_techniques.html">&larr; Back to Advanced SELECT Techniques</a>
+          <a href="05_advanced_select_techniques_tr.html">&larr; Gelismis SELECT Tekniklerine Geri Don</a>
         </div>
       </section>
 
@@ -1273,10 +1267,10 @@
       var element = document.getElementById(id);
       if (element.classList.contains('show')) {
         element.classList.remove('show');
-        event.target.textContent = 'Show Solution';
+        event.target.textContent = 'Cozumu Goster';
       } else {
         element.classList.add('show');
-        event.target.textContent = 'Hide Solution';
+        event.target.textContent = 'Cozumu Gizle';
       }
     }
   </script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 
 <!-- Mirrored from code-mext.github.io/sql-training/day1/03_basic_sql_queries.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:33 GMT -->
@@ -13,7 +13,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 1: Basic SQL Queries (SELECT)</title>
+  <title>Gun 1: Temel SQL Sorgulari (SELECT)</title>
   <style>
     code {
       white-space: pre-wrap;
@@ -280,34 +280,6 @@
 
     /* Warning */
 
-    .language-switcher {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .language-switcher a {
-      text-decoration: none;
-      padding: 5px 10px;
-      margin: 0 2px;
-      border-radius: 3px;
-      color: #333;
-    }
-
-    .language-switcher a.active {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .language-switcher a:hover:not(.active) {
-      background: #e9ecef;
-    }
-
     /* Add notification styles */
     .copy-notification {
       position: fixed;
@@ -321,17 +293,42 @@
       z-index: 1000;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
+
+    .language-switcher {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .language-switcher a {
+        text-decoration: none;
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 3px;
+        color: #333;
+    }
+    .language-switcher a.active {
+        background: #0d6efd;
+        color: #fff;
+    }
+    .language-switcher a:hover:not(.active) {
+        background: #e9ecef;
+    }
   </style>
 </head>
 
 <body>
   <div class="language-switcher">
-    <a href="03_basic_sql_queries.html" class="active">EN</a>
-    <a href="03_basic_sql_queries_tr.html">TR</a>
+    <a href="03_basic_sql_queries.html">EN</a>
+    <a href="03_basic_sql_queries_tr.html" class="active">TR</a>
   </div>
 
   <!-- Add notification element -->
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
@@ -352,38 +349,36 @@
   <div class="content-container">
     <div class="container">
       <section>
-        <h1 id="day-1-basic-sql-queries">Day 1: Basic SQL Queries</h1>
-        <h2 id="session-3-basic-sql-queries-1.5-hours">Session 3: Basic SQL Queries (1.5 hours)</h2>
-        <h3 id="select-statements-and-basic-syntax">SELECT Statements and Basic Syntax</h3>
-        <p>The <code>SELECT</code> statement is the cornerstone of SQL, used to retrieve data from database tables.
-          Mastering its syntax is essential for querying any relational database.</p>
-        <p><strong>Basic SELECT Syntax (Standard SQL)</strong>:</p>
+        <h1 id="day-1-basic-sql-queries">Gun 1: Temel SQL Sorgulari</h1>
+        <h2 id="session-3-basic-sql-queries-1.5-hours">Oturum 3: Temel SQL Sorgulari (1.5 saat)</h2>
+        <h3 id="select-statements-and-basic-syntax">SELECT Ifadeleri ve Temel Soz Dizimi</h3>
+        <p><code>SELECT</code> ifadesi, veritabani tablolarindan veri almak icin kullanilan SQL'in temel tasidir.
+          Soz dizimini iyi bilmek, herhangi bir iliskisel veritabanini sorgulamak icin onemlidir.</p>
+        <p><strong>Temel SELECT Soz Dizimi (Standart SQL)</strong>:</p>
         <div class="sourceCode" id="cb1">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">FROM</span> table_name;</span></code></pre>
         </div>
-        <p>This retrieves specific columns from the specified table.</p>
-        <p><strong>Selecting All Columns (<code>SELECT *</code>)</strong>:</p>
+        <p>Bu, belirtilen tablodan belirli sutunlari getirir.</p>
+        <p><strong>Tum Sutunlari Secme (<code>SELECT *</code>)</strong>:</p>
         <div class="sourceCode" id="cb2">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> table_name;</span></code></pre>
         </div>
-        <p>While convenient for quick exploration (<code>SELECT *</code> is standard SQL), using it in application code
-          is
-          generally discouraged across all database systems because it: - Can retrieve more data than needed, impacting
-          network traffic and performance. - Makes code less readable as it obscures which columns are actually used. -
-          Can break applications if the table structure changes (e.g., columns added/removed).</p>
+        <p>Hizli kesfetme icin kullanisli olsa da (<code>SELECT *</code> standart SQL'dir), uygulama kodunda kullanilmasi
+          tum veritabani sistemlerinde genellikle onerilmez cunku: - Gerekenden fazla veri cekebilir, ag trafigini ve performansi etkiler. -
+          Hangi sutunlarin gercekten kullanildigini gizledigi icin kodu daha az okunabilir kilar. -
+          Tablo yapisi degisirse (ornegin, sutunlar eklenirse/kaldirilirsa) uygulamalari bozabilir.</p>
       </section>
       <section>
-        <p><strong>Selecting Specific Columns</strong>: Always prefer listing the specific columns you need:</p>
+        <p><strong>Belirli Sutunlari Secme</strong>: Her zaman ihtiyaciniz olan belirli sutunlari listelemeyi tercih edin:</p>
 
         <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
-        <p><strong>Column Aliases (Standard SQL)</strong>: Aliases provide temporary, often more readable, names for
-          columns or expressions in the query result. The <code>AS</code> keyword is standard but often optional.</p>
+        <p><strong>Sutun Takma Adlari (Standart SQL)</strong>: Takma adlar, sorgu sonucundaki sutunlar veya ifadeler icin gecici ve genellikle daha okunabilir adlar saglar. <code>AS</code> anahtar kelimesi standarttir ancak genellikle istege baglidir.</p>
         <div class="sourceCode" id="cb4" onclick="CopyToClipboard('cb4')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    name <span class="kw">AS</span> <span class="ot">&quot;Customer Name&quot;</span>, <span class="co">-- Quoted alias preserves case/spaces (standard)</span></span>
@@ -392,14 +387,11 @@
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Dialect Note</strong>: While double quotes for aliases are standard SQL, some systems use
-            different
-            quoting (e.g., backticks <code>`</code> in MySQL, square brackets <code>[]</code> in SQL Server). Unquoted
-            aliases are generally case-insensitive.</li>
+          <li><strong>Lehce Notu</strong>: Takma adlar icin cift tirnak standart SQL olsa da, bazi sistemler farkli
+            tirnaklama kullanir (ornegin, MySQL'de ters tirnak <code>`</code>, SQL Server'da koseli parantez <code>[]</code>). Tirnaksiz
+            takma adlar genellikle buyuk/kucuk harf duyarsizdir.</li>
         </ul>
-        <p><strong>Expressions in SELECT (Standard SQL)</strong>: You can perform calculations or use functions on
-          columns
-          directly within the <code>SELECT</code> list.</p>
+        <p><strong>SELECT'te Ifadeler (Standart SQL)</strong>: <code>SELECT</code> listesinde dogrudan sutunlar uzerinde hesaplamalar yapabilir veya fonksiyonlar kullanabilirsiniz.</p>
         <div class="sourceCode" id="cb5" onclick="CopyToClipboard('cb5')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
@@ -412,17 +404,14 @@
         </div>
       </section>
       <section>
-        <p><strong>DISTINCT Keyword (Standard SQL)</strong>: <code>DISTINCT</code> eliminates duplicate rows from the
-          result set. It considers the entire row based on the selected columns.</p>
+        <p><strong>DISTINCT Anahtar Kelimesi (Standart SQL)</strong>: <code>DISTINCT</code>, sonuc kumesinden yinelenen satirlari kaldirır. Secilen sutunlara gore tum satiri dikkate alir.</p>
         <div class="sourceCode" id="cb6" onclick="CopyToClipboard('cb6')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- Get unique country IDs from partners</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country_id</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
-        <p><strong>DISTINCT ON (PostgreSQL Extension)</strong>: PostgreSQL offers <code>DISTINCT ON (expression)</code>
-          which returns the first row for each unique value of the expression, based on the <code>ORDER BY</code>
-          clause.
-          This is very useful but <em>not standard SQL</em>.</p>
+        <p><strong>DISTINCT ON (PostgreSQL Uzantisi)</strong>: PostgreSQL, <code>ORDER BY</code> maddesine gore ifadenin her benzersiz degeri icin ilk satiri donduren <code>DISTINCT ON (expression)</code> sunar.
+          Bu cok kullanislidir ancak <em>standart SQL degildir</em>.</p>
         <div class="sourceCode" id="cb7" onclick="CopyToClipboard('cb7')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Get one partner per country (the most recently created one)</span></span>
@@ -432,28 +421,26 @@
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country_id, create_date <span class="kw">DESC</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Standard Alternative</strong>: Achieving the same result in standard SQL usually involves window
-            functions like <code>ROW_NUMBER()</code>, which we will cover later.</li>
+          <li><strong>Standart Alternatif</strong>: Standart SQL'de ayni sonucu elde etmek genellikle daha sonra ele alacagimiz <code>ROW_NUMBER()</code> gibi pencere fonksiyonlarini icerir.</li>
         </ul>
       </section>
       <section>
-        <h3 id="filtering-with-where-clauses-standard-sql">Filtering with WHERE Clauses (Standard SQL)</h3>
-        <p>The <code>WHERE</code> clause filters rows <em>before</em> any grouping or aggregation happens, based on
-          specified conditions.</p>
-        <p><strong>Basic Syntax</strong>:</p>
+        <h3 id="filtering-with-where-clauses-standard-sql">WHERE Maddesi ile Filtreleme (Standart SQL)</h3>
+        <p><code>WHERE</code> maddesi, belirtilen kosullara gore herhangi bir gruplama veya toplama isleminden <em>once</em> satirlari filtreler.</p>
+        <p><strong>Temel Soz Dizimi</strong>:</p>
         <div class="sourceCode" id="cb8" onclick="CopyToClipboard('cb8')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">SELECT</span> column_list</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">FROM</span> table_name</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">WHERE</span> condition;</span></code></pre>
         </div>
-        <p><strong>Comparison Operators (Standard SQL)</strong>: - Equal: <code>=</code> - Not equal:
-          <code>&lt;&gt;</code> (standard), <code>!=</code> (common extension) - Greater than: <code>&gt;</code> - Less
-          than: <code>&lt;</code> - Greater than or equal to: <code>&gt;=</code> - Less than or equal to:
+        <p><strong>Karsilastirma Operatorleri (Standart SQL)</strong>: - Esit: <code>=</code> - Esit degil:
+          <code>&lt;&gt;</code> (standart), <code>!=</code> (yaygin uzanti) - Buyuktur: <code>&gt;</code> - Kucuktur:
+          <code>&lt;</code> - Buyuk veya esit: <code>&gt;=</code> - Kucuk veya esit:
           <code>&lt;=</code>
         </p>
       </section>
       <section>
-        <p><strong>Examples</strong>:</p>
+        <p><strong>Ornekler</strong>:</p>
         <div class="sourceCode" id="cb9" onclick="CopyToClipboard('cb9')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Partners from the United States (assuming country_id 233 is US)</span></span>
@@ -471,13 +458,12 @@
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="kw">FROM</span> sale_order</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="kw">WHERE</span> date_order <span class="op">&gt;=</span> <span class="st">&#39;2023-01-01&#39;</span>; <span class="co">-- Date format &#39;YYYY-MM-DD&#39; is standard</span></span></code></pre>
         </div>
-        <p><strong>Logical Operators (Standard SQL)</strong>: - <code>AND</code>: Both conditions must be true. -
-          <code>OR</code>: At least one condition must be true. - <code>NOT</code>: Reverses the truth value of a
-          condition. Use parentheses <code>()</code> to control the order of evaluation for complex conditions.
+        <p><strong>Mantiksal Operatorler (Standart SQL)</strong>: - <code>AND</code>: Her iki kosul da dogru olmalidir. -
+          <code>OR</code>: Kosullardan en az biri dogru olmalidir. - <code>NOT</code>: Bir kosulun dogru degerini tersine cevirir. Karmasik kosullarda degerlendirme sirasini kontrol etmek icin parantez <code>()</code> kullanin.
         </p>
       </section>
       <section>
-        <p><strong>Examples</strong>:</p>
+        <p><strong>Ornekler</strong>:</p>
         <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 233, 20)</span></span>
@@ -506,10 +492,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Handling NULL Values (Standard SQL)</strong>: <code>NULL</code> represents an unknown or missing
-          value.
-          It cannot be compared using standard operators like <code>=</code> or <code>&lt;&gt;</code>. Use
-          <code>IS NULL</code> or <code>IS NOT NULL</code> instead.
+        <p><strong>NULL Degerlerini Isleme (Standart SQL)</strong>: <code>NULL</code> bilinmeyen veya eksik bir degeri temsil eder.
+          <code>=</code> veya <code>&lt;&gt;</code> gibi standart operatorlerle karsilastirilamaz. Bunun yerine
+          <code>IS NULL</code> veya <code>IS NOT NULL</code> kullanin.
         </p>
         <div class="sourceCode" id="cb11" onclick="CopyToClipboard('cb11')">
           <pre
@@ -524,16 +509,12 @@
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="kw">WHERE</span> email <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Important</strong>: <code>WHERE email = NULL</code> or <code>WHERE email &lt;&gt; NULL</code> will
-            <em>not</em> work as expected in standard SQL because <code>NULL</code> is not equal (or unequal) to
-            anything,
-            including itself.
+          <li><strong>Onemli</strong>: <code>WHERE email = NULL</code> veya <code>WHERE email &lt;&gt; NULL</code> standart SQL'de beklenildigi gibi calismaz cunku <code>NULL</code> kendisi dahil hicbir seye esit (veya esit olmayan) degildir.
           </li>
         </ul>
       </section>
       <section>
-        <p><strong>BETWEEN Operator (Standard SQL)</strong>: Checks if a value falls within a specified range
-          (inclusive).
+        <p><strong>BETWEEN Operatoru (Standart SQL)</strong>: Bir degerin belirtilen aralik icinde (dahil) olup olmadigini kontrol eder.
         </p>
         <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
           <pre
@@ -541,19 +522,18 @@
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">FROM</span> product_template</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="kw">WHERE</span> list_price <span class="kw">BETWEEN</span> <span class="dv">100</span> <span class="kw">AND</span> <span class="dv">500</span>; <span class="co">-- Equivalent to: list_price &gt;= 100 AND list_price &lt;= 500</span></span></code></pre>
         </div>
-        <p><strong>IN Operator (Standard SQL)</strong>: Checks if a value matches any value in a provided list.</p>
+        <p><strong>IN Operatoru (Standart SQL)</strong>: Bir degerin saglanan listedeki herhangi bir degerle eslesip eslesmedigini kontrol eder.</p>
         <div class="sourceCode" id="cb13" onclick="CopyToClipboard('cb13')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">235</span>, <span class="dv">38</span>, <span class="dv">73</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
         </div>
-        <p>This is often more readable than multiple <code>OR</code> conditions.</p>
+        <p>Bu, genellikle birden fazla <code>OR</code> kosulundan daha okunabilirdir.</p>
       </section>
       <section>
-        <p><strong>LIKE Operator (Standard SQL)</strong>: Performs simple pattern matching on string data. -
-          <code>%</code>: Matches any sequence of zero or more characters. - <code>_</code>: Matches exactly one
-          character.
+        <p><strong>LIKE Operatoru (Standart SQL)</strong>: Metin verilerinde basit desen eslestirme yapar. -
+          <code>%</code>: Sifir veya daha fazla karakterden olusan herhangi bir diziyle eslesir. - <code>_</code>: Tam olarak bir karakterle eslesir.
         </p>
         <div class="sourceCode" id="cb14" onclick="CopyToClipboard('cb14')">
           <pre
@@ -573,24 +553,19 @@
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">&#39;_-%&#39;</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Case Sensitivity</strong>: Standard SQL <code>LIKE</code> is case-sensitive. However, the default
-            behavior varies across databases and depends on collation settings (e.g., often case-insensitive by default
-            in
-            SQL Server and MySQL, case-sensitive in PostgreSQL and Oracle).</li>
-          <li><strong>Case-Insensitive LIKE</strong>:
+          <li><strong>Buyuk/Kucuk Harf Duyarliligi</strong>: Standart SQL <code>LIKE</code> buyuk/kucuk harf duyarlidir. Ancak, varsayilan davranis veritabanlari arasinda degisir ve harmanlama ayarlarina baglidir (ornegin, SQL Server ve MySQL'de genellikle varsayilan olarak buyuk/kucuk harf duyarsiz, PostgreSQL ve Oracle'da buyuk/kucuk harf duyarli).</li>
+          <li><strong>Buyuk/Kucuk Harf Duyarsiz LIKE</strong>:
             <ul>
-              <li><strong>PostgreSQL</strong>: Use <code>ILIKE</code> (e.g., <code>WHERE name ILIKE 'geo%'</code>).</li>
-              <li><strong>Other DBs</strong>: Often achieved using functions like <code>LOWER()</code> or
-                <code>UPPER()</code> on both sides (e.g., <code>WHERE LOWER(name) LIKE 'geo%'</code>) or by setting
-                case-insensitive collations.
+              <li><strong>PostgreSQL</strong>: <code>ILIKE</code> kullanin (ornegin, <code>WHERE name ILIKE 'geo%'</code>).</li>
+              <li><strong>Diger Veritabanlari</strong>: Genellikle her iki tarafta <code>LOWER()</code> veya
+                <code>UPPER()</code> gibi fonksiyonlar kullanilarak elde edilir (ornegin, <code>WHERE LOWER(name) LIKE 'geo%'</code>) veya buyuk/kucuk harf duyarsiz harmanlamalar ayarlanarak.
               </li>
             </ul>
           </li>
         </ul>
       </section>
       <section>
-        <p><strong>Regular Expressions (Not Standard SQL, Syntax Varies)</strong>: Most databases support more powerful
-          pattern matching using regular expressions, but the syntax varies significantly.</p>
+        <p><strong>Duzensiz Ifadeler (Standart SQL Degil, Soz Dizimi Degisir)</strong>: Cogu veritabani duzensiz ifadeler kullanarak daha guclu desen eslestirmeyi destekler, ancak soz dizimi onemli olcude degisir.</p>
         <div class="sourceCode" id="cb15" onclick="CopyToClipboard('cb15')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Names containing numbers</span></span>
@@ -610,9 +585,9 @@
         </div>
       </section>
       <section>
-        <h3 id="sorting-with-order-by-standard-sql">Sorting with ORDER BY (Standard SQL)</h3>
-        <p>The <code>ORDER BY</code> clause sorts the rows in the result set.</p>
-        <p><strong>Basic Syntax</strong>:</p>
+        <h3 id="sorting-with-order-by-standard-sql">ORDER BY ile Siralama (Standart SQL)</h3>
+        <p><code>ORDER BY</code> maddesi, sonuc kumesindeki satirlari siralar.</p>
+        <p><strong>Temel Soz Dizimi</strong>:</p>
         <div class="sourceCode" id="cb16" onclick="CopyToClipboard('cb16')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">SELECT</span> column_list</span>
@@ -620,11 +595,10 @@
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">WHERE</span> condition <span class="co">-- Optional</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> column1 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], column2 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], <span class="op">..</span>.;</span></code></pre>
         </div>
-        <p><strong>Sort Direction</strong>: - <code>ASC</code>: Ascending order (A-Z, 0-9). This is the default if not
-          specified. - <code>DESC</code>: Descending order (Z-A, 9-0).</p>
+        <p><strong>Siralama Yonu</strong>: - <code>ASC</code>: Artan sirada (A-Z, 0-9). Belirtilmezse bu varsayilandir. - <code>DESC</code>: Azalan sirada (Z-A, 9-0).</p>
       </section>
       <section>
-        <p><strong>Examples</strong>:</p>
+        <p><strong>Ornekler</strong>:</p>
         <div class="sourceCode" id="cb17" onclick="CopyToClipboard('cb17')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="co">-- Sort partners alphabetically by name</span></span>
@@ -647,21 +621,16 @@
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">LENGTH</span>(name) <span class="kw">DESC</span>; <span class="co">-- Function name might vary (e.g., LEN in SQL Server)</span></span></code></pre>
         </div>
-        <p><strong>Handling NULLs in Sorting (Behavior Varies)</strong>: How <code>NULL</code> values are sorted
-          (<code>FIRST</code> or <code>LAST</code>) depends on the database system when <code>ASC</code> or
-          <code>DESC</code> is used. - <strong>PostgreSQL/Oracle</strong>: Default is <code>NULLS LAST</code> for
-          <code>ASC</code>, <code>NULLS FIRST</code> for <code>DESC</code>. - <strong>SQL Server/MySQL</strong>: Default
-          is <code>NULLS FIRST</code> for <code>ASC</code>, <code>NULLS LAST</code> for <code>DESC</code>. -
-          <strong>Explicit Control (PostgreSQL/Oracle)</strong>: You can explicitly specify <code>NULLS FIRST</code> or
-          <code>NULLS LAST</code>.
+        <p><strong>Siralamada NULL Degerlerini Isleme (Davranis Degisir)</strong>: <code>ASC</code> veya
+          <code>DESC</code> kullanildiginda <code>NULL</code> degerlerinin nasil siralandigi (<code>FIRST</code> veya <code>LAST</code>) veritabani sistemine baglidir. - <strong>PostgreSQL/Oracle</strong>: <code>ASC</code> icin varsayilan <code>NULLS LAST</code>, <code>DESC</code> icin <code>NULLS FIRST</code>. - <strong>SQL Server/MySQL</strong>: <code>ASC</code> icin varsayilan <code>NULLS FIRST</code>, <code>DESC</code> icin <code>NULLS LAST</code>. -
+          <strong>Acik Kontrol (PostgreSQL/Oracle)</strong>: <code>NULLS FIRST</code> veya <code>NULLS LAST</code>'i acikca belirtebilirsiniz.
           <code>sql     -- PostgreSQL/Oracle syntax     SELECT name, email FROM res_partner ORDER BY email ASC NULLS FIRST;     SELECT name, email FROM res_partner ORDER BY email DESC NULLS LAST;</code>
         </p>
       </section>
       <section>
-        <h3 id="limiting-results-syntax-varies">Limiting Results (Syntax Varies)</h3>
-        <p>Restricting the number of rows returned is common, especially for pagination. The syntax has historically
-          varied but is converging towards the SQL standard.</p>
-        <p><strong>PostgreSQL / MySQL Syntax</strong>:</p>
+        <h3 id="limiting-results-syntax-varies">Sonuclari Sinirlandirma (Soz Dizimi Degisir)</h3>
+        <p>Dondurulecek satir sayisini kisitlamak, ozellikle sayfalama icin yaygindir. Soz dizimi tarihsel olarak degismistir ancak SQL standardina dogru yaklasmakladir.</p>
+        <p><strong>PostgreSQL / MySQL Soz Dizimi</strong>:</p>
         <div class="sourceCode" id="cb18" onclick="CopyToClipboard('cb18')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">SELECT</span> column_list</span>
@@ -670,13 +639,12 @@
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a><span class="kw">LIMIT</span> row_count [OFFSET starting_row];</span></code></pre>
         </div>
         <ul>
-          <li><code>LIMIT row_count</code>: Specifies the maximum number of rows to return.</li>
-          <li><code>OFFSET starting_row</code>: Specifies the number of rows to skip before starting to return rows
-            (0-based).</li>
+          <li><code>LIMIT row_count</code>: Dondurulebilecek maksimum satir sayisini belirtir.</li>
+          <li><code>OFFSET starting_row</code>: Satirlari dondurmeye baslamadan once atlanacak satir sayisini belirtir (0 tabanli).</li>
         </ul>
       </section>
       <section>
-        <p><strong>Examples (PostgreSQL/MySQL)</strong>:</p>
+        <p><strong>Ornekler (PostgreSQL/MySQL)</strong>:</p>
         <div class="sourceCode" id="cb19" onclick="CopyToClipboard('cb19')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co">-- Get the top 10 most recently created partners</span></span>
@@ -693,7 +661,7 @@
         </div>
       </section>
       <section>
-        <p><strong>SQL Standard Syntax (PostgreSQL 8.4+, Oracle 12c+, SQL Server 2012+, Db2)</strong>:</p>
+        <p><strong>Standart SQL Soz Dizimi (PostgreSQL 8.4+, Oracle 12c+, SQL Server 2012+, Db2)</strong>:</p>
         <div class="sourceCode" id="cb20" onclick="CopyToClipboard('cb20')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">SELECT</span> column_list</span>
@@ -704,7 +672,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Example (Standard SQL)</strong>:</p>
+        <p><strong>Ornek (Standart SQL)</strong>:</p>
         <div class="sourceCode" id="cb21" onclick="CopyToClipboard('cb21')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="co">-- Get the top 10 most recently created partners</span></span>
@@ -719,17 +687,15 @@
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> name</span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true"></a>OFFSET <span class="dv">25</span> <span class="kw">ROWS</span> FETCH <span class="kw">NEXT</span> <span class="dv">25</span> <span class="kw">ROWS</span> <span class="kw">ONLY</span>;</span></code></pre>
         </div>
-        <p><strong>Older Vendor-Specific Syntax</strong>: - <strong>SQL Server (Older)</strong>:
-          <code>SELECT TOP row_count column_list ... ORDER BY ...</code> (No easy <code>OFFSET</code>) - <strong>Oracle
-            (Older)</strong>: <code>SELECT column_list ... WHERE ROWNUM &lt;= row_count ... ORDER BY ...</code> (Complex
-          for <code>OFFSET</code>)
+        <p><strong>Eski Satici-Spesifik Soz Dizimi</strong>: - <strong>SQL Server (Eski)</strong>:
+          <code>SELECT TOP row_count column_list ... ORDER BY ...</code> (Kolay <code>OFFSET</code> yok) - <strong>Oracle
+            (Eski)</strong>: <code>SELECT column_list ... WHERE ROWNUM &lt;= row_count ... ORDER BY ...</code> (<code>OFFSET</code> icin karmasik)
         </p>
       </section>
       <section>
-        <h3 id="practical-examples-using-odoopostgresql-schema">Practical Examples (Using Odoo/PostgreSQL Schema)</h3>
-        <p>These examples use PostgreSQL syntax but illustrate common data retrieval tasks applicable to many business
-          databases.</p>
-        <p><strong>Example 1: Find recent, high-value sales orders</strong></p>
+        <h3 id="practical-examples-using-odoopostgresql-schema">Pratik Ornekler (Odoo/PostgreSQL Semasini Kullanarak)</h3>
+        <p>Bu ornekler PostgreSQL soz dizimini kullanir ancak birçok is veritabanina uygulanabilir yaygin veri alma gorevlerini gosterir.</p>
+        <p><strong>Ornek 1: Son, yuksek degerli satis siparislerini bulma</strong></p>
         <div class="sourceCode" id="cb22" onclick="CopyToClipboard('cb22')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
@@ -750,12 +716,11 @@
 <span id="cb22-16"><a href="#cb22-16" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">20</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Note</strong>: <code>CURRENT_DATE</code> and <code>INTERVAL</code> syntax might differ slightly in
-            other databases.</li>
+          <li><strong>Not</strong>: <code>CURRENT_DATE</code> ve <code>INTERVAL</code> soz dizimi diger veritabanlarinda biraz farkli olabilir.</li>
         </ul>
       </section>
       <section>
-        <p><strong>Example 2: Find products low on stock</strong></p>
+        <p><strong>Ornek 2: Stoku dusuk urunleri bulma</strong></p>
         <div class="sourceCode" id="cb23" onclick="CopyToClipboard('cb23')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
@@ -779,12 +744,12 @@
 <span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>    quantity_on_hand <span class="kw">ASC</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Note</strong>: <code>GROUP BY</code> and <code>HAVING</code> will be covered in more detail later.
-            The concept of querying inventory levels is common across systems.</li>
+          <li><strong>Not</strong>: <code>GROUP BY</code> ve <code>HAVING</code> daha sonra daha ayrintili olarak ele alinacaktir.
+            Envanter seviyelerini sorgulama kavrami sistemler arasinda yaygindir.</li>
         </ul>
       </section>
       <section>
-        <p><strong>Example 3: Find customers with specific email domains</strong></p>
+        <p><strong>Ornek 3: Belirli e-posta alanli musterileri bulma</strong></p>
         <div class="sourceCode" id="cb24" onclick="CopyToClipboard('cb24')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
@@ -803,19 +768,16 @@
 <span id="cb24-14"><a href="#cb24-14" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">50</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Note</strong>: This uses standard <code>LIKE</code> and should work across most databases,
-            assuming
-            case-sensitivity matches requirements or appropriate functions/collations are used.</li>
+          <li><strong>Not</strong>: Bu standart <code>LIKE</code> kullanir ve buyuk/kucuk harf duyarliligi gereksinimlere uygunsa veya uygun fonksiyonlar/harmanlamalar kullaniliyorsa cogu veritabaninda calismalidir.</li>
         </ul>
-        <p>Understanding these basic <code>SELECT</code> statement components (<code>SELECT</code>, <code>FROM</code>,
-          <code>WHERE</code>, <code>ORDER BY</code>, <code>LIMIT</code>/<code>FETCH</code>) is the first major step in
-          learning SQL. They allow you to retrieve, filter, and sort data from any relational database.
+        <p>Bu temel <code>SELECT</code> ifade bilesenlerini (<code>SELECT</code>, <code>FROM</code>,
+          <code>WHERE</code>, <code>ORDER BY</code>, <code>LIMIT</code>/<code>FETCH</code>) anlamak SQL ogrenmenin ilk buyuk adimidir. Herhangi bir iliskisel veritabanindan veri almaniza, filtrelemenize ve siralamaniza olanak tanirlar.
         </p>
       </section>
       <section>
-        <h3 id="practice-exercises">Practice What You Learned</h3>
-        <p>Ready to sharpen your SQL skills? Practice with hands-on exercises using the concepts covered in this lesson.</p>
-        <p><a href="03_basic_sql_queries_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+        <h3 id="practice-exercises">Ogrendiklerinizi Pratik Yapin</h3>
+        <p>SQL becerilerinizi gelistirmeye hazir misiniz? Bu derste islenen kavramlari kullanarak uygulamali alistirmalar yapin.</p>
+        <p><a href="03_basic_sql_queries_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
     </div>
   </div> <!-- /container -->
 </body>

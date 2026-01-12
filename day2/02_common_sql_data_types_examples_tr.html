@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 2: Common SQL Data Types - Practical Examples</title>
+    <title>Gun 2: Yaygin SQL Veri Tipleri - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -38,34 +38,6 @@
 
         ul.task-list {
             list-style: none;
-        }
-
-        .language-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .language-switcher a {
-            text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 3px;
-            color: #333;
-        }
-
-        .language-switcher a.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        .language-switcher a:hover:not(.active) {
-            background: #e9ecef;
         }
 
         .exercise-box {
@@ -117,7 +89,7 @@
         }
 
         .hint-box::before {
-            content: "💡 Hint: ";
+            content: "Ipucu: ";
             font-weight: bold;
         }
 
@@ -130,7 +102,7 @@
         }
 
         .warning-box::before {
-            content: "⚠️ Warning: ";
+            content: "Uyari: ";
             font-weight: bold;
         }
 
@@ -143,7 +115,7 @@
         }
 
         .concept-box::before {
-            content: "📚 Concept: ";
+            content: "Kavram: ";
             font-weight: bold;
         }
 
@@ -160,7 +132,8 @@
         }
 
         .challenge-box::before {
-            content: "🏆 ";
+            content: "Meydan Okuma: ";
+            font-weight: bold;
         }
 
         .dataset-table {
@@ -250,15 +223,35 @@
             margin: 10px 0;
             font-family: monospace;
         }
+
+        .language-switcher {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .language-switcher a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .language-switcher a:hover {
+            text-decoration: underline;
+        }
+
+        .language-switcher a.active {
+            font-weight: bold;
+            color: #343a40;
+        }
     </style>
 </head>
 
 <body>
-    <div class="language-switcher">
-        <a href="02_common_sql_data_types_examples.html" class="active">EN</a>
-        <a href="02_common_sql_data_types_examples_tr.html">TR</a>
-    </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -277,21 +270,26 @@
     </div>
     <div class="content-container">
         <div class="container">
+            <div class="language-switcher">
+                <a href="02_common_sql_data_types_examples.html">English</a> |
+                <a href="02_common_sql_data_types_examples_tr.html" class="active">Turkce</a>
+            </div>
+
             <section>
-                <h1 id="data-types-practical-examples">Common SQL Data Types - Practical Examples</h1>
-                <p><a href="02_common_sql_data_types.html">&larr; Back to Common SQL Data Types Lesson</a></p>
-                <p>This page provides hands-on exercises to help you master SQL data types. Practice choosing the right
-                    data type, working with type conversions, and understanding type-specific behaviors.</p>
+                <h1 id="data-types-practical-examples">Yaygin SQL Veri Tipleri - Pratik Ornekler</h1>
+                <p><a href="02_common_sql_data_types.html">&larr; Yaygin SQL Veri Tipleri Dersine Don</a></p>
+                <p>Bu sayfa, SQL veri tiplerinde ustalasmak icin uygulamali alistirmalar sunmaktadir. Dogru veri tipini
+                    secme, tip donusumleriyle calisma ve tipe ozgu davranislari anlama konularinda pratik yapin.</p>
             </section>
 
-            <!-- Sample Datasets Section -->
+            <!-- Ornek Veri Setleri Bolumu -->
             <section>
-                <h2 id="sample-datasets">Sample Datasets</h2>
-                <p>The following tables demonstrate different data types in action. Use these as reference for the
-                    exercises.</p>
+                <h2 id="sample-datasets">Ornek Veri Setleri</h2>
+                <p>Asagidaki tablolar farkli veri tiplerini uygulamada gostermektedir. Alistirmalar icin bunlari
+                    referans olarak kullanin.</p>
 
-                <h4>products Table</h4>
-                <p>Shows various numeric and string data types:</p>
+                <h4>products Tablosu</h4>
+                <p>Cesitli sayisal ve metin veri tiplerini gosterir:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -347,8 +345,8 @@
                     </tbody>
                 </table>
 
-                <h4>events Table</h4>
-                <p>Shows date and time data types:</p>
+                <h4>events Tablosu</h4>
+                <p>Tarih ve saat veri tiplerini gosterir:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -396,8 +394,8 @@
                     </tbody>
                 </table>
 
-                <h4>user_profiles Table (JSON example)</h4>
-                <p>Shows JSON data type usage:</p>
+                <h4>user_profiles Tablosu (JSON ornegi)</h4>
+                <p>JSON veri tipi kullanimini gosterir:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -425,8 +423,8 @@
                     </tbody>
                 </table>
 
-                <h4>financial_data Table</h4>
-                <p>Demonstrates precision differences between DECIMAL and FLOAT:</p>
+                <h4>financial_data Tablosu</h4>
+                <p>DECIMAL ve FLOAT arasindaki hassasiyet farklarini gosterir:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -459,52 +457,53 @@
                 </table>
             </section>
 
-            <!-- Exercise 1: Choosing the Right Data Type -->
+            <!-- Alistirma 1: Dogru Veri Tipini Secme -->
             <section>
-                <h2 id="exercise-1">Exercise 1: Choosing the Right Data Type</h2>
-                <p>A crucial skill is selecting the appropriate data type for each column. Consider storage efficiency,
-                    data integrity, and query performance.</p>
+                <h2 id="exercise-1">Alistirma 1: Dogru Veri Tipini Secme</h2>
+                <p>Her sutun icin uygun veri tipini secmek kritik bir beceridir. Depolama verimliligi, veri butunlugu ve
+                    sorgu performansini goz onunde bulundurun.</p>
 
                 <div class="concept-box">
-                    Use the most specific type that fits your data. <code>INTEGER</code> for counts,
-                    <code>DECIMAL</code> for money, <code>VARCHAR</code> for variable text, <code>DATE</code> for dates
-                    only.
+                    Verilerinize uyan en spesifik tipi kullanin. Sayilar icin <code>INTEGER</code>, para icin
+                    <code>DECIMAL</code>, degisken metin icin <code>VARCHAR</code>, sadece tarihler icin
+                    <code>DATE</code>.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Design a Table Schema</h4>
-                    <p>You need to create a table to store employee information with the following fields:</p>
+                    <h4>Alistirma 1.1: Tablo Semasi Tasarlama</h4>
+                    <p>Asagidaki alanlari iceren calisan bilgilerini depolamak icin bir tablo olusturmaniz gerekiyor:</p>
                     <ul>
-                        <li>Employee ID (unique identifier, auto-generated)</li>
-                        <li>First Name (up to 50 characters)</li>
-                        <li>Last Name (up to 50 characters)</li>
-                        <li>Email (up to 100 characters)</li>
-                        <li>Salary (exact amount with 2 decimal places, up to millions)</li>
-                        <li>Hire Date</li>
-                        <li>Is Full Time (yes/no)</li>
-                        <li>Department Code (always exactly 4 characters)</li>
+                        <li>Calisan ID (benzersiz tanimlayici, otomatik olusturulan)</li>
+                        <li>Ad (en fazla 50 karakter)</li>
+                        <li>Soyad (en fazla 50 karakter)</li>
+                        <li>E-posta (en fazla 100 karakter)</li>
+                        <li>Maas (2 ondalik basamakli kesin miktar, milyonlara kadar)</li>
+                        <li>Ise Baslama Tarihi</li>
+                        <li>Tam Zamanli mi (evet/hayir)</li>
+                        <li>Departman Kodu (her zaman tam olarak 4 karakter)</li>
                     </ul>
-                    <p><strong>Write the CREATE TABLE statement with appropriate data types.</strong></p>
+                    <p><strong>Uygun veri tipleriyle CREATE TABLE ifadesini yazin.</strong></p>
 
                     <div class="hint-box">
-                        Consider: Should department code be CHAR or VARCHAR? What precision do you need for salary?
+                        Dusunun: Departman kodu CHAR mi yoksa VARCHAR mi olmali? Maas icin ne kadar hassasiyet
+                        gerekiyor?
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
-                        <pre><code class="language-sql">-- PostgreSQL syntax
+                        <pre><code class="language-sql">-- PostgreSQL sozdizimi
 CREATE TABLE employees (
     employee_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    salary DECIMAL(10, 2) NOT NULL,  -- Up to 99,999,999.99
+    salary DECIMAL(10, 2) NOT NULL,  -- 99,999,999.99'a kadar
     hire_date DATE NOT NULL,
     is_full_time BOOLEAN DEFAULT TRUE,
-    department_code CHAR(4) NOT NULL  -- Fixed 4 characters
+    department_code CHAR(4) NOT NULL  -- Sabit 4 karakter
 );
 
--- MySQL syntax
+-- MySQL sozdizimi
 CREATE TABLE employees (
     employee_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -516,7 +515,7 @@ CREATE TABLE employees (
     department_code CHAR(4) NOT NULL
 );
 
--- SQL Server syntax
+-- SQL Server sozdizimi
 CREATE TABLE employees (
     employee_id INT IDENTITY(1,1) PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -527,20 +526,20 @@ CREATE TABLE employees (
     is_full_time BIT DEFAULT 1,
     department_code CHAR(4) NOT NULL
 );</code></pre>
-                        <p><strong>Explanation:</strong></p>
+                        <p><strong>Aciklama:</strong></p>
                         <ul>
-                            <li><code>CHAR(4)</code> for department_code because it's always exactly 4 characters</li>
-                            <li><code>VARCHAR</code> for names/email because lengths vary</li>
-                            <li><code>DECIMAL(10,2)</code> for exact currency calculations</li>
-                            <li><code>DATE</code> for hire_date (no time component needed)</li>
-                            <li><code>BOOLEAN</code> for is_full_time (SQL Server uses BIT)</li>
+                            <li><code>CHAR(4)</code> department_code icin cunku her zaman tam olarak 4 karakter</li>
+                            <li><code>VARCHAR</code> isimler/e-posta icin cunku uzunluklar degisiyor</li>
+                            <li><code>DECIMAL(10,2)</code> kesin para hesaplamalari icin</li>
+                            <li><code>DATE</code> hire_date icin (zaman bileseni gerekmiyor)</li>
+                            <li><code>BOOLEAN</code> is_full_time icin (SQL Server BIT kullanir)</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Identify Data Type Problems</h4>
-                    <p>The following table definition has several data type issues. Identify and fix them:</p>
+                    <h4>Alistirma 1.2: Veri Tipi Problemlerini Belirleme</h4>
+                    <p>Asagidaki tablo taniminda birkac veri tipi sorunu var. Bunlari belirleyin ve duzultin:</p>
                     <pre><code class="language-sql">CREATE TABLE orders (
     order_id VARCHAR(20),          -- Problem?
     customer_name TEXT,            -- Problem?
@@ -550,93 +549,93 @@ CREATE TABLE employees (
     is_shipped VARCHAR(5)          -- Problem?
 );</code></pre>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
-                        <pre><code class="language-sql">-- Corrected table definition
+                        <pre><code class="language-sql">-- Duzeltilmis tablo tanimi
 CREATE TABLE orders (
     order_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    -- Was VARCHAR: IDs should be numeric for efficiency and auto-generation
+    -- VARCHAR idi: ID'ler verimlilik ve otomatik olusturma icin sayisal olmali
 
     customer_name VARCHAR(100) NOT NULL,
-    -- Was TEXT: For names, VARCHAR with limit is more appropriate
+    -- TEXT idi: Isimler icin sinirli VARCHAR daha uygun
 
     order_total DECIMAL(12, 2) NOT NULL,
-    -- Was FLOAT: Financial data needs exact precision
+    -- FLOAT idi: Finansal veriler kesin hassasiyet gerektirir
 
     quantity INTEGER NOT NULL CHECK (quantity > 0),
-    -- Was VARCHAR: Quantities are numbers, not text
+    -- VARCHAR idi: Miktarlar sayi, metin degil
 
     order_date DATE NOT NULL,
-    -- Was VARCHAR: Dates should use DATE type for validation and functions
+    -- VARCHAR idi: Tarihler dogrulama ve fonksiyonlar icin DATE tipi kullanmali
 
     is_shipped BOOLEAN DEFAULT FALSE
-    -- Was VARCHAR: Boolean values should use BOOLEAN type
+    -- VARCHAR idi: Boolean degerler BOOLEAN tipi kullanmali
 );</code></pre>
-                        <p><strong>Issues identified:</strong></p>
+                        <p><strong>Belirlenen sorunlar:</strong></p>
                         <ul>
-                            <li><strong>order_id</strong>: Using VARCHAR prevents auto-increment and is less efficient
+                            <li><strong>order_id</strong>: VARCHAR kullanmak otomatik artisi engeller ve daha az
+                                verimlidir</li>
+                            <li><strong>customer_name</strong>: TEXT asiridir; makul sinirli VARCHAR daha iyidir</li>
+                            <li><strong>order_total</strong>: FLOAT para ile yuvarlama hatalarina neden olur</li>
+                            <li><strong>quantity</strong>: Sayilari metin olarak saklamak aritmetik islemleri engeller
                             </li>
-                            <li><strong>customer_name</strong>: TEXT is overkill; VARCHAR with reasonable limit is
-                                better</li>
-                            <li><strong>order_total</strong>: FLOAT causes rounding errors with money</li>
-                            <li><strong>quantity</strong>: Storing numbers as strings prevents arithmetic operations
-                            </li>
-                            <li><strong>order_date</strong>: String dates can't use date functions or be validated</li>
-                            <li><strong>is_shipped</strong>: Boolean values stored as strings waste space and are error-prone</li>
+                            <li><strong>order_date</strong>: Metin tarihler tarih fonksiyonlarini kullanamazlar veya
+                                dogrulanamaz</li>
+                            <li><strong>is_shipped</strong>: Metin olarak saklanan boolean degerler yer israf eder ve
+                                hataya aciktir</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- Exercise 2: Numeric Type Precision -->
+            <!-- Alistirma 2: Sayisal Tip Hassasiyeti -->
             <section>
-                <h2 id="exercise-2">Exercise 2: Numeric Type Precision</h2>
-                <p>Understanding the difference between exact and approximate numeric types is crucial for financial
-                    applications.</p>
+                <h2 id="exercise-2">Alistirma 2: Sayisal Tip Hassasiyeti</h2>
+                <p>Kesin ve yaklasik sayisal tipler arasindaki farki anlamak finansal uygulamalar icin kritiktir.</p>
 
                 <div class="warning-box">
-                    Never use FLOAT or REAL for financial calculations! Floating-point types can introduce rounding
-                    errors.
+                    Finansal hesaplamalar icin asla FLOAT veya REAL kullanmayin! Kayan noktali tipler yuvarlama
+                    hatalarina neden olabilir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: Precision Comparison</h4>
-                    <p>Run this query and observe the difference between DECIMAL and FLOAT:</p>
+                    <h4>Alistirma 2.1: Hassasiyet Karsilastirmasi</h4>
+                    <p>Bu sorguyu calistirin ve DECIMAL ile FLOAT arasindaki farki gozlemleyin:</p>
                     <pre><code class="language-sql">-- PostgreSQL / MySQL
 SELECT
     0.1 + 0.2 AS float_result,
     CAST(0.1 AS DECIMAL(10,2)) + CAST(0.2 AS DECIMAL(10,2)) AS decimal_result;
 
--- What do you expect? What do you get?</code></pre>
-                    <p><strong>Question:</strong> What result do you expect for each calculation?</p>
+-- Ne bekliyorsunuz? Ne elde ediyorsunuz?</code></pre>
+                    <p><strong>Soru:</strong> Her hesaplama icin hangi sonucu bekliyorsunuz?</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
                         <div class="result-box">
-                            float_result: 0.30000000000000004 (approximate)
-                            decimal_result: 0.30 (exact)
+                            float_result: 0.30000000000000004 (yaklasik)
+                            decimal_result: 0.30 (kesin)
                         </div>
-                        <p><strong>Explanation:</strong> The floating-point calculation produces a tiny error due to
-                            binary representation of decimal fractions. DECIMAL maintains exact precision.</p>
+                        <p><strong>Aciklama:</strong> Kayan noktali hesaplama, ondalik kesirlerin ikili temsili
+                            nedeniyle kucuk bir hata uretir. DECIMAL kesin hassasiyeti korur.</p>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: Calculate Total with Tax</h4>
-                    <p>Using the <code>products</code> table, calculate the total price including 8.25% tax. Make sure
-                        to use proper precision.</p>
-                    <p><strong>Write a query that:</strong></p>
+                    <h4>Alistirma 2.2: Vergiyle Toplam Hesaplama</h4>
+                    <p><code>products</code> tablosunu kullanarak, %8.25 vergi dahil toplam fiyati hesaplayin. Dogru
+                        hassasiyeti kullandiginizdan emin olun.</p>
+                    <p><strong>Asagidakileri gosteren bir sorgu yazin:</strong></p>
                     <ul>
-                        <li>Shows product name, original price</li>
-                        <li>Calculates tax amount (rounded to 2 decimal places)</li>
-                        <li>Shows total price with tax</li>
+                        <li>Urun adi, orijinal fiyat</li>
+                        <li>Vergi tutari (2 ondalik basamaga yuvarlanmis)</li>
+                        <li>Vergi dahil toplam fiyat</li>
                     </ul>
 
                     <div class="hint-box">
-                        Use ROUND() or CAST() to ensure 2 decimal places in your results.
+                        Sonuclarinizda 2 ondalik basamak saglamak icin ROUND() veya CAST() kullanin.
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
                     <div id="solution2_2" class="solution-box">
                         <pre><code class="language-sql">SELECT
     name,
@@ -646,7 +645,7 @@ SELECT
 FROM products
 WHERE is_active = TRUE
 ORDER BY price DESC;</code></pre>
-                        <p><strong>Expected Results:</strong></p>
+                        <p><strong>Beklenen Sonuclar:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>name</th>
@@ -683,49 +682,49 @@ ORDER BY price DESC;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.3: Integer Division vs Decimal Division</h4>
-                    <p>What is the difference between these two queries?</p>
-                    <pre><code class="language-sql">-- Query A
+                    <h4>Alistirma 2.3: Tamsayi Bolmesi ve Ondalik Bolme</h4>
+                    <p>Bu iki sorgu arasindaki fark nedir?</p>
+                    <pre><code class="language-sql">-- Sorgu A
 SELECT 5 / 2 AS result_a;
 
--- Query B
+-- Sorgu B
 SELECT 5.0 / 2 AS result_b;
 
--- Query C
+-- Sorgu C
 SELECT CAST(5 AS DECIMAL) / 2 AS result_c;</code></pre>
-                    <p><strong>Question:</strong> What result does each query return?</p>
+                    <p><strong>Soru:</strong> Her sorgu hangi sonucu dondurur?</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Cozumu Goster</button>
                     <div id="solution2_3" class="solution-box">
                         <div class="result-box">
-                            result_a: 2 (integer division truncates)
-                            result_b: 2.5 (decimal division preserves fraction)
-                            result_c: 2.5 (explicit cast to decimal)
+                            result_a: 2 (tamsayi bolmesi keser)
+                            result_b: 2.5 (ondalik bolme kesiri korur)
+                            result_c: 2.5 (acik donusum ondaliga)
                         </div>
-                        <p><strong>Explanation:</strong></p>
+                        <p><strong>Aciklama:</strong></p>
                         <ul>
-                            <li>Integer / Integer = Integer (fraction discarded)</li>
-                            <li>If either operand is decimal/float, result is decimal/float</li>
-                            <li>Use explicit CAST when you need decimal results from integer values</li>
+                            <li>Tamsayi / Tamsayi = Tamsayi (kesir atilir)</li>
+                            <li>Eger operandlardan biri ondalik/kayan noktali ise, sonuc ondalik/kayan noktali olur</li>
+                            <li>Tamsayi degerlerden ondalik sonuclar gerektiginde acik CAST kullanin</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- Exercise 3: String Data Types -->
+            <!-- Alistirma 3: Metin Veri Tipleri -->
             <section>
-                <h2 id="exercise-3">Exercise 3: String Data Types</h2>
-                <p>Understanding when to use CHAR vs VARCHAR and how to work with text data.</p>
+                <h2 id="exercise-3">Alistirma 3: Metin Veri Tipleri</h2>
+                <p>CHAR ile VARCHAR'i ne zaman kullanacaginizi ve metin verileriyle nasil calisacaginizi anlama.</p>
 
                 <div class="concept-box">
-                    <code>CHAR(n)</code> pads shorter strings with spaces. <code>VARCHAR(n)</code> stores only the
-                    actual characters. Use CHAR only when data is always the exact same length.
+                    <code>CHAR(n)</code> kisa metinleri boslukla doldurur. <code>VARCHAR(n)</code> sadece gercek
+                    karakterleri saklar. CHAR'i sadece veri her zaman tam olarak ayni uzunlukta oldugunda kullanin.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: CHAR Padding Behavior</h4>
-                    <p>Observe how CHAR handles shorter strings:</p>
-                    <pre><code class="language-sql">-- Create a test table
+                    <h4>Alistirma 3.1: CHAR Doldurma Davranisi</h4>
+                    <p>CHAR'in kisa metinleri nasil isledigini gozlemleyin:</p>
+                    <pre><code class="language-sql">-- Test tablosu olustur
 CREATE TABLE char_test (
     fixed_code CHAR(10),
     variable_code VARCHAR(10)
@@ -733,85 +732,89 @@ CREATE TABLE char_test (
 
 INSERT INTO char_test VALUES ('ABC', 'ABC');
 
--- Query to see the difference
+-- Farki gormek icin sorgu
 SELECT
     fixed_code,
     LENGTH(fixed_code) AS char_length,
     variable_code,
     LENGTH(variable_code) AS varchar_length
 FROM char_test;</code></pre>
-                    <p><strong>Question:</strong> What lengths do you expect?</p>
+                    <p><strong>Soru:</strong> Hangi uzunluklari bekliyorsunuz?</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
                         <div class="result-box">
-                            fixed_code: 'ABC       ' (with trailing spaces)
-                            char_length: 10 (or 3 in some DBs that trim)
+                            fixed_code: 'ABC       ' (sondaki bosluklar ile)
+                            char_length: 10 (veya bazi DB'lerde kirir 3)
                             variable_code: 'ABC'
                             varchar_length: 3
                         </div>
-                        <p><strong>Note:</strong> Behavior varies by database:</p>
+                        <p><strong>Not:</strong> Davranis veritabanina gore degisir:</p>
                         <ul>
-                            <li><strong>PostgreSQL</strong>: CHAR is padded, but LENGTH() ignores trailing spaces</li>
-                            <li><strong>MySQL</strong>: Trailing spaces are removed when retrieving CHAR values</li>
-                            <li><strong>SQL Server</strong>: CHAR includes padding, LEN() ignores trailing spaces, DATALENGTH() includes them</li>
+                            <li><strong>PostgreSQL</strong>: CHAR doldurulur, ama LENGTH() sondaki bosluklari yok sayar
+                            </li>
+                            <li><strong>MySQL</strong>: Sondaki bosluklar CHAR degerlerini alirken kaldirilir</li>
+                            <li><strong>SQL Server</strong>: CHAR dolguyu icerir, LEN() sondaki bosluklari yok sayar,
+                                DATALENGTH() icerir</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: String Comparison with CHAR</h4>
-                    <p>What happens when you compare CHAR values?</p>
-                    <pre><code class="language-sql">-- Will this return TRUE or FALSE?
+                    <h4>Alistirma 3.2: CHAR ile Metin Karsilastirmasi</h4>
+                    <p>CHAR degerlerini karsilastirdiginizda ne olur?</p>
+                    <pre><code class="language-sql">-- Bu TRUE mu yoksa FALSE mi dondurur?
 SELECT
     CASE WHEN 'ABC'::CHAR(10) = 'ABC'::VARCHAR(10)
-         THEN 'Equal'
-         ELSE 'Not Equal'
+         THEN 'Esit'
+         ELSE 'Esit Degil'
     END AS comparison_result;</code></pre>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
-                        <p><strong>Result varies by database:</strong></p>
+                        <p><strong>Sonuc veritabanina gore degisir:</strong></p>
                         <ul>
-                            <li><strong>PostgreSQL</strong>: 'Equal' - trailing spaces are ignored in comparisons</li>
-                            <li><strong>MySQL</strong>: 'Equal' - trailing spaces are ignored by default</li>
-                            <li><strong>SQL Server</strong>: 'Equal' - uses ANSI padding rules</li>
+                            <li><strong>PostgreSQL</strong>: 'Esit' - sondaki bosluklar karsilastirmalarda yok sayilir
+                            </li>
+                            <li><strong>MySQL</strong>: 'Esit' - sondaki bosluklar varsayilan olarak yok sayilir</li>
+                            <li><strong>SQL Server</strong>: 'Esit' - ANSI dolgu kurallarini kullanir</li>
                         </ul>
-                        <p><strong>Best Practice:</strong> Don't rely on implicit behavior. Use TRIM() explicitly when comparing strings if padding might be an issue.</p>
+                        <p><strong>En Iyi Uygulama:</strong> Ortuk davranisa guvenmeyin. Doldurma sorun olabilirse
+                            metinleri karsilastirirken acikca TRIM() kullanin.</p>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.3: Pattern Matching with Different Data Types</h4>
-                    <p>Using the <code>products</code> table, write queries to:</p>
+                    <h4>Alistirma 3.3: Farkli Veri Tipleriyle Desen Eslestirme</h4>
+                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Find products where SKU starts with 'MON' or 'MOU'</li>
-                        <li>Find products with names containing numbers</li>
-                        <li>Find products where SKU ends with '3', '4', or '5'</li>
+                        <li>SKU'su 'MON' veya 'MOU' ile baslayan urunleri bulun</li>
+                        <li>Adinda sayi iceren urunleri bulun</li>
+                        <li>SKU'su '3', '4' veya '5' ile biten urunleri bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Cozumu Goster</button>
                     <div id="solution3_3" class="solution-box">
-                        <pre><code class="language-sql">-- 1. SKU starts with 'MON' or 'MOU'
+                        <pre><code class="language-sql">-- 1. SKU 'MON' veya 'MOU' ile baslar
 SELECT name, sku
 FROM products
 WHERE sku LIKE 'MON%' OR sku LIKE 'MOU%';
--- Or using regular expression (PostgreSQL):
+-- Veya duzensiz ifade kullanarak (PostgreSQL):
 -- WHERE sku ~ '^MO[NU]'
 
--- 2. Names containing numbers
+-- 2. Sayi iceren adlar
 SELECT name, sku
 FROM products
 WHERE name ~ '[0-9]';  -- PostgreSQL
 -- MySQL: WHERE name REGEXP '[0-9]'
 -- SQL Server: WHERE name LIKE '%[0-9]%'
 
--- 3. SKU ends with 3, 4, or 5
+-- 3. SKU 3, 4 veya 5 ile biter
 SELECT name, sku
 FROM products
 WHERE sku LIKE '%-00[345]';
--- Or: WHERE RIGHT(sku, 1) IN ('3', '4', '5')</code></pre>
-                        <p><strong>Results for query 1:</strong></p>
+-- Veya: WHERE RIGHT(sku, 1) IN ('3', '4', '5')</code></pre>
+                        <p><strong>Sorgu 1 icin sonuclar:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>name</th>
@@ -830,26 +833,26 @@ WHERE sku LIKE '%-00[345]';
                 </div>
             </section>
 
-            <!-- Exercise 4: Date and Time Types -->
+            <!-- Alistirma 4: Tarih ve Saat Tipleri -->
             <section>
-                <h2 id="exercise-4">Exercise 4: Date and Time Types</h2>
-                <p>Working with temporal data requires understanding DATE, TIME, TIMESTAMP, and INTERVAL types.</p>
+                <h2 id="exercise-4">Alistirma 4: Tarih ve Saat Tipleri</h2>
+                <p>Zamansal verilerle calismak DATE, TIME, TIMESTAMP ve INTERVAL tiplerini anlamayi gerektirir.</p>
 
                 <div class="concept-box">
-                    Use <code>TIMESTAMP WITH TIME ZONE</code> for most timestamp needs to avoid timezone ambiguity.
-                    Store in UTC and convert for display.
+                    Saat dilimi belirsizliginden kacinmak icin cogu zaman damgasi ihtiyaci icin
+                    <code>TIMESTAMP WITH TIME ZONE</code> kullanin. UTC'de saklayin ve gosterim icin donusturun.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.1: Date Extraction and Formatting</h4>
-                    <p>Using the <code>events</code> table, write queries to:</p>
+                    <h4>Alistirma 4.1: Tarih Cikarma ve Bicimlendirme</h4>
+                    <p><code>events</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Extract the year, month, and day from event_date</li>
-                        <li>Get the day of the week for each event</li>
-                        <li>Format the date as 'Month DD, YYYY' (e.g., 'March 15, 2024')</li>
+                        <li>event_date'den yil, ay ve gunu cikarin</li>
+                        <li>Her etkinlik icin haftanin gununu alin</li>
+                        <li>Tarihi 'Ay GG, YYYY' olarak bicimleyin (ornegin, 'March 15, 2024')</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -887,25 +890,25 @@ FROM events;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.2: Date Arithmetic</h4>
-                    <p>Using the <code>events</code> table:</p>
+                    <h4>Alistirma 4.2: Tarih Aritmetigi</h4>
+                    <p><code>events</code> tablosunu kullanarak:</p>
                     <ol>
-                        <li>Calculate how many days until each event (from today)</li>
-                        <li>Find events that were created more than 5 days before the event date</li>
-                        <li>Calculate the end time of each event (start_time + duration)</li>
+                        <li>Her etkinlige kac gun kaldigini hesaplayin (bugundan itibaren)</li>
+                        <li>Etkinlik tarihinden 5 gundan fazla once olusturulan etkinlikleri bulun</li>
+                        <li>Her etkinligin bitis saatini hesaplayin (start_time + duration)</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Days until each event
+-- 1. Her etkinlige kalan gunler
 SELECT
     event_name,
     event_date,
     event_date - CURRENT_DATE AS days_until
 FROM events;
 
--- 2. Events created more than 5 days before event date
+-- 2. Etkinlik tarihinden 5 gundan fazla once olusturulan etkinlikler
 SELECT
     event_name,
     created_at::DATE AS created_date,
@@ -914,7 +917,7 @@ SELECT
 FROM events
 WHERE event_date - created_at::DATE > 5;
 
--- 3. Calculate end time
+-- 3. Bitis saatini hesapla
 SELECT
     event_name,
     start_time,
@@ -923,14 +926,14 @@ SELECT
 FROM events;
 
 -- MySQL
--- 1. Days until each event
+-- 1. Her etkinlige kalan gunler
 SELECT
     event_name,
     event_date,
     DATEDIFF(event_date, CURDATE()) AS days_until
 FROM events;
 
--- 2. Events created more than 5 days before
+-- 2. 5 gundan fazla once olusturulan etkinlikler
 SELECT
     event_name,
     DATE(created_at) AS created_date,
@@ -942,86 +945,86 @@ WHERE DATEDIFF(event_date, DATE(created_at)) > 5;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.3: Timestamp with Time Zone</h4>
-                    <p>Understanding timezone handling:</p>
-                    <pre><code class="language-sql">-- PostgreSQL: Show current time in different zones
+                    <h4>Alistirma 4.3: Saat Dilimli Zaman Damgasi</h4>
+                    <p>Saat dilimi islemesini anlama:</p>
+                    <pre><code class="language-sql">-- PostgreSQL: Farkli dilimlerde mevcut zamani goster
 SELECT
     CURRENT_TIMESTAMP AS server_time,
     CURRENT_TIMESTAMP AT TIME ZONE 'UTC' AS utc_time,
     CURRENT_TIMESTAMP AT TIME ZONE 'America/New_York' AS new_york_time,
     CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Istanbul' AS istanbul_time;</code></pre>
-                    <p><strong>Question:</strong> If it's 15:00 UTC, what time is it in Istanbul (UTC+3)?</p>
+                    <p><strong>Soru:</strong> UTC 15:00 ise, Istanbul'da (UTC+3) saat kactir?</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Cozumu Goster</button>
                     <div id="solution4_3" class="solution-box">
                         <div class="result-box">
                             UTC: 15:00
                             Istanbul (UTC+3): 18:00
                         </div>
-                        <p><strong>Best Practice:</strong></p>
+                        <p><strong>En Iyi Uygulama:</strong></p>
                         <ul>
-                            <li>Store all timestamps in UTC</li>
-                            <li>Convert to local time only for display</li>
-                            <li>Use <code>TIMESTAMP WITH TIME ZONE</code> to preserve timezone information</li>
-                            <li>Be consistent across your application</li>
+                            <li>Tum zaman damgalarini UTC'de saklayin</li>
+                            <li>Sadece gosterim icin yerel saate donusturun</li>
+                            <li>Saat dilimi bilgisini korumak icin <code>TIMESTAMP WITH TIME ZONE</code> kullanin</li>
+                            <li>Uygulamaniz genelinde tutarli olun</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- Exercise 5: JSON Data Type -->
+            <!-- Alistirma 5: JSON Veri Tipi -->
             <section>
-                <h2 id="exercise-5">Exercise 5: JSON Data Type</h2>
-                <p>Modern databases support JSON for storing semi-structured data.</p>
+                <h2 id="exercise-5">Alistirma 5: JSON Veri Tipi</h2>
+                <p>Modern veritabanlari yari yapilandirilmis verileri saklamak icin JSON'u destekler.</p>
 
                 <div class="concept-box">
-                    PostgreSQL offers <code>JSON</code> (text) and <code>JSONB</code> (binary). Use JSONB for better
-                    performance and indexing capabilities.
+                    PostgreSQL <code>JSON</code> (metin) ve <code>JSONB</code> (ikili) sunar. Daha iyi performans ve
+                    indeksleme yetenekleri icin JSONB kullanin.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 5.1: Querying JSON Data</h4>
-                    <p>Using the <code>user_profiles</code> table, write queries to:</p>
+                    <h4>Alistirma 5.1: JSON Verisini Sorgulama</h4>
+                    <p><code>user_profiles</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Get the theme preference for all users</li>
-                        <li>Find users who have notifications enabled</li>
-                        <li>Find users who have a timezone setting</li>
+                        <li>Tum kullanicilar icin tema tercihini alin</li>
+                        <li>Bildirimleri etkin olan kullanicilari bulun</li>
+                        <li>Saat dilimi ayari olan kullanicilari bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
                     <div id="solution5_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get theme preference
+-- 1. Tema tercihini al
 SELECT
     username,
     preferences->>'theme' AS theme
 FROM user_profiles;
 
--- 2. Users with notifications enabled
+-- 2. Bildirimleri etkin olan kullanicilar
 SELECT username, preferences
 FROM user_profiles
 WHERE (preferences->>'notifications')::BOOLEAN = TRUE;
--- Or: WHERE preferences @> '{"notifications": true}'
+-- Veya: WHERE preferences @> '{"notifications": true}'
 
--- 3. Users with timezone setting
+-- 3. Saat dilimi ayari olan kullanicilar
 SELECT username, preferences->>'timezone' AS timezone
 FROM user_profiles
 WHERE preferences ? 'timezone';
 
 -- MySQL
--- 1. Get theme preference
+-- 1. Tema tercihini al
 SELECT
     username,
     JSON_EXTRACT(preferences, '$.theme') AS theme
-    -- Or: preferences->>'$.theme'
+    -- Veya: preferences->>'$.theme'
 FROM user_profiles;
 
--- 2. Users with notifications enabled
+-- 2. Bildirimleri etkin olan kullanicilar
 SELECT username, preferences
 FROM user_profiles
 WHERE JSON_EXTRACT(preferences, '$.notifications') = true;
 
--- 3. Users with timezone setting
+-- 3. Saat dilimi ayari olan kullanicilar
 SELECT username, JSON_EXTRACT(preferences, '$.timezone') AS timezone
 FROM user_profiles
 WHERE JSON_CONTAINS_PATH(preferences, 'one', '$.timezone');</code></pre>
@@ -1029,31 +1032,31 @@ WHERE JSON_CONTAINS_PATH(preferences, 'one', '$.timezone');</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 5.2: Modifying JSON Data</h4>
-                    <p>Write queries to:</p>
+                    <h4>Alistirma 5.2: JSON Verisini Degistirme</h4>
+                    <p>Asagidakileri yapan sorgular yazin:</p>
                     <ol>
-                        <li>Add a new key "email_digest" with value "weekly" to all user preferences</li>
-                        <li>Update the theme to "system" for user john_doe</li>
+                        <li>Tum kullanici tercihlerine "weekly" degeriyle "email_digest" anahtari ekleyin</li>
+                        <li>john_doe kullanicisi icin temayi "system" olarak guncelleyin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
                     <div id="solution5_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Add new key to all users
+-- 1. Tum kullanicilara yeni anahtar ekle
 UPDATE user_profiles
 SET preferences = preferences || '{"email_digest": "weekly"}'::jsonb;
 
--- 2. Update theme for specific user
+-- 2. Belirli kullanici icin temayi guncelle
 UPDATE user_profiles
 SET preferences = jsonb_set(preferences, '{theme}', '"system"')
 WHERE username = 'john_doe';
 
 -- MySQL
--- 1. Add new key to all users
+-- 1. Tum kullanicilara yeni anahtar ekle
 UPDATE user_profiles
 SET preferences = JSON_SET(preferences, '$.email_digest', 'weekly');
 
--- 2. Update theme for specific user
+-- 2. Belirli kullanici icin temayi guncelle
 UPDATE user_profiles
 SET preferences = JSON_SET(preferences, '$.theme', 'system')
 WHERE username = 'john_doe';</code></pre>
@@ -1061,63 +1064,63 @@ WHERE username = 'john_doe';</code></pre>
                 </div>
             </section>
 
-            <!-- Challenge Exercises -->
+            <!-- Zorluklu Alistirmalar -->
             <section>
-                <h2 id="challenge-exercises">Challenge Exercises</h2>
-                <p>Test your comprehensive understanding of SQL data types with these advanced challenges.</p>
+                <h2 id="challenge-exercises">Zorluklu Alistirmalar</h2>
+                <p>Bu ileri zorluklarla SQL veri tiplerini kapsamli anladiginizi test edin.</p>
 
                 <div class="challenge-box">
-                    <h4>Challenge 1: Design a Complete Schema</h4>
-                    <p>Design a table schema for an e-commerce order system that includes:</p>
+                    <h4>Zorluk 1: Tam Bir Sema Tasarlayin</h4>
+                    <p>Asagidakileri iceren bir e-ticaret siparis sistemi icin tablo semasi tasarlayin:</p>
                     <ul>
-                        <li>Order ID (unique identifier)</li>
-                        <li>Customer email</li>
-                        <li>Order items (as JSON array)</li>
-                        <li>Subtotal, tax, and total (financial values)</li>
-                        <li>Order status (limited set of values)</li>
-                        <li>Shipping address (structured data)</li>
-                        <li>Order timestamp with timezone</li>
-                        <li>Estimated delivery date</li>
-                        <li>Tracking number (optional, alphanumeric)</li>
+                        <li>Siparis ID (benzersiz tanimlayici)</li>
+                        <li>Musteri e-postasi</li>
+                        <li>Siparis ogelerileri (JSON dizisi olarak)</li>
+                        <li>Ara toplam, vergi ve toplam (finansal degerler)</li>
+                        <li>Siparis durumu (sinirli deger kumesi)</li>
+                        <li>Gonderim adresi (yapilandirilmis veri)</li>
+                        <li>Saat dilimli siparis zaman damgasi</li>
+                        <li>Tahmini teslimat tarihi</li>
+                        <li>Takip numarasi (istege bagli, alfanumerik)</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 CREATE TABLE ecommerce_orders (
     order_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     customer_email VARCHAR(255) NOT NULL,
 
-    -- Order items as JSON array
+    -- Siparis ogelerileri JSON dizisi olarak
     items JSONB NOT NULL,
-    -- Example: [{"product_id": 1, "name": "Widget", "qty": 2, "price": 9.99}]
+    -- Ornek: [{"product_id": 1, "name": "Widget", "qty": 2, "price": 9.99}]
 
-    -- Financial values with exact precision
+    -- Kesin hassasiyetli finansal degerler
     subtotal DECIMAL(12, 2) NOT NULL CHECK (subtotal >= 0),
     tax_amount DECIMAL(12, 2) NOT NULL CHECK (tax_amount >= 0),
     total DECIMAL(12, 2) NOT NULL CHECK (total >= 0),
 
-    -- Order status with constrained values
+    -- Kisitli degerlerle siparis durumu
     status VARCHAR(20) NOT NULL DEFAULT 'pending'
         CHECK (status IN ('pending', 'confirmed', 'processing',
                           'shipped', 'delivered', 'cancelled')),
 
-    -- Shipping address as structured JSON
+    -- Yapilandirilmis JSON olarak gonderim adresi
     shipping_address JSONB NOT NULL,
-    -- Example: {"street": "123 Main St", "city": "NYC", "zip": "10001", "country": "US"}
+    -- Ornek: {"street": "123 Main St", "city": "NYC", "zip": "10001", "country": "US"}
 
-    -- Timestamps
+    -- Zaman damgalari
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    -- Delivery date (no time component needed)
+    -- Teslimat tarihi (zaman bileseni gerekmiyor)
     estimated_delivery DATE,
 
-    -- Optional tracking number
+    -- Istege bagli takip numarasi
     tracking_number VARCHAR(50)
 );
 
--- Add index on JSONB for faster queries
+-- Daha hizli sorgular icin JSONB'ye indeks ekle
 CREATE INDEX idx_orders_items ON ecommerce_orders USING GIN (items);
 CREATE INDEX idx_orders_status ON ecommerce_orders (status);
 CREATE INDEX idx_orders_customer ON ecommerce_orders (customer_email);</code></pre>
@@ -1125,48 +1128,48 @@ CREATE INDEX idx_orders_customer ON ecommerce_orders (customer_email);</code></p
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 2: Type Conversion Query</h4>
-                    <p>Given a legacy table where all data was stored as VARCHAR:</p>
+                    <h4>Zorluk 2: Tip Donusum Sorgusu</h4>
+                    <p>Tum verilerin VARCHAR olarak saklandigi eski bir tablo verildiginde:</p>
                     <pre><code class="language-sql">CREATE TABLE legacy_data (
     id VARCHAR(10),
     amount VARCHAR(20),
     transaction_date VARCHAR(20),
     is_valid VARCHAR(5)
 );</code></pre>
-                    <p>Write a query that:</p>
+                    <p>Asagidakileri yapan bir sorgu yazin:</p>
                     <ul>
-                        <li>Converts id to INTEGER</li>
-                        <li>Converts amount to DECIMAL with proper handling of currency symbols</li>
-                        <li>Converts transaction_date to proper DATE</li>
-                        <li>Converts is_valid to BOOLEAN</li>
-                        <li>Handles NULL and invalid values gracefully</li>
+                        <li>id'yi INTEGER'a donustur</li>
+                        <li>para birimi sembollerini duzgun islemeyle amount'u DECIMAL'a donustur</li>
+                        <li>transaction_date'i duzgun DATE'e donustur</li>
+                        <li>is_valid'i BOOLEAN'a donustur</li>
+                        <li>NULL ve gecersiz degerleri zarif bir sekilde isle</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
                     <div id="challenge2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    -- Convert ID, NULL if not valid integer
+    -- ID'yi donustur, gecerli tamsayi degilse NULL
     CASE
         WHEN id ~ '^\d+$' THEN id::INTEGER
         ELSE NULL
     END AS id,
 
-    -- Remove currency symbols and convert to DECIMAL
+    -- Para birimi sembollerini kaldir ve DECIMAL'a donustur
     CASE
         WHEN REGEXP_REPLACE(amount, '[^0-9.-]', '', 'g') ~ '^-?\d+\.?\d*$'
         THEN REGEXP_REPLACE(amount, '[^0-9.-]', '', 'g')::DECIMAL(12,2)
         ELSE NULL
     END AS amount,
 
-    -- Convert date string to DATE
+    -- Tarih dizisini DATE'e donustur
     CASE
         WHEN transaction_date IS NOT NULL
         THEN TO_DATE(transaction_date, 'YYYY-MM-DD')
         ELSE NULL
     END AS transaction_date,
 
-    -- Convert string to BOOLEAN
+    -- Diziyi BOOLEAN'a donustur
     CASE
         WHEN LOWER(is_valid) IN ('true', 'yes', '1', 't', 'y') THEN TRUE
         WHEN LOWER(is_valid) IN ('false', 'no', '0', 'f', 'n') THEN FALSE
@@ -1174,7 +1177,7 @@ SELECT
     END AS is_valid
 FROM legacy_data;
 
--- For creating a new properly-typed table from legacy data:
+-- Eski veriden duzgun tipli yeni tablo olusturmak icin:
 CREATE TABLE cleaned_data AS
 SELECT
     NULLIF(REGEXP_REPLACE(id, '[^0-9]', '', 'g'), '')::INTEGER AS id,
@@ -1187,18 +1190,18 @@ WHERE id IS NOT NULL;</code></pre>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 3: Complex Date Calculations</h4>
-                    <p>Write a query that generates a report of all events with:</p>
+                    <h4>Zorluk 3: Karmasik Tarih Hesaplamalari</h4>
+                    <p>Asagidakileri iceren tum etkinliklerin raporunu olusturan bir sorgu yazin:</p>
                     <ul>
-                        <li>Event name and date</li>
-                        <li>Calculated end time (start_time + duration)</li>
-                        <li>Days from creation to event</li>
-                        <li>Status: 'upcoming', 'today', or 'past' based on current date</li>
-                        <li>Week number of the year</li>
-                        <li>Whether the event is on a weekend</li>
+                        <li>Etkinlik adi ve tarihi</li>
+                        <li>Hesaplanmis bitis saati (start_time + duration)</li>
+                        <li>Olusturmadan etkinlige kalan gunler</li>
+                        <li>Durum: mevcut tarihe gore 'yaklasiyor', 'bugun' veya 'gecmis'</li>
+                        <li>Yilin hafta numarasi</li>
+                        <li>Etkinligin hafta sonuna denk gelip gelmemesi</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Cozumu Goster</button>
                     <div id="challenge3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -1207,31 +1210,31 @@ SELECT
     start_time,
     start_time + duration AS end_time,
 
-    -- Days from creation to event
+    -- Olusturmadan etkinlige kalan gunler
     event_date - created_at::DATE AS days_from_creation,
 
-    -- Event status
+    -- Etkinlik durumu
     CASE
-        WHEN event_date > CURRENT_DATE THEN 'upcoming'
-        WHEN event_date = CURRENT_DATE THEN 'today'
-        ELSE 'past'
+        WHEN event_date > CURRENT_DATE THEN 'yaklasiyor'
+        WHEN event_date = CURRENT_DATE THEN 'bugun'
+        ELSE 'gecmis'
     END AS status,
 
-    -- Week number
+    -- Hafta numarasi
     EXTRACT(WEEK FROM event_date) AS week_number,
 
-    -- Is weekend (Saturday=6, Sunday=0 in PostgreSQL)
+    -- Hafta sonu mu (PostgreSQL'de Cumartesi=6, Pazar=0)
     CASE
         WHEN EXTRACT(DOW FROM event_date) IN (0, 6) THEN TRUE
         ELSE FALSE
     END AS is_weekend,
 
-    -- Day name for reference
+    -- Referans icin gun adi
     TO_CHAR(event_date, 'Day') AS day_name
 FROM events
 ORDER BY event_date;
 
--- MySQL equivalent
+-- MySQL esdegeri
 SELECT
     event_name,
     event_date,
@@ -1247,9 +1250,9 @@ SELECT
     DATEDIFF(event_date, DATE(created_at)) AS days_from_creation,
 
     CASE
-        WHEN event_date > CURDATE() THEN 'upcoming'
-        WHEN event_date = CURDATE() THEN 'today'
-        ELSE 'past'
+        WHEN event_date > CURDATE() THEN 'yaklasiyor'
+        WHEN event_date = CURDATE() THEN 'bugun'
+        ELSE 'gecmis'
     END AS status,
 
     WEEK(event_date) AS week_number,
@@ -1263,32 +1266,32 @@ ORDER BY event_date;</code></pre>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 4: JSON Analytics</h4>
-                    <p>Using the user_profiles table, write a query that:</p>
+                    <h4>Zorluk 4: JSON Analitigi</h4>
+                    <p>user_profiles tablosunu kullanarak asagidakileri yapan bir sorgu yazin:</p>
                     <ul>
-                        <li>Counts users by theme preference</li>
-                        <li>Lists all unique languages used</li>
-                        <li>Shows percentage of users with notifications enabled</li>
-                        <li>Identifies users with custom/non-standard preferences (more than 3 keys)</li>
+                        <li>Kullanicilari tema tercihine gore say</li>
+                        <li>Kullanilan tum benzersiz dilleri listele</li>
+                        <li>Bildirimleri etkin olan kullanicilarin yuzdesini goster</li>
+                        <li>Ozel/standart olmayan tercihleri olan kullanicilari belirle (3'ten fazla anahtar)</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge4')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge4')">Cozumu Goster</button>
                     <div id="challenge4" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- Count users by theme
+-- Kullanicilari temaya gore say
 SELECT
     preferences->>'theme' AS theme,
     COUNT(*) AS user_count
 FROM user_profiles
 GROUP BY preferences->>'theme';
 
--- List unique languages
+-- Benzersiz dilleri listele
 SELECT DISTINCT preferences->>'language' AS language
 FROM user_profiles
 WHERE preferences->>'language' IS NOT NULL;
 
--- Percentage with notifications enabled
+-- Bildirimleri etkin olanlarin yuzdesi
 SELECT
     ROUND(
         100.0 * SUM(CASE WHEN (preferences->>'notifications')::BOOLEAN THEN 1 ELSE 0 END)
@@ -1297,7 +1300,7 @@ SELECT
     ) AS notification_percentage
 FROM user_profiles;
 
--- Users with more than 3 preference keys (custom preferences)
+-- 3'ten fazla tercih anahtari olan kullanicilar (ozel tercihler)
 SELECT
     username,
     preferences,
@@ -1308,7 +1311,7 @@ WHERE (
     FROM jsonb_object_keys(preferences)
 ) > 3;
 
--- Or more elegantly:
+-- Veya daha zarif:
 SELECT
     username,
     preferences,
@@ -1316,7 +1319,7 @@ SELECT
 FROM user_profiles
 HAVING jsonb_array_length(jsonb_path_query_array(preferences, '$.keyvalue()')) > 3;
 
--- Combined analytics report
+-- Birlesik analitik raporu
 SELECT
     (SELECT jsonb_object_agg(theme, cnt)
      FROM (SELECT preferences->>'theme' AS theme, COUNT(*) AS cnt
@@ -1332,57 +1335,60 @@ SELECT
                 </div>
             </section>
 
-            <!-- Key Takeaways -->
+            <!-- Onemli Noktalar -->
             <section>
-                <h2 id="key-takeaways">Key Takeaways</h2>
+                <h2 id="key-takeaways">Onemli Noktalar</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Concept</th>
-                            <th>Best Practice</th>
+                            <th>Kavram</th>
+                            <th>En Iyi Uygulama</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Financial Data</td>
-                            <td>Always use <code>DECIMAL</code> or <code>NUMERIC</code>, never <code>FLOAT</code></td>
+                            <td>Finansal Veri</td>
+                            <td>Her zaman <code>DECIMAL</code> veya <code>NUMERIC</code> kullanin, asla
+                                <code>FLOAT</code> degil</td>
                         </tr>
                         <tr>
-                            <td>Fixed-Length Codes</td>
-                            <td>Use <code>CHAR(n)</code> only when length is always exactly n</td>
+                            <td>Sabit Uzunluklu Kodlar</td>
+                            <td><code>CHAR(n)</code>'i sadece uzunluk her zaman tam olarak n oldugunda kullanin</td>
                         </tr>
                         <tr>
-                            <td>Variable Text</td>
-                            <td>Use <code>VARCHAR(n)</code> with reasonable limits, or <code>TEXT</code> for unlimited
+                            <td>Degisken Metin</td>
+                            <td>Makul sinirlarla <code>VARCHAR(n)</code> veya sinirsiz icin <code>TEXT</code> kullanin
                             </td>
                         </tr>
                         <tr>
-                            <td>Timestamps</td>
-                            <td>Use <code>TIMESTAMP WITH TIME ZONE</code> and store in UTC</td>
+                            <td>Zaman Damgalari</td>
+                            <td><code>TIMESTAMP WITH TIME ZONE</code> kullanin ve UTC'de saklayin</td>
                         </tr>
                         <tr>
-                            <td>Boolean Values</td>
-                            <td>Use native <code>BOOLEAN</code> type, not strings or integers</td>
+                            <td>Boolean Degerler</td>
+                            <td>Dizeler veya tamsayilar degil, yerel <code>BOOLEAN</code> tipi kullanin</td>
                         </tr>
                         <tr>
-                            <td>Semi-Structured Data</td>
-                            <td>Use <code>JSONB</code> (PostgreSQL) or <code>JSON</code> type with proper indexing</td>
+                            <td>Yari Yapilandirilmis Veri</td>
+                            <td>Duzgun indekslemeyle <code>JSONB</code> (PostgreSQL) veya <code>JSON</code> tipi
+                                kullanin</td>
                         </tr>
                         <tr>
-                            <td>Auto-Generated IDs</td>
-                            <td>Use <code>IDENTITY</code> columns or <code>UUID</code> for distributed systems</td>
+                            <td>Otomatik Olusturulan ID'ler</td>
+                            <td><code>IDENTITY</code> sutunlari veya dagitik sistemler icin <code>UUID</code> kullanin
+                            </td>
                         </tr>
                         <tr>
-                            <td>Type Conversions</td>
-                            <td>Use explicit <code>CAST()</code> to avoid implicit conversion surprises</td>
+                            <td>Tip Donusumleri</td>
+                            <td>Ortuk donusum surprizlerinden kacinmak icin acik <code>CAST()</code> kullanin</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-            <!-- Navigation -->
+            <!-- Navigasyon -->
             <section>
-                <p><a href="02_common_sql_data_types.html">&larr; Back to Common SQL Data Types Lesson</a></p>
+                <p><a href="02_common_sql_data_types.html">&larr; Yaygin SQL Veri Tipleri Dersine Don</a></p>
             </section>
         </div>
     </div>
@@ -1397,10 +1403,10 @@ SELECT
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>

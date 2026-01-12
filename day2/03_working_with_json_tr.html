@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/03_working_with_json.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    rel="shortcut icon" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Gun 2: JSON ile Calisma</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BaseN */
+    code span.bu {}
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+
+    .language-switcher {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        background: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .language-switcher a {
+        text-decoration: none;
+        padding: 5px 10px;
+        margin: 0 2px;
+        border-radius: 3px;
+        color: #333;
+    }
+    .language-switcher a.active {
+        background: #0d6efd;
+        color: #fff;
+    }
+    .language-switcher a:hover:not(.active) {
+        background: #e9ecef;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <a href="03_working_with_json.html">EN</a>
+    <a href="03_working_with_json_tr.html" class="active">TR</a>
+  </div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+        <h1 id="day-2-working-with-json-data">Gun 2: JSON ile Calisma</h1>
+        <h2 id="session-4-working-with-json-data-2-hours">Oturum 4: JSON Verileri ile Calisma (2 saat)</h2>
+        <p>JSON (JavaScript Object Notation), veri degisimi icin standart bir format haline gelmistir ve iliskisel veritabanlarinda yari yapilandirilmis verilerin saklanmasi icin giderek daha fazla kullanilmaktadir. Modern RDBMS'lerin cogu JSON verilerini saklama, sorgulama ve indeksleme yollari sunmaktadir, ancak belirli ozellikler, veri turleri ve sozdizimi farklilik gostermektedir.</p>
+      </section>
+      <section>
+        <h3 id="storing-json-data-common-approaches">JSON Verilerini Saklama: Yaygin Yaklasimlar</h3>
+        <p>Veritabanlari JSON depolamayi farkli sekillerde ele alir:</p>
+        <ol type="1">
+          <li><strong>Ozel JSON Veri Turleri</strong>: Optimize edilmis depolama ve sorgulama sunar.
+            <ul>
+              <li><strong>PostgreSQL</strong>: <code>JSON</code> (tam metni saklar, bosluk/siralama/tekrarlari korur) ve <code>JSONB</code> (ikili format, sorgu/indeksleme icin optimize edilmis, bosluk/tekrarlari kaldirir, sirayi korumaz - <strong>genellikle tercih edilir</strong>).</li>
+              <li><strong>MySQL</strong>: <code>JSON</code> turu (5.7'den beri optimize edilmis ikili format olarak uygulanmistir).</li>
+              <li><strong>Oracle</strong>: <code>JSON</code> turu (dahili olarak <code>VARCHAR2</code>, <code>CLOB</code> veya <code>BLOB</code> olarak saklanabilir, belirli kisitlamalarla).</li>
+              <li><strong>SQLite</strong>: <code>JSON</code> <code>TEXT</code> olarak saklanir, ancak JSON fonksiyonlari mevcuttur.</li>
+            </ul>
+          </li>
+          <li><strong>JSON Fonksiyonlari ile Metin Tabanli Depolama</strong>: JSON'u <code>TEXT</code>, <code>VARCHAR(MAX)</code>, <code>CLOB</code> vb. olarak saklayin ve ayristirmak ve sorgulamak icin yerlesik fonksiyonlari kullanin.
+            <ul>
+              <li><strong>SQL Server</strong>: <code>NVARCHAR(MAX)</code> kullanir ve kapsamli fonksiyonlar saglar (<code>JSON_VALUE</code>, <code>JSON_QUERY</code>, <code>OPENJSON</code>, <code>ISJSON</code>, vb.).</li>
+              <li><strong>Db2</strong>: Genellikle <code>VARCHAR</code>, <code>CLOB</code> veya <code>BLOB</code> icinde saklanir, etkilesim icin JSON SQL fonksiyonlari ile birlikte.</li>
+            </ul>
+          </li>
+        </ol>
+        <p><strong>Yaklasim Secimi</strong>: Mevcut oldugunda ozel JSON turlerini (PostgreSQL <code>JSONB</code> veya MySQL <code>JSON</code> gibi) kullanmak genellikle onerilir, cunku performans avantajlari ve ozellestirilmis indeksleme sunarlar.</p>
+      </section>
+      <section>
+        <h3 id="querying-json-data-operators-and-functions">JSON Verilerini Sorgulama: Operatorler ve Fonksiyonlar</h3>
+        <p>JSON sutunlarindan veri cikarma sozdizimi onemli olcude degisir.</p>
+        <p><strong>1. Yol Navigasyonu</strong>: Bir JSON nesnesi veya dizisi icindeki belirli degerlere erisim.</p>
+        <ul>
+          <li><strong>PostgreSQL</strong>: <code>-&gt;</code> (ogesi/alani JSON/JSONB olarak al), <code>-&gt;&gt;</code> (metin olarak al), <code>#&gt;</code> (yoldaki oge/alani JSON/JSONB olarak al), <code>#&gt;&gt;</code> (yolda metin olarak al) operatorlerini kullanir.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;'user'-&gt;&gt;'name' <span class="kw">FROM</span> logs <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> data_column#&gt;&gt;'{address,city}' <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;'tags'-&gt;&gt;0 <span class="kw">FROM</span> posts <span class="kw">WHERE</span> id = 1; -- Ilk dizi ogesine erisim</span></code></pre>
+            </div>
+          </li>
+          <li><strong>MySQL</strong>: <code>-&gt;</code> (<code>JSON_EXTRACT</code> ile esdeger), <code>-&gt;&gt;</code> (cikarir ve tirnaklari kaldirir) kullanir.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- MySQL Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;'$.user.name' <span class="kw">FROM</span> logs <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;&gt;'$.user.name' <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;&gt;'$.tags[0]' <span class="kw">FROM</span> posts <span class="kw">WHERE</span> id = 1; -- Ilk dizi ogesine erisim</span></code></pre>
+            </div>
+          </li>
+          <li><strong>SQL Server</strong>: <code>JSON_VALUE</code> (skaler degerler icin) ve <code>JSON_QUERY</code> (nesneler/diziler icin) kullanir.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- SQL Server Ornekleri</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> JSON_VALUE(data_column, '$.user.name') <span class="kw">FROM</span> logs <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> JSON_QUERY(data_column, '$.address') <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> JSON_VALUE(data_column, '$.tags[0]') <span class="kw">FROM</span> posts <span class="kw">WHERE</span> id = 1;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Oracle</strong>: JSON sutunlariyla nokta notasyonu veya <code>JSON_VALUE</code>, <code>JSON_QUERY</code> kullanir.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Oracle Ornekleri ('data_column' JSON turunde oldugu varsayilarak)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> l.data_column.user.name <span class="kw">FROM</span> logs l <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> JSON_VALUE(data_column, '$.address.city') <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> JSON_VALUE(data_column, '$.tags[0]') <span class="kw">FROM</span> posts <span class="kw">WHERE</span> id = 1;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>Standart SQL/JSON Yolu</strong>: SQL/JSON yol dili (<code>$</code> kok icin, <code>.</code> uyeler icin, <code>[]</code> diziler icin) ile <code>JSON_VALUE</code> ve <code>JSON_QUERY</code> fonksiyonlari daha standart hale gelmektedir.</li>
+        </ul>
+      </section>
+      <section>
+        <p><strong>2. Varlik ve Tur Kontrolleri</strong>:</p>
+        <ul>
+          <li><strong>PostgreSQL (JSONB)</strong>: <code>?</code> (anahtar var mi), <code>?|</code> (herhangi bir anahtar var mi), <code>?&amp;</code> (tum anahtarlar var mi).
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a></span><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column ? 'address';<span class="co">-- PostgreSQL Ornegi</span></span></code></pre>
+            </div>
+          </li>
+          <li><strong>MySQL</strong>: <code>JSON_CONTAINS_PATH</code>, <code>JSON_KEYS</code>, <code>JSON_TYPE</code>.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a></span><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> JSON_CONTAINS_PATH(data_column, 'one', '$.address');<span class="co">-- MySQL Ornegi</span></span></code></pre>
+            </div>
+          </li>
+          <li><strong>SQL Server</strong>: <code>ISJSON</code> fonksiyonu, yol yoksa <code>JSON_VALUE</code> NULL dondurur.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> ISJSON(data_column) &gt; 0 AND JSON_VALUE(data_column, '$.address') IS NOT NULL;<span class="co">-- SQL Server Ornegi</span></span></code></pre>
+            </div>
+          </li>
+          <li><strong>Oracle</strong>: <code>IS JSON</code> kosulu, <code>JSON_EXISTS</code> fonksiyonu.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column IS JSON AND JSON_EXISTS(data_column, '$.address');<span class="co">-- Oracle Ornegi</span></span></code></pre>
+            </div>
+          </li>
+        </ul>
+        <p><strong>3. JSON Icinde Arama (Kapsama)</strong>:</p>
+        <ul>
+          <li><strong>PostgreSQL (JSONB)</strong>: <code>@&gt;</code> (kapsar), <code>&lt;@</code> (kapsanir).
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column-&gt;'tags' @&gt; '"admin"'::jsonb;
+<span class="co">-- PostgreSQL Ornegi: Belirli bir etikete sahip kullanicilari bul</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column &lt;@ '{"roles": ["editor"], "status": "active"}'::jsonb;</span></code></pre>
+            </div>
+          </li>
+          <li><strong>MySQL</strong>: <code>JSON_CONTAINS</code>, <code>JSON_SEARCH</code>.
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> JSON_CONTAINS(data_column-&gt;'$.tags', '"admin"');<span class="co">-- MySQL Ornegi: Belirli bir etikete sahip kullanicilari bul</span></span></code></pre>
+            </div>
+          </li>
+          <li><strong>SQL Server/Oracle</strong>: Genellikle degerleri cikarmak veya yol varlik kontrollerini kullanmak gerektirir.</li>
+        </ul>
+        <p><strong>4. Diziler ve Nesneler icin Fonksiyonlar</strong>: Dizi uzunlugunu, nesne anahtarlarini almak, dizileri/nesneleri satirlara genisletmek icin fonksiyonlar yaygindir ancak degiskenlik gosterir.</p>
+        <ul>
+          <li><strong>PostgreSQL</strong>: <code>jsonb_array_length</code>, <code>jsonb_object_keys</code>, <code>jsonb_array_elements</code>, <code>jsonb_each</code>.</li>
+          <li><strong>MySQL</strong>: <code>JSON_LENGTH</code>, <code>JSON_KEYS</code>, <code>JSON_TABLE</code> (JSON'u iliskisel satirlara donusturmek icin guclu fonksiyon).</li>
+          <li><strong>SQL Server</strong>: <code>JSON_QUERY</code> (diziler icin), <code>OPENJSON</code> (JSON'u iliskisel satirlara donusturmek icin cok guclu fonksiyon).</li>
+          <li><strong>Oracle</strong>: <code>JSON_TABLE</code> (standart ve guclu).</li>
+        </ul>
+      </section>
+      <section>
+        <h3 id="indexing-json-data">JSON Verilerini Indeksleme</h3>
+        <p>Buyuk miktarda JSON verisini verimli bir sekilde sorgulamak indeksleme gerektirir. Stratejiler, veritabani sistemine ve depolama formatina buyuk olcude baglidir.</p>
+        <ol type="1">
+          <li>
+            <p><strong>Belirli Alanlari Indeksleme</strong>: Fonksiyonlar veya yol operatorleri kullanarak JSON'dan cikartilan skaler degerler uzerinde standart B-tree indeksleri olusturun. Bu, bilinen, sik sorgulanan alanlar uzerinde esitlik veya aralik sorgulari icin iyi calisir.</p>
+            <div class="sourceCode" id="cb1">
+              <pre
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Ornegi</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_user_email <span class="kw">ON</span> users ((data_column<span class="op">-&gt;&gt;</span><span class="st">&#39;email&#39;</span>));</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co">-- MySQL Ornegi (Uretilmis Sutun)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> users <span class="kw">ADD</span> <span class="kw">COLUMN</span> email_virtual <span class="dt">VARCHAR</span>(<span class="dv">100</span>) </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    <span class="kw">GENERATED</span> ALWAYS <span class="kw">AS</span> (data_column<span class="op">-&gt;&gt;</span><span class="st">&#39;$.email&#39;</span>) STORED;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_user_email <span class="kw">ON</span> users (email_virtual);</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">-- SQL Server Ornegi (Hesaplanmis Sutun)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> users <span class="kw">ADD</span> email_computed <span class="kw">AS</span> JSON_VALUE(data_column, <span class="st">&#39;$.email&#39;</span>);</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_user_email <span class="kw">ON</span> users (email_computed);</span></code></pre>
+            </div>
+          </li>
+          <li>
+            <p><strong>Tam JSON Indeksleme (GIN/Ters Indeksler)</strong>: Kapsama (<code>@&gt;</code>) ve varlik (<code>?</code>) kontrolleri dahil cesitli sorgulari desteklemek icin tum JSON yapisini indeksleyin. Genellikle ikili JSON turleri ile kullanilir.</p>
+            <ul>
+              <li><strong>PostgreSQL</strong>: <code>USING GIN (jsonb_column)</code> veya <code>USING GIN (jsonb_column jsonb_path_ops)</code>.</li>
+              <li><strong>MySQL</strong>: JSON dizilerinde cok degerli indeksler veya fonksiyonel indeksler.</li>
+              <li><strong>Oracle</strong>: <code>JSON_SEARCH</code> indeksi, fonksiyonel indeksler.</li>
+              <li><strong>SQL Server</strong>: Tam metin indeksleri bazen kullanilabilir veya yollari temsil eden hesaplanmis sutunlar uzerinde indeksler.</li>
+            </ul>
+          </li>
+        </ol>
+        <p>Dogru indeksleme stratejisini secmek, optimize etmeniz gereken belirli sorgulara baglidir.</p>
+      </section>
+      <section>
+        <h3 id="transforming-and-modifying-json">JSON Donusturme ve Degistirme</h3>
+        <p>Veritabanlari JSON verileri olusturmak, degistirmek ve donusturmek icin fonksiyonlar saglar.</p>
+        <p><strong>1. JSON Olusturma</strong>: Iliskisel verilerden JSON nesneleri veya dizileri olusturma. * <strong>PostgreSQL</strong>: <code>jsonb_build_object</code>, <code>jsonb_build_array</code>, <code>jsonb_agg</code>, <code>jsonb_object_agg</code>. * <strong>MySQL</strong>: <code>JSON_OBJECT</code>, <code>JSON_ARRAY</code>, <code>JSON_ARRAYAGG</code>, <code>JSON_OBJECTAGG</code>. * <strong>SQL Server</strong>: <code>SELECT</code> ifadelerinde <code>FOR JSON PATH</code> veya <code>FOR JSON AUTO</code> cumleleri. * <strong>Oracle</strong>: <code>JSON_OBJECT</code>, <code>JSON_ARRAY</code>, <code>JSON_OBJECTAGG</code>, <code>JSON_ARRAYAGG</code>.</p>
+        <p><strong>2. JSON Degistirme</strong>: Bir JSON belgesinin bazi kisimlarini guncelleme. * <strong>PostgreSQL</strong>: <code>jsonb_set</code> fonksiyonu, <code>||</code> operatoru (birlestir), <code>-</code> operatoru (anahtar sil), <code>#-</code> operatoru (yol sil). * <strong>MySQL</strong>: <code>JSON_SET</code>, <code>JSON_INSERT</code>, <code>JSON_REPLACE</code>, <code>JSON_REMOVE</code>. * <strong>SQL Server</strong>: <code>JSON_MODIFY</code>. * <strong>Oracle</strong>: <code>JSON_MERGEPATCH</code>, <code>JSON_TRANSFORM</code>.</p>
+        <p><strong>3. JSON'u Iliskisele Donusturme</strong>: JSON yapilarini satirlara ve sutunlara genisletme. * <strong>PostgreSQL</strong>: <code>jsonb_array_elements</code>, <code>jsonb_each</code>, <code>jsonb_to_record</code>, <code>jsonb_to_recordset</code>. * <strong>MySQL</strong>: <code>JSON_TABLE</code>. * <strong>SQL Server</strong>: <code>OPENJSON</code>. * <strong>Oracle</strong>: <code>JSON_TABLE</code>.</p>
+        <h3 id="use-cases-and-best-practices">Kullanim Alanlari ve En Iyi Uygulamalar</h3>
+        <p><strong>RDBMS'de JSON icin Yaygin Kullanim Alanlari</strong>: - Esnek veya gelisen ozellikleri saklama (orn. urun spesifikasyonlari, kullanici tercihleri). - Degisken yapilara sahip olaylari kaydetme. - Yapilandirma verilerini saklama. - Dis API'lerden gelen verileri onbellege alma. - Web on uclerinden gelen verileri isleme.</p>
+        <p><strong>En Iyi Uygulamalar</strong>: - <strong>Mumkun Oldugunda Ikili Formatlari Kullanin (JSONB, MySQL JSON)</strong>: Sorgulama icin genellikle daha iyi performans ve indeksleme. - <strong>Uygun Oldugunda Normalize Edin</strong>: JSON'u asiri kullanmayin. Bir veri parcasi sabit bir yapiya sahipse, sik sorgulaniyor veya bagimsiz olarak guncelleniyorsa veya guclu iliskisel butunluk (yabanci anahtarlar) gerektiriyorsa, muhtemelen kendi sutununa veya tablosuna aittir. - <strong>Stratejik Olarak Indeksleyin</strong>: Sorgu kaliplarina gore belirli, sik sorgulanan yollari indeksleyin veya tam JSON indeksleri (GIN gibi) kullanin. - <strong>JSON'u Dogrulayin</strong>: Saklanan verilerin gecerli JSON oldugunu saglamak icin veritabani kisitlamalarini (<code>IS JSON</code> kontrolleri) veya uygulama mantigi kullanin. - <strong>Sozdizimi Farkliliklarini Anlayin</strong>: JSON fonksiyonlari ve operatorlerinin yuksek oranda satici ozelinde oldugunu bilin.</p>
+        <p>JSON verileriyle etkili bir sekilde calismak, NoSQL'in esnekligini iliskisel veritabanlarinin saglamligi ve sorgulama gucuyle birlestirir, ancak sectiginiz RDBMS'nin belirli yeteneklerini ve sozdizimini anlamayi gerektirir.</p>
+      </section>
+      <section>
+        <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>
+        <p>SQL'de JSON islemlerinde ustalasmaya hazir misiniz? Yol navigasyonu, kapsama kontrolleri, JSON degisikligi ve JSON ile iliskisel formatlar arasinda donusum konularini kapsayan uygulamali alistirmalarla pratik yapin.</p>
+        <p><a href="03_working_with_json_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+      </section>
+    </div>
+  </div>
+</body>
+</div>
+</div> <!-- /container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day2/03_working_with_json.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:34 GMT -->
+</html>

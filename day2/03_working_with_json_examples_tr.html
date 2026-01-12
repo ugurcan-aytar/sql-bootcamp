@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 2: Working with JSON Data - Practical Examples</title>
+    <title>Gun 2: JSON Verileriyle Calisma - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -38,34 +38,6 @@
 
         ul.task-list {
             list-style: none;
-        }
-
-        .language-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .language-switcher a {
-            text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 3px;
-            color: #333;
-        }
-
-        .language-switcher a.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        .language-switcher a:hover:not(.active) {
-            background: #e9ecef;
         }
 
         .exercise-box {
@@ -117,7 +89,7 @@
         }
 
         .hint-box::before {
-            content: "Hint: ";
+            content: "Ipucu: ";
             font-weight: bold;
         }
 
@@ -130,7 +102,7 @@
         }
 
         .warning-box::before {
-            content: "Warning: ";
+            content: "Uyari: ";
             font-weight: bold;
         }
 
@@ -143,7 +115,7 @@
         }
 
         .concept-box::before {
-            content: "Concept: ";
+            content: "Kavram: ";
             font-weight: bold;
         }
 
@@ -156,7 +128,7 @@
         }
 
         .syntax-box::before {
-            content: "Syntax Reference: ";
+            content: "Sozdizimi Referansi: ";
             font-weight: bold;
         }
 
@@ -311,15 +283,46 @@
             padding: 2px 6px;
             border-radius: 3px;
         }
+
+        .language-switcher {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .language-switcher span {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .language-switcher a {
+            padding: 5px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #007bff;
+            border: 1px solid #007bff;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .language-switcher a.active {
+            background-color: #007bff;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
-    <div class="language-switcher">
-        <a href="03_working_with_json_examples.html" class="active">EN</a>
-        <a href="03_working_with_json_examples_tr.html">TR</a>
-    </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -338,26 +341,32 @@
     </div>
     <div class="content-container">
         <div class="container">
+            <div class="language-switcher">
+                <span>Dil:</span>
+                <a href="03_working_with_json_examples.html">English</a>
+                <a href="03_working_with_json_examples_tr.html" class="active">Turkce</a>
+            </div>
+
             <section>
-                <h1 id="json-practical-examples">Working with JSON Data - Practical Examples</h1>
-                <p><a href="03_working_with_json.html">&larr; Back to Working with JSON Data Lesson</a></p>
-                <p>This page provides hands-on exercises to master JSON operations in SQL. Practice extracting values,
-                    searching within JSON, modifying documents, and converting between JSON and relational formats.</p>
+                <h1 id="json-practical-examples">JSON Verileriyle Calisma - Pratik Ornekler</h1>
+                <p><a href="03_working_with_json.html">&larr; JSON Verileriyle Calisma Dersine Don</a></p>
+                <p>Bu sayfa, SQL'de JSON islemlerini ustaca kullanmaniz icin uygulamali alistirmalar sunmaktadir. Deger cikarma,
+                    JSON icerisinde arama yapma, belgeleri degistirme ve JSON ile iliskisel formatlar arasinda donusum yapma konularinda pratik yapin.</p>
 
                 <div class="syntax-box">
-                    <strong>PostgreSQL operators:</strong> <code>-></code> (get as JSON), <code>->></code> (get as text), <code>?</code> (key exists), <code>@></code> (contains)<br>
-                    <strong>MySQL:</strong> <code>-></code> or <code>JSON_EXTRACT()</code>, <code>->></code> (unquoted), <code>JSON_CONTAINS()</code><br>
+                    <strong>PostgreSQL operatorleri:</strong> <code>-></code> (JSON olarak al), <code>->></code> (metin olarak al), <code>?</code> (anahtar var mi), <code>@></code> (icerir)<br>
+                    <strong>MySQL:</strong> <code>-></code> veya <code>JSON_EXTRACT()</code>, <code>->></code> (tirnak isaretsiz), <code>JSON_CONTAINS()</code><br>
                     <strong>SQL Server:</strong> <code>JSON_VALUE()</code>, <code>JSON_QUERY()</code>, <code>OPENJSON()</code>
                 </div>
             </section>
 
-            <!-- Sample Datasets Section -->
+            <!-- Ornek Veri Setleri Bolumu -->
             <section>
-                <h2 id="sample-datasets">Sample Datasets</h2>
-                <p>The following tables demonstrate JSON data structures. Use these as reference for the exercises.</p>
+                <h2 id="sample-datasets">Ornek Veri Setleri</h2>
+                <p>Asagidaki tablolar JSON veri yapilarini gostermektedir. Alistirmalar icin referans olarak kullanin.</p>
 
-                <h4>users Table</h4>
-                <p>User profiles with JSON preferences and address data:</p>
+                <h4>users Tablosu</h4>
+                <p>JSON tercihleri ve adres verileri iceren kullanici profilleri:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -431,8 +440,8 @@
                     </tbody>
                 </table>
 
-                <h4>products Table</h4>
-                <p>Products with JSON specifications:</p>
+                <h4>products Tablosu</h4>
+                <p>JSON ozellikleri iceren urunler:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -487,8 +496,8 @@
                     </tbody>
                 </table>
 
-                <h4>logs Table</h4>
-                <p>Application logs with JSON event data:</p>
+                <h4>logs Tablosu</h4>
+                <p>JSON olay verileri iceren uygulama loglari:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -536,8 +545,8 @@
                     </tbody>
                 </table>
 
-                <h4>orders Table</h4>
-                <p>Orders with nested JSON items:</p>
+                <h4>orders Tablosu</h4>
+                <p>Ic ice JSON ogeleri iceren siparisler:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -580,13 +589,13 @@
                 </table>
             </section>
 
-            <!-- JSON Operators Quick Reference -->
+            <!-- JSON Operatorleri Hizli Referans -->
             <section>
-                <h2 id="operator-reference">JSON Operators Quick Reference</h2>
+                <h2 id="operator-reference">JSON Operatorleri Hizli Referans</h2>
                 <table class="operator-table">
                     <thead>
                         <tr>
-                            <th>Operation</th>
+                            <th>Islem</th>
                             <th><span class="db-badge db-postgresql">PostgreSQL</span></th>
                             <th><span class="db-badge db-mysql">MySQL</span></th>
                             <th><span class="db-badge db-sqlserver">SQL Server</span></th>
@@ -594,43 +603,43 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Get field as JSON</td>
+                            <td>Alani JSON olarak al</td>
                             <td><code>data->'field'</code></td>
                             <td><code>data->'$.field'</code></td>
                             <td><code>JSON_QUERY(data, '$.field')</code></td>
                         </tr>
                         <tr>
-                            <td>Get field as text</td>
+                            <td>Alani metin olarak al</td>
                             <td><code>data->>'field'</code></td>
                             <td><code>data->>'$.field'</code></td>
                             <td><code>JSON_VALUE(data, '$.field')</code></td>
                         </tr>
                         <tr>
-                            <td>Get nested path</td>
+                            <td>Ic ice yolu al</td>
                             <td><code>data#>>'{a,b,c}'</code></td>
                             <td><code>data->>'$.a.b.c'</code></td>
                             <td><code>JSON_VALUE(data, '$.a.b.c')</code></td>
                         </tr>
                         <tr>
-                            <td>Get array element</td>
+                            <td>Dizi elemanini al</td>
                             <td><code>data->'arr'->0</code></td>
                             <td><code>data->'$.arr[0]'</code></td>
                             <td><code>JSON_VALUE(data, '$.arr[0]')</code></td>
                         </tr>
                         <tr>
-                            <td>Key exists</td>
+                            <td>Anahtar var mi</td>
                             <td><code>data ? 'key'</code></td>
                             <td><code>JSON_CONTAINS_PATH(data, 'one', '$.key')</code></td>
                             <td><code>JSON_VALUE(data, '$.key') IS NOT NULL</code></td>
                         </tr>
                         <tr>
-                            <td>Contains value</td>
+                            <td>Deger icerir</td>
                             <td><code>data @> '{"k":"v"}'</code></td>
                             <td><code>JSON_CONTAINS(data, '"v"', '$.k')</code></td>
-                            <td>Extract and compare</td>
+                            <td>Cikar ve karsilastir</td>
                         </tr>
                         <tr>
-                            <td>Set/update value</td>
+                            <td>Deger ata/guncelle</td>
                             <td><code>jsonb_set(data, '{k}', '"v"')</code></td>
                             <td><code>JSON_SET(data, '$.k', 'v')</code></td>
                             <td><code>JSON_MODIFY(data, '$.k', 'v')</code></td>
@@ -639,73 +648,73 @@
                 </table>
             </section>
 
-            <!-- Exercise 1: Basic JSON Extraction -->
+            <!-- Alistirma 1: Temel JSON Cikarma -->
             <section>
-                <h2 id="exercise-1">Exercise 1: Basic JSON Path Navigation</h2>
-                <p>Learn to extract values from JSON columns using path navigation operators.</p>
+                <h2 id="exercise-1">Alistirma 1: Temel JSON Yol Gezintisi</h2>
+                <p>Yol gezintisi operatorlerini kullanarak JSON sutunlarindan deger cikarmayi ogrenin.</p>
 
                 <div class="concept-box">
-                    Use <code>-></code> to get JSON/JSONB output, use <code>->></code> to get text output.
-                    The difference matters when comparing values or using in WHERE clauses.
+                    JSON/JSONB ciktisi almak icin <code>-></code>, metin ciktisi almak icin <code>->></code> kullanin.
+                    Fark, degerleri karsilastirirken veya WHERE ifadelerinde kullanirken onemlidir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Extract Simple Fields</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <h4>Alistirma 1.1: Basit Alanlari Cikarma</h4>
+                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Get the email of all users</li>
-                        <li>Get the username and age of all users</li>
-                        <li>Get users who are older than 30</li>
+                        <li>Tum kullanicilarin e-postasini alin</li>
+                        <li>Tum kullanicilarin kullanici adi ve yasini alin</li>
+                        <li>30 yasindan buyuk kullanicilari alin</li>
                     </ol>
 
                     <div class="hint-box">
-                        Remember to cast the age to integer when comparing: <code>(data->>'age')::INTEGER</code>
+                        Karsilastirma yaparken yasi tamsayiya donusturmeyi unutmayin: <code>(data->>'age')::INTEGER</code>
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get email of all users
+-- 1. Tum kullanicilarin e-postasini al
 SELECT username, data->>'email' AS email
 FROM users;
 
--- 2. Get username and age
+-- 2. Kullanici adi ve yasini al
 SELECT username, data->>'age' AS age
 FROM users;
 
--- 3. Users older than 30
+-- 3. 30 yasindan buyuk kullanicilar
 SELECT username, data->>'age' AS age
 FROM users
 WHERE (data->>'age')::INTEGER > 30;
 
 -- MySQL
--- 1. Get email
+-- 1. E-postayi al
 SELECT username, data->>'$.email' AS email
 FROM users;
 
--- 2. Get username and age
+-- 2. Kullanici adi ve yasini al
 SELECT username, data->>'$.age' AS age
 FROM users;
 
--- 3. Users older than 30
+-- 3. 30 yasindan buyuk kullanicilar
 SELECT username, data->>'$.age' AS age
 FROM users
 WHERE CAST(data->>'$.age' AS UNSIGNED) > 30;
 
 -- SQL Server
--- 1. Get email
+-- 1. E-postayi al
 SELECT username, JSON_VALUE(data, '$.email') AS email
 FROM users;
 
--- 2. Get username and age
+-- 2. Kullanici adi ve yasini al
 SELECT username, JSON_VALUE(data, '$.age') AS age
 FROM users;
 
--- 3. Users older than 30
+-- 3. 30 yasindan buyuk kullanicilar
 SELECT username, JSON_VALUE(data, '$.age') AS age
 FROM users
 WHERE CAST(JSON_VALUE(data, '$.age') AS INT) > 30;</code></pre>
-                        <p><strong>Expected Results for query 3:</strong></p>
+                        <p><strong>Sorgu 3 icin Beklenen Sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>username</th>
@@ -724,58 +733,58 @@ WHERE CAST(JSON_VALUE(data, '$.age') AS INT) > 30;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Extract Nested Fields</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <h4>Alistirma 1.2: Ic Ice Alanlari Cikarma</h4>
+                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Get the city from the address object for each user</li>
-                        <li>Get the theme preference for each user</li>
-                        <li>Find users from the USA</li>
+                        <li>Her kullanici icin adres nesnesinden sehri alin</li>
+                        <li>Her kullanici icin tema tercihini alin</li>
+                        <li>ABD'den kullanicilari bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get city from nested address
+-- 1. Ic ice adresten sehri al
 SELECT username, data->'address'->>'city' AS city
 FROM users;
 
--- Alternative using path notation
+-- Yol notasyonu ile alternatif
 SELECT username, data#>>'{address,city}' AS city
 FROM users;
 
--- 2. Get theme preference
+-- 2. Tema tercihini al
 SELECT username, data->'preferences'->>'theme' AS theme
 FROM users;
 
--- 3. Find users from USA
+-- 3. ABD'den kullanicilari bul
 SELECT username, data->'address'->>'country' AS country
 FROM users
 WHERE data->'address'->>'country' = 'USA';
 
 -- MySQL
--- 1. Get city
+-- 1. Sehri al
 SELECT username, data->>'$.address.city' AS city
 FROM users;
 
--- 2. Get theme preference
+-- 2. Tema tercihini al
 SELECT username, data->>'$.preferences.theme' AS theme
 FROM users;
 
--- 3. Find users from USA
+-- 3. ABD'den kullanicilari bul
 SELECT username, data->>'$.address.country' AS country
 FROM users
 WHERE data->>'$.address.country' = 'USA';
 
 -- SQL Server
--- 1. Get city
+-- 1. Sehri al
 SELECT username, JSON_VALUE(data, '$.address.city') AS city
 FROM users;
 
--- 2. Get theme preference
+-- 2. Tema tercihini al
 SELECT username, JSON_VALUE(data, '$.preferences.theme') AS theme
 FROM users;
 
--- 3. Find users from USA
+-- 3. ABD'den kullanicilari bul
 SELECT username, JSON_VALUE(data, '$.address.country') AS country
 FROM users
 WHERE JSON_VALUE(data, '$.address.country') = 'USA';</code></pre>
@@ -783,52 +792,52 @@ WHERE JSON_VALUE(data, '$.address.country') = 'USA';</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.3: Access Array Elements</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <h4>Alistirma 1.3: Dizi Elemanlarina Erisim</h4>
+                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Get the first tag for each user</li>
-                        <li>Get all tags as a JSON array</li>
-                        <li>Count how many tags each user has</li>
+                        <li>Her kullanici icin ilk etiketi alin</li>
+                        <li>Tum etiketleri JSON dizisi olarak alin</li>
+                        <li>Her kullanicinin kac etiketi oldugunu sayın</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
                     <div id="solution1_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get first tag
+-- 1. Ilk etiketi al
 SELECT username, data->'tags'->>0 AS first_tag
 FROM users;
 
--- 2. Get all tags as JSON array
+-- 2. Tum etiketleri JSON dizisi olarak al
 SELECT username, data->'tags' AS tags
 FROM users;
 
--- 3. Count tags
+-- 3. Etiketleri say
 SELECT username, jsonb_array_length(data->'tags') AS tag_count
 FROM users;
 
 -- MySQL
--- 1. Get first tag
+-- 1. Ilk etiketi al
 SELECT username, data->>'$.tags[0]' AS first_tag
 FROM users;
 
--- 2. Get all tags as JSON array
+-- 2. Tum etiketleri JSON dizisi olarak al
 SELECT username, data->'$.tags' AS tags
 FROM users;
 
--- 3. Count tags
+-- 3. Etiketleri say
 SELECT username, JSON_LENGTH(data->'$.tags') AS tag_count
 FROM users;
 
 -- SQL Server
--- 1. Get first tag
+-- 1. Ilk etiketi al
 SELECT username, JSON_VALUE(data, '$.tags[0]') AS first_tag
 FROM users;
 
--- 2. Get all tags as JSON array
+-- 2. Tum etiketleri JSON dizisi olarak al
 SELECT username, JSON_QUERY(data, '$.tags') AS tags
 FROM users;
 
--- 3. Count tags (requires OPENJSON)
+-- 3. Etiketleri say (OPENJSON gerektirir)
 SELECT username,
        (SELECT COUNT(*) FROM OPENJSON(data, '$.tags')) AS tag_count
 FROM users;</code></pre>
@@ -836,70 +845,70 @@ FROM users;</code></pre>
                 </div>
             </section>
 
-            <!-- Exercise 2: Existence and Containment Checks -->
+            <!-- Alistirma 2: Varlik ve Icerik Kontrolleri -->
             <section>
-                <h2 id="exercise-2">Exercise 2: Existence and Containment Checks</h2>
-                <p>Learn to check for key existence and value containment in JSON data.</p>
+                <h2 id="exercise-2">Alistirma 2: Varlik ve Icerik Kontrolleri</h2>
+                <p>JSON verilerinde anahtar varligi ve deger icerme kontrollerini ogrenin.</p>
 
                 <div class="concept-box">
-                    PostgreSQL's <code>?</code> checks key existence. <code>@></code> checks if left JSON contains
-                    right JSON. These operators are efficient with GIN indexes.
+                    PostgreSQL'in <code>?</code> operatoru anahtar varligini kontrol eder. <code>@></code> sol JSON'un
+                    sag JSON'u icerip icermedigini kontrol eder. Bu operatorler GIN indeksleri ile verimlidir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: Check Key Existence</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <h4>Alistirma 2.1: Anahtar Varligini Kontrol Etme</h4>
+                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Find users who have a "language" preference set</li>
-                        <li>Find users whose preferences contain a "notifications" key</li>
-                        <li>Find products that have a "colors" field in their specs</li>
+                        <li>"language" tercihi ayarlanmis kullanicilari bulun</li>
+                        <li>Tercihleri "notifications" anahtari iceren kullanicilari bulun</li>
+                        <li>Ozelliklerinde "colors" alani olan urunleri bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Users with language preference
+-- 1. Dil tercihi olan kullanicilar
 SELECT username, data->'preferences'->>'language' AS language
 FROM users
 WHERE data->'preferences' ? 'language';
 
--- 2. Users with notifications key
+-- 2. Notifications anahtari olan kullanicilar
 SELECT username
 FROM users
 WHERE data->'preferences' ? 'notifications';
 
--- 3. Products with colors field
+-- 3. Colors alani olan urunler
 SELECT name
 FROM products
 WHERE specs ? 'colors';
 
 -- MySQL
--- 1. Users with language preference
+-- 1. Dil tercihi olan kullanicilar
 SELECT username, data->>'$.preferences.language' AS language
 FROM users
 WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.language');
 
--- 2. Users with notifications key
+-- 2. Notifications anahtari olan kullanicilar
 SELECT username
 FROM users
 WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.notifications');
 
--- 3. Products with colors field
+-- 3. Colors alani olan urunler
 SELECT name
 FROM products
 WHERE JSON_CONTAINS_PATH(specs, 'one', '$.colors');
 
 -- SQL Server
--- 1. Users with language preference
+-- 1. Dil tercihi olan kullanicilar
 SELECT username, JSON_VALUE(data, '$.preferences.language') AS language
 FROM users
 WHERE JSON_VALUE(data, '$.preferences.language') IS NOT NULL;
 
--- 2. Users with notifications key
+-- 2. Notifications anahtari olan kullanicilar
 SELECT username
 FROM users
 WHERE JSON_VALUE(data, '$.preferences.notifications') IS NOT NULL;</code></pre>
-                        <p><strong>Result for query 1:</strong></p>
+                        <p><strong>Sorgu 1 icin Sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>username</th>
@@ -914,54 +923,54 @@ WHERE JSON_VALUE(data, '$.preferences.notifications') IS NOT NULL;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: Containment Queries</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <h4>Alistirma 2.2: Icerik Sorgulari</h4>
+                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Find users who have "admin" in their tags</li>
-                        <li>Find users with dark theme preference</li>
-                        <li>Find users from Turkey with notifications enabled</li>
+                        <li>Etiketlerinde "admin" olan kullanicilari bulun</li>
+                        <li>Koyu tema tercihine sahip kullanicilari bulun</li>
+                        <li>Turkiye'den ve bildirimleri acik olan kullanicilari bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
                     <div id="solution2_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Users with "admin" tag
+-- 1. "admin" etiketi olan kullanicilar
 SELECT username, data->'tags' AS tags
 FROM users
 WHERE data->'tags' @> '"admin"'::jsonb;
 
--- Alternative: check if array contains value
+-- Alternatif: dizinin deger icerip icermedigini kontrol et
 SELECT username
 FROM users
 WHERE data @> '{"tags": ["admin"]}'::jsonb;
 
--- 2. Users with dark theme
+-- 2. Koyu tema olan kullanicilar
 SELECT username
 FROM users
 WHERE data->'preferences' @> '{"theme": "dark"}'::jsonb;
 
--- 3. Users from Turkey with notifications enabled
+-- 3. Turkiye'den ve bildirimleri acik olan kullanicilar
 SELECT username
 FROM users
 WHERE data @> '{"address": {"country": "Turkey"}, "preferences": {"notifications": true}}'::jsonb;
 
 -- MySQL
--- 1. Users with "admin" tag
+-- 1. "admin" etiketi olan kullanicilar
 SELECT username, data->'$.tags' AS tags
 FROM users
 WHERE JSON_CONTAINS(data->'$.tags', '"admin"');
 
--- 2. Users with dark theme
+-- 2. Koyu tema olan kullanicilar
 SELECT username
 FROM users
 WHERE JSON_CONTAINS(data, '{"theme": "dark"}', '$.preferences');
 
--- 3. Users from Turkey with notifications enabled
+-- 3. Turkiye'den ve bildirimleri acik olan kullanicilar
 SELECT username
 FROM users
 WHERE data->>'$.address.country' = 'Turkey'
   AND JSON_EXTRACT(data, '$.preferences.notifications') = true;</code></pre>
-                        <p><strong>Result for query 1:</strong></p>
+                        <p><strong>Sorgu 1 icin Sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>username</th>
@@ -980,43 +989,43 @@ WHERE data->>'$.address.country' = 'Turkey'
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.3: Multiple Key Existence</h4>
-                    <p>Using the <code>products</code> table, write queries to:</p>
+                    <h4>Alistirma 2.3: Coklu Anahtar Varligi</h4>
+                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Find products that have BOTH "dimensions" and "colors" fields</li>
-                        <li>Find products that have EITHER "dimensions" OR "colors" fields</li>
+                        <li>HEM "dimensions" HEM DE "colors" alanina sahip urunleri bulun</li>
+                        <li>"dimensions" VEYA "colors" alanina sahip urunleri bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Cozumu Goster</button>
                     <div id="solution2_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Products with BOTH dimensions AND colors
+-- 1. HEM dimensions HEM DE colors olan urunler
 SELECT name
 FROM products
 WHERE specs ?& ARRAY['dimensions', 'colors'];
 
--- Alternative using AND
+-- AND kullanan alternatif
 SELECT name
 FROM products
 WHERE specs ? 'dimensions' AND specs ? 'colors';
 
--- 2. Products with EITHER dimensions OR colors
+-- 2. dimensions VEYA colors olan urunler
 SELECT name
 FROM products
 WHERE specs ?| ARRAY['dimensions', 'colors'];
 
--- Alternative using OR
+-- OR kullanan alternatif
 SELECT name
 FROM products
 WHERE specs ? 'dimensions' OR specs ? 'colors';
 
 -- MySQL
--- 1. Products with BOTH
+-- 1. HER IKISI de olan urunler
 SELECT name
 FROM products
 WHERE JSON_CONTAINS_PATH(specs, 'all', '$.dimensions', '$.colors');
 
--- 2. Products with EITHER
+-- 2. HERHANGI BIRI olan urunler
 SELECT name
 FROM products
 WHERE JSON_CONTAINS_PATH(specs, 'one', '$.dimensions', '$.colors');</code></pre>
@@ -1024,76 +1033,76 @@ WHERE JSON_CONTAINS_PATH(specs, 'one', '$.dimensions', '$.colors');</code></pre>
                 </div>
             </section>
 
-            <!-- Exercise 3: Modifying JSON Data -->
+            <!-- Alistirma 3: JSON Verisini Degistirme -->
             <section>
-                <h2 id="exercise-3">Exercise 3: Modifying JSON Data</h2>
-                <p>Learn to update, add, and remove fields from JSON documents.</p>
+                <h2 id="exercise-3">Alistirma 3: JSON Verisini Degistirme</h2>
+                <p>JSON belgelerinde alanlari guncelleme, ekleme ve kaldirmayi ogrenin.</p>
 
                 <div class="warning-box">
-                    Modifying JSON updates the entire document. For frequently updated fields,
-                    consider storing them in separate relational columns.
+                    JSON'u degistirmek tum belgeyi gunceller. Sik guncellenen alanlar icin
+                    bunlari ayri iliskisel sutunlarda saklamayi dusunun.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: Update JSON Fields</h4>
-                    <p>Write queries to:</p>
+                    <h4>Alistirma 3.1: JSON Alanlarini Guncelleme</h4>
+                    <p>Asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Update john_doe's theme preference to "system"</li>
-                        <li>Add a new "phone" field to bob_wilson's data</li>
-                        <li>Update the price of "Laptop Pro" in the products table</li>
+                        <li>john_doe'nun tema tercihini "system" olarak guncelleyin</li>
+                        <li>bob_wilson'in verisine yeni bir "phone" alani ekleyin</li>
+                        <li>Products tablosunda "Laptop Pro"nun fiyatini guncelleyin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Update theme preference
+-- 1. Tema tercihini guncelle
 UPDATE users
 SET data = jsonb_set(data, '{preferences,theme}', '"system"')
 WHERE username = 'john_doe';
 
--- 2. Add phone field
+-- 2. Phone alani ekle
 UPDATE users
 SET data = jsonb_set(data, '{phone}', '"555-1234"')
 WHERE username = 'bob_wilson';
 
--- Alternative: merge new data
+-- Alternatif: yeni veri birlestir
 UPDATE users
 SET data = data || '{"phone": "555-1234"}'::jsonb
 WHERE username = 'bob_wilson';
 
--- 3. Update product price
+-- 3. Urun fiyatini guncelle
 UPDATE products
 SET specs = jsonb_set(specs, '{price}', '1199.99')
 WHERE name = 'Laptop Pro';
 
 -- MySQL
--- 1. Update theme preference
+-- 1. Tema tercihini guncelle
 UPDATE users
 SET data = JSON_SET(data, '$.preferences.theme', 'system')
 WHERE username = 'john_doe';
 
--- 2. Add phone field
+-- 2. Phone alani ekle
 UPDATE users
 SET data = JSON_SET(data, '$.phone', '555-1234')
 WHERE username = 'bob_wilson';
 
--- 3. Update product price
+-- 3. Urun fiyatini guncelle
 UPDATE products
 SET specs = JSON_SET(specs, '$.price', 1199.99)
 WHERE name = 'Laptop Pro';
 
 -- SQL Server
--- 1. Update theme preference
+-- 1. Tema tercihini guncelle
 UPDATE users
 SET data = JSON_MODIFY(data, '$.preferences.theme', 'system')
 WHERE username = 'john_doe';
 
--- 2. Add phone field
+-- 2. Phone alani ekle
 UPDATE users
 SET data = JSON_MODIFY(data, '$.phone', '555-1234')
 WHERE username = 'bob_wilson';
 
--- 3. Update product price
+-- 3. Urun fiyatini guncelle
 UPDATE products
 SET specs = JSON_MODIFY(specs, '$.price', 1199.99)
 WHERE name = 'Laptop Pro';</code></pre>
@@ -1101,45 +1110,45 @@ WHERE name = 'Laptop Pro';</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: Remove JSON Fields</h4>
-                    <p>Write queries to:</p>
+                    <h4>Alistirma 3.2: JSON Alanlarini Kaldirma</h4>
+                    <p>Asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Remove the "language" preference from bob_wilson</li>
-                        <li>Remove the "colors" array from the Wireless Mouse product</li>
+                        <li>bob_wilson'dan "language" tercihini kaldirin</li>
+                        <li>Wireless Mouse urununden "colors" dizisini kaldirin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Remove language preference
+-- 1. Language tercihini kaldir
 UPDATE users
 SET data = data #- '{preferences,language}'
 WHERE username = 'bob_wilson';
 
--- Alternative: remove key from nested object
+-- Alternatif: ic ice nesneden anahtari kaldir
 UPDATE users
 SET data = jsonb_set(data, '{preferences}',
            (data->'preferences') - 'language')
 WHERE username = 'bob_wilson';
 
--- 2. Remove colors from product
+-- 2. Urunden colors'i kaldir
 UPDATE products
 SET specs = specs - 'colors'
 WHERE name = 'Wireless Mouse';
 
 -- MySQL
--- 1. Remove language preference
+-- 1. Language tercihini kaldir
 UPDATE users
 SET data = JSON_REMOVE(data, '$.preferences.language')
 WHERE username = 'bob_wilson';
 
--- 2. Remove colors from product
+-- 2. Urunden colors'i kaldir
 UPDATE products
 SET specs = JSON_REMOVE(specs, '$.colors')
 WHERE name = 'Wireless Mouse';
 
 -- SQL Server
--- 1. Remove language preference (set to null)
+-- 1. Language tercihini kaldir (null'a ayarla)
 UPDATE users
 SET data = JSON_MODIFY(data, '$.preferences.language', NULL)
 WHERE username = 'bob_wilson';</code></pre>
@@ -1147,47 +1156,47 @@ WHERE username = 'bob_wilson';</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.3: Array Modifications</h4>
-                    <p>Write queries to:</p>
+                    <h4>Alistirma 3.3: Dizi Degisiklikleri</h4>
+                    <p>Asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Add a new tag "supervisor" to bob_wilson's tags</li>
-                        <li>Add a new feature "Touch Screen" to the Monitor 4K product</li>
+                        <li>bob_wilson'in etiketlerine "supervisor" etiketi ekleyin</li>
+                        <li>Monitor 4K urunune "Touch Screen" ozelligi ekleyin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Cozumu Goster</button>
                     <div id="solution3_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Add new tag to user
+-- 1. Kullaniciya yeni etiket ekle
 UPDATE users
 SET data = jsonb_set(data, '{tags}',
            (data->'tags') || '"supervisor"'::jsonb)
 WHERE username = 'bob_wilson';
 
--- Alternative: concatenate arrays
+-- Alternatif: dizileri birlestir
 UPDATE users
 SET data = jsonb_set(data, '{tags}',
            data->'tags' || '["supervisor"]'::jsonb)
 WHERE username = 'bob_wilson';
 
--- 2. Add feature to product
+-- 2. Urune ozellik ekle
 UPDATE products
 SET specs = jsonb_set(specs, '{features}',
             specs->'features' || '["Touch Screen"]'::jsonb)
 WHERE name = 'Monitor 4K';
 
 -- MySQL
--- 1. Add new tag (MySQL 8.0+)
+-- 1. Yeni etiket ekle (MySQL 8.0+)
 UPDATE users
 SET data = JSON_ARRAY_APPEND(data, '$.tags', 'supervisor')
 WHERE username = 'bob_wilson';
 
--- 2. Add feature to product
+-- 2. Urune ozellik ekle
 UPDATE products
 SET specs = JSON_ARRAY_APPEND(specs, '$.features', 'Touch Screen')
 WHERE name = 'Monitor 4K';
 
--- SQL Server (requires rebuilding array)
--- 1. Add new tag
+-- SQL Server (diziyi yeniden olusturmayi gerektirir)
+-- 1. Yeni etiket ekle
 UPDATE users
 SET data = JSON_MODIFY(data, '$.tags',
            JSON_QUERY(
@@ -1202,22 +1211,22 @@ WHERE username = 'bob_wilson';</code></pre>
                 </div>
             </section>
 
-            <!-- Exercise 4: JSON to Relational Conversion -->
+            <!-- Alistirma 4: JSON'dan Iliskisel Formata Donusum -->
             <section>
-                <h2 id="exercise-4">Exercise 4: Converting JSON to Relational Format</h2>
-                <p>Learn to expand JSON arrays and objects into rows and columns.</p>
+                <h2 id="exercise-4">Alistirma 4: JSON'u Iliskisel Formata Donusturme</h2>
+                <p>JSON dizilerini ve nesnelerini satirlara ve sutunlara genisletmeyi ogrenin.</p>
 
                 <div class="concept-box">
                     <code>jsonb_array_elements</code> (PostgreSQL), <code>JSON_TABLE</code> (MySQL/Oracle),
-                    and <code>OPENJSON</code> (SQL Server) convert JSON into relational rows.
+                    ve <code>OPENJSON</code> (SQL Server) JSON'u iliskisel satirlara donusturur.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.1: Expand JSON Arrays</h4>
-                    <p>Using the <code>users</code> table, write a query that shows each user with their tags
-                        expanded into separate rows (one row per tag per user).</p>
+                    <h4>Alistirma 4.1: JSON Dizilerini Genisletme</h4>
+                    <p><code>users</code> tablosunu kullanarak, her kullaniciyi etiketleri ayri satirlara
+                        genisletilmis olarak gosteren bir sorgu yazin (kullanici basina etiket basina bir satir).</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -1225,7 +1234,7 @@ SELECT
     jsonb_array_elements_text(data->'tags') AS tag
 FROM users;
 
--- With index position
+-- Indeks konumu ile
 SELECT
     username,
     ordinality AS tag_position,
@@ -1249,7 +1258,7 @@ SELECT
     tag.value AS tag
 FROM users
 CROSS APPLY OPENJSON(data, '$.tags') AS tag;</code></pre>
-                        <p><strong>Expected Results:</strong></p>
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>username</th>
@@ -1284,11 +1293,11 @@ CROSS APPLY OPENJSON(data, '$.tags') AS tag;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.2: Expand Nested Objects</h4>
-                    <p>Using the <code>orders</code> table, write a query that expands the items array,
-                        showing order_id, item name, price, and quantity for each item.</p>
+                    <h4>Alistirma 4.2: Ic Ice Nesneleri Genisletme</h4>
+                    <p><code>orders</code> tablosunu kullanarak, items dizisini genisleten ve her oge icin
+                        order_id, oge adi, fiyat ve miktari gosteren bir sorgu yazin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -1299,7 +1308,7 @@ SELECT
 FROM orders o,
      jsonb_array_elements(o.order_data->'items') AS item;
 
--- With calculated line total
+-- Hesaplanmis satir toplami ile
 SELECT
     o.id AS order_id,
     item->>'name' AS item_name,
@@ -1331,7 +1340,7 @@ SELECT
     CAST(JSON_VALUE(item.value, '$.qty') AS INT) AS quantity
 FROM orders o
 CROSS APPLY OPENJSON(o.order_data, '$.items') AS item;</code></pre>
-                        <p><strong>Expected Results:</strong></p>
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>order_id</th>
@@ -1366,11 +1375,11 @@ CROSS APPLY OPENJSON(o.order_data, '$.items') AS item;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.3: JSON Object to Key-Value Pairs</h4>
-                    <p>Using the <code>users</code> table, write a query that expands the preferences
-                        object into key-value pairs for each user.</p>
+                    <h4>Alistirma 4.3: JSON Nesnesini Anahtar-Deger Ciftlerine Donusturme</h4>
+                    <p><code>users</code> tablosunu kullanarak, her kullanici icin preferences
+                        nesnesini anahtar-deger ciftlerine genisleten bir sorgu yazin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Cozumu Goster</button>
                     <div id="solution4_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -1380,7 +1389,7 @@ SELECT
 FROM users,
      jsonb_each(data->'preferences') AS pref(key, value);
 
--- MySQL (using JSON_KEYS and a recursive approach or specific keys)
+-- MySQL (JSON_KEYS ve ozyinelemeli yaklasim veya belirli anahtarlar kullanarak)
 SELECT
     username,
     'theme' AS preference_name,
@@ -1407,7 +1416,7 @@ SELECT
     pref.[value] AS preference_value
 FROM users
 CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
-                        <p><strong>Expected Results (PostgreSQL):</strong></p>
+                        <p><strong>Beklenen Sonuc (PostgreSQL):</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>username</th>
@@ -1454,17 +1463,17 @@ CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
                 </div>
             </section>
 
-            <!-- Exercise 5: Building JSON from Relational Data -->
+            <!-- Alistirma 5: Iliskisel Veriden JSON Olusturma -->
             <section>
-                <h2 id="exercise-5">Exercise 5: Building JSON from Relational Data</h2>
-                <p>Learn to construct JSON objects and arrays from relational query results.</p>
+                <h2 id="exercise-5">Alistirma 5: Iliskisel Veriden JSON Olusturma</h2>
+                <p>Iliskisel sorgu sonuclarindan JSON nesneleri ve dizileri olusturmayi ogrenin.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 5.1: Build JSON Objects</h4>
-                    <p>Create a query that builds a JSON object containing product information
-                        (name, brand, price) for each product.</p>
+                    <h4>Alistirma 5.1: JSON Nesneleri Olusturma</h4>
+                    <p>Her urun icin urun bilgilerini (isim, marka, fiyat) iceren bir JSON nesnesi
+                        olusturan bir sorgu yazin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
                     <div id="solution5_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -1476,7 +1485,7 @@ SELECT
     ) AS product_json
 FROM products;
 
--- With pretty formatting
+-- Guzel formatlama ile
 SELECT
     jsonb_pretty(
         jsonb_build_object(
@@ -1508,18 +1517,18 @@ FOR JSON PATH;</code></pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 5.2: Aggregate into JSON Arrays</h4>
-                    <p>Create a query that returns all usernames as a JSON array, and another that
-                        returns user data grouped by country.</p>
+                    <h4>Alistirma 5.2: JSON Dizilerine Toplama</h4>
+                    <p>Tum kullanici adlarini JSON dizisi olarak donduren ve kullanici verilerini
+                        ulkeye gore gruplayan bir sorgu olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
                     <div id="solution5_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. All usernames as JSON array
+-- 1. Tum kullanici adlari JSON dizisi olarak
 SELECT jsonb_agg(username) AS all_usernames
 FROM users;
 
--- 2. Users grouped by country
+-- 2. Ulkeye gore gruplu kullanicilar
 SELECT
     data->'address'->>'country' AS country,
     jsonb_agg(
@@ -1532,7 +1541,7 @@ SELECT
 FROM users
 GROUP BY data->'address'->>'country';
 
--- 3. Products with their ratings as summary
+-- 3. Urunler ve degerlendirme ozetleri
 SELECT
     name,
     jsonb_build_object(
@@ -1546,11 +1555,11 @@ SELECT
 FROM products;
 
 -- MySQL
--- 1. All usernames as JSON array
+-- 1. Tum kullanici adlari JSON dizisi olarak
 SELECT JSON_ARRAYAGG(username) AS all_usernames
 FROM users;
 
--- 2. Users grouped by country
+-- 2. Ulkeye gore gruplu kullanicilar
 SELECT
     data->>'$.address.country' AS country,
     JSON_ARRAYAGG(
@@ -1564,11 +1573,11 @@ FROM users
 GROUP BY data->>'$.address.country';
 
 -- SQL Server
--- 1. All usernames as JSON array
+-- 1. Tum kullanici adlari JSON dizisi olarak
 SELECT username
 FROM users
 FOR JSON PATH;</code></pre>
-                        <p><strong>Result for grouped by country:</strong></p>
+                        <p><strong>Ulkeye gore gruplu sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>country</th>
@@ -1591,32 +1600,32 @@ FOR JSON PATH;</code></pre>
                 </div>
             </section>
 
-            <!-- Challenge Exercises -->
+            <!-- Zorluk Alistirmalari -->
             <section>
-                <h2 id="challenge-exercises">Challenge Exercises</h2>
-                <p>Test your comprehensive understanding of JSON operations with these advanced challenges.</p>
+                <h2 id="challenge-exercises">Zorluk Alistirmalari</h2>
+                <p>Bu ileri duzey zorluklarla JSON islemlerinin kapsamli anlayisinizi test edin.</p>
 
                 <div class="challenge-box">
-                    <h4>Challenge 1: Log Analysis</h4>
-                    <p>Using the <code>logs</code> table, write queries to:</p>
+                    <h4>Zorluk 1: Log Analizi</h4>
+                    <p><code>logs</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Count events by event type</li>
-                        <li>Find all error events and extract the error code and message</li>
-                        <li>Get a list of all unique users who have logged in</li>
-                        <li>Calculate the total value of all purchases</li>
+                        <li>Olaylari tur bazinda sayin</li>
+                        <li>Tum hata olaylarini bulun ve hata kodu ile mesajini cikarin</li>
+                        <li>Giris yapmis tum benzersiz kullanicilarin listesini alin</li>
+                        <li>Tum satislarin toplam degerini hesaplayin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Count events by type
+-- 1. Ture gore olaylari say
 SELECT
     event_data->>'event' AS event_type,
     COUNT(*) AS event_count
 FROM logs
 GROUP BY event_data->>'event';
 
--- 2. Find error events with details
+-- 2. Hata olaylarini detaylari ile bul
 SELECT
     timestamp,
     (event_data->>'error_code')::INTEGER AS error_code,
@@ -1626,20 +1635,20 @@ SELECT
 FROM logs
 WHERE event_data->>'event' = 'error';
 
--- 3. Unique users who logged in
+-- 3. Giris yapmis benzersiz kullanicilar
 SELECT DISTINCT
     event_data->'user'->>'id' AS user_id,
     event_data->'user'->>'name' AS username
 FROM logs
 WHERE event_data->>'event' = 'login';
 
--- 4. Total purchase value
+-- 4. Toplam satis degeri
 SELECT
     SUM((event_data->>'total')::DECIMAL) AS total_revenue
 FROM logs
 WHERE event_data->>'event' = 'purchase';
 
--- Bonus: Detailed purchase breakdown
+-- Bonus: Detayli satis dokumu
 SELECT
     event_data->'user'->>'name' AS customer,
     (event_data->>'total')::DECIMAL AS order_total,
@@ -1650,19 +1659,19 @@ WHERE event_data->>'event' = 'purchase';</code></pre>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 2: Product Analytics</h4>
-                    <p>Using the <code>products</code> table, write queries to:</p>
+                    <h4>Zorluk 2: Urun Analitikleri</h4>
+                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Find the average rating for each product</li>
-                        <li>Find products with average rating above 4.5</li>
-                        <li>List all unique features across all products</li>
-                        <li>Find products that have more than 3 features</li>
+                        <li>Her urun icin ortalama derecelendirmeyi bulun</li>
+                        <li>Ortalama derecelendirmesi 4.5'in uzerinde olan urunleri bulun</li>
+                        <li>Tum urunlerdeki benzersiz ozellikleri listeleyin</li>
+                        <li>3'ten fazla ozelligi olan urunleri bulun</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
                     <div id="challenge2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Average rating for each product
+-- 1. Her urun icin ortalama derecelendirme
 SELECT
     name,
     ROUND(
@@ -1672,7 +1681,7 @@ SELECT
     ) AS avg_rating
 FROM products;
 
--- 2. Products with avg rating above 4.5
+-- 2. Ortalama derecelendirmesi 4.5 uzerinde olan urunler
 SELECT
     name,
     avg_rating
@@ -1685,13 +1694,13 @@ FROM (
 ) subq
 WHERE avg_rating > 4.5;
 
--- 3. All unique features
+-- 3. Tum benzersiz ozellikler
 SELECT DISTINCT feature
 FROM products,
      jsonb_array_elements_text(specs->'features') AS feature
 ORDER BY feature;
 
--- 4. Products with more than 3 features
+-- 4. 3'ten fazla ozelligi olan urunler
 SELECT
     name,
     jsonb_array_length(specs->'features') AS feature_count
@@ -1701,17 +1710,17 @@ WHERE jsonb_array_length(specs->'features') > 3;</code></pre>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 3: Order Report Generation</h4>
-                    <p>Using the <code>orders</code> table, create a comprehensive order report that shows:</p>
+                    <h4>Zorluk 3: Siparis Raporu Olusturma</h4>
+                    <p><code>orders</code> tablosunu kullanarak asagidakileri gosteren kapsamli bir siparis raporu olusturun:</p>
                     <ol>
-                        <li>Order ID, status, and customer ID</li>
-                        <li>Number of items in each order</li>
-                        <li>Subtotal (sum of price * qty for all items)</li>
-                        <li>Shipping cost and method</li>
-                        <li>Grand total (subtotal + shipping)</li>
+                        <li>Siparis ID, durum ve musteri ID</li>
+                        <li>Her siparisteki oge sayisi</li>
+                        <li>Ara toplam (tum ogeler icin fiyat * miktar toplami)</li>
+                        <li>Kargo maliyeti ve yontemi</li>
+                        <li>Genel toplam (ara toplam + kargo)</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge3')">Cozumu Goster</button>
                     <div id="challenge3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
@@ -1735,7 +1744,7 @@ SELECT
     ) + (order_data->'shipping'->>'cost')::DECIMAL AS grand_total
 FROM orders;
 
--- Alternative with CTE for cleaner code
+-- Daha temiz kod icin CTE ile alternatif
 WITH order_items AS (
     SELECT
         o.id,
@@ -1755,7 +1764,7 @@ SELECT
     oi.subtotal + (o.order_data->'shipping'->>'cost')::DECIMAL AS grand_total
 FROM orders o
 JOIN order_items oi ON o.id = oi.id;</code></pre>
-                        <p><strong>Expected Results:</strong></p>
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
                                 <th>order_id</th>
@@ -1789,47 +1798,47 @@ JOIN order_items oi ON o.id = oi.id;</code></pre>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 4: Create Indexing Strategy</h4>
-                    <p>Design and write SQL statements to create appropriate indexes for the following query patterns:</p>
+                    <h4>Zorluk 4: Indeksleme Stratejisi Olusturma</h4>
+                    <p>Asagidaki sorgu kaliplari icin uygun indeksler olusturmak uzere SQL ifadeleri tasarlayin ve yazin:</p>
                     <ol>
-                        <li>Frequently query users by email</li>
-                        <li>Frequently search for products containing specific tags</li>
-                        <li>Search for orders by status</li>
+                        <li>Kullanicilari e-postaya gore sik sorgulama</li>
+                        <li>Belirli etiketler iceren urunleri sik arama</li>
+                        <li>Siparisleri duruma gore arama</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge4')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge4')">Cozumu Goster</button>
                     <div id="challenge4" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- 1. Index for email queries (B-tree on extracted value)
+-- 1. E-posta sorgulari icin indeks (cikarilan degerde B-tree)
 CREATE INDEX idx_users_email ON users ((data->>'email'));
 
--- 2. GIN index for tag containment queries
+-- 2. Etiket icerik sorgulari icin GIN indeksi
 CREATE INDEX idx_users_tags ON users USING GIN ((data->'tags'));
--- This supports queries like: WHERE data->'tags' @> '"admin"'
+-- Bu su sorgulari destekler: WHERE data->'tags' @> '"admin"'
 
--- 3. Index for order status
+-- 3. Siparis durumu icin indeks
 CREATE INDEX idx_orders_status ON orders ((order_data->>'status'));
 
--- Full JSONB GIN index for flexible querying
+-- Esnek sorgulama icin tam JSONB GIN indeksi
 CREATE INDEX idx_users_data_gin ON users USING GIN (data);
--- This supports ?, ?|, ?&, @>, <@ operators
+-- Bu ?, ?|, ?&, @>, <@ operatorlerini destekler
 
--- GIN with jsonb_path_ops for containment-only queries (smaller index)
+-- Yalnizca icerik sorgulari icin jsonb_path_ops ile GIN (daha kucuk indeks)
 CREATE INDEX idx_users_data_path ON users USING GIN (data jsonb_path_ops);
 
 -- MySQL
 
--- 1. Generated column with index for email
+-- 1. E-posta icin indeksli olusturulan sutun
 ALTER TABLE users
 ADD COLUMN email_idx VARCHAR(255)
 GENERATED ALWAYS AS (data->>'$.email') STORED;
 CREATE INDEX idx_users_email ON users(email_idx);
 
--- 2. Multi-valued index for tags (MySQL 8.0.17+)
+-- 2. Etiketler icin coklu degerli indeks (MySQL 8.0.17+)
 CREATE INDEX idx_users_tags ON users((CAST(data->'$.tags' AS CHAR(100) ARRAY)));
 
--- 3. Generated column for status
+-- 3. Durum icin olusturulan sutun
 ALTER TABLE orders
 ADD COLUMN status_idx VARCHAR(50)
 GENERATED ALWAYS AS (order_data->>'$.status') STORED;
@@ -1837,12 +1846,12 @@ CREATE INDEX idx_orders_status ON orders(status_idx);
 
 -- SQL Server
 
--- 1. Computed column with index for email
+-- 1. E-posta icin indeksli hesaplanan sutun
 ALTER TABLE users
 ADD email_computed AS JSON_VALUE(data, '$.email');
 CREATE INDEX idx_users_email ON users(email_computed);
 
--- 3. Computed column for status
+-- 3. Durum icin hesaplanan sutun
 ALTER TABLE orders
 ADD status_computed AS JSON_VALUE(order_data, '$.status');
 CREATE INDEX idx_orders_status ON orders(status_computed);</code></pre>
@@ -1850,56 +1859,56 @@ CREATE INDEX idx_orders_status ON orders(status_computed);</code></pre>
                 </div>
             </section>
 
-            <!-- Key Takeaways -->
+            <!-- Onemli Noktalar -->
             <section>
-                <h2 id="key-takeaways">Key Takeaways</h2>
+                <h2 id="key-takeaways">Onemli Noktalar</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Concept</th>
-                            <th>Best Practice</th>
+                            <th>Kavram</th>
+                            <th>En Iyi Uygulama</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>JSON Type Selection</td>
-                            <td>Use <code>JSONB</code> (PostgreSQL) or native <code>JSON</code> (MySQL) for better performance and indexing</td>
+                            <td>JSON Tur Secimi</td>
+                            <td>Daha iyi performans ve indeksleme icin <code>JSONB</code> (PostgreSQL) veya yerel <code>JSON</code> (MySQL) kullanin</td>
                         </tr>
                         <tr>
-                            <td>Extracting Values</td>
-                            <td>Use <code>->></code> for text output when comparing or displaying, <code>-></code> for nested navigation</td>
+                            <td>Deger Cikarma</td>
+                            <td>Karsilastirma veya gosterim icin <code>->></code> metin ciktisi kullanin, ic ice gezinme icin <code>-></code> kullanin</td>
                         </tr>
                         <tr>
-                            <td>Type Casting</td>
-                            <td>Always cast extracted values to appropriate types for comparisons: <code>(data->>'age')::INTEGER</code></td>
+                            <td>Tur Donusumu</td>
+                            <td>Karsilastirmalar icin cikarilan degerleri her zaman uygun turlere donusturun: <code>(data->>'age')::INTEGER</code></td>
                         </tr>
                         <tr>
-                            <td>Containment Queries</td>
-                            <td>Use <code>@></code> for efficient containment checks, especially with GIN indexes</td>
+                            <td>Icerik Sorgulari</td>
+                            <td>Verimli icerik kontrolleri icin, ozellikle GIN indeksleri ile <code>@></code> kullanin</td>
                         </tr>
                         <tr>
-                            <td>Array Expansion</td>
-                            <td>Use <code>jsonb_array_elements</code>, <code>JSON_TABLE</code>, or <code>OPENJSON</code> to convert arrays to rows</td>
+                            <td>Dizi Genisletme</td>
+                            <td>Dizileri satirlara donusturmek icin <code>jsonb_array_elements</code>, <code>JSON_TABLE</code> veya <code>OPENJSON</code> kullanin</td>
                         </tr>
                         <tr>
-                            <td>Indexing Strategy</td>
-                            <td>Create expression indexes on frequently queried paths; use GIN indexes for flexible containment queries</td>
+                            <td>Indeksleme Stratejisi</td>
+                            <td>Sik sorgulanan yollarda ifade indeksleri olusturun; esnek icerik sorgulari icin GIN indeksleri kullanin</td>
                         </tr>
                         <tr>
-                            <td>Schema Design</td>
-                            <td>Don't overuse JSON; extract frequently queried fields to regular columns when appropriate</td>
+                            <td>Sema Tasarimi</td>
+                            <td>JSON'u asiri kullanmayin; uygun oldugunda sik sorgulanan alanlari normal sutunlara cikarin</td>
                         </tr>
                         <tr>
-                            <td>Cross-Database Portability</td>
-                            <td>Be aware of syntax differences; prefer standard <code>JSON_VALUE</code>/<code>JSON_QUERY</code> when possible</td>
+                            <td>Veritabanlari Arasi Tasinabilirlik</td>
+                            <td>Sozdizimi farkliliklarina dikkat edin; mumkun oldugunda standart <code>JSON_VALUE</code>/<code>JSON_QUERY</code> tercih edin</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-            <!-- Navigation -->
+            <!-- Gezinme -->
             <section>
-                <p><a href="03_working_with_json.html">&larr; Back to Working with JSON Data Lesson</a></p>
+                <p><a href="03_working_with_json.html">&larr; JSON Verileriyle Calisma Dersine Don</a></p>
             </section>
         </div>
     </div>
@@ -1914,10 +1923,10 @@ CREATE INDEX idx_orders_status ON orders(status_computed);</code></pre>
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>

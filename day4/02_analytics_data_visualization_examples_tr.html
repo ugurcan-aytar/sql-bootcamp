@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 4: Analytics and Data Visualization - Practical Examples</title>
+    <title>Gun 4: Analitik ve Veri Gorsellestirme - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -200,6 +200,7 @@
             font-size: 0.7em;
             font-weight: bold;
         }
+
         .language-switcher {
             position: fixed;
             top: 10px;
@@ -229,10 +230,11 @@
 
 <body>
     <div class="language-switcher">
-        <a href="02_analytics_data_visualization_examples.html" class="active">EN</a>
-        <a href="02_analytics_data_visualization_examples_tr.html">TR</a>
+        <a href="02_analytics_data_visualization_examples.html">EN</a>
+        <a href="02_analytics_data_visualization_examples_tr.html" class="active">TR</a>
     </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -252,25 +254,24 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Analytics and Data Visualization - Practical Examples</h1>
-                <p class="lead">Master window functions, advanced aggregations, CTEs, and data preparation for
-                    visualization through hands-on exercises.</p>
+                <h1>Analitik ve Veri Gorsellestirme - Pratik Ornekler</h1>
+                <p class="lead">Uygulamali alistirmalar ile pencere fonksiyonlari, ileri toplamalar, CTE'ler ve gorsellestirme icin veri hazirlama konularinda uzmanlasin.</p>
 
                 <div class="hint-box">
-                    <strong>Learning Objectives:</strong>
+                    <strong>Ogrenme Hedefleri:</strong>
                     <ul class="mb-0">
-                        <li>Apply window functions for ranking, running totals, and comparisons</li>
-                        <li>Use advanced aggregations (GROUPING SETS, ROLLUP, CUBE)</li>
-                        <li>Build complex analytics with CTEs</li>
-                        <li>Prepare data for visualization tools</li>
+                        <li>Siralama, kumulatif toplamlar ve karsilastirmalar icin pencere fonksiyonlarini uygulayin</li>
+                        <li>Ileri toplamalari kullanin (GROUPING SETS, ROLLUP, CUBE)</li>
+                        <li>CTE'ler ile karmasik analitik olusturun</li>
+                        <li>Gorsellestirme araclari icin veri hazirlayin</li>
                     </ul>
                 </div>
             </section>
 
-            <!-- Sample Dataset -->
+            <!-- Ornek Veriseti -->
             <section>
-                <h3>Sample Database Schema</h3>
-                <p>We'll use an e-commerce analytics database:</p>
+                <h3>Ornek Veritabani Semasi</h3>
+                <p>Bir e-ticaret analitik veritabani kullanacagiz:</p>
 
                 <div class="row">
                     <div class="col-md-4">
@@ -278,8 +279,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -307,8 +308,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -340,8 +341,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -372,8 +373,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -393,8 +394,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -418,8 +419,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -441,14 +442,14 @@
                 </div>
             </section>
 
-            <!-- Part 1: Window Functions -->
+            <!-- Bolum 1: Pencere Fonksiyonlari -->
             <section>
-                <h2>Part 1: Window Functions</h2>
-                <p>Practice ranking, aggregating, and comparing across rows.</p>
+                <h2>Bolum 1: Pencere Fonksiyonlari</h2>
+                <p>Siralama, toplama ve satirlar arasi karsilastirma pratigi yapin.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Ranking Functions Comparison</h4>
-                    <p>Given monthly sales data, show the difference between ROW_NUMBER(), RANK(), and DENSE_RANK():</p>
+                    <h4>Alistirma 1.1: Siralama Fonksiyonlari Karsilastirmasi</h4>
+                    <p>Aylik satis verileri verildiginde, ROW_NUMBER(), RANK() ve DENSE_RANK() arasindaki farki gosterin:</p>
 
                     <table class="table table-bordered result-table">
                         <thead>
@@ -481,10 +482,10 @@
                         </tbody>
                     </table>
 
-                    <p><strong>Task:</strong> Write a query that shows all three ranking functions ranking by sales DESC.
+                    <p><strong>Gorev:</strong> Her uc siralama fonksiyonunu da sales DESC'e gore siralayan bir sorgu yazin.
                     </p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
                     <div id="sol1_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span> <span class="st">'2024-01'</span> <span class="kw">AS</span> month, <span class="dv">50000</span> <span class="kw">AS</span> sales <span class="kw">UNION ALL</span>
@@ -501,7 +502,7 @@
     <span class="fu">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> sales <span class="kw">DESC</span>) <span class="kw">AS</span> dense_rank
 <span class="kw">FROM</span> monthly_sales;</code></pre>
 
-                        <p><strong>Result:</strong></p>
+                        <p><strong>Sonuc:</strong></p>
                         <table class="table table-bordered result-table">
                             <thead>
                                 <tr>
@@ -552,24 +553,24 @@
                         </table>
 
                         <div class="concept-box">
-                            <strong>Key Differences:</strong>
+                            <strong>Temel Farklar:</strong>
                             <ul class="mb-0">
-                                <li><strong>ROW_NUMBER()</strong>: Always unique (3, 4 for ties)</li>
-                                <li><strong>RANK()</strong>: Same rank for ties, skips next (3, 3, 5)</li>
-                                <li><strong>DENSE_RANK()</strong>: Same rank for ties, no skip (3, 3, 4)</li>
+                                <li><strong>ROW_NUMBER()</strong>: Her zaman benzersiz (esitler icin 3, 4)</li>
+                                <li><strong>RANK()</strong>: Esitler icin ayni siralama, sonrakini atlar (3, 3, 5)</li>
+                                <li><strong>DENSE_RANK()</strong>: Esitler icin ayni siralama, atlama yok (3, 3, 4)</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Top N Per Group</h4>
-                    <p>Find the top 3 best-selling products in each category.</p>
+                    <h4>Alistirma 1.2: Grup Basina En Iyi N</h4>
+                    <p>Her kategorideki en cok satan 3 urunu bulun.</p>
 
-                    <p><strong>Task:</strong> Use ROW_NUMBER() with PARTITION BY to rank products within each category,
-                        then filter to top 3.</p>
+                    <p><strong>Gorev:</strong> ROW_NUMBER() ile PARTITION BY kullanarak urunleri her kategori icinde siralayin,
+                        sonra en iyi 3'e filtreleyin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Cozumu Goster</button>
                     <div id="sol1_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> product_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
@@ -603,24 +604,23 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> category_name, rank_in_category;</code></pre>
 
                         <div class="hint-box">
-                            <strong>Use Case:</strong> This pattern is essential for "Top N" reports like:
+                            <strong>Kullanim Alani:</strong> Bu kalip asagidaki gibi "En Iyi N" raporlari icin onemlidir:
                             <ul class="mb-0">
-                                <li>Top 5 customers per region</li>
-                                <li>Top 10 products per month</li>
-                                <li>Best 3 salespeople per quarter</li>
+                                <li>Bolge basina en iyi 5 musteri</li>
+                                <li>Ay basina en iyi 10 urun</li>
+                                <li>Ceyrek basina en iyi 3 satis temsilcisi</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.3: LAG and LEAD for Trend Analysis</h4>
-                    <p>Calculate month-over-month sales growth using LAG().</p>
+                    <h4>Alistirma 1.3: Trend Analizi icin LAG ve LEAD</h4>
+                    <p>LAG() kullanarak aydan aya satis buyumesini hesaplayin.</p>
 
-                    <p><strong>Task:</strong> Show each month's sales, previous month's sales, and the percentage
-                        change.</p>
+                    <p><strong>Gorev:</strong> Her ayin satislarini, onceki ayin satislarini ve yuzde degisimi gosterin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Cozumu Goster</button>
                     <div id="sol1_3" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
@@ -642,7 +642,7 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">FROM</span> monthly_sales
 <span class="kw">ORDER BY</span> month;</code></pre>
 
-                        <p><strong>Example Output:</strong></p>
+                        <p><strong>Ornek Cikti:</strong></p>
                         <table class="table table-bordered result-table">
                             <thead>
                                 <tr>
@@ -679,32 +679,32 @@ ranked_products <span class="kw">AS</span> (
                         </table>
 
                         <div class="concept-box">
-                            <strong>LAG vs LEAD:</strong>
+                            <strong>LAG ve LEAD Karsilastirmasi:</strong>
                             <ul class="mb-0">
-                                <li><code>LAG(col, n)</code> - Gets value from n rows BEFORE (default n=1)</li>
-                                <li><code>LEAD(col, n)</code> - Gets value from n rows AFTER</li>
+                                <li><code>LAG(col, n)</code> - n satir ONCESINDEN deger alir (varsayilan n=1)</li>
+                                <li><code>LEAD(col, n)</code> - n satir SONRASINDAN deger alir</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.4: Running Totals and Moving Averages</h4>
-                    <p>Calculate cumulative sales and a 7-day moving average.</p>
+                    <h4>Alistirma 1.4: Kumulatif Toplamlar ve Hareketli Ortalamalar</h4>
+                    <p>Kumulatif satis ve 7 gunluk hareketli ortalama hesaplayin.</p>
 
-                    <p><strong>Task:</strong> Use window frame clauses to compute running total and moving average.</p>
+                    <p><strong>Gorev:</strong> Kumulatif toplam ve hareketli ortalama hesaplamak icin pencere cerceve ifadelerini kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_4')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_4')">Cozumu Goster</button>
                     <div id="sol1_4" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     order_date,
     amount <span class="kw">AS</span> daily_sales,
-    <span class="co">-- Running total: all rows from start to current</span>
+    <span class="co">-- Kumulatif toplam: baslangictan mevcut satira kadar tum satirlar</span>
     <span class="fu">SUM</span>(amount) <span class="kw">OVER</span> (
         <span class="kw">ORDER BY</span> order_date
         <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
     ) <span class="kw">AS</span> running_total,
-    <span class="co">-- 7-day moving average: 6 preceding + current</span>
+    <span class="co">-- 7 gunluk hareketli ortalama: onceki 6 + mevcut</span>
     <span class="fu">ROUND</span>(
         <span class="fu">AVG</span>(amount) <span class="kw">OVER</span> (
             <span class="kw">ORDER BY</span> order_date
@@ -712,7 +712,7 @@ ranked_products <span class="kw">AS</span> (
         ),
         <span class="dv">2</span>
     ) <span class="kw">AS</span> moving_avg_7day,
-    <span class="co">-- Count rows in moving window</span>
+    <span class="co">-- Hareketli penceredeki satir sayisi</span>
     <span class="fu">COUNT</span>(*) <span class="kw">OVER</span> (
         <span class="kw">ORDER BY</span> order_date
         <span class="kw">ROWS BETWEEN</span> <span class="dv">6</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
@@ -725,43 +725,43 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> order_date;</code></pre>
 
                         <div class="warning-box">
-                            <strong>Frame Clause Gotcha:</strong>
+                            <strong>Cerceve Ifadesi Tuzagi:</strong>
                             <ul class="mb-0">
-                                <li><code>ROWS</code> counts physical rows</li>
-                                <li><code>RANGE</code> considers value ranges (handles ties differently)</li>
-                                <li>Without ORDER BY, frame includes entire partition</li>
+                                <li><code>ROWS</code> fiziksel satirlari sayar</li>
+                                <li><code>RANGE</code> deger araliklerini dikkate alir (esitleri farkli sekilde ele alir)</li>
+                                <li>ORDER BY olmadan, cerceve tum bolumeyi icerir</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Part 2: Advanced Aggregations -->
+            <!-- Bolum 2: Ileri Toplamalar -->
             <section>
-                <h2>Part 2: Advanced Aggregations</h2>
-                <p>Master GROUPING SETS, ROLLUP, CUBE, and conditional aggregations.</p>
+                <h2>Bolum 2: Ileri Toplamalar</h2>
+                <p>GROUPING SETS, ROLLUP, CUBE ve kosullu toplamalarda uzmanlasin.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: GROUPING SETS for Multiple Summaries</h4>
-                    <p>Generate a report showing sales by:
+                    <h4>Alistirma 2.1: Coklu Ozetler icin GROUPING SETS</h4>
+                    <p>Asagidakilere gore satislari gosteren bir rapor olusturun:
                     <ul>
-                        <li>Category + Month</li>
-                        <li>Category only</li>
-                        <li>Month only</li>
-                        <li>Grand total</li>
+                        <li>Kategori + Ay</li>
+                        <li>Sadece Kategori</li>
+                        <li>Sadece Ay</li>
+                        <li>Genel toplam</li>
                     </ul>
                     </p>
 
-                    <p><strong>Task:</strong> Use GROUPING SETS to produce all summaries in one query.</p>
+                    <p><strong>Gorev:</strong> Tum ozetleri tek bir sorguda uretmek icin GROUPING SETS kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
                     <div id="sol2_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
-    <span class="fu">COALESCE</span>(c.category_name, <span class="st">'All Categories'</span>) <span class="kw">AS</span> category,
-    <span class="fu">COALESCE</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>), <span class="st">'All Months'</span>) <span class="kw">AS</span> month,
+    <span class="fu">COALESCE</span>(c.category_name, <span class="st">'Tum Kategoriler'</span>) <span class="kw">AS</span> category,
+    <span class="fu">COALESCE</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>), <span class="st">'Tum Aylar'</span>) <span class="kw">AS</span> month,
     <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> total_sales,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
-    <span class="co">-- Identify grouping level</span>
+    <span class="co">-- Gruplama seviyesini belirle</span>
     <span class="fu">GROUPING</span>(c.category_name) <span class="kw">AS</span> is_category_total,
     <span class="fu">GROUPING</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)) <span class="kw">AS</span> is_month_total
 <span class="kw">FROM</span> orders o
@@ -769,10 +769,10 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
 <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
 <span class="kw">GROUP BY</span> <span class="fu">GROUPING</span> <span class="kw">SETS</span> (
-    (c.category_name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),  <span class="co">-- Detail</span>
-    (c.category_name),                                      <span class="co">-- Category subtotal</span>
-    (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),                    <span class="co">-- Month subtotal</span>
-    ()                                                      <span class="co">-- Grand total</span>
+    (c.category_name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),  <span class="co">-- Detay</span>
+    (c.category_name),                                      <span class="co">-- Kategori alt toplami</span>
+    (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),                    <span class="co">-- Ay alt toplami</span>
+    ()                                                      <span class="co">-- Genel toplam</span>
 )
 <span class="kw">ORDER BY</span>
     <span class="fu">GROUPING</span>(c.category_name),
@@ -781,19 +781,18 @@ ranked_products <span class="kw">AS</span> (
     month;</code></pre>
 
                         <div class="concept-box">
-                            <strong>GROUPING() Function:</strong> Returns 1 if the column is aggregated (NULL due to
-                            grouping), 0 if it's a real value. Useful to distinguish NULL values from aggregation NULLs.
+                            <strong>GROUPING() Fonksiyonu:</strong> Sutun toplanmissa (gruplama nedeniyle NULL) 1, gercek bir degerse 0 dondurur. NULL degerlerini toplama NULL'larindan ayirt etmek icin kullanislidir.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: ROLLUP for Hierarchical Totals</h4>
-                    <p>Create a hierarchical sales report: Year > Quarter > Month with subtotals at each level.</p>
+                    <h4>Alistirma 2.2: Hiyerarsik Toplamlar icin ROLLUP</h4>
+                    <p>Hiyerarsik bir satis raporu olusturun: Yil > Ceyrek > Ay her seviyede alt toplamlarla.</p>
 
-                    <p><strong>Task:</strong> Use ROLLUP to automatically generate subtotals.</p>
+                    <p><strong>Gorev:</strong> Alt toplamlari otomatik olusturmak icin ROLLUP kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Cozumu Goster</button>
                     <div id="sol2_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> year,
@@ -802,10 +801,10 @@ ranked_products <span class="kw">AS</span> (
     <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_sales,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
     <span class="cf">CASE</span>
-        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Grand Total'</span>
-        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">QUARTER</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Year Total'</span>
-        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Quarter Total'</span>
-        <span class="cf">ELSE</span> <span class="st">'Month Detail'</span>
+        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Genel Toplam'</span>
+        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">QUARTER</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Yil Toplami'</span>
+        <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Ceyrek Toplami'</span>
+        <span class="cf">ELSE</span> <span class="st">'Ay Detayi'</span>
     <span class="cf">END</span> <span class="kw">AS</span> level_type
 <span class="kw">FROM</span> orders
 <span class="kw">GROUP BY</span> <span class="kw">ROLLUP</span> (
@@ -815,23 +814,23 @@ ranked_products <span class="kw">AS</span> (
 )
 <span class="kw">ORDER BY</span> year <span class="kw">NULLS LAST</span>, quarter <span class="kw">NULLS LAST</span>, month <span class="kw">NULLS LAST</span>;</code></pre>
 
-                        <p><strong>ROLLUP generates:</strong></p>
+                        <p><strong>ROLLUP su satirlari uretir:</strong></p>
                         <ul>
-                            <li>(year, quarter, month) - Detail rows</li>
-                            <li>(year, quarter) - Quarterly subtotals</li>
-                            <li>(year) - Yearly subtotals</li>
-                            <li>() - Grand total</li>
+                            <li>(year, quarter, month) - Detay satirlari</li>
+                            <li>(year, quarter) - Ceyrek alt toplamlari</li>
+                            <li>(year) - Yillik alt toplamlar</li>
+                            <li>() - Genel toplam</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.3: Conditional Aggregation with FILTER</h4>
-                    <p>Create a report showing total orders, completed orders, and cancelled orders per month.</p>
+                    <h4>Alistirma 2.3: FILTER ile Kosullu Toplama</h4>
+                    <p>Her ay icin toplam siparisler, tamamlanan siparisler ve iptal edilen siparisleri gosteren bir rapor olusturun.</p>
 
-                    <p><strong>Task:</strong> Use the FILTER clause for conditional counting.</p>
+                    <p><strong>Gorev:</strong> Kosullu sayim icin FILTER ifadesini kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Cozumu Goster</button>
                     <div id="sol2_3" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) <span class="kw">AS</span> month,
@@ -849,20 +848,20 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> month;</code></pre>
 
                         <div class="hint-box">
-                            <strong>Alternative (without FILTER):</strong>
+                            <strong>Alternatif (FILTER olmadan):</strong>
                             <pre><code class="sourceCode sql"><span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> status = <span class="st">'completed'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> completed</code></pre>
-                            FILTER is cleaner and PostgreSQL-specific.
+                            FILTER daha temizdir ve PostgreSQL'e ozgudur.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.4: Statistical Aggregations</h4>
-                    <p>Calculate statistical metrics for product prices within each category.</p>
+                    <h4>Alistirma 2.4: Istatistiksel Toplamalar</h4>
+                    <p>Her kategori icinde urun fiyatlari icin istatistiksel metrikler hesaplayin.</p>
 
-                    <p><strong>Task:</strong> Compute mean, median, standard deviation, and identify outliers.</p>
+                    <p><strong>Gorev:</strong> Ortalama, medyan, standart sapma hesaplayin ve aykiri degerleri belirleyin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Cozumu Goster</button>
                     <div id="sol2_4" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     c.category_name,
@@ -888,7 +887,7 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">GROUP BY</span> c.category_name
 <span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>;</code></pre>
 
-                        <p><strong>Finding Outliers (Z-Score > 2):</strong></p>
+                        <p><strong>Aykiri Degerleri Bulma (Z-Skoru > 2):</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> category_stats <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         p.product_id,
@@ -911,22 +910,21 @@ ranked_products <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Part 3: CTEs for Complex Analytics -->
+            <!-- Bolum 3: Karmasik Analitik icin CTE'ler -->
             <section>
-                <h2>Part 3: CTEs for Complex Analytics</h2>
-                <p>Build multi-step analytics queries with Common Table Expressions.</p>
+                <h2>Bolum 3: Karmasik Analitik icin CTE'ler</h2>
+                <p>Common Table Expression'lar ile cok adimli analitik sorgular olusturun.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: Cohort Retention Analysis</h4>
-                    <p>Build a cohort analysis showing customer retention by their first purchase month.</p>
+                    <h4>Alistirma 3.1: Kohort Tutma Analizi</h4>
+                    <p>Ilk satin alma aylarina gore musteri tutma oranini gosteren bir kohort analizi olusturun.</p>
 
-                    <p><strong>Task:</strong> Calculate what percentage of customers from each cohort made purchases in
-                        subsequent months.</p>
+                    <p><strong>Gorev:</strong> Her kohorttan musterilerin yuzde kacinin sonraki aylarda alisveris yaptigini hesaplayin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
                     <div id="sol3_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
-<span class="co">-- Step 1: Identify each customer's cohort (first purchase month)</span>
+<span class="co">-- Adim 1: Her musterinin kohortunu belirle (ilk satin alma ayi)</span>
 customer_cohort <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         customer_id,
@@ -934,7 +932,7 @@ customer_cohort <span class="kw">AS</span> (
     <span class="kw">FROM</span> orders
     <span class="kw">GROUP BY</span> customer_id
 ),
-<span class="co">-- Step 2: Calculate months since cohort for each order</span>
+<span class="co">-- Adim 2: Her siparis icin kohorttan bu yana gecen aylari hesapla</span>
 customer_activity <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         cc.customer_id,
@@ -947,7 +945,7 @@ customer_activity <span class="kw">AS</span> (
     <span class="kw">FROM</span> customer_cohort cc
     <span class="kw">JOIN</span> orders o <span class="kw">ON</span> cc.customer_id = o.customer_id
 ),
-<span class="co">-- Step 3: Count cohort size</span>
+<span class="co">-- Adim 3: Kohort buyuklugunu say</span>
 cohort_size <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         cohort_month,
@@ -955,7 +953,7 @@ cohort_size <span class="kw">AS</span> (
     <span class="kw">FROM</span> customer_cohort
     <span class="kw">GROUP BY</span> cohort_month
 ),
-<span class="co">-- Step 4: Count active customers per cohort per period</span>
+<span class="co">-- Adim 4: Her kohort ve donem icin aktif musterileri say</span>
 retention_data <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         cohort_month,
@@ -964,7 +962,7 @@ retention_data <span class="kw">AS</span> (
     <span class="kw">FROM</span> customer_activity
     <span class="kw">GROUP BY</span> cohort_month, months_since_cohort
 )
-<span class="co">-- Final: Calculate retention rate</span>
+<span class="co">-- Son: Tutma oranini hesapla</span>
 <span class="kw">SELECT</span>
     r.cohort_month,
     cs.cohort_customers,
@@ -977,27 +975,27 @@ retention_data <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> r.cohort_month, r.months_since_cohort;</code></pre>
 
                         <div class="visual-demo">
-                            <h6>Cohort Retention Heatmap Concept</h6>
+                            <h6>Kohort Tutma Isi Haritasi Kavrami</h6>
                             <table class="table table-sm table-bordered" style="font-size: 0.8em;">
                                 <thead>
                                     <tr>
-                                        <th>Cohort</th>
-                                        <th>M0</th>
-                                        <th>M1</th>
-                                        <th>M2</th>
-                                        <th>M3</th>
+                                        <th>Kohort</th>
+                                        <th>A0</th>
+                                        <th>A1</th>
+                                        <th>A2</th>
+                                        <th>A3</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Jan 2024</td>
+                                        <td>Ocak 2024</td>
                                         <td style="background: #198754; color: white;">100%</td>
                                         <td style="background: #28a745; color: white;">45%</td>
                                         <td style="background: #5cb85c; color: white;">32%</td>
                                         <td style="background: #8bc34a;">28%</td>
                                     </tr>
                                     <tr>
-                                        <td>Feb 2024</td>
+                                        <td>Subat 2024</td>
                                         <td style="background: #198754; color: white;">100%</td>
                                         <td style="background: #28a745; color: white;">52%</td>
                                         <td style="background: #5cb85c; color: white;">38%</td>
@@ -1010,12 +1008,12 @@ retention_data <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: Customer Lifetime Value (CLV)</h4>
-                    <p>Calculate customer lifetime value metrics and segment customers.</p>
+                    <h4>Alistirma 3.2: Musteri Yasam Boyu Degeri (CLV)</h4>
+                    <p>Musteri yasam boyu degeri metriklerini hesaplayin ve musterileri segmentleyin.</p>
 
-                    <p><strong>Task:</strong> Compute total spent, frequency, recency, and project future value.</p>
+                    <p><strong>Gorev:</strong> Toplam harcama, siklik, yakinlik hesaplayin ve gelecek degeri tahmin edin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
                     <div id="sol3_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 customer_metrics <span class="kw">AS</span> (
@@ -1037,13 +1035,13 @@ customer_segments <span class="kw">AS</span> (
         <span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>) <span class="kw">AS</span> spending_quartile,
         <span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> total_orders <span class="kw">DESC</span>) <span class="kw">AS</span> frequency_quartile,
         <span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> days_since_last <span class="kw">ASC</span>) <span class="kw">AS</span> recency_quartile,
-        <span class="co">-- Project CLV (simple model: avg * expected orders)</span>
+        <span class="co">-- CLV projeksiyonu (basit model: ortalama * beklenen siparis)</span>
         <span class="cf">CASE</span>
             <span class="cf">WHEN</span> customer_lifespan_days > <span class="dv">0</span> <span class="cf">THEN</span>
                 (total_orders::float / <span class="fu">GREATEST</span>(customer_lifespan_days, <span class="dv">1</span>)) * <span class="dv">365</span>
             <span class="cf">ELSE</span> <span class="dv">1</span>
         <span class="cf">END</span> <span class="kw">AS</span> orders_per_year,
-        avg_order_value * <span class="dv">3</span> * <span class="co">-- 3-year projection</span>
+        avg_order_value * <span class="dv">3</span> * <span class="co">-- 3 yillik projeksiyon</span>
         <span class="cf">CASE</span>
             <span class="cf">WHEN</span> customer_lifespan_days > <span class="dv">0</span> <span class="cf">THEN</span>
                 (total_orders::float / <span class="fu">GREATEST</span>(customer_lifespan_days, <span class="dv">1</span>)) * <span class="dv">365</span>
@@ -1053,11 +1051,11 @@ customer_segments <span class="kw">AS</span> (
 )
 <span class="kw">SELECT</span>
     <span class="cf">CASE</span>
-        <span class="cf">WHEN</span> spending_quartile = <span class="dv">1</span> <span class="kw">AND</span> frequency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Champions'</span>
-        <span class="cf">WHEN</span> spending_quartile <= <span class="dv">2</span> <span class="kw">AND</span> recency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Loyal'</span>
-        <span class="cf">WHEN</span> recency_quartile >= <span class="dv">3</span> <span class="kw">AND</span> spending_quartile <= <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'At Risk'</span>
-        <span class="cf">WHEN</span> recency_quartile = <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Lost'</span>
-        <span class="cf">ELSE</span> <span class="st">'Regular'</span>
+        <span class="cf">WHEN</span> spending_quartile = <span class="dv">1</span> <span class="kw">AND</span> frequency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Sampiyonlar'</span>
+        <span class="cf">WHEN</span> spending_quartile <= <span class="dv">2</span> <span class="kw">AND</span> recency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Sadik'</span>
+        <span class="cf">WHEN</span> recency_quartile >= <span class="dv">3</span> <span class="kw">AND</span> spending_quartile <= <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'Risk Altinda'</span>
+        <span class="cf">WHEN</span> recency_quartile = <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Kaybedilmis'</span>
+        <span class="cf">ELSE</span> <span class="st">'Normal'</span>
     <span class="cf">END</span> <span class="kw">AS</span> segment,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> customer_count,
     <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_spent), <span class="dv">2</span>) <span class="kw">AS</span> avg_total_spent,
@@ -1070,15 +1068,15 @@ customer_segments <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.3: Recursive CTE - Organization Hierarchy</h4>
-                    <p>Build a complete organization tree showing reporting chains.</p>
+                    <h4>Alistirma 3.3: Recursive CTE - Organizasyon Hiyerarsisi</h4>
+                    <p>Raporlama zincirlerini gosteren eksiksiz bir organizasyon agaci olusturun.</p>
 
-                    <p><strong>Task:</strong> Use recursive CTE to traverse the employee-manager relationship.</p>
+                    <p><strong>Gorev:</strong> Calisan-yonetici iliskisini dolasmak icin recursive CTE kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Cozumu Goster</button>
                     <div id="sol3_3" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH RECURSIVE</span> org_hierarchy <span class="kw">AS</span> (
-    <span class="co">-- Base case: top-level employees (no manager)</span>
+    <span class="co">-- Temel durum: ust duzey calisanlar (yoneticisi yok)</span>
     <span class="kw">SELECT</span>
         id,
         name,
@@ -1091,7 +1089,7 @@ customer_segments <span class="kw">AS</span> (
 
     <span class="kw">UNION ALL</span>
 
-    <span class="co">-- Recursive case: employees with managers</span>
+    <span class="co">-- Recursive durum: yoneticisi olan calisanlar</span>
     <span class="kw">SELECT</span>
         e.id,
         e.name,
@@ -1110,40 +1108,38 @@ customer_segments <span class="kw">AS</span> (
 <span class="kw">FROM</span> org_hierarchy
 <span class="kw">ORDER BY</span> path;</code></pre>
 
-                        <p><strong>Example Output:</strong></p>
+                        <p><strong>Ornek Cikti:</strong></p>
                         <pre>
 employee_tree         | level | path
 ----------------------+-------+---------------------------
-Alice (CEO)           | 1     | Alice (CEO)
-  Bob (VP Sales)      | 2     | Alice (CEO) > Bob (VP Sales)
-    Carol (Manager)   | 3     | Alice (CEO) > Bob > Carol
-    Dave (Manager)    | 3     | Alice (CEO) > Bob > Dave
-  Eve (VP Engineering)| 2     | Alice (CEO) > Eve
-    Frank (Dev)       | 3     | Alice (CEO) > Eve > Frank
+Ali (CEO)             | 1     | Ali (CEO)
+  Burak (VP Satis)    | 2     | Ali (CEO) > Burak (VP Satis)
+    Canan (Mudur)     | 3     | Ali (CEO) > Burak > Canan
+    Deniz (Mudur)     | 3     | Ali (CEO) > Burak > Deniz
+  Elif (VP Muhendislik)| 2    | Ali (CEO) > Elif
+    Fatih (Gelistirici)| 3    | Ali (CEO) > Elif > Fatih
                         </pre>
 
                         <div class="warning-box">
-                            <strong>Recursive CTE Caution:</strong> Always ensure there's a termination condition.
-                            Circular references will cause infinite loops. Use <code>CYCLE</code> detection in
-                            PostgreSQL 14+.
+                            <strong>Recursive CTE Uyarisi:</strong> Her zaman bir sonlandirma kosulu oldugunu garanti edin.
+                            Dairesel referanslar sonsuz donguye neden olur. PostgreSQL 14+'te <code>CYCLE</code> algilamasi kullanin.
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Part 4: Data Visualization Prep -->
+            <!-- Bolum 4: Veri Gorsellestirme Hazirligi -->
             <section>
-                <h2>Part 4: Preparing Data for Visualization</h2>
-                <p>Format query results for charts, graphs, and dashboards.</p>
+                <h2>Bolum 4: Gorsellestirme icin Veri Hazirlama</h2>
+                <p>Sorgu sonuclarini grafikler ve panolar icin bicimlendir.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.1: Time Series for Line Charts</h4>
-                    <p>Prepare daily sales data with filled gaps for continuous line charts.</p>
+                    <h4>Alistirma 4.1: Cizgi Grafikleri icin Zaman Serileri</h4>
+                    <p>Surekli cizgi grafikleri icin bosluklari doldurulmus gunluk satis verileri hazirlayin.</p>
 
-                    <p><strong>Task:</strong> Generate a series of all dates and join with actual sales (filling gaps
-                        with 0).</p>
+                    <p><strong>Gorev:</strong> Tum tarihlerin bir serisini olusturun ve gercek satislarla birlestirin (bosluklar icin 0 koyun).</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Cozumu Goster</button>
                     <div id="sol4_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 date_range <span class="kw">AS</span> (
@@ -1165,7 +1161,7 @@ daily_sales <span class="kw">AS</span> (
     dr.date,
     <span class="fu">COALESCE</span>(ds.sales, <span class="dv">0</span>) <span class="kw">AS</span> sales,
     <span class="fu">COALESCE</span>(ds.order_count, <span class="dv">0</span>) <span class="kw">AS</span> order_count,
-    <span class="co">-- 7-day moving average</span>
+    <span class="co">-- 7 gunluk hareketli ortalama</span>
     <span class="fu">ROUND</span>(
         <span class="fu">AVG</span>(<span class="fu">COALESCE</span>(ds.sales, <span class="dv">0</span>)) <span class="kw">OVER</span> (
             <span class="kw">ORDER BY</span> dr.date
@@ -1178,52 +1174,52 @@ daily_sales <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> dr.date;</code></pre>
 
                         <div class="visual-demo">
-                            <h6>Line Chart Ready Data</h6>
+                            <h6>Cizgi Grafigi icin Hazir Veri</h6>
                             <div class="bar-chart">
                                 <div class="bar" style="height: 80px;">
                                     <span class="bar-value">$800</span>
-                                    <span class="bar-label">Mon</span>
+                                    <span class="bar-label">Pzt</span>
                                 </div>
                                 <div class="bar" style="height: 60px;">
                                     <span class="bar-value">$600</span>
-                                    <span class="bar-label">Tue</span>
+                                    <span class="bar-label">Sal</span>
                                 </div>
                                 <div class="bar" style="height: 0px; background: #ddd;">
                                     <span class="bar-value">$0</span>
-                                    <span class="bar-label">Wed</span>
+                                    <span class="bar-label">Car</span>
                                 </div>
                                 <div class="bar" style="height: 100px;">
                                     <span class="bar-value">$1000</span>
-                                    <span class="bar-label">Thu</span>
+                                    <span class="bar-label">Per</span>
                                 </div>
                                 <div class="bar" style="height: 90px;">
                                     <span class="bar-value">$900</span>
-                                    <span class="bar-label">Fri</span>
+                                    <span class="bar-label">Cum</span>
                                 </div>
                             </div>
-                            <p style="font-size: 0.8em; color: #666;">Gap filled with $0 for Wednesday</p>
+                            <p style="font-size: 0.8em; color: #666;">Carsamba icin $0 ile bosluk dolduruldu</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.2: Pivot Data for Heatmaps</h4>
-                    <p>Create a heatmap-ready dataset showing sales by day of week and hour.</p>
+                    <h4>Alistirma 4.2: Isi Haritalari icin Pivot Veri</h4>
+                    <p>Haftanin gunu ve saate gore satislari gosteren isi haritasi icin hazir veri seti olusturun.</p>
 
-                    <p><strong>Task:</strong> Aggregate by day/hour for visualization.</p>
+                    <p><strong>Gorev:</strong> Gorsellestirme icin gun/saat bazinda toplama yapin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol4_2')">Cozumu Goster</button>
                     <div id="sol4_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) <span class="kw">AS</span> day_of_week,
     <span class="cf">CASE</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date)
-        <span class="cf">WHEN</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">'Sunday'</span>
-        <span class="cf">WHEN</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Monday'</span>
-        <span class="cf">WHEN</span> <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'Tuesday'</span>
-        <span class="cf">WHEN</span> <span class="dv">3</span> <span class="cf">THEN</span> <span class="st">'Wednesday'</span>
-        <span class="cf">WHEN</span> <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Thursday'</span>
-        <span class="cf">WHEN</span> <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Friday'</span>
-        <span class="cf">WHEN</span> <span class="dv">6</span> <span class="cf">THEN</span> <span class="st">'Saturday'</span>
+        <span class="cf">WHEN</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">'Pazar'</span>
+        <span class="cf">WHEN</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Pazartesi'</span>
+        <span class="cf">WHEN</span> <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'Sali'</span>
+        <span class="cf">WHEN</span> <span class="dv">3</span> <span class="cf">THEN</span> <span class="st">'Carsamba'</span>
+        <span class="cf">WHEN</span> <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Persembe'</span>
+        <span class="cf">WHEN</span> <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Cuma'</span>
+        <span class="cf">WHEN</span> <span class="dv">6</span> <span class="cf">THEN</span> <span class="st">'Cumartesi'</span>
     <span class="cf">END</span> <span class="kw">AS</span> day_name,
     <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time) <span class="kw">AS</span> hour_of_day,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
@@ -1235,13 +1231,13 @@ daily_sales <span class="kw">AS</span> (
     <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time)
 <span class="kw">ORDER BY</span> day_of_week, hour_of_day;</code></pre>
 
-                        <p><strong>Pivoted format for visualization tools:</strong></p>
+                        <p><strong>Gorsellestirme araclari icin pivot format:</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time) <span class="kw">AS</span> hour,
-    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">0</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> sunday,
-    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">1</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> monday,
-    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">2</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> tuesday,
-    <span class="co">-- ... etc</span>
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">0</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> pazar,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">1</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> pazartesi,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">2</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> sali,
+    <span class="co">-- ... vb</span>
 <span class="kw">FROM</span> orders
 <span class="kw">GROUP BY</span> <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time)
 <span class="kw">ORDER BY</span> hour;</code></pre>
@@ -1249,14 +1245,14 @@ daily_sales <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.3: Export as JSON for APIs/Dashboards</h4>
-                    <p>Generate JSON-formatted data for web dashboards.</p>
+                    <h4>Alistirma 4.3: API'ler/Panolar icin JSON Olarak Disari Aktar</h4>
+                    <p>Web panolari icin JSON formatli veri uretin.</p>
 
-                    <p><strong>Task:</strong> Use JSON aggregation functions to build structured output.</p>
+                    <p><strong>Gorev:</strong> Yapilandirilmis cikti olusturmak icin JSON toplama fonksiyonlarini kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol4_3')">Cozumu Goster</button>
                     <div id="sol4_3" class="solution">
-                        <pre><code class="sourceCode sql"><span class="co">-- Category sales with products nested</span>
+                        <pre><code class="sourceCode sql"><span class="co">-- Ic ice urunlerle kategori satislari</span>
 <span class="kw">SELECT</span>
     <span class="fu">JSON_BUILD_OBJECT</span>(
         <span class="st">'report_date'</span>, <span class="fu">CURRENT_DATE</span>,
@@ -1294,17 +1290,17 @@ daily_sales <span class="kw">AS</span> (
         )
     ) <span class="kw">AS</span> dashboard_data;</code></pre>
 
-                        <p><strong>Output structure:</strong></p>
+                        <p><strong>Cikti yapisi:</strong></p>
                         <pre>{
   "report_date": "2024-06-15",
   "categories": [
     {
-      "name": "Electronics",
+      "name": "Elektronik",
       "total_sales": 125000,
       "order_count": 450,
       "top_products": [
         {"name": "Laptop Pro", "sales": 45000},
-        {"name": "Wireless Mouse", "sales": 12000}
+        {"name": "Kablosuz Mouse", "sales": 12000}
       ]
     }
   ]
@@ -1313,26 +1309,26 @@ daily_sales <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Part 5: Challenge -->
+            <!-- Bolum 5: Zorluk -->
             <section>
-                <h2>Part 5: Challenge Exercise</h2>
+                <h2>Bolum 5: Zorluk Alistirmasi</h2>
 
                 <div class="exercise-box">
-                    <h4>Challenge: Executive Dashboard Query</h4>
-                    <p>Build a comprehensive dashboard query that combines multiple analytics techniques.</p>
+                    <h4>Zorluk: Yonetici Panosu Sorgusu</h4>
+                    <p>Birden fazla analitik teknigini birlestiren kapsamli bir pano sorgusu olusturun.</p>
 
-                    <p><strong>Requirements:</strong></p>
+                    <p><strong>Gereksinimler:</strong></p>
                     <ul>
-                        <li>Current month vs previous month sales comparison</li>
-                        <li>Top 5 products by revenue</li>
-                        <li>Customer segment distribution</li>
-                        <li>Daily sales trend with moving average</li>
+                        <li>Mevcut ay ile onceki ay satis karsilastirmasi</li>
+                        <li>Gelire gore en iyi 5 urun</li>
+                        <li>Musteri segment dagilimi</li>
+                        <li>Hareketli ortalamali gunluk satis trendi</li>
                     </ul>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol5_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol5_1')">Cozumu Goster</button>
                     <div id="sol5_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
-<span class="co">-- Monthly comparison</span>
+<span class="co">-- Aylik karsilastirma</span>
 monthly_comparison <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
@@ -1341,7 +1337,7 @@ monthly_comparison <span class="kw">AS</span> (
             <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> previous_month
     <span class="kw">FROM</span> orders
 ),
-<span class="co">-- Top products</span>
+<span class="co">-- En iyi urunler</span>
 top_products <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         p.name,
@@ -1353,13 +1349,13 @@ top_products <span class="kw">AS</span> (
     <span class="kw">WHERE</span> o.order_date >= <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
     <span class="kw">GROUP BY</span> p.product_id, p.name
 ),
-<span class="co">-- Customer segments</span>
+<span class="co">-- Musteri segmentleri</span>
 customer_segments <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         <span class="cf">CASE</span>
             <span class="cf">WHEN</span> total_orders >= <span class="dv">10</span> <span class="cf">THEN</span> <span class="st">'VIP'</span>
-            <span class="cf">WHEN</span> total_orders >= <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Regular'</span>
-            <span class="cf">ELSE</span> <span class="st">'Occasional'</span>
+            <span class="cf">WHEN</span> total_orders >= <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Normal'</span>
+            <span class="cf">ELSE</span> <span class="st">'Ara Sira'</span>
         <span class="cf">END</span> <span class="kw">AS</span> segment,
         <span class="fu">COUNT</span>(*) <span class="kw">AS</span> count
     <span class="kw">FROM</span> (
@@ -1369,7 +1365,7 @@ customer_segments <span class="kw">AS</span> (
     ) cust
     <span class="kw">GROUP BY</span> <span class="dv">1</span>
 ),
-<span class="co">-- Daily trend</span>
+<span class="co">-- Gunluk trend</span>
 daily_trend <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         order_date,
@@ -1397,54 +1393,54 @@ daily_trend <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Key Takeaways -->
+            <!-- Onemli Cikarimlar -->
             <section>
-                <h3>Key Takeaways</h3>
+                <h3>Onemli Cikarimlar</h3>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Topic</th>
-                            <th>Key Points</th>
+                            <th>Konu</th>
+                            <th>Ana Noktalar</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Window Functions</strong></td>
+                            <td><strong>Pencere Fonksiyonlari</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>Use PARTITION BY to create groups without aggregating</li>
-                                    <li>LAG/LEAD access adjacent rows for comparisons</li>
-                                    <li>Frame clauses control which rows are included</li>
+                                    <li>Toplamadan grup olusturmak icin PARTITION BY kullanin</li>
+                                    <li>LAG/LEAD karsilastirmalar icin komsu satirlara erisir</li>
+                                    <li>Cerceve ifadeleri hangi satirlarin dahil edilecegini kontrol eder</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Advanced Aggregations</strong></td>
+                            <td><strong>Ileri Toplamalar</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>GROUPING SETS for multiple summary levels</li>
-                                    <li>ROLLUP for hierarchical subtotals</li>
-                                    <li>FILTER for conditional aggregation</li>
+                                    <li>Birden fazla ozet seviyesi icin GROUPING SETS</li>
+                                    <li>Hiyerarsik alt toplamlar icin ROLLUP</li>
+                                    <li>Kosullu toplama icin FILTER</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>CTEs</strong></td>
+                            <td><strong>CTE'ler</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>Chain CTEs for step-by-step analytics</li>
-                                    <li>Recursive CTEs for hierarchical data</li>
-                                    <li>Improve readability of complex queries</li>
+                                    <li>Adim adim analitik icin CTE'leri zincirleyin</li>
+                                    <li>Hiyerarsik veriler icin recursive CTE'ler</li>
+                                    <li>Karmasik sorgularin okunabilirligini artirin</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Visualization Prep</strong></td>
+                            <td><strong>Gorsellestirme Hazirligi</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>Fill date gaps with generate_series</li>
-                                    <li>Use JSON functions for API-ready output</li>
-                                    <li>Pre-aggregate at the visualization level</li>
+                                    <li>Tarih bosluklarini generate_series ile doldurun</li>
+                                    <li>API'ye hazir cikti icin JSON fonksiyonlarini kullanin</li>
+                                    <li>Gorsellestirme seviyesinde on-toplama yapin</li>
                                 </ul>
                             </td>
                         </tr>
@@ -1452,11 +1448,10 @@ daily_trend <span class="kw">AS</span> (
                 </table>
             </section>
 
-            <!-- Navigation -->
+            <!-- Navigasyon -->
             <section>
                 <div class="d-flex justify-content-between">
-                    <a href="02_analytics_data_visualization.html" class="btn btn-outline-primary">&larr; Back to
-                        Lesson</a>
+                    <a href="02_analytics_data_visualization_tr.html" class="btn btn-outline-primary">&larr; Derse Don</a>
                 </div>
             </section>
         </div>
@@ -1471,10 +1466,10 @@ daily_trend <span class="kw">AS</span> (
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>

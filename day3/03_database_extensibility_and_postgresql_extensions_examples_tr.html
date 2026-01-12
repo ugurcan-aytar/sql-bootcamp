@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 3: PostgreSQL Extensions - Practical Examples</title>
+    <title>Gun 3: PostgreSQL Uzantilari - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -38,34 +38,6 @@
 
         ul.task-list {
             list-style: none;
-        }
-
-        .language-switcher {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .language-switcher a {
-            text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 2px;
-            border-radius: 3px;
-            color: #333;
-        }
-
-        .language-switcher a.active {
-            background: #0d6efd;
-            color: #fff;
-        }
-
-        .language-switcher a:hover:not(.active) {
-            background: #e9ecef;
         }
 
         .exercise-box {
@@ -117,7 +89,7 @@
         }
 
         .hint-box::before {
-            content: "Hint: ";
+            content: "Ipucu: ";
             font-weight: bold;
         }
 
@@ -130,7 +102,7 @@
         }
 
         .warning-box::before {
-            content: "Warning: ";
+            content: "Uyari: ";
             font-weight: bold;
         }
 
@@ -143,7 +115,7 @@
         }
 
         .concept-box::before {
-            content: "Concept: ";
+            content: "Kavram: ";
             font-weight: bold;
         }
 
@@ -156,7 +128,7 @@
         }
 
         .extension-box::before {
-            content: "Extension: ";
+            content: "Uzanti: ";
             font-weight: bold;
             color: #563d7c;
         }
@@ -250,7 +222,7 @@
         }
 
         .use-case-box::before {
-            content: "Use Case: ";
+            content: "Kullanim Senaryosu: ";
             font-weight: bold;
             color: #007bff;
         }
@@ -307,15 +279,35 @@
             border-radius: 8px;
             font-family: monospace;
         }
+
+        .language-switcher {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .language-switcher a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .language-switcher a:hover {
+            text-decoration: underline;
+        }
+
+        .language-switcher a.active {
+            font-weight: bold;
+            color: #343a40;
+        }
     </style>
 </head>
 
 <body>
-    <div class="language-switcher">
-        <a href="03_database_extensibility_and_postgresql_extensions_examples.html" class="active">EN</a>
-        <a href="03_database_extensibility_and_postgresql_extensions_examples_tr.html">TR</a>
-    </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -334,83 +326,89 @@
     </div>
     <div class="content-container">
         <div class="container">
+            <!-- Language Switcher -->
+            <div class="language-switcher">
+                <span>Dil / Language:</span>
+                <a href="03_database_extensibility_and_postgresql_extensions_examples.html">English</a>
+                <a href="03_database_extensibility_and_postgresql_extensions_examples_tr.html" class="active">Turkce</a>
+            </div>
+
             <section>
-                <h1 id="extensions-practical-examples">PostgreSQL Extensions - Practical Examples</h1>
-                <p><a href="03_database_extensibility_and_postgresql_extensions.html">&larr; Back to PostgreSQL Extensions Lesson</a></p>
-                <p>This page provides hands-on exercises to master PostgreSQL extensions. Practice using extensions
-                    for cryptography, fuzzy search, UUIDs, hierarchical data, and more.</p>
+                <h1 id="extensions-practical-examples">PostgreSQL Uzantilari - Pratik Ornekler</h1>
+                <p><a href="03_database_extensibility_and_postgresql_extensions.html">&larr; PostgreSQL Uzantilari Dersine Don</a></p>
+                <p>Bu sayfa, PostgreSQL uzantilarinda ustalasmak icin uygulamali alistirmalar sunmaktadir. Kriptografi, bulanik arama, UUID'ler, hiyerarsik veri ve daha fazlasi icin uzantilari kullanmayi pratik edin.</p>
 
                 <div class="warning-box">
-                    Extensions must be installed on the PostgreSQL server before they can be used.
-                    Use <code>CREATE EXTENSION IF NOT EXISTS extension_name;</code> to install.
+                    Uzantilar kullanilmadan once PostgreSQL sunucusuna yuklenmelidir.
+                    Yuklemek icin <code>CREATE EXTENSION IF NOT EXISTS uzanti_adi;</code> komutunu kullanin.
                 </div>
             </section>
 
             <!-- Extensions Quick Reference -->
             <section>
-                <h2 id="extensions-reference">Extensions Quick Reference</h2>
+                <h2 id="extensions-reference">Uzanti Hizli Referansi</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Extension</th>
-                            <th>Category</th>
-                            <th>Purpose</th>
-                            <th>Key Functions/Types</th>
+                            <th>Uzanti</th>
+                            <th>Kategori</th>
+                            <th>Amac</th>
+                            <th>Temel Fonksiyonlar/Tipler</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><span class="ext-badge">pgcrypto</span></td>
-                            <td><span class="ext-category cat-security">Security</span></td>
-                            <td>Cryptographic functions</td>
+                            <td><span class="ext-category cat-security">Guvenlik</span></td>
+                            <td>Kriptografik fonksiyonlar</td>
                             <td><code>crypt()</code>, <code>gen_salt()</code>, <code>encrypt()</code></td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">uuid-ossp</span></td>
-                            <td><span class="ext-category cat-data">Data</span></td>
-                            <td>UUID generation</td>
+                            <td><span class="ext-category cat-data">Veri</span></td>
+                            <td>UUID olusturma</td>
                             <td><code>uuid_generate_v4()</code>, <code>uuid_generate_v1()</code></td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">pg_trgm</span></td>
-                            <td><span class="ext-category cat-search">Search</span></td>
-                            <td>Fuzzy text matching</td>
-                            <td><code>similarity()</code>, <code>%</code> operator</td>
+                            <td><span class="ext-category cat-search">Arama</span></td>
+                            <td>Bulanik metin eslestirme</td>
+                            <td><code>similarity()</code>, <code>%</code> operatoru</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">ltree</span></td>
-                            <td><span class="ext-category cat-data">Data</span></td>
-                            <td>Hierarchical trees</td>
-                            <td><code>LTREE</code> type, <code>@></code>, <code><@</code> operators</td>
+                            <td><span class="ext-category cat-data">Veri</span></td>
+                            <td>Hiyerarsik agaclar</td>
+                            <td><code>LTREE</code> tipi, <code>@></code>, <code><@</code> operatorleri</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">hstore</span></td>
-                            <td><span class="ext-category cat-data">Data</span></td>
-                            <td>Key-value storage</td>
-                            <td><code>HSTORE</code> type, <code>-></code> operator</td>
+                            <td><span class="ext-category cat-data">Veri</span></td>
+                            <td>Anahtar-deger depolama</td>
+                            <td><code>HSTORE</code> tipi, <code>-></code> operatoru</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">tablefunc</span></td>
-                            <td><span class="ext-category cat-analytics">Analytics</span></td>
-                            <td>Pivot tables</td>
+                            <td><span class="ext-category cat-analytics">Analitik</span></td>
+                            <td>Pivot tablolar</td>
                             <td><code>crosstab()</code></td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">intarray</span></td>
-                            <td><span class="ext-category cat-data">Data</span></td>
-                            <td>Integer array ops</td>
+                            <td><span class="ext-category cat-data">Veri</span></td>
+                            <td>Tamsayi dizi islemleri</td>
                             <td><code>@></code>, <code>&&</code>, <code>idx()</code></td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">pg_stat_statements</span></td>
-                            <td><span class="ext-category cat-analytics">Analytics</span></td>
-                            <td>Query statistics</td>
-                            <td><code>pg_stat_statements</code> view</td>
+                            <td><span class="ext-category cat-analytics">Analitik</span></td>
+                            <td>Sorgu istatistikleri</td>
+                            <td><code>pg_stat_statements</code> gorunumu</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">PostGIS</span></td>
-                            <td><span class="ext-category cat-spatial">Spatial</span></td>
-                            <td>Geographic data</td>
+                            <td><span class="ext-category cat-spatial">Mekansal</span></td>
+                            <td>Cografi veri</td>
                             <td><code>GEOMETRY</code>, <code>ST_Distance()</code>, <code>ST_Within()</code></td>
                         </tr>
                     </tbody>
@@ -419,36 +417,35 @@
 
             <!-- Exercise 1: pgcrypto for Security -->
             <section>
-                <h2 id="exercise-1">Exercise 1: Cryptography with pgcrypto</h2>
-                <p>Learn to use pgcrypto for password hashing, encryption, and generating secure random data.</p>
+                <h2 id="exercise-1">Alistirma 1: pgcrypto ile Kriptografi</h2>
+                <p>Parola hashleme, sifreleme ve guvenli rastgele veri olusturma icin pgcrypto kullanmayi ogrenin.</p>
 
                 <div class="extension-box">
-                    <code>pgcrypto</code> provides cryptographic functions for hashing (MD5, SHA, bcrypt)
-                    and symmetric encryption (AES, 3DES, Blowfish).
+                    <code>pgcrypto</code> hashleme (MD5, SHA, bcrypt) ve simetrik sifreleme (AES, 3DES, Blowfish) icin kriptografik fonksiyonlar saglar.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Password Hashing</h4>
-                    <p>Create a secure user authentication system with properly hashed passwords.</p>
+                    <h4>Alistirma 1.1: Parola Hashleme</h4>
+                    <p>Duzgun hashlanmis parolalarla guvenli bir kullanici dogrulama sistemi olusturun.</p>
 
                     <div class="use-case-box">
-                        Store passwords using bcrypt hashing with automatic salting.
-                        Never store plain-text passwords!
+                        Otomatik tuzlama ile bcrypt hashleme kullanarak parolalari saklayin.
+                        Asla duz metin parola saklamayin!
                     </div>
 
-                    <p><strong>Tasks:</strong></p>
+                    <p><strong>Gorevler:</strong></p>
                     <ol>
-                        <li>Create a users table with hashed passwords</li>
-                        <li>Insert a user with a hashed password</li>
-                        <li>Write a function to verify passwords</li>
+                        <li>Hashlanmis parolalarla bir kullanicilar tablosu olusturun</li>
+                        <li>Hashlanmis parolayla bir kullanici ekleyin</li>
+                        <li>Parolalari dogrulamak icin bir fonksiyon yazin</li>
                     </ol>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable pgcrypto extension
+                        <pre><code class="language-sql">-- pgcrypto uzantisini etkinlestir
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- Create users table
+-- Kullanicilar tablosu olustur
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -457,9 +454,9 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert a user with bcrypt-hashed password
--- gen_salt('bf') generates a blowfish salt with default cost (8)
--- gen_salt('bf', 12) uses cost factor 12 (slower but more secure)
+-- bcrypt-hashlanmis parola ile kullanici ekle
+-- gen_salt('bf') varsayilan maliyet (8) ile blowfish tuzu olusturur
+-- gen_salt('bf', 12) maliyet faktoru 12 kullanir (daha yavas ama daha guvenli)
 INSERT INTO users (username, email, password_hash)
 VALUES (
     'john_doe',
@@ -467,13 +464,13 @@ VALUES (
     crypt('MySecureP@ssw0rd', gen_salt('bf', 10))
 );
 
--- Verify password (returns the user if password matches)
+-- Parola dogrulama (parola eslesiryorsa kullaniciyi dondurur)
 SELECT user_id, username, email
 FROM users
 WHERE username = 'john_doe'
   AND password_hash = crypt('MySecureP@ssw0rd', password_hash);
 
--- Create a function for authentication
+-- Dogrulama icin bir fonksiyon olustur
 CREATE OR REPLACE FUNCTION authenticate_user(
     p_username VARCHAR,
     p_password VARCHAR
@@ -488,11 +485,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Usage
+-- Kullanim
 SELECT * FROM authenticate_user('john_doe', 'MySecureP@ssw0rd');
--- Returns user info if password matches, empty if not
+-- Parola eslesiryorsa kullanici bilgisini, eslesmirorsa bos dondurur
 
--- Create function to register new user
+-- Yeni kullanici kaydetmek icin fonksiyon olustur
 CREATE OR REPLACE FUNCTION register_user(
     p_username VARCHAR,
     p_email VARCHAR,
@@ -510,9 +507,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Register a new user
+-- Yeni kullanici kaydet
 SELECT register_user('jane_doe', 'jane@example.com', 'AnotherP@ss123');</code></pre>
 
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <div class="output-display">
 user_id | username | email
 --------+----------+------------------
@@ -522,12 +520,12 @@ user_id | username | email
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Data Encryption</h4>
-                    <p>Encrypt sensitive data like credit card numbers or personal information.</p>
+                    <h4>Alistirma 1.2: Veri Sifreleme</h4>
+                    <p>Kredi karti numaralari veya kisisel bilgiler gibi hassas verileri sifreleyin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
-                        <pre><code class="language-sql">-- Symmetric encryption with AES
+                        <pre><code class="language-sql">-- AES ile simetrik sifreleme
 CREATE TABLE sensitive_data (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(user_id),
@@ -536,14 +534,14 @@ CREATE TABLE sensitive_data (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Encryption key (in real systems, store securely, not in code!)
--- This is just for demonstration
+-- Sifreleme anahtari (gercek sistemlerde guvenli saklayin, kodda degil!)
+-- Bu sadece gosterim amacli
 CREATE OR REPLACE FUNCTION get_encryption_key()
 RETURNS BYTEA AS $$
     SELECT decode('0123456789abcdef0123456789abcdef', 'hex');
 $$ LANGUAGE SQL IMMUTABLE;
 
--- Encrypt and store sensitive data
+-- Hassas verileri sifrele ve sakla
 INSERT INTO sensitive_data (user_id, encrypted_ssn, encrypted_credit_card)
 VALUES (
     1,
@@ -551,7 +549,7 @@ VALUES (
     pgp_sym_encrypt('4111-1111-1111-1111', 'my_secret_passphrase')
 );
 
--- Decrypt data
+-- Veriyi coz
 SELECT
     id,
     user_id,
@@ -560,7 +558,7 @@ SELECT
 FROM sensitive_data
 WHERE user_id = 1;
 
--- Using raw AES encryption (for smaller data)
+-- Ham AES sifreleme kullanma (daha kucuk veriler icin)
 -- encrypt(data, key, 'aes') / decrypt(data, key, 'aes')
 INSERT INTO sensitive_data (user_id, encrypted_ssn)
 VALUES (
@@ -568,7 +566,7 @@ VALUES (
     encrypt('123-45-6789'::bytea, get_encryption_key(), 'aes')
 );
 
--- Decrypt AES
+-- AES cozme
 SELECT
     convert_from(
         decrypt(encrypted_ssn, get_encryption_key(), 'aes'),
@@ -576,13 +574,13 @@ SELECT
     ) AS ssn
 FROM sensitive_data;
 
--- Generate random tokens/keys
+-- Rastgele token/anahtar olustur
 SELECT encode(gen_random_bytes(32), 'hex') AS api_key;
 SELECT encode(gen_random_bytes(16), 'base64') AS session_token;</code></pre>
 
                         <div class="warning-box">
-                            Never store encryption keys in your database or code.
-                            Use environment variables or a secrets management system.
+                            Sifreleme anahtarlarini asla veritabaninizda veya kodunuzda saklamayin.
+                            Ortam degiskenleri veya bir gizli anahtar yonetim sistemi kullanin.
                         </div>
                     </div>
                 </div>
@@ -590,32 +588,31 @@ SELECT encode(gen_random_bytes(16), 'base64') AS session_token;</code></pre>
 
             <!-- Exercise 2: uuid-ossp -->
             <section>
-                <h2 id="exercise-2">Exercise 2: UUID Generation with uuid-ossp</h2>
-                <p>Use UUIDs for distributed-system-friendly unique identifiers.</p>
+                <h2 id="exercise-2">Alistirma 2: uuid-ossp ile UUID Olusturma</h2>
+                <p>Dagitik sistem dostu benzersiz tanimlayicilar icin UUID'leri kullanin.</p>
 
                 <div class="extension-box">
-                    <code>uuid-ossp</code> generates various UUID versions. V4 (random) is most common.
-                    V1 includes timestamp and MAC address.
+                    <code>uuid-ossp</code> cesitli UUID surumlerini olusturur. V4 (rastgele) en yaygindir.
+                    V1, zaman damgasi ve MAC adresini icerir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: UUID Primary Keys</h4>
-                    <p>Design tables using UUIDs instead of serial integers for primary keys.</p>
+                    <h4>Alistirma 2.1: UUID Birincil Anahtarlar</h4>
+                    <p>Birincil anahtarlar icin seri tamsayilar yerine UUID'ler kullanan tablolar tasarlayin.</p>
 
                     <div class="use-case-box">
-                        UUIDs are ideal for distributed systems, API-exposed IDs, and preventing
-                        ID enumeration attacks.
+                        UUID'ler dagitik sistemler, API'ye acik kimlikler ve kimlik numaralandirma saldirillarini onlemek icin idealdir.
                     </div>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable uuid-ossp extension
+                        <pre><code class="language-sql">-- uuid-ossp uzantisini etkinlestir
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Alternative: PostgreSQL 13+ has gen_random_uuid() built-in
--- No extension needed for basic random UUIDs
+-- Alternatif: PostgreSQL 13+ yerlesik gen_random_uuid() fonksiyonuna sahiptir
+-- Temel rastgele UUID'ler icin uzanti gerekmez
 
--- Table with UUID primary key
+-- UUID birincil anahtarli tablo
 CREATE TABLE documents (
     document_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL,
@@ -624,7 +621,7 @@ CREATE TABLE documents (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table with UUID and references
+-- UUID ve referanslarla tablo
 CREATE TABLE document_versions (
     version_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     document_id UUID NOT NULL REFERENCES documents(document_id),
@@ -634,27 +631,27 @@ CREATE TABLE document_versions (
     created_by UUID
 );
 
--- Insert documents (IDs auto-generated)
+-- Belge ekle (kimlikler otomatik olusturulur)
 INSERT INTO documents (title, content)
 VALUES
-    ('Project Proposal', 'This is the project proposal content...'),
-    ('Meeting Notes', 'Meeting held on 2024-03-15...');
+    ('Proje Teklifi', 'Bu proje teklifi icerigir...'),
+    ('Toplanti Notlari', '2024-03-15 tarihinde yapilan toplanti...');
 
--- Check generated UUIDs
+-- Olusturulan UUID'leri kontrol et
 SELECT document_id, title FROM documents;
 
--- Different UUID versions
+-- Farkli UUID surumler
 SELECT
     uuid_generate_v1() AS v1_timestamp_mac,
     uuid_generate_v1mc() AS v1_random_mac,
     uuid_generate_v4() AS v4_random,
     uuid_nil() AS nil_uuid;
 
--- Generate UUID from namespace (v5 - SHA1-based)
--- Useful for deterministic UUIDs based on input
+-- Ad alanindan UUID olustur (v5 - SHA1 tabanli)
+-- Girise dayali belirleyici UUID'ler icin kullanisli
 SELECT uuid_generate_v5(uuid_ns_url(), 'https://example.com/users/john');
 
--- Create API tokens table with UUIDs
+-- UUID'lerle API token tablosu olustur
 CREATE TABLE api_tokens (
     token_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id INTEGER REFERENCES users(user_id),
@@ -664,16 +661,17 @@ CREATE TABLE api_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Generate a new API token for a user
+-- Bir kullanici icin yeni API token olustur
 INSERT INTO api_tokens (user_id, name, expires_at)
-VALUES (1, 'My API Token', CURRENT_TIMESTAMP + INTERVAL '30 days')
+VALUES (1, 'Benim API Tokenim', CURRENT_TIMESTAMP + INTERVAL '30 days')
 RETURNING token;</code></pre>
 
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <div class="output-display">
 document_id                          | title
 -------------------------------------+------------------
-a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d | Project Proposal
-f6e5d4c3-b2a1-4987-6543-210fedcba987 | Meeting Notes
+a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d | Proje Teklifi
+f6e5d4c3-b2a1-4987-6543-210fedcba987 | Toplanti Notlari
                         </div>
                     </div>
                 </div>
@@ -681,24 +679,24 @@ f6e5d4c3-b2a1-4987-6543-210fedcba987 | Meeting Notes
 
             <!-- Exercise 3: pg_trgm for Fuzzy Search -->
             <section>
-                <h2 id="exercise-3">Exercise 3: Fuzzy Text Search with pg_trgm</h2>
-                <p>Implement typo-tolerant search using trigram similarity.</p>
+                <h2 id="exercise-3">Alistirma 3: pg_trgm ile Bulanik Metin Arama</h2>
+                <p>Trigram benzerligini kullanarak yazim hatasina toleransli arama uygulayin.</p>
 
                 <div class="extension-box">
-                    <code>pg_trgm</code> breaks text into 3-character sequences (trigrams) for
-                    similarity comparison. Great for "did you mean?" features and autocomplete.
+                    <code>pg_trgm</code> metni benzerlik karsilastirmasi icin 3 karakterli dizilere (trigramlar) ayirir.
+                    "Bunu mu demek istediniz?" ozellikleri ve otomatik tamamlama icin harika.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: Similar Name Search</h4>
-                    <p>Build a search that finds matches even with typos or slight variations.</p>
+                    <h4>Alistirma 3.1: Benzer Isim Arama</h4>
+                    <p>Yazim hatalari veya kucuk farkliliklarda bile eslesme bulan bir arama olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable pg_trgm extension
+                        <pre><code class="language-sql">-- pg_trgm uzantisini etkinlestir
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
--- Sample products table
+-- Ornek urunler tablosu
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -706,21 +704,21 @@ CREATE TABLE products (
     category VARCHAR(100)
 );
 
--- Insert sample data
+-- Ornek veri ekle
 INSERT INTO products (name, description, category) VALUES
-    ('PostgreSQL Database', 'Open source relational database', 'Software'),
-    ('MySQL Server', 'Popular open source database', 'Software'),
-    ('Microsoft SQL Server', 'Enterprise database from Microsoft', 'Software'),
-    ('MongoDB Atlas', 'Cloud document database', 'Software'),
-    ('Apple MacBook Pro', 'Professional laptop computer', 'Hardware'),
-    ('Apple iPhone 15', 'Latest smartphone from Apple', 'Hardware'),
-    ('Samsung Galaxy S24', 'Android flagship phone', 'Hardware'),
-    ('Dell XPS Laptop', 'High-performance Windows laptop', 'Hardware');
+    ('PostgreSQL Database', 'Acik kaynakli iliskisel veritabani', 'Yazilim'),
+    ('MySQL Server', 'Populer acik kaynakli veritabani', 'Yazilim'),
+    ('Microsoft SQL Server', 'Microsoft kurumsal veritabani', 'Yazilim'),
+    ('MongoDB Atlas', 'Bulut belge veritabani', 'Yazilim'),
+    ('Apple MacBook Pro', 'Profesyonel dizustu bilgisayar', 'Donanim'),
+    ('Apple iPhone 15', 'Apple''in en son akilli telefonu', 'Donanim'),
+    ('Samsung Galaxy S24', 'Android amiral gemisi telefon', 'Donanim'),
+    ('Dell XPS Laptop', 'Yuksek performansli Windows dizustu', 'Donanim');
 
--- Create trigram index for fast similarity search
+-- Hizli benzerlik aramasi icin trigram indeksi olustur
 CREATE INDEX idx_products_name_trgm ON products USING gin (name gin_trgm_ops);
 
--- Basic similarity search (typo in "PostgresQL")
+-- Temel benzerlik aramasi ("PostgresQL" yazim hatasi)
 SELECT
     name,
     similarity(name, 'PostgresQL') AS sim_score
@@ -728,15 +726,15 @@ FROM products
 WHERE similarity(name, 'PostgresQL') > 0.3
 ORDER BY sim_score DESC;
 
--- Using % operator (requires similarity threshold)
--- Set threshold (default is 0.3)
+-- % operatorunu kullanma (benzerlik esigi gerektirir)
+-- Esigi ayarla (varsayilan 0.3)
 SET pg_trgm.similarity_threshold = 0.3;
 
 SELECT name
 FROM products
 WHERE name % 'Postgre SQL';
 
--- "Did you mean?" functionality
+-- "Bunu mu demek istediniz?" islevi
 CREATE OR REPLACE FUNCTION suggest_product(search_term VARCHAR)
 RETURNS TABLE(suggestion VARCHAR, similarity_score REAL) AS $$
 BEGIN
@@ -749,32 +747,33 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Test suggestions
+-- Onerileri test et
 SELECT * FROM suggest_product('Appel Macbook');
 SELECT * FROM suggest_product('Samsong Galaxy');
 
--- Word similarity (word_similarity for phrase matching)
+-- Kelime benzerlik (ifade eslestirme icin word_similarity)
 SELECT
     name,
     word_similarity('iPhone', name) AS word_sim
 FROM products
-WHERE 'iPhone' <% name  -- word_similarity operator
+WHERE 'iPhone' <% name  -- word_similarity operatoru
 ORDER BY word_sim DESC;
 
--- Autocomplete with trigram LIKE
+-- Trigram LIKE ile otomatik tamamlama
 SELECT name
 FROM products
 WHERE name ILIKE '%macb%'
 ORDER BY similarity(name, 'macb') DESC
 LIMIT 10;</code></pre>
 
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <div class="output-display">
--- Results for 'PostgresQL' search:
+-- 'PostgresQL' aramasi sonuclari:
 name                | sim_score
 --------------------+-----------
 PostgreSQL Database | 0.5714286
 
--- Results for 'Appel Macbook':
+-- 'Appel Macbook' sonuclari:
 suggestion        | similarity_score
 ------------------+-----------------
 Apple MacBook Pro | 0.35
@@ -784,25 +783,25 @@ Apple iPhone 15   | 0.15
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: Full-Text Search Enhancement</h4>
-                    <p>Combine pg_trgm with PostgreSQL's full-text search for powerful search capabilities.</p>
+                    <h4>Alistirma 3.2: Tam Metin Arama Gelistirmesi</h4>
+                    <p>Guclu arama yetenekleri icin pg_trgm'yi PostgreSQL'in tam metin aramasiyla birlestirin.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
-                        <pre><code class="language-sql">-- Add full-text search column
+                        <pre><code class="language-sql">-- Tam metin arama sutunu ekle
 ALTER TABLE products ADD COLUMN search_vector tsvector;
 
--- Update search vector
+-- Arama vektorunu guncelle
 UPDATE products SET search_vector =
     setweight(to_tsvector('english', name), 'A') ||
     setweight(to_tsvector('english', COALESCE(description, '')), 'B') ||
     setweight(to_tsvector('english', COALESCE(category, '')), 'C');
 
--- Create GIN indexes for both search types
+-- Her iki arama turu icin GIN indeksleri olustur
 CREATE INDEX idx_products_fts ON products USING gin(search_vector);
 CREATE INDEX idx_products_desc_trgm ON products USING gin(description gin_trgm_ops);
 
--- Combined search function
+-- Birlesik arama fonksiyonu
 CREATE OR REPLACE FUNCTION search_products(
     search_query VARCHAR,
     use_fuzzy BOOLEAN DEFAULT FALSE
@@ -815,7 +814,7 @@ RETURNS TABLE(
 ) AS $$
 BEGIN
     IF use_fuzzy THEN
-        -- Fuzzy search with trigrams
+        -- Trigramlarla bulanik arama
         RETURN QUERY
         SELECT
             p.product_id,
@@ -827,7 +826,7 @@ BEGIN
         ORDER BY rank DESC
         LIMIT 20;
     ELSE
-        -- Exact full-text search
+        -- Tam tam metin arama
         RETURN QUERY
         SELECT
             p.product_id,
@@ -842,10 +841,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Test exact search
+-- Tam aramayi test et
 SELECT * FROM search_products('database server');
 
--- Test fuzzy search (tolerates typos)
+-- Bulanik aramayi test et (yazim hatalarina toleransli)
 SELECT * FROM search_products('databse servr', TRUE);</code></pre>
                     </div>
                 </div>
@@ -853,24 +852,24 @@ SELECT * FROM search_products('databse servr', TRUE);</code></pre>
 
             <!-- Exercise 4: ltree for Hierarchies -->
             <section>
-                <h2 id="exercise-4">Exercise 4: Hierarchical Data with ltree</h2>
-                <p>Efficiently store and query tree-structured data like categories, org charts, or file paths.</p>
+                <h2 id="exercise-4">Alistirma 4: ltree ile Hiyerarsik Veri</h2>
+                <p>Kategoriler, organizasyon semalari veya dosya yollari gibi agac yapisindaki verileri verimli bir sekilde saklayin ve sorgulatin.</p>
 
                 <div class="extension-box">
-                    <code>ltree</code> provides a data type for label paths (like "A.B.C") with
-                    specialized operators for ancestor/descendant queries.
+                    <code>ltree</code> etiket yollari ("A.B.C" gibi) icin ata/torun sorgularina
+                    yonelik ozellestirilmis operatorlerle bir veri tipi saglar.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.1: Category Hierarchy</h4>
-                    <p>Build a product category system with efficient hierarchy queries.</p>
+                    <h4>Alistirma 4.1: Kategori Hiyerarsisi</h4>
+                    <p>Verimli hiyerarsi sorgulariyla bir urun kategori sistemi olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable ltree extension
+                        <pre><code class="language-sql">-- ltree uzantisini etkinlestir
 CREATE EXTENSION IF NOT EXISTS ltree;
 
--- Categories with hierarchical paths
+-- Hiyerarsik yollarla kategoriler
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -878,57 +877,57 @@ CREATE TABLE categories (
     description TEXT
 );
 
--- Create indexes for ltree queries
+-- ltree sorgulari icin indeksler olustur
 CREATE INDEX idx_categories_path_gist ON categories USING gist(path);
 CREATE INDEX idx_categories_path_btree ON categories USING btree(path);
 
--- Insert hierarchical categories
+-- Hiyerarsik kategorileri ekle
 INSERT INTO categories (name, path, description) VALUES
-    ('Root', 'root', 'Top-level category'),
-    ('Electronics', 'root.electronics', 'Electronic devices'),
-    ('Computers', 'root.electronics.computers', 'Computing devices'),
-    ('Laptops', 'root.electronics.computers.laptops', 'Portable computers'),
-    ('Desktops', 'root.electronics.computers.desktops', 'Desktop computers'),
-    ('Phones', 'root.electronics.phones', 'Mobile phones'),
-    ('Smartphones', 'root.electronics.phones.smartphones', 'Smart mobile phones'),
-    ('Clothing', 'root.clothing', 'Apparel and accessories'),
-    ('Men', 'root.clothing.men', 'Men clothing'),
-    ('Shirts', 'root.clothing.men.shirts', 'Men shirts'),
-    ('Pants', 'root.clothing.men.pants', 'Men pants'),
-    ('Women', 'root.clothing.women', 'Women clothing');
+    ('Kok', 'root', 'Ust duzey kategori'),
+    ('Elektronik', 'root.electronics', 'Elektronik cihazlar'),
+    ('Bilgisayarlar', 'root.electronics.computers', 'Bilgi islem cihazlari'),
+    ('Dizustular', 'root.electronics.computers.laptops', 'Tasinabilir bilgisayarlar'),
+    ('Masaustular', 'root.electronics.computers.desktops', 'Masaustu bilgisayarlar'),
+    ('Telefonlar', 'root.electronics.phones', 'Mobil telefonlar'),
+    ('Akilli Telefonlar', 'root.electronics.phones.smartphones', 'Akilli mobil telefonlar'),
+    ('Giyim', 'root.clothing', 'Giysi ve aksesuarlar'),
+    ('Erkek', 'root.clothing.men', 'Erkek giyim'),
+    ('Gomlekler', 'root.clothing.men.shirts', 'Erkek gomlekleri'),
+    ('Pantolonlar', 'root.clothing.men.pants', 'Erkek pantolonlari'),
+    ('Kadin', 'root.clothing.women', 'Kadin giyim');
 
--- Find all descendants of Electronics
+-- Elektronik'in tum torunlarini bul
 SELECT name, path
 FROM categories
 WHERE path <@ 'root.electronics'
 ORDER BY path;
 
--- Find all ancestors of Laptops
+-- Dizustular'in tum atalarini bul
 SELECT name, path
 FROM categories
 WHERE path @> 'root.electronics.computers.laptops'
 ORDER BY path;
 
--- Find direct children of a category
+-- Bir kategorinin dogrudan cocuklarini bul
 SELECT name, path
 FROM categories
-WHERE path ~ 'root.electronics.*{1}'  -- Exactly 1 level below
+WHERE path ~ 'root.electronics.*{1}'  -- Tam 1 seviye asagi
 ORDER BY path;
 
--- Find siblings (same parent)
+-- Kardes bul (ayni ebeveyn)
 SELECT name, path
 FROM categories
 WHERE path ~ 'root.electronics.computers.*{1}'
 ORDER BY path;
 
--- Get category depth
+-- Kategori derinligini al
 SELECT name, path, nlevel(path) AS depth
 FROM categories
 ORDER BY path;
 
--- Find common ancestor
+-- Ortak atayi bul
 SELECT lca('root.electronics.computers.laptops', 'root.electronics.phones.smartphones');
--- Returns: root.electronics</code></pre>
+-- Dondurur: root.electronics</code></pre>
 
                         <div class="tree-visual">
 root
@@ -948,12 +947,12 @@ root
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.2: Organizational Chart</h4>
-                    <p>Create an employee hierarchy with reporting structure queries.</p>
+                    <h4>Alistirma 4.2: Organizasyon Semasi</h4>
+                    <p>Raporlama yapisi sorgulariyla bir calisan hiyerarsisi olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
-                        <pre><code class="language-sql">-- Employees with hierarchy paths
+                        <pre><code class="language-sql">-- Hiyerarsi yollariyla calisanlar
 CREATE TABLE employees_org (
     employee_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -965,31 +964,31 @@ CREATE TABLE employees_org (
 
 CREATE INDEX idx_employees_path ON employees_org USING gist(path);
 
--- Insert organizational structure
+-- Organizasyon yapisini ekle
 INSERT INTO employees_org (name, title, department, path, hire_date) VALUES
-    ('Alice CEO', 'Chief Executive Officer', 'Executive', 'ceo', '2010-01-01'),
-    ('Bob CTO', 'Chief Technology Officer', 'Technology', 'ceo.cto', '2012-03-15'),
-    ('Carol CFO', 'Chief Financial Officer', 'Finance', 'ceo.cfo', '2013-06-01'),
-    ('Dave Engineering', 'VP Engineering', 'Technology', 'ceo.cto.eng_vp', '2015-02-01'),
-    ('Eve Design', 'Design Lead', 'Technology', 'ceo.cto.design', '2016-04-01'),
-    ('Frank Backend', 'Senior Developer', 'Technology', 'ceo.cto.eng_vp.backend', '2018-01-15'),
-    ('Grace Frontend', 'Senior Developer', 'Technology', 'ceo.cto.eng_vp.frontend', '2018-03-20'),
-    ('Henry QA', 'QA Lead', 'Technology', 'ceo.cto.eng_vp.qa', '2019-05-01'),
-    ('Ivy Accounting', 'Accounting Manager', 'Finance', 'ceo.cfo.accounting', '2017-08-01');
+    ('Ali CEO', 'Genel Mudur', 'Yonetim', 'ceo', '2010-01-01'),
+    ('Burak CTO', 'Teknoloji Muduru', 'Teknoloji', 'ceo.cto', '2012-03-15'),
+    ('Canan CFO', 'Finans Muduru', 'Finans', 'ceo.cfo', '2013-06-01'),
+    ('Deniz Muhendislik', 'Muhendislik Muduru', 'Teknoloji', 'ceo.cto.eng_vp', '2015-02-01'),
+    ('Elif Tasarim', 'Tasarim Lideri', 'Teknoloji', 'ceo.cto.design', '2016-04-01'),
+    ('Fatih Backend', 'Kidemli Gelistirici', 'Teknoloji', 'ceo.cto.eng_vp.backend', '2018-01-15'),
+    ('Gul Frontend', 'Kidemli Gelistirici', 'Teknoloji', 'ceo.cto.eng_vp.frontend', '2018-03-20'),
+    ('Hakan QA', 'QA Lideri', 'Teknoloji', 'ceo.cto.eng_vp.qa', '2019-05-01'),
+    ('Ipek Muhasebe', 'Muhasebe Muduru', 'Finans', 'ceo.cfo.accounting', '2017-08-01');
 
--- Get all reports (direct and indirect) under CTO
+-- CTO altindaki tum raporlari (dogrudan ve dolayli) al
 SELECT name, title, path
 FROM employees_org
 WHERE path <@ 'ceo.cto'
 ORDER BY path;
 
--- Get reporting chain for a specific employee
+-- Belirli bir calisan icin raporlama zincirini al
 SELECT name, title, nlevel(path) AS level
 FROM employees_org
 WHERE path @> 'ceo.cto.eng_vp.backend'
 ORDER BY path;
 
--- Count direct reports for each manager
+-- Her yonetici icin dogrudan rapor sayisi
 SELECT
     e.name AS manager,
     COUNT(*) AS direct_reports
@@ -998,7 +997,7 @@ JOIN employees_org reports ON reports.path ~ (e.path::text || '.*{1}')::lquery
 GROUP BY e.employee_id, e.name
 ORDER BY direct_reports DESC;
 
--- Find team size (all descendants) for each manager
+-- Her yonetici icin ekip buyuklugunu bul (tum torunlar)
 SELECT
     e.name AS manager,
     e.title,
@@ -1006,8 +1005,8 @@ SELECT
 FROM employees_org e
 ORDER BY team_size DESC;
 
--- Move an employee (and their subtree) to new manager
--- Example: Move Dave's team under CFO
+-- Bir calisani (ve alt agacini) yeni yoneticiye tasi
+-- Ornek: Deniz'in ekibini CFO altina tasi
 UPDATE employees_org
 SET path = 'ceo.cfo' || subpath(path, nlevel('ceo.cto.eng_vp') - 1)
 WHERE path <@ 'ceo.cto.eng_vp';</code></pre>
@@ -1017,24 +1016,24 @@ WHERE path <@ 'ceo.cto.eng_vp';</code></pre>
 
             <!-- Exercise 5: tablefunc for Pivot Tables -->
             <section>
-                <h2 id="exercise-5">Exercise 5: Pivot Tables with tablefunc</h2>
-                <p>Transform row-based data into columnar format for reports.</p>
+                <h2 id="exercise-5">Alistirma 5: tablefunc ile Pivot Tablolar</h2>
+                <p>Raporlar icin satir tabanli verileri sutun formatina donusturun.</p>
 
                 <div class="extension-box">
-                    <code>tablefunc</code> provides the <code>crosstab()</code> function for
-                    creating pivot tables - transforming rows into columns.
+                    <code>tablefunc</code> pivot tablolar - satirlari sutunlara donusturme - olusturmak icin
+                    <code>crosstab()</code> fonksiyonunu saglar.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 5.1: Sales Pivot Report</h4>
-                    <p>Create a sales report with products as rows and months as columns.</p>
+                    <h4>Alistirma 5.1: Satis Pivot Raporu</h4>
+                    <p>Urunleri satir, aylari sutun olarak gosteren bir satis raporu olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
                     <div id="solution5_1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable tablefunc extension
+                        <pre><code class="language-sql">-- tablefunc uzantisini etkinlestir
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
--- Sample sales data
+-- Ornek satis verileri
 CREATE TABLE sales (
     sale_id SERIAL PRIMARY KEY,
     product VARCHAR(50),
@@ -1043,26 +1042,26 @@ CREATE TABLE sales (
 );
 
 INSERT INTO sales (product, sale_month, amount) VALUES
-    ('Laptop', 'Jan', 15000),
-    ('Laptop', 'Feb', 18000),
+    ('Laptop', 'Oca', 15000),
+    ('Laptop', 'Sub', 18000),
     ('Laptop', 'Mar', 22000),
-    ('Phone', 'Jan', 8000),
-    ('Phone', 'Feb', 9500),
+    ('Phone', 'Oca', 8000),
+    ('Phone', 'Sub', 9500),
     ('Phone', 'Mar', 11000),
-    ('Tablet', 'Jan', 5000),
-    ('Tablet', 'Feb', 6000),
+    ('Tablet', 'Oca', 5000),
+    ('Tablet', 'Sub', 6000),
     ('Tablet', 'Mar', 7500),
-    ('Monitor', 'Jan', 3000),
-    ('Monitor', 'Feb', 3500),
+    ('Monitor', 'Oca', 3000),
+    ('Monitor', 'Sub', 3500),
     ('Monitor', 'Mar', 4000);
 
--- Basic crosstab (pivot) query
+-- Temel crosstab (pivot) sorgusu
 SELECT * FROM crosstab(
-    -- Source query: must return row_name, category, value
+    -- Kaynak sorgu: row_name, category, value dondurmeli
     'SELECT product, sale_month, amount
      FROM sales
      ORDER BY 1, 2',
-    -- Categories query: defines the columns
+    -- Kategoriler sorgusu: sutunlari tanimlar
     'SELECT DISTINCT sale_month FROM sales ORDER BY 1'
 ) AS ct (
     product VARCHAR(50),
@@ -1071,7 +1070,7 @@ SELECT * FROM crosstab(
     mar_sales DECIMAL
 );
 
--- Pivot with totals
+-- Toplamlarla pivot
 WITH pivoted AS (
     SELECT * FROM crosstab(
         'SELECT product, sale_month, amount FROM sales ORDER BY 1, 2',
@@ -1080,28 +1079,29 @@ WITH pivoted AS (
 )
 SELECT
     product,
-    COALESCE(jan, 0) AS january,
-    COALESCE(feb, 0) AS february,
-    COALESCE(mar, 0) AS march,
-    COALESCE(jan, 0) + COALESCE(feb, 0) + COALESCE(mar, 0) AS total
+    COALESCE(jan, 0) AS ocak,
+    COALESCE(feb, 0) AS subat,
+    COALESCE(mar, 0) AS mart,
+    COALESCE(jan, 0) + COALESCE(feb, 0) + COALESCE(mar, 0) AS toplam
 FROM pivoted
 UNION ALL
 SELECT
-    'TOTAL',
+    'TOPLAM',
     SUM(COALESCE(jan, 0)),
     SUM(COALESCE(feb, 0)),
     SUM(COALESCE(mar, 0)),
     SUM(COALESCE(jan, 0) + COALESCE(feb, 0) + COALESCE(mar, 0))
 FROM pivoted;</code></pre>
 
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <div class="output-display">
-product | january | february | march  | total
+product | ocak    | subat    | mart   | toplam
 --------+---------+----------+--------+--------
 Laptop  | 15000   | 18000    | 22000  | 55000
 Monitor | 3000    | 3500     | 4000   | 10500
 Phone   | 8000    | 9500     | 11000  | 28500
 Tablet  | 5000    | 6000     | 7500   | 18500
-TOTAL   | 31000   | 37000    | 44500  | 112500
+TOPLAM  | 31000   | 37000    | 44500  | 112500
                         </div>
                     </div>
                 </div>
@@ -1109,99 +1109,100 @@ TOTAL   | 31000   | 37000    | 44500  | 112500
 
             <!-- Exercise 6: PostGIS Basics -->
             <section>
-                <h2 id="exercise-6">Exercise 6: Spatial Data with PostGIS</h2>
-                <p>Work with geographic data for location-based applications.</p>
+                <h2 id="exercise-6">Alistirma 6: PostGIS ile Mekansal Veri</h2>
+                <p>Konum tabanli uygulamalar icin cografi verilerle calisin.</p>
 
                 <div class="extension-box">
-                    <code>PostGIS</code> is the premier spatial extension, adding support for
-                    geographic objects (points, lines, polygons) and spatial queries.
+                    <code>PostGIS</code> cografi nesneler (noktalar, cizgiler, cokgenler) ve mekansal sorgular icin
+                    destek ekleyen birincil mekansal uzantidir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 6.1: Store and Query Locations</h4>
-                    <p>Build a location-based service for finding nearby places.</p>
+                    <h4>Alistirma 6.1: Konumlari Saklama ve Sorgulama</h4>
+                    <p>Yakin yerleri bulmak icin konum tabanli bir hizmet olusturun.</p>
 
-                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Cozumu Goster</button>
                     <div id="solution6_1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable PostGIS extension
+                        <pre><code class="language-sql">-- PostGIS uzantisini etkinlestir
 CREATE EXTENSION IF NOT EXISTS postgis;
 
--- Stores with geographic locations
+-- Cografi konumlarla magazalar
 CREATE TABLE stores (
     store_id SERIAL PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
     address TEXT,
     city VARCHAR(100),
-    -- GEOMETRY(Point, 4326) - Point type with WGS84 coordinate system
+    -- GEOMETRY(Point, 4326) - WGS84 koordinat sistemiyle Nokta tipi
     location GEOMETRY(Point, 4326)
 );
 
--- Create spatial index
+-- Mekansal indeks olustur
 CREATE INDEX idx_stores_location ON stores USING gist(location);
 
--- Insert store locations (longitude, latitude)
+-- Magaza konumlarini ekle (boylam, enlem)
 INSERT INTO stores (name, address, city, location) VALUES
-    ('Downtown Store', '123 Main St', 'New York',
-     ST_SetSRID(ST_MakePoint(-74.0060, 40.7128), 4326)),
-    ('Brooklyn Branch', '456 Atlantic Ave', 'Brooklyn',
-     ST_SetSRID(ST_MakePoint(-73.9862, 40.6892), 4326)),
-    ('Queens Location', '789 Queens Blvd', 'Queens',
-     ST_SetSRID(ST_MakePoint(-73.8448, 40.7282), 4326)),
-    ('Manhattan Express', '321 5th Ave', 'New York',
-     ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)),
-    ('Jersey City Store', '555 Grove St', 'Jersey City',
-     ST_SetSRID(ST_MakePoint(-74.0431, 40.7178), 4326));
+    ('Merkez Magaza', 'Istiklal Cad. 123', 'Istanbul',
+     ST_SetSRID(ST_MakePoint(28.9784, 41.0082), 4326)),
+    ('Kadikoy Sube', 'Bagdat Cad. 456', 'Kadikoy',
+     ST_SetSRID(ST_MakePoint(29.0225, 40.9862), 4326)),
+    ('Besiktas Magaza', 'Barbaros Blv. 789', 'Besiktas',
+     ST_SetSRID(ST_MakePoint(29.0027, 41.0432), 4326)),
+    ('Taksim Ekspres', 'Taksim Mey. 321', 'Istanbul',
+     ST_SetSRID(ST_MakePoint(28.9857, 41.0370), 4326)),
+    ('Uskudar Magaza', 'Uskudar Mey. 555', 'Uskudar',
+     ST_SetSRID(ST_MakePoint(29.0152, 41.0234), 4326));
 
--- Find stores within 5km of a location (Times Square)
+-- Bir konumun 5km yakinindaki magazalari bul (Taksim Meydani)
 SELECT
     name,
     city,
     ROUND(ST_Distance(
         location::geography,
-        ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)::geography
+        ST_SetSRID(ST_MakePoint(28.9855, 41.0370), 4326)::geography
     )::numeric) AS distance_meters
 FROM stores
 WHERE ST_DWithin(
     location::geography,
-    ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)::geography,
-    5000  -- 5000 meters = 5km
+    ST_SetSRID(ST_MakePoint(28.9855, 41.0370), 4326)::geography,
+    5000  -- 5000 metre = 5km
 )
 ORDER BY distance_meters;
 
--- Find the nearest store to a given location
+-- Verilen konuma en yakin magazayi bul
 SELECT
     name,
     city,
     ROUND(ST_Distance(
         location::geography,
-        ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)::geography
+        ST_SetSRID(ST_MakePoint(28.9855, 41.0370), 4326)::geography
     )::numeric) AS distance_meters
 FROM stores
-ORDER BY location <-> ST_SetSRID(ST_MakePoint(-73.9855, 40.7580), 4326)
+ORDER BY location <-> ST_SetSRID(ST_MakePoint(28.9855, 41.0370), 4326)
 LIMIT 1;
 
--- Find all stores within a bounding box (polygon)
+-- Bir sinirlayici kutu (cokgen) icindeki tum magazalari bul
 SELECT name, city
 FROM stores
 WHERE ST_Within(
     location,
-    ST_MakeEnvelope(-74.1, 40.6, -73.9, 40.8, 4326)
+    ST_MakeEnvelope(28.9, 40.9, 29.1, 41.1, 4326)
 );
 
--- Calculate distance between two stores
+-- Iki magaza arasindaki mesafeyi hesapla
 SELECT
     ROUND(ST_Distance(
-        (SELECT location::geography FROM stores WHERE name = 'Downtown Store'),
-        (SELECT location::geography FROM stores WHERE name = 'Brooklyn Branch')
+        (SELECT location::geography FROM stores WHERE name = 'Merkez Magaza'),
+        (SELECT location::geography FROM stores WHERE name = 'Kadikoy Sube')
     )::numeric) AS distance_meters;</code></pre>
 
+                        <p><strong>Beklenen Sonuc:</strong></p>
                         <div class="output-display">
--- Stores within 5km of Times Square:
-name              | city     | distance_meters
-------------------+----------+----------------
-Manhattan Express | New York | 1074
-Downtown Store    | New York | 3823
-Brooklyn Branch   | Brooklyn | 4918
+-- Taksim Meydaninin 5km yakinindaki magazalar:
+name              | city      | distance_meters
+------------------+-----------+----------------
+Taksim Ekspres    | Istanbul  | 15
+Merkez Magaza     | Istanbul  | 3205
+Besiktas Magaza   | Besiktas  | 1523
                         </div>
                     </div>
                 </div>
@@ -1209,43 +1210,43 @@ Brooklyn Branch   | Brooklyn | 4918
 
             <!-- Challenge Exercises -->
             <section>
-                <h2 id="challenge-exercises">Challenge Exercises</h2>
-                <p>Apply multiple extensions to solve complex problems.</p>
+                <h2 id="challenge-exercises">Zorluk Alistirmalari</h2>
+                <p>Karmasik problemleri cozmek icin birden fazla uzanti uygulayin.</p>
 
                 <div class="challenge-box">
-                    <h4>Challenge 1: Secure User System</h4>
-                    <p>Build a complete secure user system using multiple extensions:</p>
+                    <h4>Zorluk 1: Guvenli Kullanici Sistemi</h4>
+                    <p>Birden fazla uzanti kullanarak eksiksiz bir guvenli kullanici sistemi olusturun:</p>
                     <ul>
-                        <li>UUID primary keys (<code>uuid-ossp</code>)</li>
-                        <li>Bcrypt password hashing (<code>pgcrypto</code>)</li>
-                        <li>Encrypted sensitive data (<code>pgcrypto</code>)</li>
-                        <li>Searchable usernames with typo tolerance (<code>pg_trgm</code>)</li>
+                        <li>UUID birincil anahtarlar (<code>uuid-ossp</code>)</li>
+                        <li>Bcrypt parola hashleme (<code>pgcrypto</code>)</li>
+                        <li>Sifrelenmi hassas veriler (<code>pgcrypto</code>)</li>
+                        <li>Yazim hatasina toleransli aranabilir kullanici adlari (<code>pg_trgm</code>)</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
-                        <pre><code class="language-sql">-- Enable required extensions
+                        <pre><code class="language-sql">-- Gerekli uzantilari etkinlestir
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
--- Secure users table
+-- Guvenli kullanicilar tablosu
 CREATE TABLE secure_users (
     user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    phone_encrypted BYTEA,  -- Encrypted phone number
+    phone_encrypted BYTEA,  -- Sifrelenmi telefon numarasi
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE
 );
 
--- Trigram index for fuzzy username search
+-- Bulanik kullanici adi aramasi icin trigram indeksi
 CREATE INDEX idx_secure_users_username_trgm
 ON secure_users USING gin(username gin_trgm_ops);
 
--- Register user function
+-- Kullanici kayit fonksiyonu
 CREATE OR REPLACE FUNCTION create_secure_user(
     p_username VARCHAR,
     p_email VARCHAR,
@@ -1277,7 +1278,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Login function
+-- Giris fonksiyonu
 CREATE OR REPLACE FUNCTION login_user(
     p_username VARCHAR,
     p_password VARCHAR
@@ -1291,7 +1292,7 @@ RETURNS TABLE(
 DECLARE
     v_user_id UUID;
 BEGIN
-    -- Verify credentials
+    -- Kimlik bilgilerini dogrula
     SELECT su.user_id INTO v_user_id
     FROM secure_users su
     WHERE su.username = p_username
@@ -1302,11 +1303,11 @@ BEGIN
         RETURN;
     END IF;
 
-    -- Update last login
+    -- Son girisi guncelle
     UPDATE secure_users SET last_login = CURRENT_TIMESTAMP
     WHERE secure_users.user_id = v_user_id;
 
-    -- Return user info with session token
+    -- Oturum tokeniyle kullanici bilgisini dondur
     RETURN QUERY
     SELECT
         su.user_id,
@@ -1318,7 +1319,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Search users with fuzzy matching
+-- Bulanik eslestirmeyle kullanici ara
 CREATE OR REPLACE FUNCTION search_users(
     search_term VARCHAR,
     similarity_threshold REAL DEFAULT 0.3
@@ -1342,34 +1343,34 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Usage
+-- Kullanim
 SELECT create_secure_user('john_doe', 'john@example.com', 'SecureP@ss123', '555-1234');
 SELECT create_secure_user('jane_smith', 'jane@example.com', 'AnotherP@ss456');
 
 SELECT * FROM login_user('john_doe', 'SecureP@ss123');
-SELECT * FROM search_users('jon doe');  -- Finds 'john_doe' despite typo</code></pre>
+SELECT * FROM search_users('jon doe');  -- Yazim hatasina ragmen 'john_doe' bulur</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 2: E-commerce with Hierarchy and Location</h4>
-                    <p>Create a product catalog with:</p>
+                    <h4>Zorluk 2: Hiyerarsi ve Konumlu E-ticaret</h4>
+                    <p>Asagidakilerle bir urun katalogu olusturun:</p>
                     <ul>
-                        <li>Hierarchical categories (<code>ltree</code>)</li>
-                        <li>Fuzzy product search (<code>pg_trgm</code>)</li>
-                        <li>Store locations for pickup (<code>PostGIS</code>)</li>
-                        <li>Sales pivot reports (<code>tablefunc</code>)</li>
+                        <li>Hiyerarsik kategoriler (<code>ltree</code>)</li>
+                        <li>Bulanik urun arama (<code>pg_trgm</code>)</li>
+                        <li>Teslim alma icin magaza konumlari (<code>PostGIS</code>)</li>
+                        <li>Satis pivot raporlari (<code>tablefunc</code>)</li>
                     </ul>
 
-                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
                     <div id="challenge2" class="solution-box">
-                        <pre><code class="language-sql">-- Enable all required extensions
+                        <pre><code class="language-sql">-- Tum gerekli uzantilari etkinlestir
 CREATE EXTENSION IF NOT EXISTS ltree;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
--- Categories with hierarchy
+-- Hiyerarsiyle kategoriler
 CREATE TABLE product_categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -1379,16 +1380,16 @@ CREATE TABLE product_categories (
 CREATE INDEX idx_cat_path ON product_categories USING gist(path);
 
 INSERT INTO product_categories (name, path) VALUES
-    ('All Products', 'all'),
-    ('Electronics', 'all.electronics'),
-    ('Computers', 'all.electronics.computers'),
-    ('Laptops', 'all.electronics.computers.laptops'),
-    ('Phones', 'all.electronics.phones'),
-    ('Clothing', 'all.clothing'),
-    ('Men', 'all.clothing.men'),
-    ('Women', 'all.clothing.women');
+    ('Tum Urunler', 'all'),
+    ('Elektronik', 'all.electronics'),
+    ('Bilgisayarlar', 'all.electronics.computers'),
+    ('Dizustular', 'all.electronics.computers.laptops'),
+    ('Telefonlar', 'all.electronics.phones'),
+    ('Giyim', 'all.clothing'),
+    ('Erkek', 'all.clothing.men'),
+    ('Kadin', 'all.clothing.women');
 
--- Products with category reference
+-- Kategori referansiyla urunler
 CREATE TABLE catalog_products (
     product_id SERIAL PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -1401,14 +1402,14 @@ CREATE INDEX idx_prod_name_trgm ON catalog_products USING gin(name gin_trgm_ops)
 CREATE INDEX idx_prod_category ON catalog_products USING gist(category_path);
 
 INSERT INTO catalog_products (name, description, price, category_path) VALUES
-    ('MacBook Pro 16"', 'Apple laptop with M3 chip', 2499.00, 'all.electronics.computers.laptops'),
-    ('Dell XPS 15', 'Windows laptop with Intel Core', 1799.00, 'all.electronics.computers.laptops'),
-    ('iPhone 15 Pro', 'Latest Apple smartphone', 1199.00, 'all.electronics.phones'),
-    ('Samsung Galaxy S24', 'Android flagship phone', 999.00, 'all.electronics.phones'),
-    ('Men Oxford Shirt', 'Classic cotton dress shirt', 79.00, 'all.clothing.men'),
-    ('Women Blazer', 'Professional wool blazer', 199.00, 'all.clothing.women');
+    ('MacBook Pro 16"', 'M3 cipli Apple dizustu', 2499.00, 'all.electronics.computers.laptops'),
+    ('Dell XPS 15', 'Intel Core islemcili Windows dizustu', 1799.00, 'all.electronics.computers.laptops'),
+    ('iPhone 15 Pro', 'Apple''in en son akilli telefonu', 1199.00, 'all.electronics.phones'),
+    ('Samsung Galaxy S24', 'Android amiral gemisi telefon', 999.00, 'all.electronics.phones'),
+    ('Erkek Oxford Gomlek', 'Klasik pamuklu resmi gomlek', 79.00, 'all.clothing.men'),
+    ('Kadin Blazer', 'Profesyonel yun ceket', 199.00, 'all.clothing.women');
 
--- Stores with locations
+-- Konumlarla magazalar
 CREATE TABLE pickup_stores (
     store_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -1418,11 +1419,11 @@ CREATE TABLE pickup_stores (
 CREATE INDEX idx_store_loc ON pickup_stores USING gist(location);
 
 INSERT INTO pickup_stores (name, location) VALUES
-    ('Central Store', ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)),
-    ('East Side Store', ST_SetSRID(ST_MakePoint(-73.9632, 40.7794), 4326)),
-    ('West Side Store', ST_SetSRID(ST_MakePoint(-74.0060, 40.7282), 4326));
+    ('Merkez Magaza', ST_SetSRID(ST_MakePoint(28.9857, 41.0370), 4326)),
+    ('Dogu Magaza', ST_SetSRID(ST_MakePoint(29.0632, 41.0294), 4326)),
+    ('Bati Magaza', ST_SetSRID(ST_MakePoint(28.9060, 41.0182), 4326));
 
--- Monthly sales
+-- Aylik satislar
 CREATE TABLE monthly_sales (
     product_id INTEGER REFERENCES catalog_products(product_id),
     sale_month VARCHAR(7) NOT NULL,  -- 'YYYY-MM'
@@ -1435,7 +1436,7 @@ INSERT INTO monthly_sales VALUES
     (2, '2024-01', 40, 71960), (2, '2024-02', 55, 98945), (2, '2024-03', 70, 125930),
     (3, '2024-01', 100, 119900), (3, '2024-02', 120, 143880), (3, '2024-03', 150, 179850);
 
--- Combined search function
+-- Birlesik arama fonksiyonu
 CREATE OR REPLACE FUNCTION search_catalog(
     search_term VARCHAR,
     category_filter LTREE DEFAULT 'all',
@@ -1481,72 +1482,72 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Search with location
-SELECT * FROM search_catalog('macbook', 'all.electronics', 40.7580, -73.9855);
+-- Konumla arama
+SELECT * FROM search_catalog('macbook', 'all.electronics', 41.0370, 28.9855);
 
--- Sales pivot by month
+-- Aya gore satis pivotu
 SELECT * FROM crosstab(
     $$SELECT p.name, ms.sale_month, ms.revenue
       FROM monthly_sales ms
       JOIN catalog_products p ON ms.product_id = p.product_id
       ORDER BY 1, 2$$,
     $$VALUES ('2024-01'), ('2024-02'), ('2024-03')$$
-) AS ct(product VARCHAR, jan_2024 DECIMAL, feb_2024 DECIMAL, mar_2024 DECIMAL);</code></pre>
+) AS ct(product VARCHAR, oca_2024 DECIMAL, sub_2024 DECIMAL, mar_2024 DECIMAL);</code></pre>
                     </div>
                 </div>
             </section>
 
             <!-- Key Takeaways -->
             <section>
-                <h2 id="key-takeaways">Key Takeaways</h2>
+                <h2 id="key-takeaways">Onemli Noktalar</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Extension</th>
-                            <th>Best Used For</th>
-                            <th>Key Tip</th>
+                            <th>Uzanti</th>
+                            <th>En Iyi Kullanim</th>
+                            <th>Onemli Ipucu</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><span class="ext-badge">pgcrypto</span></td>
-                            <td>Password hashing, data encryption</td>
-                            <td>Use bcrypt (<code>gen_salt('bf')</code>) for passwords, never MD5/SHA alone</td>
+                            <td>Parola hashleme, veri sifreleme</td>
+                            <td>Parolalar icin bcrypt (<code>gen_salt('bf')</code>) kullanin, asla tek basina MD5/SHA kullanmayin</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">uuid-ossp</span></td>
-                            <td>Distributed IDs, API resources</td>
-                            <td>V4 is random; use <code>gen_random_uuid()</code> in PostgreSQL 13+</td>
+                            <td>Dagitik kimlikler, API kaynaklari</td>
+                            <td>V4 rastgeledir; PostgreSQL 13+'da <code>gen_random_uuid()</code> kullanin</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">pg_trgm</span></td>
-                            <td>Fuzzy search, autocomplete</td>
-                            <td>Create GIN index with <code>gin_trgm_ops</code> for performance</td>
+                            <td>Bulanik arama, otomatik tamamlama</td>
+                            <td>Performans icin <code>gin_trgm_ops</code> ile GIN indeksi olusturun</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">ltree</span></td>
-                            <td>Categories, org charts, file paths</td>
-                            <td>Use GiST index; <code><@</code> for descendants, <code>@></code> for ancestors</td>
+                            <td>Kategoriler, org semalari, dosya yollari</td>
+                            <td>GiST indeksi kullanin; torunlar icin <code><@</code>, atalar icin <code>@></code></td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">hstore</span></td>
-                            <td>Legacy key-value storage</td>
-                            <td>Prefer JSONB for new projects; hstore is simpler but less flexible</td>
+                            <td>Eski anahtar-deger depolama</td>
+                            <td>Yeni projeler icin JSONB tercih edin; hstore daha basit ama daha az esnek</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">tablefunc</span></td>
-                            <td>Pivot tables, cross-tabulations</td>
-                            <td>Define output columns explicitly; handle NULLs with COALESCE</td>
+                            <td>Pivot tablolar, carpraz tablolama</td>
+                            <td>Cikis sutunlarini acikca tanimlayin; NULL'lari COALESCE ile yonetin</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">PostGIS</span></td>
-                            <td>Location queries, mapping</td>
-                            <td>Cast to <code>::geography</code> for accurate distance in meters</td>
+                            <td>Konum sorgulari, haritalama</td>
+                            <td>Metre cinsinden dogru mesafe icin <code>::geography</code>'ye donusturun</td>
                         </tr>
                         <tr>
                             <td><span class="ext-badge">pg_stat_statements</span></td>
-                            <td>Query performance monitoring</td>
-                            <td>Requires <code>shared_preload_libraries</code> setting in postgresql.conf</td>
+                            <td>Sorgu performans izleme</td>
+                            <td>postgresql.conf'ta <code>shared_preload_libraries</code> ayari gerektirir</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1554,7 +1555,7 @@ SELECT * FROM crosstab(
 
             <!-- Navigation -->
             <section>
-                <p><a href="03_database_extensibility_and_postgresql_extensions.html">&larr; Back to PostgreSQL Extensions Lesson</a></p>
+                <p><a href="03_database_extensibility_and_postgresql_extensions.html">&larr; PostgreSQL Uzantilari Dersine Don</a></p>
             </section>
         </div>
     </div>
@@ -1569,10 +1570,10 @@ SELECT * FROM crosstab(
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>
