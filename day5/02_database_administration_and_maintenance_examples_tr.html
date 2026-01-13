@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -11,7 +11,7 @@
     rel="shortcut icon" type="image/x-icon">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 5: Database Administration and Maintenance - Practical Examples</title>
+  <title>Gun 5: Veritabani Yonetimi ve Bakimi - Pratik Ornekler</title>
   <style>
     .exercise-box {
       border: 2px solid #0d6efd;
@@ -85,6 +85,7 @@
       padding: 15px;
       margin: 20px 0;
     }
+
     .language-switcher { position: fixed; top: 10px; right: 10px; z-index: 1000; background: #fff; padding: 5px 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
     .language-switcher a { text-decoration: none; padding: 5px 10px; margin: 0 2px; border-radius: 3px; color: #333; }
     .language-switcher a.active { background: #0d6efd; color: #fff; }
@@ -94,10 +95,11 @@
 
 <body>
   <div class="language-switcher">
-    <a href="02_database_administration_and_maintenance_examples.html" class="active">EN</a>
-    <a href="02_database_administration_and_maintenance_examples_tr.html">TR</a>
+    <a href="02_database_administration_and_maintenance_examples.html">EN</a>
+    <a href="02_database_administration_and_maintenance_examples_tr.html" class="active">TR</a>
   </div>
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
@@ -118,30 +120,29 @@
     <div class="container">
 
       <section>
-        <h1>Day 5: Database Administration and Maintenance</h1>
-        <h2>Practical Examples and Exercises</h2>
-        <p class="lead">Master PostgreSQL database administration with hands-on exercises covering backup strategies,
-          PITR, maintenance, security, high availability, and scaling.</p>
+        <h1>Gun 5: Veritabani Yonetimi ve Bakimi</h1>
+        <h2>Pratik Ornekler ve Alistirmalar</h2>
+        <p class="lead">Yedekleme stratejileri, PITR, bakim, guvenlik, yuksek kullanilabilirlik ve olceklendirme konularini kapsayan uygulamali alistirmalarla PostgreSQL veritabani yonetiminde ustalasin.</p>
 
         <div class="concept-box">
-          <strong>Learning Objectives:</strong>
+          <strong>Ogrenme Hedefleri:</strong>
           <ul class="mb-0">
-            <li>Create and validate database backups using pg_dump and pg_restore</li>
-            <li>Configure and perform Point-in-Time Recovery (PITR)</li>
-            <li>Monitor and maintain database health with VACUUM and statistics</li>
-            <li>Implement security best practices including roles and Row-Level Security</li>
-            <li>Set up and monitor replication for high availability</li>
-            <li>Design scaling strategies with partitioning and connection pooling</li>
+            <li>pg_dump ve pg_restore kullanarak veritabani yedeklemeleri olusturma ve dogrulama</li>
+            <li>Zamanda Nokta Kurtarma (PITR) yapilandirma ve gerceklestirme</li>
+            <li>VACUUM ve istatistiklerle veritabani sagligini izleme ve koruma</li>
+            <li>Roller ve Satir Duzeyi Guvenlik dahil guvenlik en iyi uygulamalarini uygulama</li>
+            <li>Yuksek kullanilabilirlik icin replikasyonu kurma ve izleme</li>
+            <li>Bolümleme ve baglanti havuzlama ile olceklendirme stratejileri tasarlama</li>
           </ul>
         </div>
       </section>
 
       <section>
-        <h3>Sample Database Schema</h3>
-        <p>We'll use the following sample datasets for our administration exercises:</p>
+        <h3>Ornek Veritabani Semasi</h3>
+        <p>Yonetim alistirmalarimiz icin asagidaki ornek veri setlerini kullanacagiz:</p>
 
         <div class="sample-data">
-          <h5><span class="badge bg-primary">Admin Test Database</span></h5>
+          <h5><span class="badge bg-primary">Yonetici Test Veritabani</span></h5>
           <pre><code class="language-sql">-- Create sample tables for DBA exercises
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
@@ -230,29 +231,29 @@ INSERT INTO order_items (order_id, product_id, quantity, price) VALUES
         </div>
       </section>
 
-      <!-- PART 1: Backup and Recovery -->
+      <!-- BOLUM 1: Yedekleme ve Kurtarma -->
       <section>
-        <h3 id="part1">Part 1: Backup and Recovery</h3>
-        <p>Practice creating and restoring database backups using PostgreSQL tools.</p>
+        <h3 id="part1">Bolum 1: Yedekleme ve Kurtarma</h3>
+        <p>PostgreSQL araclariyla veritabani yedeklemeleri olusturma ve geri yukleme pratigi yapin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 1.1: Logical Backup Commands</h4>
-          <p><strong>Scenario:</strong> You need to create various backup scripts for your production database.
-            Write the appropriate pg_dump commands for each scenario.</p>
+          <h4>Alistirma 1.1: Mantiksal Yedekleme Komutlari</h4>
+          <p><strong>Senaryo:</strong> Uretim veritabaniniz icin cesitli yedekleme betikleri olusturmaniz gerekiyor.
+            Her senaryo icin uygun pg_dump komutlarini yazin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Create a backup command for the entire database in custom format with compression</li>
-            <li>Create a backup command for only the <code>customers</code> and <code>orders</code> tables</li>
-            <li>Create a backup command that includes only the schema (no data)</li>
-            <li>Create a backup command for data only (no schema)</li>
+            <li>Sikistirma ile ozel formatta tum veritabani icin bir yedekleme komutu olusturun</li>
+            <li>Yalnizca <code>customers</code> ve <code>orders</code> tablolari icin bir yedekleme komutu olusturun</li>
+            <li>Yalnizca semayi iceren (veri olmadan) bir yedekleme komutu olusturun</li>
+            <li>Yalnizca veriyi iceren (sema olmadan) bir yedekleme komutu olusturun</li>
           </ol>
 
           <div class="hint-box">
-            <strong>Hint:</strong> pg_dump supports formats: plain (-Fp), custom (-Fc), directory (-Fd), tar (-Ft)
+            <strong>Ipucu:</strong> pg_dump su formatlari destekler: duz (-Fp), ozel (-Fc), dizin (-Fd), tar (-Ft)
           </div>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
           <div id="sol1_1" class="solution-box">
             <pre><code class="language-bash"># 1. Full database backup in custom format with compression
 pg_dump -Fc -Z9 -f backup_full.dump dbname
@@ -279,18 +280,18 @@ pg_dump -T audit_log -Fc -f backup_no_audit.dump dbname</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.2: Restore Operations</h4>
-          <p><strong>Scenario:</strong> You have a backup file and need to restore it in different ways.</p>
+          <h4>Alistirma 1.2: Geri Yukleme Islemleri</h4>
+          <p><strong>Senaryo:</strong> Bir yedekleme dosyaniz var ve farkli sekillerde geri yuklemeniz gerekiyor.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Write a command to list the contents of a backup file without restoring</li>
-            <li>Write a command to restore only the <code>customers</code> table from a backup</li>
-            <li>Write a command to restore with parallel jobs for faster processing</li>
-            <li>Write a command to restore to a different database</li>
+            <li>Geri yuklemeden bir yedekleme dosyasinin icerigini listelemek icin bir komut yazin</li>
+            <li>Bir yedeklemeden yalnizca <code>customers</code> tablosunu geri yuklemek icin bir komut yazin</li>
+            <li>Daha hizli islem icin paralel is parcaciklariyla geri yukleme komutu yazin</li>
+            <li>Farkli bir veritabanina geri yuklemek icin bir komut yazin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_2')">Cozumu Goster</button>
           <div id="sol1_2" class="solution-box">
             <pre><code class="language-bash"># 1. List backup contents (for inspection)
 pg_restore --list backup_full.dump
@@ -321,19 +322,19 @@ pg_restore --list backup_full.dump > /dev/null && echo "Backup is valid"</code><
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 1.3: Backup Validation Script</h4>
-          <p><strong>Scenario:</strong> Create a backup validation procedure that tests if a backup is restorable.</p>
+          <h4>Alistirma 1.3: Yedekleme Dogrulama Betigi</h4>
+          <p><strong>Senaryo:</strong> Bir yedegin geri yuklenebilir olup olmadigini test eden bir yedekleme dogrulama proseduru olusturun.</p>
 
-          <p><strong>Write a shell script that:</strong></p>
+          <p><strong>Asagidakileri yapan bir kabuk betigi yazin:</strong></p>
           <ol>
-            <li>Creates a test database</li>
-            <li>Restores the backup to the test database</li>
-            <li>Runs validation queries to check data integrity</li>
-            <li>Drops the test database</li>
-            <li>Reports success or failure</li>
+            <li>Bir test veritabani olusturur</li>
+            <li>Yedegi test veritabanina geri yukler</li>
+            <li>Veri butunlugunu kontrol etmek icin dogrulama sorgulari calistirir</li>
+            <li>Test veritabanini siler</li>
+            <li>Basari veya basarisizlik bildirir</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_3')">Cozumu Goster</button>
           <div id="sol1_3" class="solution-box">
             <pre><code class="language-bash">#!/bin/bash
 # backup_validation.sh - Validate PostgreSQL backup
@@ -401,23 +402,23 @@ exit 0</code></pre>
         </div>
       </section>
 
-      <!-- PART 2: Point-in-Time Recovery -->
+      <!-- BOLUM 2: Zamanda Nokta Kurtarma -->
       <section>
-        <h3 id="part2">Part 2: Point-in-Time Recovery (PITR)</h3>
-        <p>Learn to configure and perform Point-in-Time Recovery.</p>
+        <h3 id="part2">Bolum 2: Zamanda Nokta Kurtarma (PITR)</h3>
+        <p>Zamanda Nokta Kurtarma yapilandirmayi ve gerceklestirmeyi ogrenin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 2.1: WAL Archiving Configuration</h4>
-          <p><strong>Scenario:</strong> Configure WAL archiving for PITR capability.</p>
+          <h4>Alistirma 2.1: WAL Arsivleme Yapilandirmasi</h4>
+          <p><strong>Senaryo:</strong> PITR yetenegi icin WAL arsivlemeyi yapilandirin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Write the postgresql.conf settings needed to enable WAL archiving</li>
-            <li>Create a simple archive_command that copies WAL files to a backup location</li>
-            <li>Write a query to check if WAL archiving is properly configured</li>
+            <li>WAL arsivlemeyi etkinlestirmek icin gereken postgresql.conf ayarlarini yazin</li>
+            <li>WAL dosyalarini bir yedekleme konumuna kopyalayan basit bir archive_command olusturun</li>
+            <li>WAL arsivlemenin duzgun yapilandirilip yapilandirilmadigini kontrol eden bir sorgu yazin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
           <div id="sol2_1" class="solution-box">
             <pre><code class="language-sql">-- postgresql.conf settings for WAL archiving
 
@@ -462,17 +463,17 @@ FROM pg_stat_archiver;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.2: Creating Restore Points</h4>
-          <p><strong>Scenario:</strong> Before performing major database operations, create named restore points.</p>
+          <h4>Alistirma 2.2: Geri Yukleme Noktalari Olusturma</h4>
+          <p><strong>Senaryo:</strong> Buyuk veritabani islemlerini gerceklestirmeden once adlandirilmis geri yukleme noktalari olusturun.</p>
 
-          <p><strong>Write SQL commands to:</strong></p>
+          <p><strong>Asagidakileri yapan SQL komutlari yazin:</strong></p>
           <ol>
-            <li>Create a named restore point before a bulk data load</li>
-            <li>Create a restore point before schema changes</li>
-            <li>Query the current WAL position for documentation</li>
+            <li>Toplu veri yuklemeden once adlandirilmis bir geri yukleme noktasi olusturun</li>
+            <li>Sema degisikliklerinden once bir geri yukleme noktasi olusturun</li>
+            <li>Dokumantasyon icin mevcut WAL konumunu sorgulayın</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_2')">Cozumu Goster</button>
           <div id="sol2_2" class="solution-box">
             <pre><code class="language-sql">-- 1. Create named restore point before bulk data load
 SELECT pg_create_restore_point('before_data_load_2024_01_15');
@@ -513,17 +514,17 @@ SELECT * FROM create_documented_restore_point('before_major_update');</code></pr
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 2.3: PITR Recovery Configuration</h4>
-          <p><strong>Scenario:</strong> An accidental deletion occurred at 2:45 PM. Configure recovery to 2:44 PM.</p>
+          <h4>Alistirma 2.3: PITR Kurtarma Yapilandirmasi</h4>
+          <p><strong>Senaryo:</strong> Saat 14:45'te yanlislikla bir silme islemi gerceklesti. Saat 14:44'e kurtarma yapilandirin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Write the recovery configuration for PostgreSQL 12+</li>
-            <li>Write recovery configuration to restore to a named restore point</li>
-            <li>Write recovery configuration to restore to a specific transaction ID</li>
+            <li>PostgreSQL 12+ icin kurtarma yapilandirmasini yazin</li>
+            <li>Adlandirilmis bir geri yukleme noktasina geri yuklemek icin kurtarma yapilandirmasi yazin</li>
+            <li>Belirli bir islem kimligine (transaction ID) geri yuklemek icin kurtarma yapilandirmasi yazin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol2_3')">Cozumu Goster</button>
           <div id="sol2_3" class="solution-box">
             <pre><code class="language-bash"># For PostgreSQL 12+, add to postgresql.conf:
 
@@ -585,23 +586,23 @@ psql -c "SELECT pg_is_in_recovery();"
         </div>
       </section>
 
-      <!-- PART 3: Database Maintenance -->
+      <!-- BOLUM 3: Veritabani Bakimi -->
       <section>
-        <h3 id="part3">Part 3: Database Maintenance and Monitoring</h3>
-        <p>Practice essential database maintenance tasks.</p>
+        <h3 id="part3">Bolum 3: Veritabani Bakimi ve Izleme</h3>
+        <p>Temel veritabani bakim gorevlerini pratik yapin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 3.1: VACUUM and ANALYZE Operations</h4>
-          <p><strong>Scenario:</strong> Monitor and optimize table health using VACUUM and statistics.</p>
+          <h4>Alistirma 3.1: VACUUM ve ANALYZE Islemleri</h4>
+          <p><strong>Senaryo:</strong> VACUUM ve istatistikleri kullanarak tablo sagligini izleyin ve optimize edin.</p>
 
-          <p><strong>Write queries to:</strong></p>
+          <p><strong>Asagidakileri yapan sorgular yazin:</strong></p>
           <ol>
-            <li>Find tables with the most dead tuples (candidates for VACUUM)</li>
-            <li>Check when tables were last vacuumed and analyzed</li>
-            <li>Configure custom autovacuum settings for a high-traffic table</li>
+            <li>En cok olu kayita sahip tablolari bulun (VACUUM adaylari)</li>
+            <li>Tablolarin en son ne zaman vacuum ve analyze edildigini kontrol edin</li>
+            <li>Yogun trafik alan bir tablo icin ozel autovacuum ayarlari yapilandirin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
           <div id="sol3_1" class="solution-box">
             <pre><code class="language-sql">-- 1. Find tables with most dead tuples (need VACUUM)
 SELECT
@@ -664,17 +665,17 @@ VACUUM FULL orders;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.2: Index Health Monitoring</h4>
-          <p><strong>Scenario:</strong> Analyze index usage and identify optimization opportunities.</p>
+          <h4>Alistirma 3.2: Indeks Sagligi Izleme</h4>
+          <p><strong>Senaryo:</strong> Indeks kullanimini analiz edin ve optimizasyon firsatlarini belirleyin.</p>
 
-          <p><strong>Write queries to:</strong></p>
+          <p><strong>Asagidakileri yapan sorgular yazin:</strong></p>
           <ol>
-            <li>Find unused indexes (wasting space and slowing writes)</li>
-            <li>Find duplicate indexes on the same columns</li>
-            <li>Check index bloat and fragmentation</li>
+            <li>Kullanilmayan indeksleri bulun (alan israf ediyor ve yazmalari yavaslatıyor)</li>
+            <li>Ayni sutunlardaki yinelenen indeksleri bulun</li>
+            <li>Indeks sisilmesini ve parcalanmasini kontrol edin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
           <div id="sol3_2" class="solution-box">
             <pre><code class="language-sql">-- 1. Find unused indexes (never scanned)
 SELECT
@@ -738,18 +739,18 @@ REINDEX TABLE CONCURRENTLY orders;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.3: Connection and Lock Monitoring</h4>
-          <p><strong>Scenario:</strong> Monitor active connections and identify blocking issues.</p>
+          <h4>Alistirma 3.3: Baglanti ve Kilit Izleme</h4>
+          <p><strong>Senaryo:</strong> Aktif baglantilari izleyin ve engelleme sorunlarini belirleyin.</p>
 
-          <p><strong>Write queries to:</strong></p>
+          <p><strong>Asagidakileri yapan sorgular yazin:</strong></p>
           <ol>
-            <li>View current active connections and their queries</li>
-            <li>Find long-running queries (over 5 minutes)</li>
-            <li>Identify blocking locks and blocked sessions</li>
-            <li>Safely terminate a blocking session</li>
+            <li>Mevcut aktif baglantilari ve sorgularini goruntuleyın</li>
+            <li>Uzun sureli sorgulari bulun (5 dakikadan fazla)</li>
+            <li>Engelleyen kilitleri ve engellenen oturumlari belirleyin</li>
+            <li>Engelleyen bir oturumu guvenli bir sekilde sonlandirin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_3')">Cozumu Goster</button>
           <div id="sol3_3" class="solution-box">
             <pre><code class="language-sql">-- 1. View active connections
 SELECT
@@ -829,17 +830,17 @@ ORDER BY connection_count DESC;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 3.4: Database Size Analysis</h4>
-          <p><strong>Scenario:</strong> Analyze database size and identify space usage patterns.</p>
+          <h4>Alistirma 3.4: Veritabani Boyut Analizi</h4>
+          <p><strong>Senaryo:</strong> Veritabani boyutunu analiz edin ve alan kullanim kaliplarini belirleyin.</p>
 
-          <p><strong>Write queries to:</strong></p>
+          <p><strong>Asagidakileri yapan sorgular yazin:</strong></p>
           <ol>
-            <li>Get total database size</li>
-            <li>List top 10 largest tables with their indexes</li>
-            <li>Calculate table bloat estimation</li>
+            <li>Toplam veritabani boyutunu alin</li>
+            <li>Indeksleriyle birlikte en buyuk 10 tabloyu listeleyin</li>
+            <li>Tablo sisilme tahminini hesaplayin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_4')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol3_4')">Cozumu Goster</button>
           <div id="sol3_4" class="solution-box">
             <pre><code class="language-sql">-- 1. Total database size
 SELECT
@@ -910,24 +911,24 @@ ORDER BY n_dead_tup DESC;</code></pre>
         </div>
       </section>
 
-      <!-- PART 4: Security -->
+      <!-- BOLUM 4: Guvenlik -->
       <section>
-        <h3 id="part4">Part 4: Security Best Practices</h3>
-        <p>Implement robust security measures for your PostgreSQL database.</p>
+        <h3 id="part4">Bolum 4: Guvenlik En Iyi Uygulamalari</h3>
+        <p>PostgreSQL veritabaniniz icin saglam guvenlik onlemleri uygulayin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 4.1: Role and Privilege Management</h4>
-          <p><strong>Scenario:</strong> Set up a role hierarchy for a multi-tier application.</p>
+          <h4>Alistirma 4.1: Rol ve Yetki Yonetimi</h4>
+          <p><strong>Senaryo:</strong> Cok katmanli bir uygulama icin bir rol hiyerarsisi kurun.</p>
 
-          <p><strong>Create roles for:</strong></p>
+          <p><strong>Asagidakiler icin roller olusturun:</strong></p>
           <ol>
-            <li>A read-only analytics role that can only SELECT from specific tables</li>
-            <li>An application role that can INSERT, UPDATE, DELETE but not DROP</li>
-            <li>An admin role with full privileges</li>
-            <li>Grant the app role membership in the analytics role</li>
+            <li>Yalnizca belirli tablolardan SELECT yapabilen salt okunur bir analitik rolu</li>
+            <li>INSERT, UPDATE, DELETE yapabilen ancak DROP yapamayan bir uygulama rolu</li>
+            <li>Tam yetkilere sahip bir yonetici rolu</li>
+            <li>Uygulama rolune analitik rol uyeligi verin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_1')">Cozumu Goster</button>
           <div id="sol4_1" class="solution-box">
             <pre><code class="language-sql">-- 1. Create read-only analytics role
 CREATE ROLE analytics_role NOLOGIN;
@@ -999,18 +1000,18 @@ ORDER BY r.rolname;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.2: Row-Level Security (RLS)</h4>
-          <p><strong>Scenario:</strong> Implement multi-tenant data isolation where users can only see their own data.</p>
+          <h4>Alistirma 4.2: Satir Duzeyi Guvenlik (RLS)</h4>
+          <p><strong>Senaryo:</strong> Kullanicilarin yalnizca kendi verilerini gorebildigi cok kiracili veri izolasyonu uygulayin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Enable RLS on the customers table</li>
-            <li>Create a policy where users can only see customers they created</li>
-            <li>Create a policy for managers who can see all customers in their region</li>
-            <li>Test the policies with different users</li>
+            <li>Customers tablosunda RLS'yi etkinlestirin</li>
+            <li>Kullanicilarin yalnizca olusturdugu musterileri gorebilecegi bir politika olusturun</li>
+            <li>Yoneticilerin kendi bolgelerindeki tum musterileri gorebilecegi bir politika olusturun</li>
+            <li>Politikalari farkli kullanicilarla test edin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_2')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_2')">Cozumu Goster</button>
           <div id="sol4_2" class="solution-box">
             <pre><code class="language-sql">-- Create a user_regions table for manager access
 CREATE TABLE user_regions (
@@ -1100,18 +1101,18 @@ WHERE tablename = 'customers';</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.3: Data Encryption with pgcrypto</h4>
-          <p><strong>Scenario:</strong> Encrypt sensitive customer data at rest.</p>
+          <h4>Alistirma 4.3: pgcrypto ile Veri Sifreleme</h4>
+          <p><strong>Senaryo:</strong> Hassas musteri verilerini dinlenme halinde sifreleyin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Enable pgcrypto extension</li>
-            <li>Create a function to encrypt SSN data</li>
-            <li>Create a function to decrypt SSN data (for authorized users only)</li>
-            <li>Insert encrypted data and retrieve it</li>
+            <li>pgcrypto uzantisini etkinlestirin</li>
+            <li>SSN verilerini sifrelemek icin bir fonksiyon olusturun</li>
+            <li>SSN verilerinin sifresini cozmek icin bir fonksiyon olusturun (yalnizca yetkili kullanicilar icin)</li>
+            <li>Sifrelenmis veri ekleyin ve geri alin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_3')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_3')">Cozumu Goster</button>
           <div id="sol4_3" class="solution-box">
             <pre><code class="language-sql">-- 1. Enable pgcrypto extension
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -1192,17 +1193,17 @@ JOIN customers c ON sd.customer_id = c.id;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.4: Audit Logging</h4>
-          <p><strong>Scenario:</strong> Implement comprehensive audit logging for all data changes.</p>
+          <h4>Alistirma 4.4: Denetim Gunlugu</h4>
+          <p><strong>Senaryo:</strong> Tum veri degisiklikleri icin kapsamli denetim gunlugu uygulayin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Create a generic audit trigger function</li>
-            <li>Apply the audit trigger to the customers table</li>
-            <li>Query the audit log to see changes</li>
+            <li>Genel bir denetim tetikleyici fonksiyonu olusturun</li>
+            <li>Denetim tetikleyicisini customers tablosuna uygulayin</li>
+            <li>Degisiklikleri gormek icin denetim gunlugunu sorgulayın</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_4')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol4_4')">Cozumu Goster</button>
           <div id="sol4_4" class="solution-box">
             <pre><code class="language-sql">-- 1. Create generic audit trigger function
 CREATE OR REPLACE FUNCTION audit_trigger_function()
@@ -1307,24 +1308,24 @@ ORDER BY changed_at;</code></pre>
         </div>
       </section>
 
-      <!-- PART 5: High Availability -->
+      <!-- BOLUM 5: Yuksek Kullanilabilirlik -->
       <section>
-        <h3 id="part5">Part 5: High Availability and Replication</h3>
-        <p>Configure and monitor PostgreSQL replication.</p>
+        <h3 id="part5">Bolum 5: Yuksek Kullanilabilirlik ve Replikasyon</h3>
+        <p>PostgreSQL replikasyonunu yapilandirin ve izleyin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 5.1: Replication Monitoring Queries</h4>
-          <p><strong>Scenario:</strong> Monitor streaming replication health and lag.</p>
+          <h4>Alistirma 5.1: Replikasyon Izleme Sorgulari</h4>
+          <p><strong>Senaryo:</strong> Akis replikasyonu sagligini ve gecikmesini izleyin.</p>
 
-          <p><strong>Write queries to:</strong></p>
+          <p><strong>Asagidakileri yapan sorgular yazin:</strong></p>
           <ol>
-            <li>Check replication status on the primary server</li>
-            <li>Calculate replication lag in bytes and time</li>
-            <li>Check replication slot status</li>
-            <li>Monitor WAL generation rate</li>
+            <li>Birincil sunucuda replikasyon durumunu kontrol edin</li>
+            <li>Replikasyon gecikmesini bayt ve zaman cinsinden hesaplayın</li>
+            <li>Replikasyon slotu durumunu kontrol edin</li>
+            <li>WAL uretim hizini izleyin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_1')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_1')">Cozumu Goster</button>
           <div id="sol5_1" class="solution-box">
             <pre><code class="language-sql">-- 1. Check replication status on primary
 SELECT
@@ -1401,18 +1402,18 @@ SELECT
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 5.2: Logical Replication Setup</h4>
-          <p><strong>Scenario:</strong> Set up logical replication for specific tables.</p>
+          <h4>Alistirma 5.2: Mantiksal Replikasyon Kurulumu</h4>
+          <p><strong>Senaryo:</strong> Belirli tablolar icin mantiksal replikasyon kurun.</p>
 
-          <p><strong>Write SQL to:</strong></p>
+          <p><strong>Asagidakileri yapan SQL yazin:</strong></p>
           <ol>
-            <li>Create a publication for the orders and customers tables</li>
-            <li>Show the publication configuration</li>
-            <li>Create a subscription (subscriber side)</li>
-            <li>Monitor logical replication status</li>
+            <li>Orders ve customers tablolari icin bir yayin olusturun</li>
+            <li>Yayin yapilandirmasini gosterin</li>
+            <li>Bir abonelik olusturun (abone tarafı)</li>
+            <li>Mantiksal replikasyon durumunu izleyin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_2')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_2')">Cozumu Goster</button>
           <div id="sol5_2" class="solution-box">
             <pre><code class="language-sql">-- ON PUBLISHER (source database)
 
@@ -1506,17 +1507,17 @@ FROM pg_stat_subscription;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 5.3: Connection Pooling Configuration</h4>
-          <p><strong>Scenario:</strong> Configure pgBouncer for connection pooling.</p>
+          <h4>Alistirma 5.3: Baglanti Havuzlama Yapilandirmasi</h4>
+          <p><strong>Senaryo:</strong> Baglanti havuzlama icin pgBouncer'i yapilandirin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Write a pgBouncer configuration for transaction pooling</li>
-            <li>Create the userlist.txt authentication file</li>
-            <li>Write queries to monitor pgBouncer statistics</li>
+            <li>Islem havuzlama icin bir pgBouncer yapilandirmasi yazin</li>
+            <li>userlist.txt kimlik dogrulama dosyasini olusturun</li>
+            <li>pgBouncer istatistiklerini izlemek icin sorgular yazin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_3')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol5_3')">Cozumu Goster</button>
           <div id="sol5_3" class="solution-box">
             <pre><code class="language-ini">; 1. pgbouncer.ini configuration
 
@@ -1633,24 +1634,24 @@ FROM pools;</code></pre>
         </div>
       </section>
 
-      <!-- PART 6: Scaling -->
+      <!-- BOLUM 6: Olceklendirme -->
       <section>
-        <h3 id="part6">Part 6: Scaling PostgreSQL</h3>
-        <p>Implement scaling strategies for growing databases.</p>
+        <h3 id="part6">Bolum 6: PostgreSQL Olceklendirme</h3>
+        <p>Buyuyen veritabanlari icin olceklendirme stratejileri uygulayin.</p>
 
         <div class="exercise-box">
-          <h4>Exercise 6.1: Table Partitioning</h4>
-          <p><strong>Scenario:</strong> Partition a large orders table by date for better performance.</p>
+          <h4>Alistirma 6.1: Tablo Bolumleme</h4>
+          <p><strong>Senaryo:</strong> Daha iyi performans icin buyuk bir siparis tablosunu tarihe gore bolumlendirin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Create a partitioned orders table by month</li>
-            <li>Create partitions for Q1 2024</li>
-            <li>Create a function to automatically create future partitions</li>
-            <li>Query the partitioned table and verify partition pruning</li>
+            <li>Aya gore bolumlendirilmis bir siparis tablosu olusturun</li>
+            <li>2024 Q1 icin bolumler olusturun</li>
+            <li>Gelecekteki bolumleri otomatik olarak olusturan bir fonksiyon olusturun</li>
+            <li>Bolumlendirilmis tabloyu sorgulayın ve bolum budamasini dogrulayin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_1')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_1')">Cozumu Goster</button>
           <div id="sol6_1" class="solution-box">
             <pre><code class="language-sql">-- 1. Create partitioned table
 CREATE TABLE orders_partitioned (
@@ -1744,18 +1745,18 @@ ORDER BY child.relname;</code></pre>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 6.2: Materialized Views for Caching</h4>
-          <p><strong>Scenario:</strong> Create materialized views to cache complex aggregations.</p>
+          <h4>Alistirma 6.2: Onbellekleme icin Maddilestrilmis Gorunumler</h4>
+          <p><strong>Senaryo:</strong> Karmasik toplamalari onbellelemek icin maddilestirilmis gorunumler olusturun.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Create a materialized view for product sales summary</li>
-            <li>Add indexes to the materialized view</li>
-            <li>Create a refresh schedule strategy</li>
-            <li>Implement concurrent refresh</li>
+            <li>Urun satis ozeti icin maddilestirilmis bir gorunum olusturun</li>
+            <li>Maddilestirilmis gorunume indeksler ekleyin</li>
+            <li>Bir yenileme zamanlama stratejisi olusturun</li>
+            <li>Esanli yenileme uygulayin</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_2')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_2')">Cozumu Goster</button>
           <div id="sol6_2" class="solution-box">
             <pre><code class="language-sql">-- 1. Create materialized view for product sales summary
 CREATE MATERIALIZED VIEW mv_product_sales_summary AS
@@ -1871,18 +1872,18 @@ LIMIT 10;
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 6.3: Performance Tuning Configuration</h4>
-          <p><strong>Scenario:</strong> Optimize PostgreSQL configuration for a production workload.</p>
+          <h4>Alistirma 6.3: Performans Ayarlama Yapilandirmasi</h4>
+          <p><strong>Senaryo:</strong> PostgreSQL yapilandirmasini bir uretim is yuku icin optimize edin.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Gorevler:</strong></p>
           <ol>
-            <li>Calculate optimal memory settings for a 32GB RAM server</li>
-            <li>Configure checkpoint settings for better performance</li>
-            <li>Set up pg_stat_statements for query analysis</li>
-            <li>Find the slowest queries</li>
+            <li>32GB RAM sunucu icin optimal bellek ayarlarini hesaplayin</li>
+            <li>Daha iyi performans icin checkpoint ayarlarini yapilandirin</li>
+            <li>Sorgu analizi icin pg_stat_statements'i kurun</li>
+            <li>En yavas sorgulari bulun</li>
           </ol>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_3')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol6_3')">Cozumu Goster</button>
           <div id="sol6_3" class="solution-box">
             <pre><code class="language-sql">-- 1. Optimal memory settings for 32GB RAM server
 -- postgresql.conf recommendations
@@ -1972,29 +1973,27 @@ ORDER BY name;</code></pre>
         </div>
       </section>
 
-      <!-- Challenge Section -->
+      <!-- Meydan Okuma Bolumu -->
       <section>
-        <h3 id="challenge">Challenge Exercise: Complete DBA Scenario</h3>
+        <h3 id="challenge">Meydan Okuma Alistirmasi: Kapsamli DBA Senaryosu</h3>
 
         <div class="exercise-box">
-          <h4>Comprehensive DBA Task</h4>
-          <p><strong>Scenario:</strong> You are the DBA for an e-commerce company. The production database is
-            experiencing issues and you need to:</p>
+          <h4>Kapsamli DBA Gorevi</h4>
+          <p><strong>Senaryo:</strong> Bir e-ticaret sirketi icin DBA'siniz. Uretim veritabani sorunlar yasiyor ve asagidakileri yapmaniz gerekiyor:</p>
 
           <ol>
-            <li><strong>Diagnose</strong>: Find long-running queries and blocking locks</li>
-            <li><strong>Optimize</strong>: Identify tables needing maintenance and optimize them</li>
-            <li><strong>Secure</strong>: Set up proper role-based access for a new analytics team</li>
-            <li><strong>Backup</strong>: Create a backup strategy with validation</li>
-            <li><strong>Monitor</strong>: Set up monitoring queries for ongoing health checks</li>
+            <li><strong>Teshis</strong>: Uzun sureli sorgulari ve engelleyen kilitleri bulun</li>
+            <li><strong>Optimizasyon</strong>: Bakima ihtiyac duyan tablolari belirleyin ve optimize edin</li>
+            <li><strong>Guvenlik</strong>: Yeni bir analitik ekibi icin uygun rol tabanli erisim kurun</li>
+            <li><strong>Yedekleme</strong>: Dogrulama ile bir yedekleme stratejisi olusturun</li>
+            <li><strong>Izleme</strong>: Surekli saglik kontrolleri icin izleme sorgulari kurun</li>
           </ol>
 
           <div class="warning-box">
-            <strong>Important:</strong> This is an integrated exercise. Consider dependencies between tasks and
-            the order of operations carefully.
+            <strong>Onemli:</strong> Bu entegre bir alistirmadir. Gorevler arasindaki bagimliliklari ve islem sirasini dikkatlice dusunun.
           </div>
 
-          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol_challenge')">Show Solution</button>
+          <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol_challenge')">Cozumu Goster</button>
           <div id="sol_challenge" class="solution-box">
             <pre><code class="language-sql">-- ========================================
 -- STEP 1: DIAGNOSE CURRENT ISSUES
@@ -2241,48 +2240,48 @@ SELECT * FROM check_database_alerts();</code></pre>
         </div>
       </section>
 
-      <!-- Key Takeaways -->
+      <!-- Onemli Noktalar -->
       <section>
         <div class="key-takeaways">
-          <h4>Key Takeaways</h4>
+          <h4>Onemli Noktalar</h4>
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th>Topic</th>
-                <th>Key Concepts</th>
-                <th>Best Practices</th>
+                <th>Konu</th>
+                <th>Temel Kavramlar</th>
+                <th>En Iyi Uygulamalar</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>Backup & Recovery</strong></td>
-                <td>pg_dump, pg_restore, logical vs physical backups</td>
-                <td>Test restores regularly, automate validation</td>
+                <td><strong>Yedekleme ve Kurtarma</strong></td>
+                <td>pg_dump, pg_restore, mantiksal vs fiziksel yedeklemeler</td>
+                <td>Geri yuklemeleri duzenlı test edin, dogrulamayi otomatiklestirin</td>
               </tr>
               <tr>
                 <td><strong>PITR</strong></td>
-                <td>WAL archiving, restore points, recovery targets</td>
-                <td>Create restore points before major changes</td>
+                <td>WAL arsivleme, geri yukleme noktalari, kurtarma hedefleri</td>
+                <td>Buyuk degisikliklerden once geri yukleme noktalari olusturun</td>
               </tr>
               <tr>
-                <td><strong>Maintenance</strong></td>
+                <td><strong>Bakim</strong></td>
                 <td>VACUUM, ANALYZE, autovacuum, REINDEX</td>
-                <td>Monitor dead tuples, tune autovacuum for high-traffic tables</td>
+                <td>Olu kayitlari izleyin, yogun trafik alan tablolar icin autovacuum'u ayarlayin</td>
               </tr>
               <tr>
-                <td><strong>Security</strong></td>
-                <td>Roles, privileges, RLS, encryption</td>
-                <td>Principle of least privilege, audit all changes</td>
+                <td><strong>Guvenlik</strong></td>
+                <td>Roller, yetkiler, RLS, sifreleme</td>
+                <td>En az yetki ilkesi, tum degisiklikleri denetleyin</td>
               </tr>
               <tr>
-                <td><strong>High Availability</strong></td>
-                <td>Streaming replication, logical replication</td>
-                <td>Monitor lag, test failover procedures</td>
+                <td><strong>Yuksek Kullanilabilirlik</strong></td>
+                <td>Akis replikasyonu, mantiksal replikasyon</td>
+                <td>Gecikmeyi izleyin, yuk devretme prosedurlerini test edin</td>
               </tr>
               <tr>
-                <td><strong>Scaling</strong></td>
-                <td>Partitioning, connection pooling, caching</td>
-                <td>Partition by access pattern, use pgBouncer</td>
+                <td><strong>Olceklendirme</strong></td>
+                <td>Bolumleme, baglanti havuzlama, onbellekleme</td>
+                <td>Erisim kalibina gore bolumleyin, pgBouncer kullanin</td>
               </tr>
             </tbody>
           </table>
@@ -2290,16 +2289,16 @@ SELECT * FROM check_database_alerts();</code></pre>
       </section>
 
       <section>
-        <h3>Next Steps</h3>
-        <p>Continue your PostgreSQL mastery by:</p>
+        <h3>Sonraki Adimlar</h3>
+        <p>PostgreSQL ustaliginizi asagidakilerle surdurun:</p>
         <ul>
-          <li>Setting up a test environment to practice backup and recovery</li>
-          <li>Implementing monitoring dashboards with pg_stat_statements</li>
-          <li>Experimenting with partitioning strategies for your data</li>
-          <li>Configuring and testing replication between instances</li>
-          <li>Reviewing security policies and implementing RLS where appropriate</li>
+          <li>Yedekleme ve kurtarma pratigi yapmak icin bir test ortami kurma</li>
+          <li>pg_stat_statements ile izleme panolari uygulama</li>
+          <li>Verileriniz icin bolumleme stratejileri ile denemeler yapma</li>
+          <li>Ornekler arasinda replikasyonu yapilandirma ve test etme</li>
+          <li>Guvenlik politikalarini gozden gecirme ve uygun yerlerde RLS uygulama</li>
         </ul>
-        <p><a href="02_database_administration_and_maintenance.html" class="btn btn-outline-primary">&larr; Back to Lesson</a></p>
+        <p><a href="02_database_administration_and_maintenance_tr.html" class="btn btn-outline-primary">&larr; Derse Don</a></p>
       </section>
 
     </div>
@@ -2313,10 +2312,10 @@ SELECT * FROM check_database_alerts();</code></pre>
     var element = document.getElementById(id);
     if (element.classList.contains('show')) {
       element.classList.remove('show');
-      event.target.textContent = 'Show Solution';
+      event.target.textContent = 'Cozumu Goster';
     } else {
       element.classList.add('show');
-      event.target.textContent = 'Hide Solution';
+      event.target.textContent = 'Cozumu Gizle';
     }
   }
 </script>

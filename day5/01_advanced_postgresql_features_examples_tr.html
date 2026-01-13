@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="../style_bootstrap.html">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/code.css">
-    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e013f08d7145_favicon.jpg"
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Day 5: Advanced PostgreSQL Features - Practical Examples</title>
+    <title>Gun 5: Gelismis PostgreSQL Ozellikleri - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -202,6 +202,7 @@
             color: #6c757d;
             margin: 0 10px;
         }
+
         .language-switcher { position: fixed; top: 10px; right: 10px; z-index: 1000; background: #fff; padding: 5px 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .language-switcher a { text-decoration: none; padding: 5px 10px; margin: 0 2px; border-radius: 3px; color: #333; }
         .language-switcher a.active { background: #0d6efd; color: #fff; }
@@ -211,10 +212,11 @@
 
 <body>
     <div class="language-switcher">
-        <a href="01_advanced_postgresql_features_examples.html" class="active">EN</a>
-        <a href="01_advanced_postgresql_features_examples_tr.html">TR</a>
+        <a href="01_advanced_postgresql_features_examples.html">EN</a>
+        <a href="01_advanced_postgresql_features_examples_tr.html" class="active">TR</a>
     </div>
-    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -234,25 +236,24 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Advanced PostgreSQL Features - Practical Examples</h1>
-                <p class="lead">Master stored procedures, functions, triggers, and advanced indexing through hands-on
-                    exercises.</p>
+                <h1>Gelismis PostgreSQL Ozellikleri - Pratik Ornekler</h1>
+                <p class="lead">Uygulamali alistirmalar ile sakli yordamlari, fonksiyonlari, tetikleyicileri ve gelismis indekslemeyi ogrenin.</p>
 
                 <div class="hint-box">
-                    <strong>Learning Objectives:</strong>
+                    <strong>Ogrenme Hedefleri:</strong>
                     <ul class="mb-0">
-                        <li>Write PL/pgSQL functions with control structures and exception handling</li>
-                        <li>Create triggers for automated data management</li>
-                        <li>Implement business rules through database logic</li>
-                        <li>Design advanced indexes for optimal query performance</li>
+                        <li>Kontrol yapilari ve hata yonetimi ile PL/pgSQL fonksiyonlari yazin</li>
+                        <li>Otomatik veri yonetimi icin tetikleyiciler olusturun</li>
+                        <li>Veritabani mantigi ile is kurallarini uygulayin</li>
+                        <li>Optimal sorgu performansi icin gelismis indeksler tasarlayin</li>
                     </ul>
                 </div>
             </section>
 
             <!-- Sample Dataset -->
             <section>
-                <h3>Sample Database Schema</h3>
-                <p>We'll use an e-commerce database for these exercises:</p>
+                <h3>Ornek Veritabani Semasi</h3>
+                <p>Bu alistirmalar icin bir e-ticaret veritabani kullanacagiz:</p>
 
                 <div class="row">
                     <div class="col-md-4">
@@ -260,8 +261,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -293,8 +294,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -326,8 +327,8 @@
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
-                                    <th>Column</th>
-                                    <th>Type</th>
+                                    <th>Sutun</th>
+                                    <th>Tip</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -359,22 +360,21 @@
 
             <!-- Part 1: Functions -->
             <section>
-                <h2>Part 1: Functions and Stored Procedures</h2>
-                <p>Create reusable database logic with PL/pgSQL.</p>
+                <h2>Bolum 1: Fonksiyonlar ve Sakli Yordamlar</h2>
+                <p>PL/pgSQL ile yeniden kullanilabilir veritabani mantigi olusturun.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Basic Scalar Function</h4>
-                    <p>Create a function that calculates the total order value for a customer, including a loyalty
-                        discount based on their customer type.</p>
+                    <h4>Alistirma 1.1: Temel Skaler Fonksiyon</h4>
+                    <p>Bir musteri icin toplam siparis degerini hesaplayan ve musteri tipine gore sadakat indirimi uygulayan bir fonksiyon olusturun.</p>
 
-                    <p><strong>Requirements:</strong></p>
+                    <p><strong>Gereksinimler:</strong></p>
                     <ul>
-                        <li>Premium customers get 10% discount</li>
-                        <li>Regular customers get 5% discount</li>
-                        <li>New customers get no discount</li>
+                        <li>Premium musteriler %10 indirim alir</li>
+                        <li>Normal musteriler %5 indirim alir</li>
+                        <li>Yeni musteriler indirim almaz</li>
                     </ul>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
                     <div id="sol1_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">CREATE OR REPLACE FUNCTION</span> calculate_order_total(
     order_id_param <span class="dt">INTEGER</span>
@@ -416,26 +416,25 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">SELECT</span> calculate_order_total(<span class="dv">123</span>);</code></pre>
 
                         <div class="concept-box">
-                            <strong>Key Concepts:</strong>
+                            <strong>Temel Kavramlar:</strong>
                             <ul class="mb-0">
-                                <li><code>DECLARE</code> block for local variables</li>
-                                <li><code>SELECT INTO</code> to assign query results to variables</li>
-                                <li><code>CASE</code> for conditional logic</li>
-                                <li><code>RAISE EXCEPTION</code> for error handling</li>
+                                <li>Yerel degiskenler icin <code>DECLARE</code> blogu</li>
+                                <li>Sorgu sonuclarini degiskenlere atamak icin <code>SELECT INTO</code></li>
+                                <li>Kosullu mantik icin <code>CASE</code></li>
+                                <li>Hata yonetimi icin <code>RAISE EXCEPTION</code></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Table-Returning Function</h4>
-                    <p>Create a function that returns the top N customers by total spending, along with their order
-                        statistics.</p>
+                    <h4>Alistirma 1.2: Tablo Donduren Fonksiyon</h4>
+                    <p>Toplam harcamaya gore en iyi N musteriyi siparis istatistikleriyle birlikte donduren bir fonksiyon olusturun.</p>
 
-                    <p><strong>Output columns:</strong> customer_id, customer_name, total_orders, total_spent,
+                    <p><strong>Cikti sutunlari:</strong> customer_id, customer_name, total_orders, total_spent,
                         avg_order_value</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Cozumu Goster</button>
                     <div id="sol1_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">CREATE OR REPLACE FUNCTION</span> get_top_customers(n <span class="dt">INTEGER</span>)
 <span class="kw">RETURNS TABLE</span> (
@@ -473,27 +472,27 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">JOIN</span> customers c <span class="kw">ON</span> tc.customer_id = c.id;</code></pre>
 
                         <div class="hint-box">
-                            <strong>RETURN QUERY vs RETURN NEXT:</strong>
+                            <strong>RETURN QUERY ve RETURN NEXT karsilastirmasi:</strong>
                             <ul class="mb-0">
-                                <li><code>RETURN QUERY</code> - Returns all rows from a query at once</li>
-                                <li><code>RETURN NEXT</code> - Returns one row at a time (useful in loops)</li>
+                                <li><code>RETURN QUERY</code> - Bir sorgudan tum satirlari tek seferde dondurur</li>
+                                <li><code>RETURN NEXT</code> - Her seferinde bir satir dondurur (dongulerde kullanisli)</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.3: Function with Exception Handling</h4>
-                    <p>Create a function to transfer inventory between warehouses with proper error handling.</p>
+                    <h4>Alistirma 1.3: Hata Yonetimli Fonksiyon</h4>
+                    <p>Depolar arasinda envanter transferi yapan ve uygun hata yonetimi iceren bir fonksiyon olusturun.</p>
 
-                    <p><strong>Requirements:</strong></p>
+                    <p><strong>Gereksinimler:</strong></p>
                     <ul>
-                        <li>Check that source warehouse has sufficient stock</li>
-                        <li>Check that both warehouses exist</li>
-                        <li>Return success/failure message</li>
+                        <li>Kaynak deponun yeterli stoga sahip oldugunu kontrol edin</li>
+                        <li>Her iki deponun da var oldugunu kontrol edin</li>
+                        <li>Basari/basarisizlik mesaji dondur</li>
                     </ul>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Cozumu Goster</button>
                     <div id="sol1_3" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">CREATE OR REPLACE FUNCTION</span> transfer_inventory(
     p_product_id <span class="dt">INTEGER</span>,
@@ -559,18 +558,16 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">SELECT</span> transfer_inventory(<span class="dv">101</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">50</span>);</code></pre>
 
                         <div class="warning-box">
-                            <strong>FOR UPDATE:</strong> This locks the row until the transaction completes, preventing
-                            race conditions when checking and updating inventory.
+                            <strong>FOR UPDATE:</strong> Bu, islem tamamlanana kadar satiri kilitler ve envanter kontrol edilirken ve guncellenirken yaris kosullarini onler.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.4: Stored Procedure with Transaction Control</h4>
-                    <p>Create a procedure that processes a batch of orders, committing successful ones and rolling back
-                        failed ones.</p>
+                    <h4>Alistirma 1.4: Islem Kontrollu Sakli Yordam</h4>
+                    <p>Bir grup siparisi isleyen, basarilı olanlari onaylayan ve basarisiz olanlari geri alan bir yordam olusturun.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_4')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol1_4')">Cozumu Goster</button>
                     <div id="sol1_4" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">CREATE OR REPLACE PROCEDURE</span> process_pending_orders()
 <span class="kw">LANGUAGE</span> plpgsql
@@ -632,11 +629,11 @@ $$;
 <span class="kw">CALL</span> process_pending_orders();</code></pre>
 
                         <div class="concept-box">
-                            <strong>Procedures vs Functions:</strong>
+                            <strong>Yordamlar ve Fonksiyonlar:</strong>
                             <ul class="mb-0">
-                                <li>Procedures can use <code>COMMIT</code> and <code>ROLLBACK</code></li>
-                                <li>Functions cannot control transactions</li>
-                                <li>Call procedures with <code>CALL</code>, functions with <code>SELECT</code></li>
+                                <li>Yordamlar <code>COMMIT</code> ve <code>ROLLBACK</code> kullanabilir</li>
+                                <li>Fonksiyonlar islemleri kontrol edemez</li>
+                                <li>Yordamlari <code>CALL</code> ile, fonksiyonlari <code>SELECT</code> ile cagirin</li>
                             </ul>
                         </div>
                     </div>
@@ -645,23 +642,22 @@ $$;
 
             <!-- Part 2: Triggers -->
             <section>
-                <h2>Part 2: Triggers and Event-Based Programming</h2>
-                <p>Automate database operations with triggers.</p>
+                <h2>Bolum 2: Tetikleyiciler ve Olay Tabanli Programlama</h2>
+                <p>Tetikleyiciler ile veritabani islemlerini otomatiklestirin.</p>
 
                 <div class="flow-diagram">
-                    <span class="flow-box event">Event (INSERT/UPDATE/DELETE)</span>
+                    <span class="flow-box event">Olay (INSERT/UPDATE/DELETE)</span>
                     <span class="flow-arrow">&rarr;</span>
-                    <span class="flow-box trigger">Trigger Function</span>
+                    <span class="flow-box trigger">Tetikleyici Fonksiyonu</span>
                     <span class="flow-arrow">&rarr;</span>
-                    <span class="flow-box action">Automated Action</span>
+                    <span class="flow-box action">Otomatik Eylem</span>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.1: Auto-Update Timestamp Trigger</h4>
-                    <p>Create a trigger that automatically updates the <code>updated_at</code> column whenever a product
-                        is modified.</p>
+                    <h4>Alistirma 2.1: Otomatik Zaman Damgasi Guncelleme Tetikleyicisi</h4>
+                    <p>Bir urun degistirildiginde otomatik olarak <code>updated_at</code> sutununu guncelleyen bir tetikleyici olusturun.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
                     <div id="sol2_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Create the trigger function</span>
 <span class="kw">CREATE OR REPLACE FUNCTION</span> update_modified_timestamp()
@@ -684,21 +680,21 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">SELECT</span> product_id, name, updated_at <span class="kw">FROM</span> products <span class="kw">WHERE</span> product_id = <span class="dv">1</span>;</code></pre>
 
                         <div class="concept-box">
-                            <strong>Trigger Timing:</strong>
+                            <strong>Tetikleyici Zamanlama:</strong>
                             <ul class="mb-0">
-                                <li><code>BEFORE</code> - Can modify NEW values before they're written</li>
-                                <li><code>AFTER</code> - Runs after the change, can't modify NEW</li>
-                                <li><code>INSTEAD OF</code> - Replaces the operation (for views)</li>
+                                <li><code>BEFORE</code> - Yazilmadan once NEW degerlerini degistirebilir</li>
+                                <li><code>AFTER</code> - Degisiklikten sonra calisir, NEW'i degistiremez</li>
+                                <li><code>INSTEAD OF</code> - Islemi degistirir (gorunumler icin)</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: Audit Trail Trigger</h4>
-                    <p>Create a comprehensive audit trigger that logs all changes to the orders table.</p>
+                    <h4>Alistirma 2.2: Denetim Izi Tetikleyicisi</h4>
+                    <p>Siparisler tablosundaki tum degisiklikleri kaydeden kapsamli bir denetim tetikleyicisi olusturun.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Cozumu Goster</button>
                     <div id="sol2_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Create audit log table</span>
 <span class="kw">CREATE TABLE</span> orders_audit (
@@ -773,15 +769,15 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.3: Business Rule Enforcement Trigger</h4>
-                    <p>Create a trigger that enforces business rules for product pricing:</p>
+                    <h4>Alistirma 2.3: Is Kurali Uygulama Tetikleyicisi</h4>
+                    <p>Urun fiyatlandirmasi icin is kurallarini uygulayan bir tetikleyici olusturun:</p>
                     <ul>
-                        <li>Price cannot be negative</li>
-                        <li>Price increase cannot exceed 50% in a single update</li>
-                        <li>Discount price must be less than regular price</li>
+                        <li>Fiyat negatif olamaz</li>
+                        <li>Tek bir guncellemede fiyat artisi %50'yi gecemez</li>
+                        <li>Indirimli fiyat normal fiyattan dusuk olmalidir</li>
                     </ul>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Cozumu Goster</button>
                     <div id="sol2_3" class="solution">
                         <pre><code class="sourceCode sql"><span class="kw">CREATE OR REPLACE FUNCTION</span> validate_product_price()
 <span class="kw">RETURNS TRIGGER AS</span> $$
@@ -827,8 +823,8 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="co">-- ERROR: Product price cannot be negative (got: -10)</span></code></pre>
 
                         <div class="warning-box">
-                            <strong>WHEN Clause Optimization:</strong>
-                            You can add a WHEN clause to avoid calling the trigger function unnecessarily:
+                            <strong>WHEN Kosuluyla Optimizasyon:</strong>
+                            Tetikleyici fonksiyonunun gereksiz yere cagirilmasini onlemek icin WHEN kosuluekleyebilirsiniz:
                             <pre><code class="sourceCode sql"><span class="kw">CREATE TRIGGER</span> check_large_price_change
 <span class="kw">BEFORE UPDATE ON</span> products
 <span class="kw">FOR EACH ROW</span>
@@ -839,11 +835,10 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.4: Soft Delete Implementation</h4>
-                    <p>Implement soft deletes for the customers table - instead of actually deleting records, set a
-                        <code>deleted_at</code> timestamp.</p>
+                    <h4>Alistirma 2.4: Yumusak Silme Uygulamasi</h4>
+                    <p>Musteriler tablosu icin yumusak silme uygulayın - kayitlari gercekten silmek yerine bir <code>deleted_at</code> zaman damgasi ayarlayin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Cozumu Goster</button>
                     <div id="sol2_4" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Trigger function for soft delete</span>
 <span class="kw">CREATE OR REPLACE FUNCTION</span> soft_delete_customer()
@@ -883,12 +878,12 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">UPDATE</span> customers <span class="kw">SET</span> deleted_at = <span class="kw">NULL WHERE</span> id = <span class="dv">1</span>;</code></pre>
 
                         <div class="concept-box">
-                            <strong>Benefits of Soft Deletes:</strong>
+                            <strong>Yumusak Silmenin Avantajlari:</strong>
                             <ul class="mb-0">
-                                <li>Data recovery without backups</li>
-                                <li>Maintain referential integrity</li>
-                                <li>Audit trail of deletions</li>
-                                <li>Compliance requirements (data retention)</li>
+                                <li>Yedekleme olmadan veri kurtarma</li>
+                                <li>Referans butunlugunu koruma</li>
+                                <li>Silmelerin denetim izi</li>
+                                <li>Uyumluluk gereksinimleri (veri saklama)</li>
                             </ul>
                         </div>
                     </div>
@@ -897,17 +892,16 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 
             <!-- Part 3: Advanced Indexing -->
             <section>
-                <h2>Part 3: Advanced Indexing Techniques</h2>
-                <p>Optimize query performance with specialized indexes.</p>
+                <h2>Bolum 3: Gelismis Indeksleme Teknikleri</h2>
+                <p>Ozellestirilmis indekslerle sorgu performansini optimize edin.</p>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.1: Partial Index for Common Queries</h4>
-                    <p>Create indexes optimized for frequently queried subsets of data.</p>
+                    <h4>Alistirma 3.1: Yaygin Sorgular icin Kismi Indeks</h4>
+                    <p>Sik sorgulanan veri alt kumeleri icin optimize edilmis indeksler olusturun.</p>
 
-                    <p><strong>Scenario:</strong> 90% of order queries are for 'pending' or 'processing' orders (only 5%
-                        of all orders).</p>
+                    <p><strong>Senaryo:</strong> Siparis sorgularinin %90'i 'beklemede' veya 'isleniyor' siparisleri icindir (tum siparislerin sadece %5'i).</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
                     <div id="sol3_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Partial index for active orders only</span>
 <span class="kw">CREATE INDEX</span> idx_orders_active
@@ -935,20 +929,20 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
                         <table class="table table-bordered mt-3">
                             <thead>
                                 <tr>
-                                    <th>Index Type</th>
-                                    <th>Rows Indexed</th>
-                                    <th>Approx Size</th>
+                                    <th>Indeks Tipi</th>
+                                    <th>Indekslenen Satirlar</th>
+                                    <th>Yaklasik Boyut</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Full Index</td>
+                                    <td>Tam Indeks</td>
                                     <td>2,000,000</td>
                                     <td>~60 MB</td>
                                 </tr>
                                 <tr>
-                                    <td>Partial Index</td>
-                                    <td>100,000 (5%)</td>
+                                    <td>Kismi Indeks</td>
+                                    <td>100,000 (%5)</td>
                                     <td>~3 MB</td>
                                 </tr>
                             </tbody>
@@ -957,10 +951,10 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.2: Expression Index for Computed Values</h4>
-                    <p>Create indexes that support queries with functions and expressions.</p>
+                    <h4>Alistirma 3.2: Hesaplanan Degerler icin Ifade Indeksi</h4>
+                    <p>Fonksiyonlar ve ifadeler iceren sorgulari destekleyen indeksler olusturun.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
                     <div id="sol3_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Index for case-insensitive email search</span>
 <span class="kw">CREATE INDEX</span> idx_customers_email_lower
@@ -988,25 +982,25 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">WHERE</span> attributes->><span class="st">'brand'</span> = <span class="st">'Apple'</span>;</code></pre>
 
                         <div class="warning-box">
-                            <strong>Expression Match Required:</strong>
-                            The query must use the EXACT same expression as the index.
-                            <code>WHERE UPPER(email) = ...</code> won't use an index on <code>LOWER(email)</code>.
+                            <strong>Ifade Eslemesi Gerekli:</strong>
+                            Sorgu indeksle AYNI ifadeyi kullanmalidir.
+                            <code>WHERE UPPER(email) = ...</code> ifadesi <code>LOWER(email)</code> uzerindeki indeksi kullanmaz.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.3: Covering Index for Index-Only Scans</h4>
-                    <p>Create an index that includes all columns needed by a query, eliminating table access.</p>
+                    <h4>Alistirma 3.3: Sadece Indeks Taramalari icin Kapsayici Indeks</h4>
+                    <p>Bir sorgunun ihtiyac duydugu tum sutunlari iceren ve tablo erisimini ortadan kaldiran bir indeks olusturun.</p>
 
-                    <p><strong>Frequent query:</strong></p>
+                    <p><strong>Sik kullanilan sorgu:</strong></p>
                     <pre><code class="sourceCode sql"><span class="kw">SELECT</span> customer_id, order_date, amount, status
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> customer_id = ?
 <span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Cozumu Goster</button>
                     <div id="sol3_3" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Covering index with INCLUDE</span>
 <span class="kw">CREATE INDEX</span> idx_orders_customer_covering
@@ -1027,22 +1021,21 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="co">--   Heap Fetches: 0  <-- No table access!</span></code></pre>
 
                         <div class="concept-box">
-                            <strong>INCLUDE vs Key Columns:</strong>
+                            <strong>INCLUDE ve Anahtar Sutunlar:</strong>
                             <ul class="mb-0">
-                                <li><strong>Key columns</strong> (before INCLUDE): Used for filtering and sorting</li>
-                                <li><strong>Included columns</strong>: Only stored for retrieval, not indexed for
-                                    searching</li>
-                                <li>Use INCLUDE for columns only in SELECT, not in WHERE/ORDER BY</li>
+                                <li><strong>Anahtar sutunlar</strong> (INCLUDE'dan once): Filtreleme ve siralama icin kullanilir</li>
+                                <li><strong>Dahil edilen sutunlar</strong>: Sadece veri almak icin saklanir, arama icin indekslenmez</li>
+                                <li>Sadece SELECT'te olan, WHERE/ORDER BY'da olmayan sutunlar icin INCLUDE kullanin</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 3.4: Materialized View for Complex Analytics</h4>
-                    <p>Create a materialized view for a frequently-run sales summary report.</p>
+                    <h4>Alistirma 3.4: Karmasik Analizler icin Maddilesmis Gorunum</h4>
+                    <p>Sik calistirilan satis ozet raporu icin maddilesmis bir gorunum olusturun.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_4')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol3_4')">Cozumu Goster</button>
                     <div id="sol3_4" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Create materialized view</span>
 <span class="kw">CREATE MATERIALIZED VIEW</span> mv_daily_sales_summary <span class="kw">AS</span>
@@ -1090,12 +1083,11 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">REFRESH MATERIALIZED VIEW CONCURRENTLY</span> mv_daily_sales_summary;</code></pre>
 
                         <div class="hint-box">
-                            <strong>Refresh Strategy:</strong>
+                            <strong>Yenileme Stratejisi:</strong>
                             <ul class="mb-0">
-                                <li>Schedule refresh during low-traffic periods</li>
-                                <li>Use <code>CONCURRENTLY</code> if reads must not be blocked (requires unique
-                                    index)</li>
-                                <li>Consider incremental refresh patterns for very large datasets</li>
+                                <li>Dusuk trafik donemlerinde yenileme zamanlayin</li>
+                                <li>Okumalarin engellenmemesi gerekiyorsa <code>CONCURRENTLY</code> kullanin (benzersiz indeks gerektirir)</li>
+                                <li>Cok buyuk veri setleri icin artimli yenileme kaliplarini degerlendirin</li>
                             </ul>
                         </div>
                     </div>
@@ -1104,21 +1096,21 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 
             <!-- Part 4: Challenge -->
             <section>
-                <h2>Part 4: Challenge Exercise</h2>
+                <h2>Bolum 4: Meydan Okuma Alistirmasi</h2>
 
                 <div class="exercise-box">
-                    <h4>Challenge: Complete Order Processing System</h4>
-                    <p>Build a complete order processing system combining functions, triggers, and proper indexing.</p>
+                    <h4>Meydan Okuma: Eksiksiz Siparis Isleme Sistemi</h4>
+                    <p>Fonksiyonlari, tetikleyicileri ve uygun indekslemeyi birlestiren eksiksiz bir siparis isleme sistemi olusturun.</p>
 
-                    <p><strong>Requirements:</strong></p>
+                    <p><strong>Gereksinimler:</strong></p>
                     <ol>
-                        <li>Function to create orders with multiple items</li>
-                        <li>Trigger to validate stock availability</li>
-                        <li>Trigger to update order summary table</li>
-                        <li>Proper indexes for common queries</li>
+                        <li>Birden fazla kalemle siparis olusturan fonksiyon</li>
+                        <li>Stok uygunlugunu dogrulayan tetikleyici</li>
+                        <li>Siparis ozet tablosunu guncelleyen tetikleyici</li>
+                        <li>Yaygin sorgular icin uygun indeksler</li>
                     </ol>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
+                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Cozumu Goster</button>
                     <div id="sol4_1" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- 1. Create supporting tables</span>
 <span class="kw">CREATE TABLE</span> order_summary (
@@ -1249,53 +1241,53 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 
             <!-- Key Takeaways -->
             <section>
-                <h3>Key Takeaways</h3>
+                <h3>Onemli Noktalar</h3>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Topic</th>
-                            <th>Key Points</th>
+                            <th>Konu</th>
+                            <th>Ana Noktalar</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Functions</strong></td>
+                            <td><strong>Fonksiyonlar</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>Use <code>RETURNS TABLE</code> for set-returning functions</li>
-                                    <li>Handle errors with <code>EXCEPTION</code> blocks</li>
-                                    <li><code>FOR UPDATE</code> prevents race conditions</li>
+                                    <li>Kume donduren fonksiyonlar icin <code>RETURNS TABLE</code> kullanin</li>
+                                    <li>Hatalari <code>EXCEPTION</code> bloklariyla yonetin</li>
+                                    <li><code>FOR UPDATE</code> yaris kosullarini onler</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Procedures</strong></td>
+                            <td><strong>Yordamlar</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>Can use <code>COMMIT</code> and <code>ROLLBACK</code></li>
-                                    <li>Call with <code>CALL procedure_name()</code></li>
-                                    <li>Use for batch operations with transaction control</li>
+                                    <li><code>COMMIT</code> ve <code>ROLLBACK</code> kullanabilir</li>
+                                    <li><code>CALL yordam_adi()</code> ile cagirin</li>
+                                    <li>Islem kontrollu toplu islemler icin kullanin</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Triggers</strong></td>
+                            <td><strong>Tetikleyiciler</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li><code>BEFORE</code> triggers can modify NEW values</li>
-                                    <li>Use <code>WHEN</code> clause to avoid unnecessary execution</li>
-                                    <li>Return <code>NULL</code> from BEFORE trigger to cancel operation</li>
+                                    <li><code>BEFORE</code> tetikleyicileri NEW degerlerini degistirebilir</li>
+                                    <li>Gereksiz calistirmayi onlemek icin <code>WHEN</code> kosulu kullanin</li>
+                                    <li>Islemi iptal etmek icin BEFORE tetikleyicisinden <code>NULL</code> dondurun</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Indexing</strong></td>
+                            <td><strong>Indeksleme</strong></td>
                             <td>
                                 <ul class="mb-0">
-                                    <li>Partial indexes save space and improve performance</li>
-                                    <li>Expression indexes must match query expressions exactly</li>
-                                    <li>Use <code>INCLUDE</code> for covering indexes</li>
-                                    <li>Materialized views pre-compute expensive aggregations</li>
+                                    <li>Kismi indeksler yer tasarrufu saglar ve performansi arttirir</li>
+                                    <li>Ifade indeksleri sorgu ifadeleriyle tam eslesmeli</li>
+                                    <li>Kapsayici indeksler icin <code>INCLUDE</code> kullanin</li>
+                                    <li>Maddilesmis gorunumler pahali toplamalari onceden hesaplar</li>
                                 </ul>
                             </td>
                         </tr>
@@ -1306,8 +1298,7 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
             <!-- Navigation -->
             <section>
                 <div class="d-flex justify-content-between">
-                    <a href="01_advanced_postgresql_features.html" class="btn btn-outline-primary">&larr; Back to
-                        Lesson</a>
+                    <a href="01_advanced_postgresql_features.html" class="btn btn-outline-primary">&larr; Derse Don</a>
                 </div>
             </section>
         </div>
@@ -1322,10 +1313,10 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
             var element = document.getElementById(id);
             if (element.classList.contains('show')) {
                 element.classList.remove('show');
-                event.target.textContent = 'Show Solution';
+                event.target.textContent = 'Cozumu Goster';
             } else {
                 element.classList.add('show');
-                event.target.textContent = 'Hide Solution';
+                event.target.textContent = 'Cozumu Gizle';
             }
         }
     </script>

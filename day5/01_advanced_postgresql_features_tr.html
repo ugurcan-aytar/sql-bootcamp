@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day5/01_advanced_postgresql_features.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:40 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../style_bootstrap.html">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+    rel="shortcut icon" type="image/x-icon">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Gun 5: Gelismis PostgreSQL Ozellikleri</title>
+  <style>
+    code {
+      white-space: pre-wrap;
+    }
+
+    span.smallcaps {
+      font-variant: small-caps;
+    }
+
+    span.underline {
+      text-decoration: underline;
+    }
+
+    div.column {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
+
+    div.hanging-indent {
+      margin-left: 1.5em;
+      text-indent: -1.5em;
+    }
+
+    ul.task-list {
+      list-style: none;
+    }
+
+    pre>code.sourceCode {
+      white-space: pre;
+      position: relative;
+    }
+
+    pre>code.sourceCode>span {
+      display: inline-block;
+      line-height: 1.25;
+    }
+
+    pre>code.sourceCode>span:empty {
+      height: 1.2em;
+    }
+
+    code.sourceCode>span {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    div.sourceCode {
+      margin: 1em 0;
+    }
+
+    pre.sourceCode {
+      margin: 0;
+    }
+
+    @media screen {
+      div.sourceCode {
+        overflow: auto;
+      }
+    }
+
+    @media print {
+      pre>code.sourceCode {
+        white-space: pre-wrap;
+      }
+
+      pre>code.sourceCode>span {
+        text-indent: -5em;
+        padding-left: 5em;
+      }
+    }
+
+    pre.numberSource code {
+      counter-reset: source-line 0;
+    }
+
+    pre.numberSource code>span {
+      position: relative;
+      left: -4em;
+      counter-increment: source-line;
+    }
+
+    pre.numberSource code>span>a:first-child::before {
+      content: counter(source-line);
+      position: relative;
+      left: -1em;
+      text-align: right;
+      vertical-align: baseline;
+      border: none;
+      display: inline-block;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: 0 4px;
+      width: 4em;
+      color: #aaaaaa;
+    }
+
+    pre.numberSource {
+      margin-left: 3em;
+      border-left: 1px solid #aaaaaa;
+      padding-left: 4px;
+    }
+
+    div.sourceCode {}
+
+    @media screen {
+      pre>code.sourceCode>span>a:first-child::before {
+        text-decoration: underline;
+      }
+    }
+
+    code span.al {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Alert */
+    code span.an {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Annotation */
+    code span.at {
+      color: #7d9029;
+    }
+
+    /* Attribute */
+    code span.bn {
+      color: #40a070;
+    }
+
+    /* BaseN */
+    code span.bu {}
+
+    /* BuiltIn */
+    code span.cf {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* ControlFlow */
+    code span.ch {
+      color: #4070a0;
+    }
+
+    /* Char */
+    code span.cn {
+      color: #880000;
+    }
+
+    /* Constant */
+    code span.co {
+      color: #60a0b0;
+      font-style: italic;
+    }
+
+    /* Comment */
+    code span.cv {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* CommentVar */
+    code span.do {
+      color: #ba2121;
+      font-style: italic;
+    }
+
+    /* Documentation */
+    code span.dt {
+      color: #902000;
+    }
+
+    /* DataType */
+    code span.dv {
+      color: #40a070;
+    }
+
+    /* DecVal */
+    code span.er {
+      color: #ff0000;
+      font-weight: bold;
+    }
+
+    /* Error */
+    code span.ex {}
+
+    /* Extension */
+    code span.fl {
+      color: #40a070;
+    }
+
+    /* Float */
+    code span.fu {
+      color: #06287e;
+    }
+
+    /* Function */
+    code span.im {}
+
+    /* Import */
+    code span.in {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Information */
+    code span.kw {
+      color: #007020;
+      font-weight: bold;
+    }
+
+    /* Keyword */
+    code span.op {
+      color: #666666;
+    }
+
+    /* Operator */
+    code span.ot {
+      color: #007020;
+    }
+
+    /* Other */
+    code span.pp {
+      color: #bc7a00;
+    }
+
+    /* Preprocessor */
+    code span.sc {
+      color: #4070a0;
+    }
+
+    /* SpecialChar */
+    code span.ss {
+      color: #bb6688;
+    }
+
+    /* SpecialString */
+    code span.st {
+      color: #4070a0;
+    }
+
+    /* String */
+    code span.va {
+      color: #19177c;
+    }
+
+    /* Variable */
+    code span.vs {
+      color: #4070a0;
+    }
+
+    /* VerbatimString */
+    code span.wa {
+      color: #60a0b0;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    /* Warning */
+    .language-switcher { position: fixed; top: 10px; right: 10px; z-index: 1000; background: #fff; padding: 5px 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .language-switcher a { text-decoration: none; padding: 5px 10px; margin: 0 2px; border-radius: 3px; color: #333; }
+    .language-switcher a.active { background: #0d6efd; color: #fff; }
+    .language-switcher a:hover:not(.active) { background: #e9ecef; }
+  </style>
+</head>
+
+<body>
+  <div class="language-switcher">
+    <a href="01_advanced_postgresql_features.html">EN</a>
+    <a href="01_advanced_postgresql_features_tr.html" class="active">TR</a>
+  </div>
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+  <div id="europeanunion-turkey">
+    <img src="../static/eu.png" alt="">
+  </div>
+  <div id="sanayiteknolojibakan">
+    <img src="../static/sanayitek.png" alt="">
+  </div>
+  <div id="rekabet">
+    <img src="../static/rekabet.png" alt="">
+  </div>
+  <div id="tisk">
+    <img src="../static/tisk.png" alt="">
+  </div>
+  <div id="undp">
+    <img src="../static/undp.png" alt="">
+  </div>
+  <div class="content-container">
+    <div class="container">
+      <section>
+        <h1 id="day-5-advanced-postgresql-features">Gun 5: Gelismis PostgreSQL Ozellikleri</h1>
+        <h2 id="session-1-advanced-postgresql-features-2-hours">Oturum 1: Gelismis PostgreSQL Ozellikleri (2 saat)</h2>
+        <h3 id="stored-procedures-and-functions">Sakli Prosedurler ve Fonksiyonlar</h3>
+        <p>PostgreSQL, is mantigi dogrudan veritabaninda kapsulleyebilen sakli prosedurler ve fonksiyonlar olusturmak icin guclu yetenekler sunar. Bu yaklasim, gelistirilmis performans, kod yeniden kullanimi ve guvenlik dahil olmak uzere cesitli avantajlar saglar.</p>
+        <p><strong>Fonksiyonlar ve Prosedurler</strong>:</p>
+        <p>PostgreSQL'de iki tur rutin vardir:</p>
+        <ol type="1">
+          <li><strong>Fonksiyonlar</strong>: Bir deger dondurur ve SQL ifadelerinde kullanilabilir</li>
+          <li><strong>Prosedurler</strong>: Deger dondurmez ancak islem yapabilir (COMMIT/ROLLBACK)</li>
+        </ol>
+      </section>
+      <section>
+
+        <p><strong>Temel Fonksiyonlar Olusturma</strong>:</p>
+        <div class="sourceCode" id="cb1">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Skaler deger donduren basit fonksiyon</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_customer_count()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>RETURNS <span class="dt">integer</span> <span class="kw">AS</span> $$</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    <span class="kw">RETURN</span> (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> customer);</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">-- Kullanim</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">SELECT</span> get_customer_count();</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">-- Parametreli fonksiyon</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_orders_by_customer(customer_id_param <span class="dt">integer</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>RETURNS <span class="dt">integer</span> <span class="kw">AS</span> $$</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>    <span class="kw">RETURN</span> (<span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> customer_id <span class="op">=</span> customer_id_param);</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co">-- Kullanim</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="kw">SELECT</span> get_orders_by_customer(<span class="dv">123</span>);</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Tablo Donduren Fonksiyonlar Olusturma</strong>:</p>
+        <div class="sourceCode" id="cb2">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Tablo donduren fonksiyon</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_top_customers(n <span class="dt">integer</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>RETURNS <span class="kw">TABLE</span> (</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    customer_id <span class="dt">integer</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    customer_name text,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    total_orders <span class="dt">integer</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>    total_spent <span class="dt">numeric</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>) <span class="kw">AS</span> $$</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a>    <span class="kw">RETURN</span> <span class="kw">QUERY</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>        c.<span class="kw">id</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>        c.name,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>        <span class="fu">COUNT</span>(o.<span class="kw">id</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>        <span class="fu">SUM</span>(o.amount)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>        customer c</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>        orders o <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> o.customer_id</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>        c.<span class="kw">id</span>, c.name</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>    <span class="kw">ORDER</span> <span class="kw">BY</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>        <span class="fu">SUM</span>(o.amount) <span class="kw">DESC</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>    <span class="kw">LIMIT</span> n;</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a><span class="co">-- Kullanim</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> get_top_customers(<span class="dv">10</span>);</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Sakli Prosedurler Olusturma</strong>:</p>
+        <div class="sourceCode" id="cb3">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Basit prosedur</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> update_product_prices(category_id_param <span class="dt">integer</span>, increase_percent <span class="dt">numeric</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>LANGUAGE plpgsql</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">AS</span> $$</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    <span class="kw">UPDATE</span> product</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>    <span class="kw">SET</span> price <span class="op">=</span> price <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> increase_percent <span class="op">/</span> <span class="dv">100</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    <span class="kw">WHERE</span> category_id <span class="op">=</span> category_id_param;</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>    <span class="kw">COMMIT</span>;</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>$$;</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="co">-- Kullanim</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="kw">CALL</span> update_product_prices(<span class="dv">5</span>, <span class="dv">10</span>);  <span class="co">-- Kategori 5'teki fiyatlari %10 artir</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="co">-- Islem kontrollu prosedur</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">PROCEDURE</span> transfer_funds(</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>    sender_id <span class="dt">integer</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>    receiver_id <span class="dt">integer</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>    amount <span class="dt">numeric</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>LANGUAGE plpgsql</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a><span class="kw">AS</span> $$</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a>    sender_balance <span class="dt">numeric</span>;</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a>    <span class="co">-- Islem baslat</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a>    <span class="cf">BEGIN</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true"></a>        <span class="co">-- Gonderen bakiyesini kontrol et</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true"></a>        <span class="kw">SELECT</span> balance <span class="kw">INTO</span> sender_balance</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a>        <span class="kw">FROM</span> <span class="kw">account</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a>        <span class="kw">WHERE</span> account_id <span class="op">=</span> sender_id</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true"></a>        <span class="cf">FOR</span> <span class="kw">UPDATE</span>;  <span class="co">-- Satiri kilitle</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a>        </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true"></a>        <span class="cf">IF</span> sender_balance <span class="op">&lt;</span> amount <span class="cf">THEN</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true"></a>            RAISE <span class="kw">EXCEPTION</span> <span class="st">'Yetersiz bakiye'</span>;</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true"></a>        <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true"></a>        </span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true"></a>        <span class="co">-- Gonderen hesabini guncelle</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true"></a>        <span class="kw">UPDATE</span> <span class="kw">account</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true"></a>        <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> amount</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true"></a>        <span class="kw">WHERE</span> account_id <span class="op">=</span> sender_id;</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true"></a>        </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true"></a>        <span class="co">-- Alici hesabini guncelle</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true"></a>        <span class="kw">UPDATE</span> <span class="kw">account</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true"></a>        <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">+</span> amount</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true"></a>        <span class="kw">WHERE</span> account_id <span class="op">=</span> receiver_id;</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true"></a>        </span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true"></a>        <span class="co">-- Islemi onayla</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true"></a>        <span class="kw">COMMIT</span>;</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true"></a>    <span class="kw">EXCEPTION</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true"></a>        <span class="cf">WHEN</span> OTHERS <span class="cf">THEN</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true"></a>            <span class="co">-- Hata durumunda islemi geri al</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true"></a>            <span class="kw">ROLLBACK</span>;</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true"></a>            RAISE;</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true"></a>    <span class="cf">END</span>;</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true"></a>$$;</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true"></a><span class="co">-- Kullanim</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true"></a><span class="kw">CALL</span> transfer_funds(<span class="dv">101</span>, <span class="dv">202</span>, <span class="fl">500.00</span>);</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>PL/pgSQL Dil Ozellikleri</strong>:</p>
+        <p>PL/pgSQL, SQL'i kontrol yapilari ve daha karmasik islemlerle genisleten PostgreSQL'in prosedural dilidir.</p>
+        <ol type="1">
+          <li><strong>Degiskenler ve Sabitler</strong>:</li>
+        </ol>
+        <div class="sourceCode" id="cb4">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> calculate_order_total(order_id_param <span class="dt">integer</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>RETURNS <span class="dt">numeric</span> <span class="kw">AS</span> $$</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    total_amount <span class="dt">numeric</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    tax_rate <span class="kw">constant</span> <span class="dt">numeric</span> <span class="op">:=</span> <span class="fl">0.08</span>;</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    shipping_fee <span class="dt">numeric</span>;</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>    customer_type text;</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    <span class="co">-- Musteri turunu al</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>    <span class="kw">SELECT</span> c.customer_type <span class="kw">INTO</span> customer_type</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="kw">FROM</span> orders o</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>    <span class="kw">JOIN</span> customer c <span class="kw">ON</span> o.customer_id <span class="op">=</span> c.<span class="kw">id</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="kw">WHERE</span> o.<span class="kw">id</span> <span class="op">=</span> order_id_param;</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>    </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    <span class="co">-- Musteri turune gore kargo ucretini belirle</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    <span class="cf">IF</span> customer_type <span class="op">=</span> <span class="st">'premium'</span> <span class="cf">THEN</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>        shipping_fee <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>    <span class="cf">ELSE</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>        shipping_fee <span class="op">:=</span> <span class="dv">10</span>;</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a>    </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>    <span class="co">-- Siparis toplamini hesapla</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>    <span class="kw">SELECT</span> <span class="fu">SUM</span>(quantity <span class="op">*</span> price) <span class="kw">INTO</span> total_amount</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>    <span class="kw">FROM</span> order_item</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>    <span class="kw">WHERE</span> order_id <span class="op">=</span> order_id_param;</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>    </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>    <span class="co">-- Vergi ve kargoyu ekle</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>    total_amount <span class="op">:=</span> total_amount <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> tax_rate) <span class="op">+</span> shipping_fee;</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>    </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a>    <span class="kw">RETURN</span> total_amount;</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <ol start="2" type="1">
+          <li><strong>Kontrol Yapilari</strong>:</li>
+        </ol>
+        <div class="sourceCode" id="cb5">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- IF ifadesi</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_price_category(price <span class="dt">numeric</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>RETURNS text <span class="kw">AS</span> $$</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="cf">IF</span> price <span class="op">&lt;</span> <span class="dv">50</span> <span class="cf">THEN</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="st">'Butce'</span>;</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    <span class="cf">ELSIF</span> price <span class="op">&lt;</span> <span class="dv">200</span> <span class="cf">THEN</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="st">'Orta-segment'</span>;</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    <span class="cf">ELSE</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="st">'Premium'</span>;</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="co">-- CASE ifadesi</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_shipping_method(weight <span class="dt">numeric</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>RETURNS text <span class="kw">AS</span> $$</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a>    <span class="kw">RETURN</span> <span class="cf">CASE</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>        <span class="cf">WHEN</span> weight <span class="op">&lt;</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Standart Posta'</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a>        <span class="cf">WHEN</span> weight <span class="op">&lt;</span> <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Ekspres Posta'</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>        <span class="cf">WHEN</span> weight <span class="op">&lt;</span> <span class="dv">20</span> <span class="cf">THEN</span> <span class="st">'Kara Kargo'</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a>        <span class="cf">ELSE</span> <span class="st">'Navlun'</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    <span class="cf">END</span>;</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a><span class="co">-- LOOP</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> sum_integers(n <span class="dt">integer</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a>RETURNS <span class="dt">integer</span> <span class="kw">AS</span> $$</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a>    i <span class="dt">integer</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>    total <span class="dt">integer</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>    <span class="cf">LOOP</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a>        i <span class="op">:=</span> i <span class="op">+</span> <span class="dv">1</span>;</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a>        total <span class="op">:=</span> total <span class="op">+</span> i;</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a>        EXIT <span class="cf">WHEN</span> i <span class="op">&gt;=</span> n;</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true"></a>    </span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true"></a>    <span class="kw">RETURN</span> total;</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true"></a><span class="co">-- WHILE LOOP</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> factorial(n <span class="dt">integer</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true"></a>RETURNS <span class="dt">integer</span> <span class="kw">AS</span> $$</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true"></a>    result <span class="dt">integer</span> <span class="op">:=</span> <span class="dv">1</span>;</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true"></a>    <span class="cf">WHILE</span> n <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">LOOP</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true"></a>        result <span class="op">:=</span> result <span class="op">*</span> n;</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true"></a>        n <span class="op">:=</span> n <span class="op">-</span> <span class="dv">1</span>;</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true"></a>    </span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true"></a>    <span class="kw">RETURN</span> result;</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true"></a></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true"></a><span class="co">-- FOR LOOP (tamsayi araligi)</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> sum_even_numbers(n <span class="dt">integer</span>)</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true"></a>RETURNS <span class="dt">integer</span> <span class="kw">AS</span> $$</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true"></a>    i <span class="dt">integer</span>;</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true"></a>    total <span class="dt">integer</span> <span class="op">:=</span> <span class="dv">0</span>;</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true"></a>    <span class="cf">FOR</span> i <span class="kw">IN</span> <span class="dv">1</span><span class="op">..</span>n <span class="cf">LOOP</span></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true"></a>        <span class="cf">IF</span> i % <span class="dv">2</span> <span class="op">=</span> <span class="dv">0</span> <span class="cf">THEN</span></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true"></a>            total <span class="op">:=</span> total <span class="op">+</span> i;</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true"></a>        <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true"></a>    </span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true"></a>    <span class="kw">RETURN</span> total;</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true"></a></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true"></a><span class="co">-- FOR LOOP (sorgu sonuclari)</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> update_inventory_levels()</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true"></a>RETURNS void <span class="kw">AS</span> $$</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true"></a>    product_record <span class="dt">record</span>;</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true"></a>    <span class="cf">FOR</span> product_record <span class="kw">IN</span></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true"></a>        <span class="kw">SELECT</span> product_id, name</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true"></a>        <span class="kw">FROM</span> product</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true"></a>        <span class="kw">WHERE</span> stock_level <span class="op">&lt;</span> reorder_level</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true"></a>    <span class="cf">LOOP</span></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true"></a>        RAISE NOTICE <span class="st">'Urun % icin dusuk stok: %'</span>, </span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true"></a>                     product_record.product_id, </span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true"></a>                     product_record.name;</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true"></a>        </span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true"></a>        <span class="co">-- Yeniden siparis bayragini guncelle</span></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true"></a>        <span class="kw">UPDATE</span> product</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true"></a>        <span class="kw">SET</span> reorder_flag <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true"></a>        <span class="kw">WHERE</span> product_id <span class="op">=</span> product_record.product_id;</span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">LOOP</span>;</span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <ol start="3" type="1">
+          <li><strong>Hata Yonetimi</strong>:</li>
+        </ol>
+        <div class="sourceCode" id="cb6">
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> divide_safely(a <span class="dt">numeric</span>, b <span class="dt">numeric</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>RETURNS <span class="dt">numeric</span> <span class="kw">AS</span> $$</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    <span class="kw">RETURN</span> a <span class="op">/</span> b;</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="cf">WHEN</span> division_by_zero <span class="cf">THEN</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        RAISE NOTICE <span class="st">'Sifira bolme tespit edildi'</span>;</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="dv">0</span>;</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>    <span class="cf">WHEN</span> others <span class="cf">THEN</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>        RAISE NOTICE <span class="st">'Diger hata: %'</span>, SQLERRM;</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="kw">NULL</span>;</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a><span class="co">-- Ozel istisnalar</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> withdraw_money(account_id_param <span class="dt">integer</span>, amount <span class="dt">numeric</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>RETURNS void <span class="kw">AS</span> $$</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a><span class="kw">DECLARE</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>    current_balance <span class="dt">numeric</span>;</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>    insufficient_funds <span class="kw">EXCEPTION</span>;</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>    <span class="co">-- Mevcut bakiyeyi al</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>    <span class="kw">SELECT</span> balance <span class="kw">INTO</span> current_balance</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>    <span class="kw">FROM</span> <span class="kw">account</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>    <span class="kw">WHERE</span> account_id <span class="op">=</span> account_id_param;</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a>    </span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a>    <span class="co">-- Yeterli bakiye var mi kontrol et</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a>    <span class="cf">IF</span> current_balance <span class="op">&lt;</span> amount <span class="cf">THEN</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a>        RAISE insufficient_funds;</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true"></a>    </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true"></a>    <span class="co">-- Bakiyeyi guncelle</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true"></a>    <span class="kw">UPDATE</span> <span class="kw">account</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true"></a>    <span class="kw">SET</span> balance <span class="op">=</span> balance <span class="op">-</span> amount</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true"></a>    <span class="kw">WHERE</span> account_id <span class="op">=</span> account_id_param;</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true"></a>    </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true"></a><span class="kw">EXCEPTION</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true"></a>    <span class="cf">WHEN</span> insufficient_funds <span class="cf">THEN</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true"></a>        RAISE <span class="kw">EXCEPTION</span> <span class="st">'Hesap % yetersiz bakiyeye sahip (bakiye: %)'</span>, </span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true"></a>                        account_id_param, current_balance;</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true"></a>    <span class="cf">WHEN</span> no_data_found <span class="cf">THEN</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true"></a>        RAISE <span class="kw">EXCEPTION</span> <span class="st">'Hesap % bulunamadi'</span>, account_id_param;</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Fonksiyon Guvenligi ve Izinler</strong>:</p>
+        <p>Fonksiyonlar farkli guvenlik baglamlarinda calistirilabiir:</p>
+        <div class="sourceCode" id="cb7">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Fonksiyon cagiran kisi yetkileriyle calisir</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_my_orders()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>RETURNS <span class="kw">TABLE</span> (order_id <span class="dt">integer</span>, order_date <span class="dt">date</span>, amount <span class="dt">numeric</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="kw">AS</span> $$</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="kw">RETURN</span> <span class="kw">QUERY</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    <span class="kw">SELECT</span> <span class="kw">id</span>, order_date, amount</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    <span class="kw">FROM</span> orders</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    <span class="kw">WHERE</span> customer_id <span class="op">=</span> current_user_id();</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="co">-- Fonksiyon tanimlayan kisi yetkileriyle calisir</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> get_sensitive_data()</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>RETURNS <span class="kw">TABLE</span> (customer_id <span class="dt">integer</span>, credit_score <span class="dt">integer</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>SECURITY <span class="kw">DEFINER</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="kw">AS</span> $$</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>    <span class="kw">RETURN</span> <span class="kw">QUERY</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>    <span class="kw">SELECT</span> <span class="kw">id</span>, credit_score</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a>    <span class="kw">FROM</span> customer_credit_data;</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true"></a><span class="co">-- Calistirma izni ver</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a><span class="kw">GRANT</span> <span class="kw">EXECUTE</span> <span class="kw">ON</span> <span class="kw">FUNCTION</span> get_sensitive_data() <span class="kw">TO</span> analyst_role;</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <p><strong>Pratik Ornekler</strong>:</p>
+        <ol type="1">
+          <li><strong>Denetim Izi Fonksiyonu</strong>:</li>
+        </ol>
+        <div class="sourceCode" id="cb8">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">-- Denetim tablosu olustur</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> audit_log (</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    log_id serial <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    table_name text <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    operation text <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    record_id <span class="dt">integer</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>    changed_by text <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>    changed_at <span class="dt">timestamp</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_TIMESTAMP</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    old_data jsonb,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>    new_data jsonb</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>);</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="co">-- Denetim fonksiyonu olustur</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> audit_trigger_function()</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>RETURNS <span class="kw">trigger</span> <span class="kw">AS</span> $$</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>    <span class="cf">IF</span> (TG_OP <span class="op">=</span> <span class="st">'DELETE'</span>) <span class="cf">THEN</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>        <span class="kw">INSERT</span> <span class="kw">INTO</span> audit_log (</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>            table_name,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>            operation,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>            record_id,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a>            changed_by,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a>            old_data</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a>        )</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a>        <span class="kw">VALUES</span> (</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a>            TG_TABLE_NAME,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a>            TG_OP,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a>            <span class="kw">OLD</span>.<span class="kw">id</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a>            current_user,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a>            to_jsonb(<span class="kw">OLD</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true"></a>        );</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="kw">OLD</span>;</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true"></a>    <span class="cf">ELSIF</span> (TG_OP <span class="op">=</span> <span class="st">'UPDATE'</span>) <span class="cf">THEN</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true"></a>        <span class="kw">INSERT</span> <span class="kw">INTO</span> audit_log (</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true"></a>            table_name,</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true"></a>            operation,</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true"></a>            record_id,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true"></a>            changed_by,</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true"></a>            old_data,</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true"></a>            new_data</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true"></a>        )</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true"></a>        <span class="kw">VALUES</span> (</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true"></a>            TG_TABLE_NAME,</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true"></a>            TG_OP,</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true"></a>            <span class="kw">NEW</span>.<span class="kw">id</span>,</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true"></a>            current_user,</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true"></a>            to_jsonb(<span class="kw">OLD</span>),</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true"></a>            to_jsonb(<span class="kw">NEW</span>)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true"></a>        );</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="kw">NEW</span>;</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true"></a>    <span class="cf">ELSIF</span> (TG_OP <span class="op">=</span> <span class="st">'INSERT'</span>) <span class="cf">THEN</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true"></a>        <span class="kw">INSERT</span> <span class="kw">INTO</span> audit_log (</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true"></a>            table_name,</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true"></a>            operation,</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true"></a>            record_id,</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true"></a>            changed_by,</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true"></a>            new_data</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true"></a>        )</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true"></a>        <span class="kw">VALUES</span> (</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true"></a>            TG_TABLE_NAME,</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true"></a>            TG_OP,</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true"></a>            <span class="kw">NEW</span>.<span class="kw">id</span>,</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true"></a>            current_user,</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true"></a>            to_jsonb(<span class="kw">NEW</span>)</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true"></a>        );</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true"></a>        <span class="kw">RETURN</span> <span class="kw">NEW</span>;</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true"></a>    <span class="cf">END</span> <span class="cf">IF</span>;</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true"></a>    <span class="kw">RETURN</span> <span class="kw">NULL</span>;</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true"></a></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true"></a><span class="co">-- Tetikleyiciyi tabloya uygula</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TRIGGER</span> product_audit</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true"></a><span class="kw">AFTER</span> <span class="kw">INSERT</span> <span class="kw">OR</span> <span class="kw">UPDATE</span> <span class="kw">OR</span> <span class="kw">DELETE</span> <span class="kw">ON</span> product</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true"></a><span class="cf">FOR</span> <span class="kw">EACH</span> <span class="kw">ROW</span> <span class="kw">EXECUTE</span> <span class="kw">FUNCTION</span> audit_trigger_function();</span></code></pre>
+        </div>
+      </section>
+      <section>
+        <h3 id="triggers-and-event-based-programming">Tetikleyiciler ve Olay Tabanli Programlama</h3>
+        <p>Tetikleyiciler, bir tabloda belirli olaylar meydana geldiginde otomatik olarak bir fonksiyon calistirmaniza olanak tanir. Is kurallari uygulamak, turetilmis verileri korumak ve denetim izleri olusturmak icin kullanislidirlar.</p>
+        <p><strong>Tetikleyici Turleri</strong>:</p>
+        <ol type="1">
+          <li><strong>Satir duzeyi tetikleyiciler</strong>: Etkilenen her satir icin bir kez calisir</li>
+          <li><strong>Ifade duzeyi tetikleyiciler</strong>: SQL ifadesi basina bir kez calisir</li>
+          <li><strong>Oncesi tetikleyiciler</strong>: Islemden once calisir</li>
+          <li><strong>Sonrasi tetikleyiciler</strong>: Islemden sonra calisir</li>
+          <li><strong>Yerine tetikleyiciler</strong>: Islemi degistirir (gorunumler icin)</li>
+        </ol>
+      </section>
+      <section>
+
+        <p><strong>Temel Tetikleyiciler Olusturma</strong>:</p>
+        <div class="sourceCode" id="cb10">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Tetikleyici fonksiyonu olustur</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> update_modified_column()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>RETURNS <span class="kw">trigger</span> <span class="kw">AS</span> $$</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="cf">BEGIN</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="kw">NEW</span>.updated_at <span class="op">=</span> <span class="fu">CURRENT_TIMESTAMP</span>;</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>    <span class="kw">RETURN</span> <span class="kw">NEW</span>;</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="cf">END</span>;</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>$$ LANGUAGE plpgsql;</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a><span class="co">-- Tetikleyiciyi tabloya uygula</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TRIGGER</span> set_updated_at</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a><span class="kw">BEFORE</span> <span class="kw">UPDATE</span> <span class="kw">ON</span> product</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a><span class="cf">FOR</span> <span class="kw">EACH</span> <span class="kw">ROW</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a><span class="kw">EXECUTE</span> <span class="kw">FUNCTION</span> update_modified_column();</span></code></pre>
+        </div>
+      </section>
+      <section>
+
+        <p><strong>Tetikleyici Zamanlama ve Olaylar</strong>:</p>
+        <div class="sourceCode" id="cb11">
+          <pre
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">-- INSERT oncesi tetikleyici</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TRIGGER</span> check_product_price</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="kw">BEFORE</span> <span class="kw">INSERT</span> <span class="kw">ON</span> product</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a><span class="cf">FOR</span> <span class="kw">EACH</span> <span class="kw">ROW</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a><span class="kw">EXECUTE</span> <span class="kw">FUNCTION</span> validate_product_price();</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a><span class="co">-- UPDATE sonrasi tetikleyici</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TRIGGER</span> notify_price_change</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="kw">AFTER</span> <span class="kw">UPDATE</span> <span class="kw">OF</span> price <span class="kw">ON</span> product</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a><span class="cf">FOR</span> <span class="kw">EACH</span> <span class="kw">ROW</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a><span class="cf">WHEN</span> (<span class="kw">OLD</span>.price <span class="kw">IS</span> <span class="kw">DISTINCT</span> <span class="kw">FROM</span> <span class="kw">NEW</span>.price)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a><span class="kw">EXECUTE</span> <span class="kw">FUNCTION</span> log_price_change();</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a><span class="co">-- Ifade duzeyi tetikleyici</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TRIGGER</span> cleanup_after_bulk_update</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true"></a><span class="kw">AFTER</span> <span class="kw">UPDATE</span> <span class="kw">ON</span> inventory</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true"></a><span class="cf">FOR</span> <span class="kw">EACH</span> STATEMENT</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true"></a><span class="kw">EXECUTE</span> <span class="kw">FUNCTION</span> refresh_inventory_summary();</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true"></a><span class="co">-- Bir tetikleyicide birden fazla olay</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TRIGGER</span> maintain_audit_log</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true"></a><span class="kw">AFTER</span> <span class="kw">INSERT</span> <span class="kw">OR</span> <span class="kw">UPDATE</span> <span class="kw">OR</span> <span class="kw">DELETE</span> <span class="kw">ON</span> customer</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true"></a><span class="cf">FOR</span> <span class="kw">EACH</span> <span class="kw">ROW</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true"></a><span class="kw">EXECUTE</span> <span class="kw">FUNCTION</span> audit_customer_changes();</span></code></pre>
+        </div>
+      </section>
+      <section>
+
+        <p><strong>Tetikleyici Verilerine Erisim</strong>:</p>
+        <p>Tetikleyici fonksiyonu icinde ozel degiskenlere erisebilirsiniz:</p>
+        <ul>
+          <li><code>NEW</code>: INSERT/UPDATE islemleri icin yeni satir</li>
+          <li><code>OLD</code>: UPDATE/DELETE islemleri icin eski satir</li>
+          <li><code>TG_OP</code>: Islem ('INSERT', 'UPDATE', 'DELETE')</li>
+          <li><code>TG_TABLE_NAME</code>: Tablo adi</li>
+          <li><code>TG_WHEN</code>: Zamanlama ('BEFORE', 'AFTER', 'INSTEAD OF')</li>
+          <li><code>TG_LEVEL</code>: Seviye ('ROW', 'STATEMENT')</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>
+        <p>Gelismis PostgreSQL ozelliklerinde ustalasmaya hazir misiniz? Sakli prosedurler, fonksiyonlar, tetikleyiciler ve gelismis indeksleme tekniklerini kapsayan uygulamali alistirmalarla pratik yapin.</p>
+        <p><a href="01_advanced_postgresql_features_examples.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+      </section>
+    </div>
+  </div> <!-- /container -->
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+<!-- Mirrored from code-mext.github.io/sql-training/day5/01_advanced_postgresql_features.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:40 GMT -->
+</html>
