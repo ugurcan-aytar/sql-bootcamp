@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 
 <!-- Mirrored from code-mext.github.io/sql-training/day5/02_database_administration_and_maintenance.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:40 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
-
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -17,43 +15,15 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Day 5: Database Administration and Maintenance Concepts</title>
-  <style>
-    .language-switcher {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
+  <title>Gun 5: Veritabani Yonetimi ve Bakim Kavramlari</title>
 
-    .language-switcher a {
-      text-decoration: none;
-      padding: 5px 10px;
-      margin: 0 2px;
-      border-radius: 3px;
-      color: #333;
-    }
-
-    .language-switcher a.active {
-      background: #0d6efd;
-      color: #fff;
-    }
-
-    .language-switcher a:hover:not(.active) {
-      background: #e9ecef;
-    }
-  </style>
 </head>
 
 <body>
   <div class="language-switcher">
-    <a href="02_database_administration_and_maintenance.html" class="active">EN</a>
-    <a href="02_database_administration_and_maintenance_tr.html">TR</a>
-  </div>
+    <a href="02_database_administration_and_maintenance.html">EN</a>
+    <a href="02_database_administration_and_maintenance_tr.html" class="active">TR</a>
+</div>
   <div class="copy-notification" id="copyNotification">Copied!</div>
 
   <div id="europeanunion-turkey">
@@ -78,13 +48,13 @@
           Applications</h1>
         <h2 id="session-2-database-administration-and-maintenance-2.5-hours">Session 2: Database Administration and
           Maintenance (2.5 hours)</h2>
-        <h3 id="backup-and-recovery-strategies">Backup and Recovery Strategies</h3>
+        <h3 id="backup-and-recovery-strategies">Yedekleme ve Kurtarma Stratejileri</h3>
         <p>Effective backup and recovery strategies are essential for protecting your data and ensuring business
           continuity. As a product owner, understanding these concepts will help you make informed decisions about data
           protection policies.</p>
-        <p><strong>Types of Backups in PostgreSQL</strong>:</p>
+        <p><strong>PostgreSQL'deki Yedekleme Turleri</strong>:</p>
         <ol type="1">
-          <li><strong>Logical Backups</strong>: SQL statements that can recreate the database
+          <li><strong>Mantiksal Yedeklemeler</strong>: SQL statements that can recreate the database
             <ul>
               <li>Created with <code>pg_dump</code> and <code>pg_dumpall</code></li>
               <li>Human-readable and editable</li>
@@ -92,18 +62,18 @@
               <li>Slower to restore for large databases</li>
             </ul>
           </li>
-          <li><strong>Physical Backups</strong>: Actual data files and WAL (Write-Ahead Log) files
+          <li><strong>Fiziksel Yedeklemeler</strong>: Actual data files and WAL (Write-Ahead Log) files
             <ul>
               <li>Created with file system tools or <code>pg_basebackup</code></li>
               <li>Faster for large databases</li>
               <li>Requires same PostgreSQL version for restore</li>
-              <li>Basis for Point-in-Time Recovery (PITR)</li>
+              <li>Basis for Zaman Noktasi Kurtarmasi (PITR)</li>
             </ul>
           </li>
         </ol>
       </section>
       <section>
-        <p><strong>Logical Backup Tools</strong>:</p>
+        <p><strong>Mantiksal Yedekleme Araçlari</strong>:</p>
         <div class="sourceCode" id="cb1">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># Backup a single database to a file</span></span>
@@ -126,7 +96,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Restoring Logical Backups</strong>:</p>
+        <p><strong>Restoring Mantiksal Yedeklemeler</strong>:</p>
         <div class="sourceCode" id="cb2">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># Restore a plain text backup</span></span>
@@ -141,7 +111,7 @@
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="co"># Restore with parallelism for faster processing</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="ex">pg_restore</span> -d dbname -j 4 backup.dump</span></code></pre>
         </div>
-        <p><strong>Physical Backup with pg_basebackup</strong>:</p>
+        <p><strong>pg_basebackup ile Fiziksel Yedekleme</strong>:</p>
         <div class="sourceCode" id="cb3">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># Basic physical backup</span></span>
@@ -152,23 +122,23 @@
         </div>
       </section>
       <section>
-        <p><strong>Backup Strategies</strong>:</p>
+        <p><strong>Yedekleme Stratejileri</strong>:</p>
         <ol type="1">
-          <li><strong>Full Backups</strong>: Complete backup of the entire database
+          <li><strong>Tam Yedeklemeler</strong>: Complete backup of the entire database
             <ul>
               <li>Simplest to manage</li>
               <li>Requires more storage</li>
               <li>Longer backup and restore times</li>
             </ul>
           </li>
-          <li><strong>Incremental Backups</strong>: Backup only what has changed
+          <li><strong>Artirsal Yedeklemeler</strong>: Backup only what has changed
             <ul>
               <li>Implemented through WAL archiving in PostgreSQL</li>
               <li>Requires continuous WAL archiving</li>
               <li>Enables Point-in-Time Recovery</li>
             </ul>
           </li>
-          <li><strong>Differential Backups</strong>: Backup changes since the last full backup
+          <li><strong>Farklil Yedeklemeler</strong>: Backup changes since the last full backup
             <ul>
               <li>Not directly supported in PostgreSQL</li>
               <li>Can be implemented with custom scripts</li>
@@ -177,7 +147,7 @@
         </ol>
       </section>
       <section>
-        <p><strong>Backup Scheduling</strong>:</p>
+        <p><strong>Yedekleme Zamanlama</strong>:</p>
         <div class="sourceCode" id="cb4">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Example crontab entries</span></span>
@@ -191,7 +161,7 @@
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="co"># Hourly WAL archiving check</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="ex">0</span> * * * * /path/to/check_wal_archiving.sh</span></code></pre>
         </div>
-        <p><strong>Backup Validation and Testing</strong>:</p>
+        <p><strong>Yedekleme Dogrulama ve Testi</strong>:</p>
         <div class="sourceCode" id="cb5">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># Test restore without actually restoring</span></span>
@@ -208,24 +178,24 @@
         </div>
       </section>
       <section>
-        <h3 id="point-in-time-recovery-pitr">Point-in-Time Recovery (PITR)</h3>
+        <h3 id="point-in-time-recovery-pitr">Zaman Noktasi Kurtarmasi (PITR)</h3>
         <p>Point-in-Time Recovery allows you to restore a database to any specific point in time, rather than just to
           the
           time of the last backup. This is crucial for recovering from data corruption, accidental data deletion, or
           other
           logical errors.</p>
-        <p><strong>How PITR Works in PostgreSQL</strong>:</p>
+        <p><strong>PostgreSQL'de PITR Nasil Çalişir</strong>:</p>
         <ol type="1">
-          <li><strong>Base Backup</strong>: A full physical backup of the database</li>
-          <li><strong>WAL Archiving</strong>: Continuous archiving of Write-Ahead Log files</li>
-          <li><strong>Recovery Process</strong>: Restore base backup, then replay WAL files up to the desired point in
+          <li><strong>Temel Yedekleme</strong>: A full physical backup of the database</li>
+          <li><strong>WAL Arşivleme</strong>: Continuous archiving of Write-Ahead Log files</li>
+          <li><strong>Kurtarma Işlemi</strong>: Restore base backup, then replay WAL files up to the desired point in
             time</li>
         </ol>
       </section>
       <section>
-        <p><strong>Setting Up WAL Archiving</strong>:</p>
+        <p><strong>Setting Up WAL Arşivleme</strong>:</p>
         <ol type="1">
-          <li><strong>Configure postgresql.conf</strong>:</li>
+          <li><strong>postgresql.conf'i Yapılandır</strong>:</li>
         </ol>
         <pre><code># Enable WAL archiving
 wal_level = replica
@@ -233,7 +203,7 @@ archive_mode = on
 archive_command = &#39;cp %p /archive/path/%f&#39;
 archive_timeout = 60  # Force WAL switch every 60 seconds</code></pre>
         <ol start="2" type="1">
-          <li><strong>Create Archive Directory</strong>:</li>
+          <li><strong>Arşiv Dizini Oluştur</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb7">
           <pre
@@ -241,13 +211,13 @@ archive_timeout = 60  # Force WAL switch every 60 seconds</code></pre>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="fu">chown</span> postgres:postgres /archive/path</span></code></pre>
         </div>
         <ol start="3" type="1">
-          <li><strong>Restart PostgreSQL</strong>:</li>
+          <li><strong>PostgreSQL'i Yeniden Başlat</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb8">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="ex">systemctl</span> restart postgresql</span></code></pre>
         </div>
-        <p><strong>Creating a Base Backup for PITR</strong>:</p>
+        <p><strong>Creating a Temel Yedekleme for PITR</strong>:</p>
         <div class="sourceCode" id="cb9">
           <pre
             class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># Create a base backup with WAL streaming</span></span>
@@ -255,7 +225,7 @@ archive_timeout = 60  # Force WAL switch every 60 seconds</code></pre>
         </div>
       </section>
       <section>
-        <p><strong>Performing Point-in-Time Recovery</strong>:</p>
+        <p><strong>Zaman Noktasi Kurtarmasi Gerçekleştirme</strong>:</p>
         <ol type="1">
           <li><strong>Create recovery.conf (PostgreSQL &lt; 12) or recovery.signal (PostgreSQL ≥ 12)</strong>:</li>
         </ol>
@@ -263,12 +233,12 @@ archive_timeout = 60  # Force WAL switch every 60 seconds</code></pre>
         <pre><code># recovery.conf
 restore_command = &#39;cp /archive/path/%f %p&#39;
 recovery_target_time = &#39;2023-04-15 14:30:00&#39;</code></pre>
-        <p>For PostgreSQL ≥ 12:</p>
+        <p>PostgreSQL ≥ 12 için:</p>
         <pre><code># postgresql.conf additions
 restore_command = &#39;cp /archive/path/%f %p&#39;
 recovery_target_time = &#39;2023-04-15 14:30:00&#39;</code></pre>
         <ol start="2" type="1">
-          <li><strong>Restore Base Backup</strong>:</li>
+          <li><strong>Restore Temel Yedekleme</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb12">
           <pre
@@ -288,7 +258,7 @@ recovery_target_time = &#39;2023-04-15 14:30:00&#39;</code></pre>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a><span class="ex">systemctl</span> start postgresql</span></code></pre>
         </div>
         <ol start="3" type="1">
-          <li><strong>Monitor Recovery Process</strong>:</li>
+          <li><strong>Monitor Kurtarma Işlemi</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb13">
           <pre
@@ -297,7 +267,7 @@ recovery_target_time = &#39;2023-04-15 14:30:00&#39;</code></pre>
         </div>
       </section>
       <section>
-        <p><strong>PITR to Different Targets</strong>:</p>
+        <p><strong>Farkli Hedeflere PITR</strong>:</p>
         <pre><code># Recover to a specific timestamp
 recovery_target_time = &#39;2023-04-15 14:30:00&#39;
 
@@ -309,54 +279,54 @@ recovery_target_name = &#39;before_data_load&#39;
 
 # Recover to just before a specific error
 recovery_target_lsn = &#39;16/B374D848&#39;</code></pre>
-        <p><strong>Creating Named Restore Points</strong>:</p>
+        <p><strong>Adli Geri Yükleme Noktalar Oluşturma</strong>:</p>
         <div class="sourceCode" id="cb15">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- Create a named restore point</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">SELECT</span> pg_create_restore_point(<span class="st">&#39;before_major_update&#39;</span>);</span></code></pre>
         </div>
-        <p><strong>Best Practices for PITR</strong>:</p>
+        <p><strong>PITR için En İyi Uygulamalar</strong>:</p>
         <ol type="1">
-          <li><strong>Test Recovery Regularly</strong>: Ensure your PITR setup works by testing it periodically</li>
-          <li><strong>Monitor WAL Archiving</strong>: Set up alerts for WAL archiving failures</li>
-          <li><strong>Manage Archive Storage</strong>: Implement retention policies for WAL files</li>
-          <li><strong>Document Recovery Procedures</strong>: Create step-by-step recovery guides</li>
-          <li><strong>Automate Where Possible</strong>: Use scripts to simplify recovery processes</li>
+          <li><strong>Kurtarmay Düzenli Olarak Test Et</strong>: PITR kurulumunuzun periyodik olarak test ederek çaliştigini dogrulayin</li>
+          <li><strong>Monitor WAL Arşivleme</strong>: WAL arşivleme başarisizliklari için uyarılar ayarlayin</li>
+          <li><strong>Arşiv Depolamay Yönetin</strong>: WAL dosyalari için bekletme politikalari uygulayın</li>
+          <li><strong>Kurtarma Işlemlerini Belgele</strong>: Adim adim kurtarma kilavuzlari olusturun</li>
+          <li><strong>Mümkün Olan Yerde Otomatikleştir</strong>: Kurtarma işlemlerini basitleştirmek için betikleri kullanin</li>
         </ol>
       </section>
       <section>
-        <p><strong>Example PITR Scenario</strong>:</p>
-        <p>Imagine a scenario where a critical table was accidentally dropped at 2:45 PM:</p>
+        <p><strong>Ornek PITR Senaryosu</strong>:</p>
+        <p>Onemli bir tablonun saat 14:45'te kazara silindiği bir senaryoyu düşünün:</p>
         <div class="sourceCode" id="cb16">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">-- Accidental drop at 2:45 PM</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> important_data;</span></code></pre>
         </div>
-        <p>Recovery steps:</p>
+        <p>Kurtarma adimlar:</p>
         <ol type="1">
           <li>
-            <p>Identify the time just before the drop (e.g., 2:44 PM)</p>
+            <p>Silmeden hemen önceki zamanı belirleyin (ör. saat 14:44)</p>
           </li>
           <li>
-            <p>Stop the application to prevent new writes</p>
+            <p>Yeni yazişlari önlemek için uygulamay durdurun</p>
           </li>
           <li>
-            <p>Configure recovery to that time:</p>
+            <p>Kurtarmay o zamana yapılandır:</p>
             <pre><code>recovery_target_time = &#39;2023-04-15 14:44:00&#39;</code></pre>
           </li>
           <li>
-            <p>Perform PITR as described above</p>
+            <p>Yukarida aciklandi şekilde PITR gerçekleştir</p>
           </li>
           <li>
-            <p>Verify the recovered data</p>
+            <p>Kurtarilan veriyi dogrulay</p>
           </li>
           <li>
-            <p>Restart the application</p>
+            <p>Uygulamay yeniden başlat</p>
           </li>
         </ol>
       </section>
       <section>
-        <p><strong>Continuous Archiving Monitoring</strong>:</p>
+        <p><strong>Sürekli Arşivleme İzlemesi</strong>:</p>
         <div class="sourceCode" id="cb18">
           <pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="co"># check_wal_archiving.sh</span></span>
@@ -389,36 +359,36 @@ recovery_target_lsn = &#39;16/B374D848&#39;</code></pre>
         </div>
       </section>
       <section>
-        <h3 id="database-maintenance-and-monitoring">Database Maintenance and Monitoring</h3>
+        <h3 id="database-maintenance-and-monitoring">Veritabani Bakim ve İzlemesi</h3>
         <p>Regular maintenance is essential for keeping PostgreSQL databases performing optimally. As a product owner,
           understanding these maintenance tasks will help you plan for system downtime and resource allocation.</p>
-        <p><strong>VACUUM and ANALYZE</strong>:</p>
+        <p><strong>VACUUM ve ANALYZE</strong>:</p>
         <p>PostgreSQL’s MVCC (Multi-Version Concurrency Control) system creates “dead” tuples when rows are updated or
           deleted. VACUUM reclaims this space and updates statistics.</p>
         <div class="sourceCode" id="cb19">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co">-- Basic VACUUM</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co">-- Temel VACUUM</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>VACUUM table_name;</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a><span class="co">-- VACUUM with analysis</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a><span class="co">-- Analiz ile VACUUM</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>VACUUM <span class="kw">ANALYZE</span> table_name;</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a><span class="co">-- Full VACUUM (rewrites the entire table)</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a><span class="co">-- Tam VACUUM (tüm tabloyu yeniden yazar)</span></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>VACUUM <span class="kw">FULL</span> table_name;</span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a><span class="co">-- ANALYZE only (updates statistics)</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a><span class="co">-- Sadece ANALYZE (istatistikleri günceller)</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true"></a><span class="kw">ANALYZE</span> table_name;</span></code></pre>
         </div>
-        <p><strong>Automating Maintenance with Autovacuum</strong>:</p>
+        <p><strong>Autovacuum ile Bakimi Otomatikleştirme</strong>:</p>
         <div class="sourceCode" id="cb20">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co">-- Check autovacuum settings</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co">-- Autovacuum ayarlarinik kontrolü edin</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>SHOW autovacuum;</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>SHOW autovacuum_vacuum_threshold;</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>SHOW autovacuum_analyze_threshold;</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>SHOW autovacuum_vacuum_scale_factor;</span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>SHOW autovacuum_analyze_scale_factor;</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a><span class="co">-- Configure autovacuum for a specific table</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a><span class="co">-- Belirli bir tablo için autovacuum'u yapılandır</span></span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> large_table <span class="kw">SET</span> (</span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a>    autovacuum_vacuum_threshold <span class="op">=</span> <span class="dv">1000</span>,</span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a>    autovacuum_vacuum_scale_factor <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -428,7 +398,7 @@ recovery_target_lsn = &#39;16/B374D848&#39;</code></pre>
         </div>
       </section>
       <section>
-        <p><strong>Monitoring Autovacuum</strong>:</p>
+        <p><strong>Autovacuum'u İzleme</strong>:</p>
         <div class="sourceCode" id="cb21">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="co">-- Check autovacuum activity</span></span>
@@ -1037,7 +1007,7 @@ host    replication     repl_user      192.168.1.0/24        scram-sha-256</code
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> repl_user <span class="kw">WITH</span> REPLICATION LOGIN <span class="kw">PASSWORD</span> <span class="st">&#39;secure_password&#39;</span>;</span></code></pre>
         </div>
         <ol start="4" type="1">
-          <li><strong>Create Base Backup</strong>:</li>
+          <li><strong>Create Temel Yedekleme</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb44">
           <pre
@@ -1577,10 +1547,8 @@ effective_cache_size = 24GB   # 75% of RAM</code></pre>
 
       <section>
         <h3 id="practice-exercises">Practice What You Learned</h3>
-        <p>Ready to master database administration? Practice with hands-on exercises covering backup strategies, PITR,
-          maintenance, security, high availability, and scaling.</p>
-        <p><a href="02_database_administration_and_maintenance_examples.html" class="btn btn-primary">Go to Practical
-            Examples &rarr;</a></p>
+        <p>Ready to master database administration? Practice with hands-on exercises covering backup strategies, PITR, maintenance, security, high availability, and scaling.</p>
+        <p><a href="02_database_administration_and_maintenance_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
       </section>
     </div>
   </div> <!-- /container -->
@@ -1590,5 +1558,4 @@ effective_cache_size = 24GB   # 75% of RAM</code></pre>
 
 
 <!-- Mirrored from code-mext.github.io/sql-training/day5/02_database_administration_and_maintenance.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:40 GMT -->
-
 </html>
