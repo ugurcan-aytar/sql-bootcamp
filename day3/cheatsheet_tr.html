@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 3 Cheatsheet - Database Design</title>
+    <title>Gun 3 Kopya Kagidi - Veritabani Tasarimi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
@@ -45,10 +45,10 @@
     </style>
 </head>
 <body>
-    <a href="../index.html" class="back-button">← Back to Index</a>
+    <a href="../index.html" class="back-button">← Anasayfaya Don</a>
     <div class="language-switcher">
-        <a href="cheatsheet.html" class="active">EN</a>
-        <a href="cheatsheet_tr.html">TR</a>
+        <a href="cheatsheet.html">EN</a>
+        <a href="cheatsheet_tr.html" class="active">TR</a>
     </div>
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -69,68 +69,68 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Day 3: Database Design</h1>
-                <p class="text-muted">Normalization, Schema Management & Extensions</p>
+                <h1>Gun 3: Veritabani Tasarimi</h1>
+                <p class="text-muted">Normalizasyon, Sema Yonetimi & Eklentiler</p>
 
-        <!-- Quick Reference -->
+        <!-- Hizli Referans -->
         <div class="quick-ref mb-4">
-            <h5 class="text-center mb-3">Normal Forms Quick Reference</h5>
+            <h5 class="text-center mb-3">Normal Formlar Hizli Referans</h5>
             <div class="row text-center">
-                <div class="col-md-3"><span class="nf-badge nf-1">1NF</span> Atomic values, no repeating groups</div>
-                <div class="col-md-3"><span class="nf-badge nf-2">2NF</span> 1NF + No partial dependencies</div>
-                <div class="col-md-3"><span class="nf-badge nf-3">3NF</span> 2NF + No transitive dependencies</div>
-                <div class="col-md-3"><span class="nf-badge nf-bcnf">BCNF</span> 3NF + Every determinant is a key</div>
+                <div class="col-md-3"><span class="nf-badge nf-1">1NF</span> Atomik degerler, tekrarlayan grup yok</div>
+                <div class="col-md-3"><span class="nf-badge nf-2">2NF</span> 1NF + Kismi bagimlilik yok</div>
+                <div class="col-md-3"><span class="nf-badge nf-3">3NF</span> 2NF + Gecisken bagimlilik yok</div>
+                <div class="col-md-3"><span class="nf-badge nf-bcnf">BCNF</span> 3NF + Her belirleyici bir anahtar</div>
             </div>
         </div>
 
-        <!-- Normalization -->
-        <h3 class="section-title">Database Normalization</h3>
+        <!-- Normalizasyon -->
+        <h3 class="section-title">Veritabani Normalizasyonu</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>First Normal Form (1NF)</h5>
+            <h5>Birinci Normal Form (1NF)</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Rules:</strong></p>
+                    <p><strong>Kurallar:</strong></p>
                     <ul>
-                        <li>Each column contains atomic (indivisible) values</li>
-                        <li>Each column contains values of a single type</li>
-                        <li>Each row is unique (has primary key)</li>
-                        <li>No repeating groups or arrays</li>
+                        <li>Her sutun atomik (bolunmez) degerler icerir</li>
+                        <li>Her sutun tek tip deger icerir</li>
+                        <li>Her satir benzersizdir (primary key var)</li>
+                        <li>Tekrarlayan grup veya dizi yok</li>
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <pre><code><span class="comment">-- Violates 1NF (multiple phones)</span>
+                    <pre><code><span class="comment">-- 1NF'yi ihlal eder (birden fazla telefon)</span>
 | id | name | phones              |
 | 1  | John | 555-1234, 555-5678  |
 
-<span class="comment">-- 1NF Compliant</span>
+<span class="comment">-- 1NF Uyumlu</span>
 | id | name | phone    |
 | 1  | John | 555-1234 |
 | 1  | John | 555-5678 |
 
-<span class="comment">-- Or separate table</span>
+<span class="comment">-- Veya ayri tablo</span>
 user_phones(user_id, phone)</code></pre>
                 </div>
             </div>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Second Normal Form (2NF)</h5>
+            <h5>Ikinci Normal Form (2NF)</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Rules:</strong></p>
+                    <p><strong>Kurallar:</strong></p>
                     <ul>
-                        <li>Must be in 1NF</li>
-                        <li>No partial dependencies</li>
-                        <li>Non-key columns depend on the ENTIRE primary key</li>
-                        <li>Only applies to composite primary keys</li>
+                        <li>1NF'de olmali</li>
+                        <li>Kismi bagimlilik yok</li>
+                        <li>Anahtar olmayan sutunlar TUM primary key'e bagimli</li>
+                        <li>Sadece birlesik primary key'lere uygulanir</li>
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <pre><code><span class="comment">-- Violates 2NF (product_name depends only on product_id)</span>
+                    <pre><code><span class="comment">-- 2NF'yi ihlal eder (product_name sadece product_id'ye bagimli)</span>
 order_items(order_id, product_id, product_name, qty)
 
-<span class="comment">-- 2NF Compliant</span>
+<span class="comment">-- 2NF Uyumlu</span>
 order_items(order_id, product_id, qty)
 products(product_id, product_name)</code></pre>
                 </div>
@@ -138,22 +138,22 @@ products(product_id, product_name)</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Third Normal Form (3NF)</h5>
+            <h5>Ucuncu Normal Form (3NF)</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Rules:</strong></p>
+                    <p><strong>Kurallar:</strong></p>
                     <ul>
-                        <li>Must be in 2NF</li>
-                        <li>No transitive dependencies</li>
-                        <li>Non-key columns depend ONLY on the primary key</li>
-                        <li>Not on other non-key columns</li>
+                        <li>2NF'de olmali</li>
+                        <li>Gecisken bagimlilik yok</li>
+                        <li>Anahtar olmayan sutunlar SADECE primary key'e bagimli</li>
+                        <li>Diger anahtar olmayan sutunlara bagimli degil</li>
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <pre><code><span class="comment">-- Violates 3NF (city depends on zip, not id)</span>
+                    <pre><code><span class="comment">-- 3NF'yi ihlal eder (city zip'e bagimli, id'ye degil)</span>
 employees(id, name, zip, city, state)
 
-<span class="comment">-- 3NF Compliant</span>
+<span class="comment">-- 3NF Uyumlu</span>
 employees(id, name, zip)
 zip_codes(zip, city, state)</code></pre>
                 </div>
@@ -161,41 +161,41 @@ zip_codes(zip, city, state)</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Denormalization (When to Break Rules)</h5>
+            <h5>Denormalizasyon (Kurallari Ne Zaman Ihlal Etmeli)</h5>
             <table>
-                <thead><tr><th>Situation</th><th>Reason</th></tr></thead>
+                <thead><tr><th>Durum</th><th>Neden</th></tr></thead>
                 <tbody>
-                    <tr><td>Read-heavy workloads</td><td>Reduce JOINs for faster queries</td></tr>
-                    <tr><td>Reporting/Analytics</td><td>Pre-computed aggregates</td></tr>
-                    <tr><td>Caching</td><td>Store computed values</td></tr>
-                    <tr><td>Historical data</td><td>Snapshot point-in-time values</td></tr>
+                    <tr><td>Okuma agirlikli is yukleri</td><td>Daha hizli sorgular icin JOIN'leri azalt</td></tr>
+                    <tr><td>Raporlama/Analitik</td><td>Onceden hesaplanmis toplamlar</td></tr>
+                    <tr><td>Onbellekleme</td><td>Hesaplanmis degerleri sakla</td></tr>
+                    <tr><td>Tarihsel veri</td><td>Zaman noktasi degerlerinin anlik goruntusu</td></tr>
                 </tbody>
             </table>
-            <div class="warning">Denormalization trades storage and update complexity for read performance.</div>
+            <div class="warning">Denormalizasyon, okuma performansi icin depolama ve guncelleme karmasikligini takas eder.</div>
         </div>
 
-        <!-- Relationships -->
-        <h3 class="section-title">Entity Relationships</h3>
+        <!-- Iliskiler -->
+        <h3 class="section-title">Varlik Iliskileri</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Relationship Types</h5>
+            <h5>Iliski Turleri</h5>
             <table>
-                <thead><tr><th>Type</th><th>Description</th><th>Implementation</th></tr></thead>
+                <thead><tr><th>Tur</th><th>Aciklama</th><th>Uygulama</th></tr></thead>
                 <tbody>
                     <tr>
-                        <td><strong>One-to-One (1:1)</strong></td>
-                        <td>One record in A relates to one in B</td>
-                        <td>FK with UNIQUE constraint, or same PK</td>
+                        <td><strong>Bire-Bir (1:1)</strong></td>
+                        <td>A'daki bir kayit B'deki bir kayitla iliskili</td>
+                        <td>UNIQUE kisitlamali FK veya ayni PK</td>
                     </tr>
                     <tr>
-                        <td><strong>One-to-Many (1:N)</strong></td>
-                        <td>One record in A relates to many in B</td>
-                        <td>FK in the "many" table</td>
+                        <td><strong>Bire-Cok (1:N)</strong></td>
+                        <td>A'daki bir kayit B'deki cok sayida kayitla iliskili</td>
+                        <td>"Cok" tablosunda FK</td>
                     </tr>
                     <tr>
-                        <td><strong>Many-to-Many (M:N)</strong></td>
-                        <td>Many in A relate to many in B</td>
-                        <td>Junction/bridge table with two FKs</td>
+                        <td><strong>Coka-Cok (M:N)</strong></td>
+                        <td>A'daki cok kayit B'deki cok kayitla iliskili</td>
+                        <td>Iki FK'li ara/kopru tablo</td>
                     </tr>
                 </tbody>
             </table>
@@ -204,7 +204,7 @@ zip_codes(zip, city, state)</code></pre>
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>One-to-Many Example</h5>
+                    <h5>Bire-Cok Ornegi</h5>
                     <pre><code><span class="keyword">CREATE TABLE</span> departments (
     id SERIAL <span class="keyword">PRIMARY KEY</span>,
     name VARCHAR(100) <span class="keyword">NOT NULL</span>
@@ -220,7 +220,7 @@ zip_codes(zip, city, state)</code></pre>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Many-to-Many Example</h5>
+                    <h5>Coka-Cok Ornegi</h5>
                     <pre><code><span class="keyword">CREATE TABLE</span> students (
     id SERIAL <span class="keyword">PRIMARY KEY</span>,
     name VARCHAR(100)
@@ -229,7 +229,7 @@ zip_codes(zip, city, state)</code></pre>
     id SERIAL <span class="keyword">PRIMARY KEY</span>,
     title VARCHAR(100)
 );
-<span class="comment">-- Junction table</span>
+<span class="comment">-- Ara tablo</span>
 <span class="keyword">CREATE TABLE</span> enrollments (
     student_id INT <span class="keyword">REFERENCES</span> students(id),
     course_id INT <span class="keyword">REFERENCES</span> courses(id),
@@ -239,11 +239,11 @@ zip_codes(zip, city, state)</code></pre>
             </div>
         </div>
 
-        <!-- Constraints -->
-        <h3 class="section-title">Constraints</h3>
+        <!-- Kisitlamalar -->
+        <h3 class="section-title">Kisitlamalar</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Constraint Types</h5>
+            <h5>Kisitlama Turleri</h5>
             <pre><code><span class="keyword">CREATE TABLE</span> products (
     <span class="comment">-- Primary Key</span>
     id SERIAL <span class="keyword">PRIMARY KEY</span>,
@@ -254,74 +254,74 @@ zip_codes(zip, city, state)</code></pre>
     <span class="comment">-- Unique</span>
     sku VARCHAR(50) <span class="keyword">UNIQUE</span>,
 
-    <span class="comment">-- Check constraint</span>
+    <span class="comment">-- Check kisitlamasi</span>
     price DECIMAL(10,2) <span class="keyword">CHECK</span> (price >= 0),
 
     <span class="comment">-- Foreign Key</span>
     category_id INT <span class="keyword">REFERENCES</span> categories(id),
 
-    <span class="comment">-- Default value</span>
+    <span class="comment">-- Varsayilan deger</span>
     created_at TIMESTAMPTZ <span class="keyword">DEFAULT NOW</span>(),
     status VARCHAR(20) <span class="keyword">DEFAULT</span> <span class="string">'active'</span>,
 
-    <span class="comment">-- Named constraints</span>
+    <span class="comment">-- Adlandirilmis kisitlamalar</span>
     <span class="keyword">CONSTRAINT</span> positive_stock <span class="keyword">CHECK</span> (stock >= 0),
     <span class="keyword">CONSTRAINT</span> valid_status <span class="keyword">CHECK</span> (status <span class="keyword">IN</span> (<span class="string">'active'</span>, <span class="string">'inactive'</span>, <span class="string">'discontinued'</span>))
 );</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Foreign Key Actions</h5>
+            <h5>Foreign Key Eylemleri</h5>
             <pre><code><span class="keyword">CREATE TABLE</span> orders (
     id SERIAL <span class="keyword">PRIMARY KEY</span>,
     customer_id INT <span class="keyword">REFERENCES</span> customers(id)
-        <span class="keyword">ON DELETE SET NULL</span>     <span class="comment">-- Set to NULL when parent deleted</span>
-        <span class="keyword">ON UPDATE CASCADE</span>      <span class="comment">-- Update when parent ID changes</span>
+        <span class="keyword">ON DELETE SET NULL</span>     <span class="comment">-- Ust silindiginde NULL yap</span>
+        <span class="keyword">ON UPDATE CASCADE</span>      <span class="comment">-- Ust ID degistiginde guncelle</span>
 );
 
-<span class="comment">-- ON DELETE options:</span>
-<span class="keyword">CASCADE</span>      <span class="comment">-- Delete child rows too</span>
-<span class="keyword">SET NULL</span>     <span class="comment">-- Set FK to NULL</span>
-<span class="keyword">SET DEFAULT</span>  <span class="comment">-- Set FK to default value</span>
-<span class="keyword">RESTRICT</span>     <span class="comment">-- Prevent deletion (default)</span>
-<span class="keyword">NO ACTION</span>    <span class="comment">-- Like RESTRICT but deferred</span></code></pre>
+<span class="comment">-- ON DELETE secenekleri:</span>
+<span class="keyword">CASCADE</span>      <span class="comment">-- Alt satirlari da sil</span>
+<span class="keyword">SET NULL</span>     <span class="comment">-- FK'yi NULL yap</span>
+<span class="keyword">SET DEFAULT</span>  <span class="comment">-- FK'yi varsayilana ayarla</span>
+<span class="keyword">RESTRICT</span>     <span class="comment">-- Silmeyi engelle (varsayilan)</span>
+<span class="keyword">NO ACTION</span>    <span class="comment">-- RESTRICT gibi ama ertelenmis</span></code></pre>
         </div>
 
-        <!-- Schema Management -->
-        <h3 class="section-title">Schema Management</h3>
+        <!-- Sema Yonetimi -->
+        <h3 class="section-title">Sema Yonetimi</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Schema Commands</h5>
-                    <pre><code><span class="comment">-- Create schema</span>
+                    <h5>Sema Komutlari</h5>
+                    <pre><code><span class="comment">-- Sema olustur</span>
 <span class="keyword">CREATE SCHEMA</span> sales;
 
-<span class="comment">-- Create table in schema</span>
+<span class="comment">-- Semada tablo olustur</span>
 <span class="keyword">CREATE TABLE</span> sales.orders (...);
 
-<span class="comment">-- Set search path</span>
+<span class="comment">-- Arama yolunu ayarla</span>
 <span class="keyword">SET</span> search_path <span class="keyword">TO</span> sales, public;
 
-<span class="comment">-- Show current schema</span>
+<span class="comment">-- Mevcut semayi goster</span>
 <span class="keyword">SELECT</span> current_schema();
 
-<span class="comment">-- Drop schema</span>
+<span class="comment">-- Semayi sil</span>
 <span class="keyword">DROP SCHEMA</span> sales;
 <span class="keyword">DROP SCHEMA</span> sales <span class="keyword">CASCADE</span>;</code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Naming Conventions</h5>
+                    <h5>Isimlendirme Kurallari</h5>
                     <table>
                         <tbody>
-                            <tr><td>Tables</td><td><code>snake_case</code>, plural</td><td><code>user_accounts</code></td></tr>
-                            <tr><td>Columns</td><td><code>snake_case</code></td><td><code>first_name</code></td></tr>
-                            <tr><td>Primary Key</td><td><code>id</code> or <code>table_id</code></td><td><code>id</code></td></tr>
-                            <tr><td>Foreign Key</td><td><code>referenced_table_id</code></td><td><code>department_id</code></td></tr>
-                            <tr><td>Indexes</td><td><code>idx_table_columns</code></td><td><code>idx_users_email</code></td></tr>
-                            <tr><td>Constraints</td><td><code>type_table_column</code></td><td><code>pk_users</code></td></tr>
+                            <tr><td>Tablolar</td><td><code>snake_case</code>, cogul</td><td><code>user_accounts</code></td></tr>
+                            <tr><td>Sutunlar</td><td><code>snake_case</code></td><td><code>first_name</code></td></tr>
+                            <tr><td>Primary Key</td><td><code>id</code> veya <code>table_id</code></td><td><code>id</code></td></tr>
+                            <tr><td>Foreign Key</td><td><code>referans_edilen_tablo_id</code></td><td><code>department_id</code></td></tr>
+                            <tr><td>Index'ler</td><td><code>idx_tablo_sutunlar</code></td><td><code>idx_users_email</code></td></tr>
+                            <tr><td>Kisitlamalar</td><td><code>tur_tablo_sutun</code></td><td><code>pk_users</code></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -329,98 +329,98 @@ zip_codes(zip, city, state)</code></pre>
         </div>
 
         <!-- ALTER TABLE -->
-        <h3 class="section-title">Modifying Tables</h3>
+        <h3 class="section-title">Tablolari Degistirme</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>ALTER TABLE Commands</h5>
-            <pre><code><span class="comment">-- Add column</span>
+            <h5>ALTER TABLE Komutlari</h5>
+            <pre><code><span class="comment">-- Sutun ekle</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">ADD COLUMN</span> phone VARCHAR(20);
 
-<span class="comment">-- Drop column</span>
+<span class="comment">-- Sutun sil</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">DROP COLUMN</span> phone;
 
-<span class="comment">-- Rename column</span>
+<span class="comment">-- Sutunu yeniden adlandir</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">RENAME COLUMN</span> phone <span class="keyword">TO</span> phone_number;
 
-<span class="comment">-- Change data type</span>
+<span class="comment">-- Veri tipini degistir</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">ALTER COLUMN</span> age <span class="keyword">TYPE</span> SMALLINT;
 
-<span class="comment">-- Add constraint</span>
+<span class="comment">-- Kisitlama ekle</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">ADD CONSTRAINT</span> email_unique <span class="keyword">UNIQUE</span> (email);
 
-<span class="comment">-- Drop constraint</span>
+<span class="comment">-- Kisitlama sil</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">DROP CONSTRAINT</span> email_unique;
 
-<span class="comment">-- Set/drop NOT NULL</span>
+<span class="comment">-- NOT NULL ayarla/kaldir</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">ALTER COLUMN</span> email <span class="keyword">SET NOT NULL</span>;
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">ALTER COLUMN</span> email <span class="keyword">DROP NOT NULL</span>;
 
-<span class="comment">-- Set default</span>
+<span class="comment">-- Varsayilan ayarla</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">ALTER COLUMN</span> status <span class="keyword">SET DEFAULT</span> <span class="string">'active'</span>;
 
-<span class="comment">-- Rename table</span>
+<span class="comment">-- Tabloyu yeniden adlandir</span>
 <span class="keyword">ALTER TABLE</span> users <span class="keyword">RENAME TO</span> user_accounts;</code></pre>
         </div>
 
-        <!-- PostgreSQL Extensions -->
-        <h3 class="section-title">PostgreSQL Extensions</h3>
+        <!-- PostgreSQL Eklentileri -->
+        <h3 class="section-title">PostgreSQL Eklentileri</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Managing Extensions</h5>
-            <pre><code><span class="comment">-- List available extensions</span>
+            <h5>Eklentileri Yonetme</h5>
+            <pre><code><span class="comment">-- Mevcut eklentileri listele</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> pg_available_extensions;
 
-<span class="comment">-- Install extension</span>
+<span class="comment">-- Eklenti yukle</span>
 <span class="keyword">CREATE EXTENSION IF NOT EXISTS</span> <span class="string">"uuid-ossp"</span>;
 
-<span class="comment">-- List installed extensions</span>
+<span class="comment">-- Yuklu eklentileri listele</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> pg_extension;
 
-<span class="comment">-- Drop extension</span>
+<span class="comment">-- Eklentiyi kaldir</span>
 <span class="keyword">DROP EXTENSION</span> <span class="string">"uuid-ossp"</span>;</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Popular PostgreSQL Extensions</h5>
+            <h5>Populer PostgreSQL Eklentileri</h5>
             <table>
-                <thead><tr><th>Extension</th><th>Purpose</th><th>Example</th></tr></thead>
+                <thead><tr><th>Eklenti</th><th>Amac</th><th>Ornek</th></tr></thead>
                 <tbody>
-                    <tr><td><code>uuid-ossp</code></td><td>UUID generation</td><td><code>uuid_generate_v4()</code></td></tr>
-                    <tr><td><code>pgcrypto</code></td><td>Encryption functions</td><td><code>gen_random_uuid()</code>, password hashing</td></tr>
-                    <tr><td><code>pg_trgm</code></td><td>Fuzzy text matching</td><td>Similarity search, typo tolerance</td></tr>
-                    <tr><td><code>PostGIS</code></td><td>Geographic data</td><td>Location queries, mapping</td></tr>
-                    <tr><td><code>hstore</code></td><td>Key-value storage</td><td>Simple KV pairs in column</td></tr>
-                    <tr><td><code>citext</code></td><td>Case-insensitive text</td><td>Email columns</td></tr>
+                    <tr><td><code>uuid-ossp</code></td><td>UUID uretimi</td><td><code>uuid_generate_v4()</code></td></tr>
+                    <tr><td><code>pgcrypto</code></td><td>Sifreleme fonksiyonlari</td><td><code>gen_random_uuid()</code>, sifre hashleme</td></tr>
+                    <tr><td><code>pg_trgm</code></td><td>Bulanik metin eslestirme</td><td>Benzerlik araması, yazım hatası toleransı</td></tr>
+                    <tr><td><code>PostGIS</code></td><td>Cografi veri</td><td>Konum sorgulari, haritalama</td></tr>
+                    <tr><td><code>hstore</code></td><td>Anahtar-deger depolama</td><td>Sutunda basit KV ciftleri</td></tr>
+                    <tr><td><code>citext</code></td><td>Buyuk/kucuk harf duyarsiz metin</td><td>Email sutunlari</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Views -->
-        <h3 class="section-title">Views</h3>
+        <!-- View'lar -->
+        <h3 class="section-title">View'lar</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Regular Views</h5>
-                    <pre><code><span class="comment">-- Create view</span>
+                    <h5>Normal View'lar</h5>
+                    <pre><code><span class="comment">-- View olustur</span>
 <span class="keyword">CREATE VIEW</span> active_employees <span class="keyword">AS</span>
 <span class="keyword">SELECT</span> e.id, e.name, d.name <span class="keyword">AS</span> dept
 <span class="keyword">FROM</span> employees e
 <span class="keyword">JOIN</span> departments d <span class="keyword">ON</span> e.dept_id = d.id
 <span class="keyword">WHERE</span> e.status = <span class="string">'active'</span>;
 
-<span class="comment">-- Replace view</span>
+<span class="comment">-- View'u degistir</span>
 <span class="keyword">CREATE OR REPLACE VIEW</span> active_employees
 <span class="keyword">AS</span> ...;
 
-<span class="comment">-- Drop view</span>
+<span class="comment">-- View'u sil</span>
 <span class="keyword">DROP VIEW</span> active_employees;</code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Materialized Views</h5>
-                    <pre><code><span class="comment">-- Stores data physically</span>
+                    <h5>Materialized View'lar</h5>
+                    <pre><code><span class="comment">-- Veriyi fiziksel olarak saklar</span>
 <span class="keyword">CREATE MATERIALIZED VIEW</span> mv_sales_summary
 <span class="keyword">AS</span>
 <span class="keyword">SELECT</span> product_id,
@@ -428,46 +428,46 @@ zip_codes(zip, city, state)</code></pre>
 <span class="keyword">FROM</span> sales
 <span class="keyword">GROUP BY</span> product_id;
 
-<span class="comment">-- Must refresh to update</span>
+<span class="comment">-- Guncellemek icin yenilenmeli</span>
 <span class="keyword">REFRESH MATERIALIZED VIEW</span> mv_sales_summary;
 
-<span class="comment">-- Concurrent refresh (no lock)</span>
+<span class="comment">-- Eszamanli yenileme (kilit yok)</span>
 <span class="keyword">REFRESH MATERIALIZED VIEW CONCURRENTLY</span>
 mv_sales_summary;</code></pre>
                 </div>
             </div>
         </div>
 
-        <!-- Best Practices -->
-        <h3 class="section-title">Design Best Practices</h3>
+        <!-- En Iyi Uygulamalar -->
+        <h3 class="section-title">Tasarim En Iyi Uygulamalari</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="tip">
-                    <strong>Start with 3NF</strong> - Denormalize only when proven necessary
+                    <strong>3NF ile baslayin</strong> - Sadece gerekli oldugu kanitlandiginda denormalize edin
                 </div>
                 <div class="tip">
-                    <strong>Use appropriate data types</strong> - Don't use TEXT for everything
+                    <strong>Uygun veri tiplerini kullanin</strong> - Her sey icin TEXT kullanmayin
                 </div>
                 <div class="tip">
-                    <strong>Add constraints</strong> - Let the database enforce data integrity
+                    <strong>Kisitlamalar ekleyin</strong> - Veritabaninin veri butunlugunu zorlamasina izin verin
                 </div>
                 <div class="tip">
-                    <strong>Document with comments</strong> - <code>COMMENT ON TABLE/COLUMN</code>
+                    <strong>Yorumlarla belgeleyin</strong> - <code>COMMENT ON TABLE/COLUMN</code>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="warning">
-                    <strong>Avoid reserved words</strong> - Don't name columns 'user', 'order', 'table'
+                    <strong>Ayrilmis kelimelerden kacinin</strong> - Sutunlara 'user', 'order', 'table' adini vermeyin
                 </div>
                 <div class="warning">
-                    <strong>Plan for scale</strong> - Use BIGINT for IDs if expecting growth
+                    <strong>Olcek icin planlayin</strong> - Buyume bekleniyorsa ID'ler icin BIGINT kullanin
                 </div>
                 <div class="warning">
-                    <strong>Test migrations</strong> - Always backup before schema changes
+                    <strong>Migrasyonlari test edin</strong> - Sema degisikliklerinden once her zaman yedekleyin
                 </div>
                 <div class="warning">
-                    <strong>Consider indexes early</strong> - But don't over-index
+                    <strong>Indexleri erken dusunun</strong> - Ama asiri indekslemeyin
                 </div>
             </div>
         </div>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2 Cheatsheet - Data Manipulation & JSON</title>
+    <title>Gun 2 Kopya Kagidi - Veri Manipulasyonu & JSON</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
@@ -37,10 +37,10 @@
     </style>
 </head>
 <body>
-    <a href="../index.html" class="back-button">← Back to Index</a>
+    <a href="../index.html" class="back-button">← Anasayfaya Don</a>
     <div class="language-switcher">
-        <a href="cheatsheet.html" class="active">EN</a>
-        <a href="cheatsheet_tr.html">TR</a>
+        <a href="cheatsheet.html">EN</a>
+        <a href="cheatsheet_tr.html" class="active">TR</a>
     </div>
     <div id="europeanunion-turkey">
         <img src="../static/eu.png" alt="">
@@ -61,41 +61,41 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Day 2: Data Manipulation & JSON</h1>
-                <p class="text-muted">INSERT, UPDATE, DELETE, Data Types & JSON Operations</p>
+                <h1>Gun 2: Veri Manipulasyonu & JSON</h1>
+                <p class="text-muted">INSERT, UPDATE, DELETE, Veri Tipleri & JSON Islemleri</p>
 
-        <!-- Quick Reference -->
+        <!-- Hizli Referans -->
         <div class="quick-ref mb-4">
-            <h5 class="text-center mb-3">DML Quick Reference</h5>
+            <h5 class="text-center mb-3">DML Hizli Referans</h5>
             <div class="row text-center">
-                <div class="col-md-3"><code>INSERT</code> - Add new rows</div>
-                <div class="col-md-3"><code>UPDATE</code> - Modify existing rows</div>
-                <div class="col-md-3"><code>DELETE</code> - Remove rows</div>
-                <div class="col-md-3"><code>UPSERT</code> - Insert or update</div>
+                <div class="col-md-3"><code>INSERT</code> - Yeni satirlar ekle</div>
+                <div class="col-md-3"><code>UPDATE</code> - Mevcut satirlari degistir</div>
+                <div class="col-md-3"><code>DELETE</code> - Satirlari sil</div>
+                <div class="col-md-3"><code>UPSERT</code> - Ekle veya guncelle</div>
             </div>
         </div>
 
         <!-- INSERT -->
-        <h3 class="section-title">INSERT Statement</h3>
+        <h3 class="section-title">INSERT Ifadesi</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Single Row Insert</h5>
-                    <pre><code><span class="comment">-- Specify columns (recommended)</span>
+                    <h5>Tek Satir Ekleme</h5>
+                    <pre><code><span class="comment">-- Sutunlari belirt (onerilen)</span>
 <span class="keyword">INSERT INTO</span> employees
     (first_name, last_name, email, salary)
 <span class="keyword">VALUES</span>
     (<span class="string">'John'</span>, <span class="string">'Doe'</span>, <span class="string">'john@email.com'</span>, 50000);
 
-<span class="comment">-- All columns (order matters)</span>
+<span class="comment">-- Tum sutunlar (sira onemli)</span>
 <span class="keyword">INSERT INTO</span> employees
 <span class="keyword">VALUES</span> (1, <span class="string">'John'</span>, <span class="string">'Doe'</span>, <span class="string">'john@email.com'</span>, 50000);</code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Multiple Rows Insert</h5>
+                    <h5>Coklu Satir Ekleme</h5>
                     <pre><code><span class="keyword">INSERT INTO</span> employees
     (first_name, last_name, salary)
 <span class="keyword">VALUES</span>
@@ -103,7 +103,7 @@
     (<span class="string">'Jane'</span>, <span class="string">'Smith'</span>, 55000),
     (<span class="string">'Bob'</span>, <span class="string">'Johnson'</span>, 48000);
 
-<span class="comment">-- Returns inserted rows (PostgreSQL)</span>
+<span class="comment">-- Eklenen satirlari dondur (PostgreSQL)</span>
 <span class="keyword">INSERT INTO</span> employees (name, salary)
 <span class="keyword">VALUES</span> (<span class="string">'Alice'</span>, 60000)
 <span class="keyword">RETURNING</span> id, name;</code></pre>
@@ -112,8 +112,8 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Insert from SELECT</h5>
-            <pre><code><span class="comment">-- Copy data from another table</span>
+            <h5>SELECT'ten Ekleme</h5>
+            <pre><code><span class="comment">-- Baska tablodan veri kopyala</span>
 <span class="keyword">INSERT INTO</span> employees_archive (id, name, salary, archived_at)
 <span class="keyword">SELECT</span> id, name, salary, <span class="function">NOW</span>()
 <span class="keyword">FROM</span> employees
@@ -121,18 +121,18 @@
         </div>
 
         <!-- UPDATE -->
-        <h3 class="section-title">UPDATE Statement</h3>
+        <h3 class="section-title">UPDATE Ifadesi</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Basic UPDATE</h5>
-                    <pre><code><span class="comment">-- Update single column</span>
+                    <h5>Temel UPDATE</h5>
+                    <pre><code><span class="comment">-- Tek sutun guncelle</span>
 <span class="keyword">UPDATE</span> employees
 <span class="keyword">SET</span> salary = 55000
 <span class="keyword">WHERE</span> id = 1;
 
-<span class="comment">-- Update multiple columns</span>
+<span class="comment">-- Coklu sutun guncelle</span>
 <span class="keyword">UPDATE</span> employees
 <span class="keyword">SET</span> salary = 60000,
     department_id = 5,
@@ -142,13 +142,13 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Conditional UPDATE</h5>
-                    <pre><code><span class="comment">-- Update with calculation</span>
+                    <h5>Kosullu UPDATE</h5>
+                    <pre><code><span class="comment">-- Hesaplama ile guncelle</span>
 <span class="keyword">UPDATE</span> employees
-<span class="keyword">SET</span> salary = salary * 1.10  <span class="comment">-- 10% raise</span>
+<span class="keyword">SET</span> salary = salary * 1.10  <span class="comment">-- %10 zam</span>
 <span class="keyword">WHERE</span> department_id = 5;
 
-<span class="comment">-- Update with CASE</span>
+<span class="comment">-- CASE ile guncelle</span>
 <span class="keyword">UPDATE</span> employees
 <span class="keyword">SET</span> bonus = <span class="keyword">CASE</span>
     <span class="keyword">WHEN</span> rating >= 5 <span class="keyword">THEN</span> salary * 0.20
@@ -160,56 +160,56 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>UPDATE with JOIN (PostgreSQL)</h5>
+            <h5>JOIN ile UPDATE (PostgreSQL)</h5>
             <pre><code><span class="keyword">UPDATE</span> employees e
 <span class="keyword">SET</span> department_name = d.name
 <span class="keyword">FROM</span> departments d
 <span class="keyword">WHERE</span> e.department_id = d.id;</code></pre>
-            <div class="warning">Always use WHERE clause with UPDATE! Without it, ALL rows will be modified.</div>
+            <div class="warning">UPDATE ile her zaman WHERE kullanin! Olmadan TUM satirlar degistirilir.</div>
         </div>
 
         <!-- DELETE -->
-        <h3 class="section-title">DELETE Statement</h3>
+        <h3 class="section-title">DELETE Ifadesi</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Basic DELETE</h5>
-                    <pre><code><span class="comment">-- Delete specific rows</span>
+                    <h5>Temel DELETE</h5>
+                    <pre><code><span class="comment">-- Belirli satirlari sil</span>
 <span class="keyword">DELETE FROM</span> employees
 <span class="keyword">WHERE</span> id = 1;
 
-<span class="comment">-- Delete with condition</span>
+<span class="comment">-- Kosul ile sil</span>
 <span class="keyword">DELETE FROM</span> employees
 <span class="keyword">WHERE</span> termination_date < <span class="string">'2023-01-01'</span>;
 
-<span class="comment">-- Delete all rows (careful!)</span>
+<span class="comment">-- Tum satirlari sil (dikkatli!)</span>
 <span class="keyword">DELETE FROM</span> temp_table;</code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>DELETE with Subquery</h5>
-                    <pre><code><span class="comment">-- Delete using subquery</span>
+                    <h5>Alt Sorgu ile DELETE</h5>
+                    <pre><code><span class="comment">-- Alt sorgu kullanarak sil</span>
 <span class="keyword">DELETE FROM</span> employees
 <span class="keyword">WHERE</span> department_id <span class="keyword">IN</span> (
     <span class="keyword">SELECT</span> id <span class="keyword">FROM</span> departments
     <span class="keyword">WHERE</span> status = <span class="string">'closed'</span>
 );
 
-<span class="comment">-- TRUNCATE (faster, no WHERE)</span>
+<span class="comment">-- TRUNCATE (daha hizli, WHERE yok)</span>
 <span class="keyword">TRUNCATE TABLE</span> temp_logs;
-<span class="comment">-- Cannot rollback, resets sequences</span></code></pre>
+<span class="comment">-- Geri alinamaz, sequence'lari sifirlar</span></code></pre>
                 </div>
             </div>
         </div>
 
         <!-- UPSERT -->
-        <h3 class="section-title">UPSERT (Insert or Update)</h3>
+        <h3 class="section-title">UPSERT (Ekle veya Guncelle)</h3>
 
         <div class="cheatsheet-card p-3">
             <h5>ON CONFLICT (PostgreSQL)</h5>
-            <pre><code><span class="comment">-- Insert or update on conflict</span>
+            <pre><code><span class="comment">-- Cakisma durumunda ekle veya guncelle</span>
 <span class="keyword">INSERT INTO</span> products (sku, name, price, stock)
 <span class="keyword">VALUES</span> (<span class="string">'SKU001'</span>, <span class="string">'Widget'</span>, 29.99, 100)
 <span class="keyword">ON CONFLICT</span> (sku)
@@ -218,69 +218,69 @@
     stock = products.stock + EXCLUDED.stock,
     updated_at = <span class="function">NOW</span>();
 
-<span class="comment">-- Insert or ignore on conflict</span>
+<span class="comment">-- Cakisma durumunda yoksay</span>
 <span class="keyword">INSERT INTO</span> products (sku, name)
 <span class="keyword">VALUES</span> (<span class="string">'SKU001'</span>, <span class="string">'Widget'</span>)
 <span class="keyword">ON CONFLICT DO NOTHING</span>;</code></pre>
         </div>
 
-        <!-- Data Types -->
-        <h3 class="section-title">Common SQL Data Types</h3>
+        <!-- Veri Tipleri -->
+        <h3 class="section-title">Yaygin SQL Veri Tipleri</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Numeric Types</h5>
+            <h5>Sayisal Tipler</h5>
             <table>
-                <thead><tr><th>Type</th><th>Range/Size</th><th>Use Case</th></tr></thead>
+                <thead><tr><th>Tip</th><th>Aralik/Boyut</th><th>Kullanim Alani</th></tr></thead>
                 <tbody>
-                    <tr><td><code>SMALLINT</code></td><td>-32,768 to 32,767</td><td>Small numbers, flags</td></tr>
-                    <tr><td><code>INTEGER / INT</code></td><td>-2.1B to 2.1B</td><td>Most common integer type</td></tr>
-                    <tr><td><code>BIGINT</code></td><td>-9.2 quintillion to 9.2 quintillion</td><td>Large IDs, timestamps</td></tr>
-                    <tr><td><code>DECIMAL(p,s) / NUMERIC</code></td><td>Exact precision</td><td>Money, financial data</td></tr>
-                    <tr><td><code>REAL / FLOAT4</code></td><td>6 decimal digits</td><td>Scientific data</td></tr>
-                    <tr><td><code>DOUBLE PRECISION</code></td><td>15 decimal digits</td><td>Scientific calculations</td></tr>
-                    <tr><td><code>SERIAL / BIGSERIAL</code></td><td>Auto-increment</td><td>Primary keys</td></tr>
+                    <tr><td><code>SMALLINT</code></td><td>-32,768 ile 32,767</td><td>Kucuk sayilar, bayraklar</td></tr>
+                    <tr><td><code>INTEGER / INT</code></td><td>-2.1 milyar ile 2.1 milyar</td><td>En yaygin tamsayi tipi</td></tr>
+                    <tr><td><code>BIGINT</code></td><td>-9.2 kentilyon ile 9.2 kentilyon</td><td>Buyuk ID'ler, zaman damgalari</td></tr>
+                    <tr><td><code>DECIMAL(p,s) / NUMERIC</code></td><td>Kesin hassasiyet</td><td>Para, finansal veri</td></tr>
+                    <tr><td><code>REAL / FLOAT4</code></td><td>6 ondalik basamak</td><td>Bilimsel veri</td></tr>
+                    <tr><td><code>DOUBLE PRECISION</code></td><td>15 ondalik basamak</td><td>Bilimsel hesaplamalar</td></tr>
+                    <tr><td><code>SERIAL / BIGSERIAL</code></td><td>Otomatik artis</td><td>Primary key'ler</td></tr>
                 </tbody>
             </table>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Character Types</h5>
+            <h5>Karakter Tipleri</h5>
             <table>
-                <thead><tr><th>Type</th><th>Description</th><th>Use Case</th></tr></thead>
+                <thead><tr><th>Tip</th><th>Aciklama</th><th>Kullanim Alani</th></tr></thead>
                 <tbody>
-                    <tr><td><code>CHAR(n)</code></td><td>Fixed length, padded</td><td>Fixed codes (country codes)</td></tr>
-                    <tr><td><code>VARCHAR(n)</code></td><td>Variable length, max n</td><td>Most string data</td></tr>
-                    <tr><td><code>TEXT</code></td><td>Unlimited length</td><td>Long text, descriptions</td></tr>
+                    <tr><td><code>CHAR(n)</code></td><td>Sabit uzunluk, boslukla doldurulur</td><td>Sabit kodlar (ulke kodlari)</td></tr>
+                    <tr><td><code>VARCHAR(n)</code></td><td>Degisken uzunluk, maks n</td><td>Cogu metin verisi</td></tr>
+                    <tr><td><code>TEXT</code></td><td>Sinirsiz uzunluk</td><td>Uzun metin, aciklamalar</td></tr>
                 </tbody>
             </table>
-            <div class="tip">In PostgreSQL, VARCHAR and TEXT have similar performance. Use VARCHAR(n) when you need length validation.</div>
+            <div class="tip">PostgreSQL'de VARCHAR ve TEXT benzer performans gosterir. Uzunluk dogrulamasi gerektiginde VARCHAR(n) kullanin.</div>
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Date/Time Types</h5>
+                    <h5>Tarih/Saat Tipleri</h5>
                     <table>
                         <tbody>
-                            <tr><td><code>DATE</code></td><td>Date only (YYYY-MM-DD)</td></tr>
-                            <tr><td><code>TIME</code></td><td>Time only (HH:MM:SS)</td></tr>
-                            <tr><td><code>TIMESTAMP</code></td><td>Date + Time</td></tr>
-                            <tr><td><code>TIMESTAMPTZ</code></td><td>With timezone (recommended)</td></tr>
-                            <tr><td><code>INTERVAL</code></td><td>Time duration</td></tr>
+                            <tr><td><code>DATE</code></td><td>Sadece tarih (YYYY-MM-DD)</td></tr>
+                            <tr><td><code>TIME</code></td><td>Sadece saat (HH:MM:SS)</td></tr>
+                            <tr><td><code>TIMESTAMP</code></td><td>Tarih + Saat</td></tr>
+                            <tr><td><code>TIMESTAMPTZ</code></td><td>Saat dilimi ile (onerilen)</td></tr>
+                            <tr><td><code>INTERVAL</code></td><td>Zaman suresi</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Other Types</h5>
+                    <h5>Diger Tipler</h5>
                     <table>
                         <tbody>
                             <tr><td><code>BOOLEAN</code></td><td>TRUE, FALSE, NULL</td></tr>
-                            <tr><td><code>UUID</code></td><td>Universally unique ID</td></tr>
-                            <tr><td><code>JSON / JSONB</code></td><td>JSON data (JSONB faster)</td></tr>
-                            <tr><td><code>BYTEA</code></td><td>Binary data</td></tr>
-                            <tr><td><code>ARRAY</code></td><td>Array of any type</td></tr>
+                            <tr><td><code>UUID</code></td><td>Evrensel benzersiz ID</td></tr>
+                            <tr><td><code>JSON / JSONB</code></td><td>JSON verisi (JSONB daha hizli)</td></tr>
+                            <tr><td><code>BYTEA</code></td><td>Binary veri</td></tr>
+                            <tr><td><code>ARRAY</code></td><td>Herhangi bir tipin dizisi</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -288,26 +288,26 @@
         </div>
 
         <!-- JSON -->
-        <h3 class="section-title">Working with JSON</h3>
+        <h3 class="section-title">JSON ile Calisma</h3>
 
         <div class="cheatsheet-card p-3">
             <h5>JSON vs JSONB (PostgreSQL)</h5>
             <table>
-                <thead><tr><th>Feature</th><th>JSON</th><th>JSONB</th></tr></thead>
+                <thead><tr><th>Ozellik</th><th>JSON</th><th>JSONB</th></tr></thead>
                 <tbody>
-                    <tr><td>Storage</td><td>Text (preserves whitespace)</td><td>Binary (compact)</td></tr>
-                    <tr><td>Write speed</td><td>Faster</td><td>Slightly slower</td></tr>
-                    <tr><td>Read speed</td><td>Slower (reparsed)</td><td>Faster</td></tr>
-                    <tr><td>Indexing</td><td>No</td><td>Yes (GIN index)</td></tr>
-                    <tr><td>Key order</td><td>Preserved</td><td>Not guaranteed</td></tr>
+                    <tr><td>Depolama</td><td>Metin (bosluklari korur)</td><td>Binary (kompakt)</td></tr>
+                    <tr><td>Yazma hizi</td><td>Daha hizli</td><td>Biraz daha yavas</td></tr>
+                    <tr><td>Okuma hizi</td><td>Daha yavas (yeniden ayristirilir)</td><td>Daha hizli</td></tr>
+                    <tr><td>Indeksleme</td><td>Hayir</td><td>Evet (GIN index)</td></tr>
+                    <tr><td>Anahtar sirasi</td><td>Korunur</td><td>Garanti edilmez</td></tr>
                 </tbody>
             </table>
-            <div class="tip">Use JSONB unless you need to preserve key order or exact formatting.</div>
+            <div class="tip">Anahtar sirasini veya tam formati korumak gerekmiyorsa JSONB kullanin.</div>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>JSON Operators (PostgreSQL)</h5>
-            <pre><code><span class="comment">-- Sample data</span>
+            <h5>JSON Operatorleri (PostgreSQL)</h5>
+            <pre><code><span class="comment">-- Ornek veri</span>
 <span class="keyword">CREATE TABLE</span> users (
     id SERIAL PRIMARY KEY,
     data JSONB
@@ -316,20 +316,20 @@
 <span class="keyword">INSERT INTO</span> users (data) <span class="keyword">VALUES</span>
 (<span class="string">'{"name": "John", "age": 30, "address": {"city": "NYC", "zip": "10001"}, "tags": ["admin", "active"]}'</span>);
 
-<span class="comment">-- Access JSON field (returns JSON)</span>
+<span class="comment">-- JSON alanina eris (JSON dondurur)</span>
 <span class="keyword">SELECT</span> data-><span class="string">'name'</span> <span class="keyword">FROM</span> users;              <span class="comment">-- "John" (JSON)</span>
 
-<span class="comment">-- Access JSON field as text</span>
+<span class="comment">-- JSON alanina metin olarak eris</span>
 <span class="keyword">SELECT</span> data->><span class="string">'name'</span> <span class="keyword">FROM</span> users;             <span class="comment">-- John (text)</span>
 
-<span class="comment">-- Access nested field</span>
+<span class="comment">-- Ic ice alana eris</span>
 <span class="keyword">SELECT</span> data-><span class="string">'address'</span>-><span class="string">'city'</span> <span class="keyword">FROM</span> users;   <span class="comment">-- "NYC"</span>
 <span class="keyword">SELECT</span> data-><span class="string">'address'</span>->><span class="string">'city'</span> <span class="keyword">FROM</span> users;  <span class="comment">-- NYC</span>
 
-<span class="comment">-- Access array element</span>
+<span class="comment">-- Dizi elemanlarina eris</span>
 <span class="keyword">SELECT</span> data-><span class="string">'tags'</span>->0 <span class="keyword">FROM</span> users;          <span class="comment">-- "admin"</span>
 
-<span class="comment">-- Path access</span>
+<span class="comment">-- Yol erisimi</span>
 <span class="keyword">SELECT</span> data#><span class="string">'{address,city}'</span> <span class="keyword">FROM</span> users;   <span class="comment">-- "NYC"</span>
 <span class="keyword">SELECT</span> data#>><span class="string">'{address,city}'</span> <span class="keyword">FROM</span> users;  <span class="comment">-- NYC</span></code></pre>
         </div>
@@ -337,40 +337,40 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>JSON Query Operators</h5>
-                    <pre><code><span class="comment">-- Contains (JSONB only)</span>
+                    <h5>JSON Sorgu Operatorleri</h5>
+                    <pre><code><span class="comment">-- Icerir (sadece JSONB)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users
 <span class="keyword">WHERE</span> data @> <span class="string">'{"age": 30}'</span>;
 
-<span class="comment">-- Is contained by</span>
+<span class="comment">-- Icerilir</span>
 <span class="keyword">WHERE</span> <span class="string">'{"name": "John"}'</span> <@ data;
 
-<span class="comment">-- Key exists</span>
+<span class="comment">-- Anahtar varligini kontrol et</span>
 <span class="keyword">WHERE</span> data ? <span class="string">'name'</span>;
 
-<span class="comment">-- Any key exists</span>
+<span class="comment">-- Herhangi bir anahtar var mi</span>
 <span class="keyword">WHERE</span> data ?| array[<span class="string">'name'</span>, <span class="string">'email'</span>];
 
-<span class="comment">-- All keys exist</span>
+<span class="comment">-- Tum anahtarlar var mi</span>
 <span class="keyword">WHERE</span> data ?& array[<span class="string">'name'</span>, <span class="string">'age'</span>];</code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>JSON Functions</h5>
-                    <pre><code><span class="comment">-- Get all keys</span>
+                    <h5>JSON Fonksiyonlari</h5>
+                    <pre><code><span class="comment">-- Tum anahtarlari al</span>
 <span class="keyword">SELECT</span> <span class="function">jsonb_object_keys</span>(data) <span class="keyword">FROM</span> users;
 
-<span class="comment">-- Get array length</span>
+<span class="comment">-- Dizi uzunlugunu al</span>
 <span class="keyword">SELECT</span> <span class="function">jsonb_array_length</span>(data-><span class="string">'tags'</span>);
 
-<span class="comment">-- Expand array to rows</span>
+<span class="comment">-- Diziyi satirlara genislet</span>
 <span class="keyword">SELECT</span> <span class="function">jsonb_array_elements</span>(data-><span class="string">'tags'</span>);
 
-<span class="comment">-- Pretty print</span>
+<span class="comment">-- Guzel yazdir</span>
 <span class="keyword">SELECT</span> <span class="function">jsonb_pretty</span>(data) <span class="keyword">FROM</span> users;
 
-<span class="comment">-- Build JSON object</span>
+<span class="comment">-- JSON nesnesi olustur</span>
 <span class="keyword">SELECT</span> <span class="function">jsonb_build_object</span>(
     <span class="string">'name'</span>, first_name,
     <span class="string">'salary'</span>, salary
@@ -380,92 +380,92 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Modifying JSON (JSONB)</h5>
-            <pre><code><span class="comment">-- Set/update a key</span>
+            <h5>JSON Degistirme (JSONB)</h5>
+            <pre><code><span class="comment">-- Anahtar ayarla/guncelle</span>
 <span class="keyword">UPDATE</span> users
 <span class="keyword">SET</span> data = <span class="function">jsonb_set</span>(data, <span class="string">'{age}'</span>, <span class="string">'31'</span>)
 <span class="keyword">WHERE</span> id = 1;
 
-<span class="comment">-- Set nested key</span>
+<span class="comment">-- Ic ice anahtar ayarla</span>
 <span class="keyword">UPDATE</span> users
 <span class="keyword">SET</span> data = <span class="function">jsonb_set</span>(data, <span class="string">'{address,zip}'</span>, <span class="string">'"10002"'</span>);
 
-<span class="comment">-- Remove a key</span>
+<span class="comment">-- Anahtar kaldir</span>
 <span class="keyword">UPDATE</span> users
 <span class="keyword">SET</span> data = data - <span class="string">'age'</span>;
 
-<span class="comment">-- Remove nested key</span>
+<span class="comment">-- Ic ice anahtar kaldir</span>
 <span class="keyword">UPDATE</span> users
 <span class="keyword">SET</span> data = data #- <span class="string">'{address,zip}'</span>;
 
-<span class="comment">-- Concatenate/merge JSON</span>
+<span class="comment">-- JSON birlestir</span>
 <span class="keyword">UPDATE</span> users
 <span class="keyword">SET</span> data = data || <span class="string">'{"email": "john@email.com"}'</span>;</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Indexing JSON (JSONB)</h5>
-            <pre><code><span class="comment">-- GIN index for @>, ?, ?|, ?& operators</span>
+            <h5>JSON Indeksleme (JSONB)</h5>
+            <pre><code><span class="comment">-- @>, ?, ?|, ?& operatorleri icin GIN index</span>
 <span class="keyword">CREATE INDEX</span> idx_users_data <span class="keyword">ON</span> users <span class="keyword">USING GIN</span> (data);
 
-<span class="comment">-- Index specific path</span>
+<span class="comment">-- Belirli yolu indeksle</span>
 <span class="keyword">CREATE INDEX</span> idx_users_city <span class="keyword">ON</span> users <span class="keyword">USING GIN</span> ((data-><span class="string">'address'</span>));
 
-<span class="comment">-- Expression index for specific key</span>
+<span class="comment">-- Belirli anahtar icin ifade indeksi</span>
 <span class="keyword">CREATE INDEX</span> idx_users_name <span class="keyword">ON</span> users ((data->><span class="string">'name'</span>));</code></pre>
         </div>
 
-        <!-- Transactions -->
-        <h3 class="section-title">Transactions</h3>
+        <!-- Transactionlar -->
+        <h3 class="section-title">Transaction'lar</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Transaction Control</h5>
-            <pre><code><span class="comment">-- Start transaction</span>
-<span class="keyword">BEGIN</span>;  <span class="comment">-- or START TRANSACTION</span>
+            <h5>Transaction Kontrolu</h5>
+            <pre><code><span class="comment">-- Transaction baslat</span>
+<span class="keyword">BEGIN</span>;  <span class="comment">-- veya START TRANSACTION</span>
 
-<span class="comment">-- Your DML statements</span>
+<span class="comment">-- DML ifadeleriniz</span>
 <span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance - 100 <span class="keyword">WHERE</span> id = 1;
 <span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance + 100 <span class="keyword">WHERE</span> id = 2;
 
-<span class="comment">-- Save changes</span>
+<span class="comment">-- Degisiklikleri kaydet</span>
 <span class="keyword">COMMIT</span>;
 
-<span class="comment">-- Or undo changes</span>
+<span class="comment">-- Veya degisiklikleri geri al</span>
 <span class="keyword">ROLLBACK</span>;
 
-<span class="comment">-- Savepoints for partial rollback</span>
+<span class="comment">-- Kismi geri alma icin savepoint</span>
 <span class="keyword">BEGIN</span>;
 <span class="keyword">INSERT INTO</span> orders (...) <span class="keyword">VALUES</span> (...);
 <span class="keyword">SAVEPOINT</span> before_items;
 <span class="keyword">INSERT INTO</span> order_items (...) <span class="keyword">VALUES</span> (...);
-<span class="keyword">ROLLBACK TO</span> before_items;  <span class="comment">-- Undo items only</span>
-<span class="keyword">COMMIT</span>;  <span class="comment">-- Order is saved</span></code></pre>
+<span class="keyword">ROLLBACK TO</span> before_items;  <span class="comment">-- Sadece item'lari geri al</span>
+<span class="keyword">COMMIT</span>;  <span class="comment">-- Siparis kaydedilir</span></code></pre>
         </div>
 
-        <!-- Best Practices -->
-        <h3 class="section-title">Best Practices</h3>
+        <!-- En Iyi Uygulamalar -->
+        <h3 class="section-title">En Iyi Uygulamalar</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="tip">
-                    <strong>Always use WHERE with UPDATE/DELETE</strong> - Prevent accidental mass changes
+                    <strong>UPDATE/DELETE ile her zaman WHERE kullanin</strong> - Kazara toplu degisiklikleri onleyin
                 </div>
                 <div class="tip">
-                    <strong>Use transactions</strong> - Group related changes together
+                    <strong>Transaction kullanin</strong> - Iliskili degisiklikleri birlikte gruplayin
                 </div>
                 <div class="tip">
-                    <strong>Use DECIMAL for money</strong> - Never use FLOAT for financial data
+                    <strong>Para icin DECIMAL kullanin</strong> - Finansal veri icin asla FLOAT kullanmayin
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="tip">
-                    <strong>Use TIMESTAMPTZ</strong> - Always store timestamps with timezone
+                    <strong>TIMESTAMPTZ kullanin</strong> - Zaman damgalarini her zaman saat dilimi ile saklayin
                 </div>
                 <div class="warning">
-                    <strong>JSONB over JSON</strong> - Better performance and indexing
+                    <strong>JSON yerine JSONB</strong> - Daha iyi performans ve indeksleme
                 </div>
                 <div class="warning">
-                    <strong>Test DML in transaction</strong> - BEGIN, run statement, verify, then COMMIT or ROLLBACK
+                    <strong>DML'i transaction'da test edin</strong> - BEGIN, ifadeyi calistir, dogrula, sonra COMMIT veya ROLLBACK
                 </div>
             </div>
         </div>

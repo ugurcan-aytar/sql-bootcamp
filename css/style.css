@@ -281,3 +281,33 @@ section {
     color: #fff;
     text-decoration: none;
 }
+
+/* Language Switcher */
+.language-switcher {
+    position: fixed;
+    top: var(--top-space);
+    right: 20px;
+    z-index: 1000;
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.language-switcher a {
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 0 2px;
+    border-radius: 3px;
+    color: #333;
+}
+
+.language-switcher a.active {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.language-switcher a:hover:not(.active) {
+    background: #e9ecef;
+    text-decoration: none;
+}
