@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 Cheatsheet - Performance & Analytics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .cheatsheet-card {
+            background: #ffffff; border: 1px solid #dee2e6; border-radius: 8px;
+            margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .cheatsheet-card h5 {
+            color: #0b132b; border-bottom: 2px solid #4dd0e1;
+            padding-bottom: 0.5rem; margin-bottom: 1rem;
+        }
+        .section-title {
+            color: #0b132b; font-size: 1.5rem; margin: 2rem 0 1rem;
+            border-left: 4px solid #4dd0e1; padding-left: 1rem;
+        }
+        .keyword { color: #ff7b72; }
+        .function { color: #d2a8ff; }
+        .string { color: #a5d6ff; }
+        .comment { color: #8b949e; }
+        .tip {
+            background: #e8f5e9; border-left: 4px solid #4caf50; padding: 0.75rem 1rem;
+            margin: 0.5rem 0; border-radius: 0 5px 5px 0;
+        }
+        .warning {
+            background: #fff3e0; border-left: 4px solid #ff9800; padding: 0.75rem 1rem;
+            margin: 0.5rem 0; border-radius: 0 5px 5px 0;
+        }
+        .quick-ref { background: #e3f2fd; border: 1px solid #1e88e5; border-radius: 8px; padding: 1rem; }
+        .quick-ref h5 { color: #1e88e5; border-bottom: none; }
+        .idx-badge {
+            display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px;
+            font-size: 0.75rem; margin: 2px; color: white;
+        }
+        .idx-btree { background: #2196f3; }
+        .idx-hash { background: #4caf50; }
+        .idx-gin { background: #ff9800; }
+        .idx-gist { background: #9c27b0; }
+        .idx-brin { background: #795548; }
+    </style>
+</head>
+<body>
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1>Day 4: Performance & Analytics</h1>
+                <p class="text-muted">Query Optimization, Indexes & Analytical Queries</p>
+
+        <!-- Quick Reference -->
+        <div class="quick-ref mb-4">
+            <h5 class="text-center mb-3">Index Types Quick Reference</h5>
+            <div class="row text-center">
+                <div class="col"><span class="idx-badge idx-btree">B-tree</span> Default, comparisons</div>
+                <div class="col"><span class="idx-badge idx-hash">Hash</span> Equality only</div>
+                <div class="col"><span class="idx-badge idx-gin">GIN</span> Arrays, JSONB, full-text</div>
+                <div class="col"><span class="idx-badge idx-gist">GiST</span> Geometric, range</div>
+                <div class="col"><span class="idx-badge idx-brin">BRIN</span> Large sorted tables</div>
+            </div>
+        </div>
+
+        <!-- EXPLAIN -->
+        <h3 class="section-title">Query Analysis with EXPLAIN</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>EXPLAIN Commands</h5>
+            <pre><code><span class="comment">-- Basic explain (shows plan only)</span>
+<span class="keyword">EXPLAIN</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> department_id = 5;
+
+<span class="comment">-- Actually run query (shows real timing)</span>
+<span class="keyword">EXPLAIN ANALYZE</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> department_id = 5;
+
+<span class="comment">-- Verbose with buffers (I/O info)</span>
+<span class="keyword">EXPLAIN</span> (ANALYZE, BUFFERS, FORMAT TEXT)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> salary > 50000;
+
+<span class="comment">-- JSON format (for visualization tools)</span>
+<span class="keyword">EXPLAIN</span> (ANALYZE, FORMAT JSON)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees;</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Understanding EXPLAIN Output</h5>
+            <pre><code>Seq Scan on employees  (cost=0.00..15.00 rows=500 width=64) (actual time=0.015..0.892 rows=523 loops=1)
+  Filter: (salary > 50000)
+  Rows Removed by Filter: 477
+Planning Time: 0.082 ms
+Execution Time: 0.987 ms</code></pre>
+            <table class="mt-3">
+                <thead><tr><th>Metric</th><th>Meaning</th></tr></thead>
+                <tbody>
+                    <tr><td><code>cost=0.00..15.00</code></td><td>Startup cost..total cost (arbitrary units)</td></tr>
+                    <tr><td><code>rows=500</code></td><td>Estimated rows returned</td></tr>
+                    <tr><td><code>width=64</code></td><td>Average row size in bytes</td></tr>
+                    <tr><td><code>actual time</code></td><td>Real execution time in ms</td></tr>
+                    <tr><td><code>rows=523</code></td><td>Actual rows returned</td></tr>
+                    <tr><td><code>loops=1</code></td><td>Times this node was executed</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Common Scan Types</h5>
+            <table>
+                <thead><tr><th>Scan Type</th><th>Description</th><th>When Used</th></tr></thead>
+                <tbody>
+                    <tr><td><code>Seq Scan</code></td><td>Full table scan</td><td>No index, small table, most rows needed</td></tr>
+                    <tr><td><code>Index Scan</code></td><td>Use index, fetch from table</td><td>Few rows, indexed column</td></tr>
+                    <tr><td><code>Index Only Scan</code></td><td>All data from index</td><td>Query columns all in index</td></tr>
+                    <tr><td><code>Bitmap Index Scan</code></td><td>Build bitmap, then fetch</td><td>Medium selectivity</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Indexes -->
+        <h3 class="section-title">Creating Indexes</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Index Syntax</h5>
+            <pre><code><span class="comment">-- Basic B-tree index (default)</span>
+<span class="keyword">CREATE INDEX</span> idx_employees_dept <span class="keyword">ON</span> employees (department_id);
+
+<span class="comment">-- Unique index</span>
+<span class="keyword">CREATE UNIQUE INDEX</span> idx_users_email <span class="keyword">ON</span> users (email);
+
+<span class="comment">-- Multi-column index</span>
+<span class="keyword">CREATE INDEX</span> idx_orders_customer_date
+<span class="keyword">ON</span> orders (customer_id, order_date <span class="keyword">DESC</span>);
+
+<span class="comment">-- Partial index (conditional)</span>
+<span class="keyword">CREATE INDEX</span> idx_orders_pending
+<span class="keyword">ON</span> orders (created_at)
+<span class="keyword">WHERE</span> status = <span class="string">'pending'</span>;
+
+<span class="comment">-- Expression index</span>
+<span class="keyword">CREATE INDEX</span> idx_users_email_lower
+<span class="keyword">ON</span> users (<span class="function">LOWER</span>(email));
+
+<span class="comment">-- Concurrent index (no locks)</span>
+<span class="keyword">CREATE INDEX CONCURRENTLY</span> idx_large_table
+<span class="keyword">ON</span> large_table (column);</code></pre>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Index Types</h5>
+                    <pre><code><span class="comment">-- B-tree (default) - comparisons</span>
+<span class="keyword">CREATE INDEX</span> idx_btree
+<span class="keyword">ON</span> table <span class="keyword">USING BTREE</span> (column);
+
+<span class="comment">-- Hash - equality only</span>
+<span class="keyword">CREATE INDEX</span> idx_hash
+<span class="keyword">ON</span> table <span class="keyword">USING HASH</span> (column);
+
+<span class="comment">-- GIN - arrays, JSONB, full-text</span>
+<span class="keyword">CREATE INDEX</span> idx_gin
+<span class="keyword">ON</span> table <span class="keyword">USING GIN</span> (jsonb_column);
+
+<span class="comment">-- GiST - geometric, range types</span>
+<span class="keyword">CREATE INDEX</span> idx_gist
+<span class="keyword">ON</span> table <span class="keyword">USING GIST</span> (location);
+
+<span class="comment">-- BRIN - large sorted tables</span>
+<span class="keyword">CREATE INDEX</span> idx_brin
+<span class="keyword">ON</span> table <span class="keyword">USING BRIN</span> (created_at);</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>When to Use Each Index</h5>
+                    <table>
+                        <tbody>
+                            <tr><td><span class="idx-badge idx-btree">B-tree</span></td><td>=, <, >, <=, >=, BETWEEN, IN, LIKE 'prefix%'</td></tr>
+                            <tr><td><span class="idx-badge idx-hash">Hash</span></td><td>= only (equality)</td></tr>
+                            <tr><td><span class="idx-badge idx-gin">GIN</span></td><td>@>, ?, ?|, ?&, full-text search</td></tr>
+                            <tr><td><span class="idx-badge idx-gist">GiST</span></td><td><<, >>, &<, &>, @@, range contains</td></tr>
+                            <tr><td><span class="idx-badge idx-brin">BRIN</span></td><td>Time-series, naturally ordered data</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Managing Indexes</h5>
+            <pre><code><span class="comment">-- List indexes on a table</span>
+<span class="keyword">SELECT</span> indexname, indexdef
+<span class="keyword">FROM</span> pg_indexes
+<span class="keyword">WHERE</span> tablename = <span class="string">'employees'</span>;
+
+<span class="comment">-- Drop index</span>
+<span class="keyword">DROP INDEX</span> idx_employees_dept;
+<span class="keyword">DROP INDEX CONCURRENTLY</span> idx_employees_dept;  <span class="comment">-- No lock</span>
+
+<span class="comment">-- Rebuild index</span>
+<span class="keyword">REINDEX INDEX</span> idx_employees_dept;
+<span class="keyword">REINDEX TABLE</span> employees;
+
+<span class="comment">-- Index size</span>
+<span class="keyword">SELECT</span> pg_size_pretty(pg_relation_size(<span class="string">'idx_employees_dept'</span>));</code></pre>
+        </div>
+
+        <!-- Query Optimization -->
+        <h3 class="section-title">Query Optimization Tips</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Do This</h5>
+                    <pre><code><span class="comment">-- Use indexed columns in WHERE</span>
+<span class="keyword">WHERE</span> indexed_column = value
+
+<span class="comment">-- Use LIMIT for large results</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> logs
+<span class="keyword">ORDER BY</span> created_at <span class="keyword">DESC</span>
+<span class="keyword">LIMIT</span> 100;
+
+<span class="comment">-- Use EXISTS instead of IN for subqueries</span>
+<span class="keyword">WHERE EXISTS</span> (<span class="keyword">SELECT</span> 1 <span class="keyword">FROM</span> ... <span class="keyword">WHERE</span> ...)
+
+<span class="comment">-- Select only needed columns</span>
+<span class="keyword">SELECT</span> id, name <span class="keyword">FROM</span> users;
+
+<span class="comment">-- Use covering indexes</span>
+<span class="keyword">CREATE INDEX</span> idx_covering
+<span class="keyword">ON</span> orders (customer_id) <span class="keyword">INCLUDE</span> (total);</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Avoid This</h5>
+                    <pre><code><span class="comment">-- Functions on indexed columns</span>
+<span class="keyword">WHERE</span> <span class="function">LOWER</span>(email) = <span class="string">'test@email.com'</span>
+<span class="comment">-- Use expression index instead</span>
+
+<span class="comment">-- Leading wildcard</span>
+<span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'%john%'</span>
+<span class="comment">-- Can't use B-tree index</span>
+
+<span class="comment">-- OR on different columns</span>
+<span class="keyword">WHERE</span> col1 = x <span class="keyword">OR</span> col2 = y
+<span class="comment">-- Consider UNION instead</span>
+
+<span class="comment">-- SELECT * with JOINs</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> a <span class="keyword">JOIN</span> b <span class="keyword">JOIN</span> c ...
+
+<span class="comment">-- != or NOT IN (often can't use index)</span>
+<span class="keyword">WHERE</span> status != <span class="string">'deleted'</span>
+<span class="comment">-- Use partial index instead</span></code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <h3 class="section-title">Statistics & Maintenance</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Updating Statistics</h5>
+            <pre><code><span class="comment">-- Update statistics for query planner</span>
+<span class="keyword">ANALYZE</span> employees;
+
+<span class="comment">-- Update statistics for all tables</span>
+<span class="keyword">ANALYZE</span>;
+
+<span class="comment">-- VACUUM - reclaim dead tuples</span>
+<span class="keyword">VACUUM</span> employees;
+
+<span class="comment">-- VACUUM ANALYZE - both operations</span>
+<span class="keyword">VACUUM ANALYZE</span> employees;
+
+<span class="comment">-- View table statistics</span>
+<span class="keyword">SELECT</span> relname, n_live_tup, n_dead_tup, last_vacuum, last_analyze
+<span class="keyword">FROM</span> pg_stat_user_tables;</code></pre>
+        </div>
+
+        <!-- Analytical Queries -->
+        <h3 class="section-title">Analytical Queries</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Window Functions Recap</h5>
+            <pre><code><span class="keyword">SELECT</span>
+    employee_name,
+    department,
+    salary,
+    <span class="comment">-- Ranking</span>
+    <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> row_num,
+    <span class="function">RANK</span>() <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> rank,
+    <span class="function">DENSE_RANK</span>() <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> dense_rank,
+    <span class="function">NTILE</span>(4) <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> quartile,
+
+    <span class="comment">-- Aggregates</span>
+    <span class="function">SUM</span>(salary) <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> department) <span class="keyword">AS</span> dept_total,
+    <span class="function">AVG</span>(salary) <span class="keyword">OVER</span> () <span class="keyword">AS</span> company_avg,
+
+    <span class="comment">-- Running totals</span>
+    <span class="function">SUM</span>(salary) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> hire_date) <span class="keyword">AS</span> running_total
+
+<span class="keyword">FROM</span> employees
+<span class="keyword">WINDOW</span> w <span class="keyword">AS</span> (<span class="keyword">PARTITION BY</span> department <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>);</code></pre>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>LAG / LEAD</h5>
+                    <pre><code><span class="comment">-- Compare with previous/next rows</span>
+<span class="keyword">SELECT</span>
+    order_date,
+    amount,
+    <span class="function">LAG</span>(amount, 1) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> order_date)
+        <span class="keyword">AS</span> prev_amount,
+    <span class="function">LEAD</span>(amount, 1) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> order_date)
+        <span class="keyword">AS</span> next_amount,
+    amount - <span class="function">LAG</span>(amount) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> order_date)
+        <span class="keyword">AS</span> change
+<span class="keyword">FROM</span> daily_sales;</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>FIRST_VALUE / LAST_VALUE</h5>
+                    <pre><code><span class="keyword">SELECT</span>
+    name,
+    salary,
+    <span class="function">FIRST_VALUE</span>(name) <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> department
+        <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>
+    ) <span class="keyword">AS</span> highest_paid,
+    <span class="function">LAST_VALUE</span>(name) <span class="keyword">OVER</span> (
+        <span class="keyword">PARTITION BY</span> department
+        <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>
+        <span class="keyword">ROWS BETWEEN UNBOUNDED PRECEDING
+        AND UNBOUNDED FOLLOWING</span>
+    ) <span class="keyword">AS</span> lowest_paid
+<span class="keyword">FROM</span> employees;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Frame Clauses</h5>
+            <pre><code><span class="comment">-- Moving average (last 3 rows)</span>
+<span class="function">AVG</span>(amount) <span class="keyword">OVER</span> (
+    <span class="keyword">ORDER BY</span> date
+    <span class="keyword">ROWS BETWEEN</span> 2 <span class="keyword">PRECEDING AND CURRENT ROW</span>
+)
+
+<span class="comment">-- All rows in partition</span>
+<span class="function">SUM</span>(amount) <span class="keyword">OVER</span> (
+    <span class="keyword">PARTITION BY</span> category
+    <span class="keyword">ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</span>
+)
+
+<span class="comment">-- Range-based (by value, not position)</span>
+<span class="function">SUM</span>(amount) <span class="keyword">OVER</span> (
+    <span class="keyword">ORDER BY</span> date
+    <span class="keyword">RANGE BETWEEN INTERVAL</span> <span class="string">'7 days'</span> <span class="keyword">PRECEDING AND CURRENT ROW</span>
+)</code></pre>
+        </div>
+
+        <!-- GROUPING SETS -->
+        <h3 class="section-title">Advanced Grouping</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>GROUPING SETS, ROLLUP, CUBE</h5>
+            <pre><code><span class="comment">-- GROUPING SETS: specific grouping combinations</span>
+<span class="keyword">SELECT</span> region, product, <span class="function">SUM</span>(sales)
+<span class="keyword">FROM</span> sales
+<span class="keyword">GROUP BY GROUPING SETS</span> (
+    (region, product),  <span class="comment">-- By region and product</span>
+    (region),           <span class="comment">-- By region only</span>
+    (product),          <span class="comment">-- By product only</span>
+    ()                  <span class="comment">-- Grand total</span>
+);
+
+<span class="comment">-- ROLLUP: hierarchical subtotals</span>
+<span class="keyword">SELECT</span> year, quarter, month, <span class="function">SUM</span>(sales)
+<span class="keyword">FROM</span> sales
+<span class="keyword">GROUP BY ROLLUP</span> (year, quarter, month);
+<span class="comment">-- Generates: (year,quarter,month), (year,quarter), (year), ()</span>
+
+<span class="comment">-- CUBE: all possible combinations</span>
+<span class="keyword">SELECT</span> region, product, <span class="function">SUM</span>(sales)
+<span class="keyword">FROM</span> sales
+<span class="keyword">GROUP BY CUBE</span> (region, product);
+<span class="comment">-- Generates: (region,product), (region), (product), ()</span></code></pre>
+        </div>
+
+        <!-- Performance Best Practices -->
+        <h3 class="section-title">Performance Best Practices</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="tip">
+                    <strong>Index foreign keys</strong> - Always index FK columns for JOINs
+                </div>
+                <div class="tip">
+                    <strong>Use EXPLAIN ANALYZE</strong> - Don't guess, measure
+                </div>
+                <div class="tip">
+                    <strong>Monitor slow queries</strong> - Enable pg_stat_statements
+                </div>
+                <div class="tip">
+                    <strong>Batch large operations</strong> - Process in chunks
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="warning">
+                    <strong>Don't over-index</strong> - Each index slows writes
+                </div>
+                <div class="warning">
+                    <strong>Watch for Seq Scans</strong> - On large tables = problem
+                </div>
+                <div class="warning">
+                    <strong>Check for bloat</strong> - Run VACUUM regularly
+                </div>
+                <div class="warning">
+                    <strong>Estimate vs actual</strong> - Big difference = stale stats
+                </div>
+            </div>
+        </div>
+
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

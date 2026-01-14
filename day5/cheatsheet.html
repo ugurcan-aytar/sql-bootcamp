@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 Cheatsheet - Advanced Features & Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .cheatsheet-card {
+            background: #ffffff; border: 1px solid #dee2e6; border-radius: 8px;
+            margin-bottom: 1rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .cheatsheet-card h5 {
+            color: #0b132b; border-bottom: 2px solid #4dd0e1;
+            padding-bottom: 0.5rem; margin-bottom: 1rem;
+        }
+        .section-title {
+            color: #0b132b; font-size: 1.5rem; margin: 2rem 0 1rem;
+            border-left: 4px solid #4dd0e1; padding-left: 1rem;
+        }
+        .keyword { color: #ff7b72; }
+        .function { color: #d2a8ff; }
+        .string { color: #a5d6ff; }
+        .comment { color: #8b949e; }
+        .tip {
+            background: #e8f5e9; border-left: 4px solid #4caf50; padding: 0.75rem 1rem;
+            margin: 0.5rem 0; border-radius: 0 5px 5px 0;
+        }
+        .warning {
+            background: #fff3e0; border-left: 4px solid #ff9800; padding: 0.75rem 1rem;
+            margin: 0.5rem 0; border-radius: 0 5px 5px 0;
+        }
+        .danger {
+            background: #ffebee; border-left: 4px solid #f44336; padding: 0.75rem 1rem;
+            margin: 0.5rem 0; border-radius: 0 5px 5px 0;
+        }
+        .quick-ref { background: #e3f2fd; border: 1px solid #1e88e5; border-radius: 8px; padding: 1rem; }
+        .quick-ref h5 { color: #1e88e5; border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1>Day 5: Advanced Features & Admin</h1>
+                <p class="text-muted">Stored Procedures, Triggers, Views & Database Administration</p>
+
+        <!-- Quick Reference -->
+        <div class="quick-ref mb-4">
+            <h5 class="text-center mb-3">Backup Commands Quick Reference</h5>
+            <div class="row text-center">
+                <div class="col-md-3"><code>pg_dump</code> Logical backup</div>
+                <div class="col-md-3"><code>pg_dumpall</code> All databases</div>
+                <div class="col-md-3"><code>pg_restore</code> Restore backup</div>
+                <div class="col-md-3"><code>pg_basebackup</code> Physical backup</div>
+            </div>
+        </div>
+
+        <!-- Stored Procedures -->
+        <h3 class="section-title">Stored Procedures & Functions</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Creating Functions</h5>
+            <pre><code><span class="comment">-- Simple function returning scalar</span>
+<span class="keyword">CREATE OR REPLACE FUNCTION</span> get_employee_count(dept_id INT)
+<span class="keyword">RETURNS</span> INTEGER <span class="keyword">AS</span> $$
+<span class="keyword">BEGIN</span>
+    <span class="keyword">RETURN</span> (<span class="keyword">SELECT COUNT</span>(*) <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> department_id = dept_id);
+<span class="keyword">END</span>;
+$$ <span class="keyword">LANGUAGE</span> plpgsql;
+
+<span class="comment">-- Usage</span>
+<span class="keyword">SELECT</span> get_employee_count(5);
+
+<span class="comment">-- Function returning table</span>
+<span class="keyword">CREATE OR REPLACE FUNCTION</span> get_employees_by_dept(dept_id INT)
+<span class="keyword">RETURNS TABLE</span> (id INT, name VARCHAR, salary NUMERIC) <span class="keyword">AS</span> $$
+<span class="keyword">BEGIN</span>
+    <span class="keyword">RETURN QUERY</span>
+    <span class="keyword">SELECT</span> e.id, e.name, e.salary
+    <span class="keyword">FROM</span> employees e
+    <span class="keyword">WHERE</span> e.department_id = dept_id;
+<span class="keyword">END</span>;
+$$ <span class="keyword">LANGUAGE</span> plpgsql;
+
+<span class="comment">-- Usage</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> get_employees_by_dept(5);</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Stored Procedures (PostgreSQL 11+)</h5>
+            <pre><code><span class="comment">-- Procedure can use transactions</span>
+<span class="keyword">CREATE OR REPLACE PROCEDURE</span> transfer_funds(
+    sender_id INT,
+    receiver_id INT,
+    amount NUMERIC
+)
+<span class="keyword">LANGUAGE</span> plpgsql <span class="keyword">AS</span> $$
+<span class="keyword">BEGIN</span>
+    <span class="comment">-- Deduct from sender</span>
+    <span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance - amount
+    <span class="keyword">WHERE</span> id = sender_id;
+
+    <span class="comment">-- Add to receiver</span>
+    <span class="keyword">UPDATE</span> accounts <span class="keyword">SET</span> balance = balance + amount
+    <span class="keyword">WHERE</span> id = receiver_id;
+
+    <span class="keyword">COMMIT</span>;
+<span class="keyword">END</span>;
+$$;
+
+<span class="comment">-- Call procedure</span>
+<span class="keyword">CALL</span> transfer_funds(1, 2, 100.00);</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Control Structures</h5>
+            <pre><code><span class="comment">-- IF/ELSE</span>
+<span class="keyword">IF</span> amount > 1000 <span class="keyword">THEN</span>
+    discount := 0.10;
+<span class="keyword">ELSIF</span> amount > 500 <span class="keyword">THEN</span>
+    discount := 0.05;
+<span class="keyword">ELSE</span>
+    discount := 0;
+<span class="keyword">END IF</span>;
+
+<span class="comment">-- CASE</span>
+result := <span class="keyword">CASE</span> status
+    <span class="keyword">WHEN</span> <span class="string">'active'</span> <span class="keyword">THEN</span> 1
+    <span class="keyword">WHEN</span> <span class="string">'inactive'</span> <span class="keyword">THEN</span> 0
+    <span class="keyword">ELSE</span> -1
+<span class="keyword">END</span>;
+
+<span class="comment">-- LOOP</span>
+<span class="keyword">FOR</span> rec <span class="keyword">IN SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">LOOP</span>
+    <span class="comment">-- Process each row</span>
+    <span class="keyword">RAISE NOTICE</span> <span class="string">'Employee: %'</span>, rec.name;
+<span class="keyword">END LOOP</span>;
+
+<span class="comment">-- WHILE loop</span>
+<span class="keyword">WHILE</span> counter < 10 <span class="keyword">LOOP</span>
+    counter := counter + 1;
+<span class="keyword">END LOOP</span>;</code></pre>
+        </div>
+
+        <!-- Triggers -->
+        <h3 class="section-title">Triggers</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Creating Triggers</h5>
+            <pre><code><span class="comment">-- Step 1: Create trigger function</span>
+<span class="keyword">CREATE OR REPLACE FUNCTION</span> update_modified_timestamp()
+<span class="keyword">RETURNS TRIGGER AS</span> $$
+<span class="keyword">BEGIN</span>
+    NEW.updated_at := <span class="function">NOW</span>();
+    <span class="keyword">RETURN</span> NEW;
+<span class="keyword">END</span>;
+$$ <span class="keyword">LANGUAGE</span> plpgsql;
+
+<span class="comment">-- Step 2: Create trigger</span>
+<span class="keyword">CREATE TRIGGER</span> set_updated_at
+    <span class="keyword">BEFORE UPDATE ON</span> employees
+    <span class="keyword">FOR EACH ROW</span>
+    <span class="keyword">EXECUTE FUNCTION</span> update_modified_timestamp();</code></pre>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Trigger Timing</h5>
+                    <table>
+                        <tbody>
+                            <tr><td><code>BEFORE</code></td><td>Before operation, can modify NEW</td></tr>
+                            <tr><td><code>AFTER</code></td><td>After operation, for logging</td></tr>
+                            <tr><td><code>INSTEAD OF</code></td><td>Replace operation (views only)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Trigger Variables</h5>
+                    <table>
+                        <tbody>
+                            <tr><td><code>NEW</code></td><td>New row (INSERT/UPDATE)</td></tr>
+                            <tr><td><code>OLD</code></td><td>Old row (UPDATE/DELETE)</td></tr>
+                            <tr><td><code>TG_OP</code></td><td>'INSERT', 'UPDATE', 'DELETE'</td></tr>
+                            <tr><td><code>TG_TABLE_NAME</code></td><td>Table that fired trigger</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Audit Trigger Example</h5>
+            <pre><code><span class="keyword">CREATE TABLE</span> audit_log (
+    id SERIAL PRIMARY KEY,
+    table_name TEXT,
+    operation TEXT,
+    old_data JSONB,
+    new_data JSONB,
+    changed_at TIMESTAMPTZ DEFAULT NOW(),
+    changed_by TEXT DEFAULT current_user
+);
+
+<span class="keyword">CREATE OR REPLACE FUNCTION</span> audit_trigger()
+<span class="keyword">RETURNS TRIGGER AS</span> $$
+<span class="keyword">BEGIN</span>
+    <span class="keyword">INSERT INTO</span> audit_log (table_name, operation, old_data, new_data)
+    <span class="keyword">VALUES</span> (
+        TG_TABLE_NAME,
+        TG_OP,
+        <span class="keyword">CASE WHEN</span> TG_OP = <span class="string">'DELETE'</span> <span class="keyword">THEN</span> to_jsonb(OLD) <span class="keyword">ELSE NULL END</span>,
+        <span class="keyword">CASE WHEN</span> TG_OP <span class="keyword">IN</span> (<span class="string">'INSERT'</span>, <span class="string">'UPDATE'</span>) <span class="keyword">THEN</span> to_jsonb(NEW) <span class="keyword">ELSE NULL END</span>
+    );
+    <span class="keyword">RETURN COALESCE</span>(NEW, OLD);
+<span class="keyword">END</span>;
+$$ <span class="keyword">LANGUAGE</span> plpgsql;
+
+<span class="keyword">CREATE TRIGGER</span> audit_employees
+    <span class="keyword">AFTER INSERT OR UPDATE OR DELETE ON</span> employees
+    <span class="keyword">FOR EACH ROW EXECUTE FUNCTION</span> audit_trigger();</code></pre>
+        </div>
+
+        <!-- Views -->
+        <h3 class="section-title">Views</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Regular Views</h5>
+                    <pre><code><span class="comment">-- Create view</span>
+<span class="keyword">CREATE VIEW</span> active_employees <span class="keyword">AS</span>
+<span class="keyword">SELECT</span> e.id, e.name, d.name <span class="keyword">AS</span> dept
+<span class="keyword">FROM</span> employees e
+<span class="keyword">JOIN</span> departments d <span class="keyword">ON</span> e.dept_id = d.id
+<span class="keyword">WHERE</span> e.status = <span class="string">'active'</span>;
+
+<span class="comment">-- Replace view</span>
+<span class="keyword">CREATE OR REPLACE VIEW</span> active_employees
+<span class="keyword">AS</span> ...;
+
+<span class="comment">-- Drop view</span>
+<span class="keyword">DROP VIEW</span> active_employees;</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Materialized Views</h5>
+                    <pre><code><span class="comment">-- Stores data physically</span>
+<span class="keyword">CREATE MATERIALIZED VIEW</span> mv_sales_summary
+<span class="keyword">AS</span>
+<span class="keyword">SELECT</span> product_id,
+       <span class="function">SUM</span>(amount) <span class="keyword">AS</span> total
+<span class="keyword">FROM</span> sales
+<span class="keyword">GROUP BY</span> product_id;
+
+<span class="comment">-- Must refresh to update</span>
+<span class="keyword">REFRESH MATERIALIZED VIEW</span> mv_sales_summary;
+
+<span class="comment">-- Concurrent refresh (no lock)</span>
+<span class="keyword">REFRESH MATERIALIZED VIEW CONCURRENTLY</span>
+mv_sales_summary;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recursive CTEs -->
+        <h3 class="section-title">Recursive Queries</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Recursive CTE</h5>
+            <pre><code><span class="comment">-- Hierarchical data (org chart, categories)</span>
+<span class="keyword">WITH RECURSIVE</span> org_tree <span class="keyword">AS</span> (
+    <span class="comment">-- Base case: top-level managers</span>
+    <span class="keyword">SELECT</span> id, name, manager_id, 1 <span class="keyword">AS</span> level
+    <span class="keyword">FROM</span> employees
+    <span class="keyword">WHERE</span> manager_id <span class="keyword">IS NULL</span>
+
+    <span class="keyword">UNION ALL</span>
+
+    <span class="comment">-- Recursive case: subordinates</span>
+    <span class="keyword">SELECT</span> e.id, e.name, e.manager_id, t.level + 1
+    <span class="keyword">FROM</span> employees e
+    <span class="keyword">JOIN</span> org_tree t <span class="keyword">ON</span> e.manager_id = t.id
+)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> org_tree <span class="keyword">ORDER BY</span> level, name;</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Path Tracking Example</h5>
+            <pre><code><span class="comment">-- Build full path for categories</span>
+<span class="keyword">WITH RECURSIVE</span> category_path <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> id, name, parent_id,
+           name::TEXT <span class="keyword">AS</span> path,
+           ARRAY[id] <span class="keyword">AS</span> path_ids
+    <span class="keyword">FROM</span> categories
+    <span class="keyword">WHERE</span> parent_id <span class="keyword">IS NULL</span>
+
+    <span class="keyword">UNION ALL</span>
+
+    <span class="keyword">SELECT</span> c.id, c.name, c.parent_id,
+           cp.path || <span class="string">' > '</span> || c.name,
+           cp.path_ids || c.id
+    <span class="keyword">FROM</span> categories c
+    <span class="keyword">JOIN</span> category_path cp <span class="keyword">ON</span> c.parent_id = cp.id
+)
+<span class="keyword">SELECT</span> id, name, path <span class="keyword">FROM</span> category_path;</code></pre>
+        </div>
+
+        <!-- Backup & Recovery -->
+        <h3 class="section-title">Backup & Recovery</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>pg_dump - Logical Backup</h5>
+            <pre><code><span class="comment"># Backup single database (SQL format)</span>
+pg_dump -h localhost -U postgres mydb > backup.sql
+
+<span class="comment"># Custom format (compressed, parallel restore)</span>
+pg_dump -Fc -h localhost -U postgres mydb > backup.dump
+
+<span class="comment"># Directory format (parallel dump)</span>
+pg_dump -Fd -j 4 -h localhost -U postgres mydb -f backup_dir/
+
+<span class="comment"># Schema only (no data)</span>
+pg_dump --schema-only mydb > schema.sql
+
+<span class="comment"># Data only (no schema)</span>
+pg_dump --data-only mydb > data.sql
+
+<span class="comment"># Specific tables</span>
+pg_dump -t employees -t departments mydb > tables.sql
+
+<span class="comment"># Exclude table</span>
+pg_dump --exclude-table=logs mydb > backup.sql</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Restore Commands</h5>
+            <pre><code><span class="comment"># Restore SQL format</span>
+psql -h localhost -U postgres mydb < backup.sql
+
+<span class="comment"># Restore custom/directory format</span>
+pg_restore -h localhost -U postgres -d mydb backup.dump
+
+<span class="comment"># Parallel restore (faster)</span>
+pg_restore -j 4 -d mydb backup.dump
+
+<span class="comment"># Create database and restore</span>
+pg_restore -C -d postgres backup.dump
+
+<span class="comment"># Clean (drop) before restore</span>
+pg_restore --clean -d mydb backup.dump
+
+<span class="comment"># Restore specific table</span>
+pg_restore -t employees -d mydb backup.dump</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>pg_basebackup - Physical Backup</h5>
+            <pre><code><span class="comment"># Full cluster backup</span>
+pg_basebackup -h localhost -U postgres -D /backup/base -Fp -Xs -P
+
+<span class="comment"># Compressed backup</span>
+pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
+
+<span class="comment"># Options:</span>
+<span class="comment"># -Fp: Plain format (directory)</span>
+<span class="comment"># -Ft: Tar format</span>
+<span class="comment"># -Xs: Stream WAL during backup</span>
+<span class="comment"># -z: Compress output</span>
+<span class="comment"># -P: Show progress</span></code></pre>
+        </div>
+
+        <!-- User Management -->
+        <h3 class="section-title">User & Role Management</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Creating Roles & Users</h5>
+            <pre><code><span class="comment">-- Create role</span>
+<span class="keyword">CREATE ROLE</span> analyst;
+
+<span class="comment">-- Create user (role with LOGIN)</span>
+<span class="keyword">CREATE USER</span> john <span class="keyword">WITH PASSWORD</span> <span class="string">'secure_password'</span>;
+
+<span class="comment">-- Create role with options</span>
+<span class="keyword">CREATE ROLE</span> admin <span class="keyword">WITH</span>
+    LOGIN
+    SUPERUSER
+    CREATEDB
+    CREATEROLE
+    <span class="keyword">PASSWORD</span> <span class="string">'admin_password'</span>;
+
+<span class="comment">-- Alter role</span>
+<span class="keyword">ALTER ROLE</span> john <span class="keyword">WITH PASSWORD</span> <span class="string">'new_password'</span>;
+<span class="keyword">ALTER ROLE</span> john <span class="keyword">WITH</span> CREATEDB;
+
+<span class="comment">-- Drop role</span>
+<span class="keyword">DROP ROLE</span> john;</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Granting Privileges</h5>
+            <pre><code><span class="comment">-- Grant on table</span>
+<span class="keyword">GRANT SELECT</span> <span class="keyword">ON</span> employees <span class="keyword">TO</span> analyst;
+<span class="keyword">GRANT SELECT, INSERT, UPDATE ON</span> employees <span class="keyword">TO</span> app_user;
+<span class="keyword">GRANT ALL PRIVILEGES ON</span> employees <span class="keyword">TO</span> admin;
+
+<span class="comment">-- Grant on all tables in schema</span>
+<span class="keyword">GRANT SELECT ON ALL TABLES IN SCHEMA</span> public <span class="keyword">TO</span> analyst;
+
+<span class="comment">-- Default privileges for future tables</span>
+<span class="keyword">ALTER DEFAULT PRIVILEGES IN SCHEMA</span> public
+<span class="keyword">GRANT SELECT ON TABLES TO</span> analyst;
+
+<span class="comment">-- Grant role membership</span>
+<span class="keyword">GRANT</span> analyst <span class="keyword">TO</span> john;
+
+<span class="comment">-- Revoke privileges</span>
+<span class="keyword">REVOKE INSERT ON</span> employees <span class="keyword">FROM</span> app_user;
+<span class="keyword">REVOKE ALL ON</span> employees <span class="keyword">FROM</span> john;</code></pre>
+        </div>
+
+        <!-- Monitoring -->
+        <h3 class="section-title">Monitoring & Diagnostics</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Useful System Views</h5>
+            <pre><code><span class="comment">-- Active connections</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> pg_stat_activity;
+
+<span class="comment">-- Currently running queries</span>
+<span class="keyword">SELECT</span> pid, now() - pg_stat_activity.query_start <span class="keyword">AS</span> duration, query
+<span class="keyword">FROM</span> pg_stat_activity
+<span class="keyword">WHERE</span> state != <span class="string">'idle'</span> <span class="keyword">AND</span> query <span class="keyword">NOT LIKE</span> <span class="string">'%pg_stat_activity%'</span>
+<span class="keyword">ORDER BY</span> duration <span class="keyword">DESC</span>;
+
+<span class="comment">-- Table sizes</span>
+<span class="keyword">SELECT</span> relname, pg_size_pretty(pg_total_relation_size(relid))
+<span class="keyword">FROM</span> pg_catalog.pg_statio_user_tables
+<span class="keyword">ORDER BY</span> pg_total_relation_size(relid) <span class="keyword">DESC</span>;
+
+<span class="comment">-- Index usage</span>
+<span class="keyword">SELECT</span> relname, indexrelname, idx_scan, idx_tup_read
+<span class="keyword">FROM</span> pg_stat_user_indexes
+<span class="keyword">ORDER BY</span> idx_scan <span class="keyword">DESC</span>;
+
+<span class="comment">-- Unused indexes</span>
+<span class="keyword">SELECT</span> indexrelname <span class="keyword">FROM</span> pg_stat_user_indexes
+<span class="keyword">WHERE</span> idx_scan = 0;</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Lock Management</h5>
+            <pre><code><span class="comment">-- View locks</span>
+<span class="keyword">SELECT</span> locktype, relation::regclass, mode, granted, pid
+<span class="keyword">FROM</span> pg_locks
+<span class="keyword">WHERE NOT</span> granted;
+
+<span class="comment">-- Find blocking queries</span>
+<span class="keyword">SELECT</span>
+    blocked.pid <span class="keyword">AS</span> blocked_pid,
+    blocking.pid <span class="keyword">AS</span> blocking_pid,
+    blocked.query <span class="keyword">AS</span> blocked_query,
+    blocking.query <span class="keyword">AS</span> blocking_query
+<span class="keyword">FROM</span> pg_stat_activity blocked
+<span class="keyword">JOIN</span> pg_stat_activity blocking <span class="keyword">ON</span> blocking.pid = <span class="keyword">ANY</span>(pg_blocking_pids(blocked.pid));
+
+<span class="comment">-- Cancel query</span>
+<span class="keyword">SELECT</span> pg_cancel_backend(pid);
+
+<span class="comment">-- Terminate connection (force)</span>
+<span class="keyword">SELECT</span> pg_terminate_backend(pid);</code></pre>
+        </div>
+
+        <!-- Configuration -->
+        <h3 class="section-title">Configuration</h3>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Key Configuration Parameters</h5>
+            <pre><code><span class="comment">-- View current settings</span>
+<span class="keyword">SHOW</span> work_mem;
+<span class="keyword">SHOW</span> shared_buffers;
+<span class="keyword">SHOW ALL</span>;
+
+<span class="comment">-- Set for current session</span>
+<span class="keyword">SET</span> work_mem = <span class="string">'256MB'</span>;
+
+<span class="comment">-- View from system catalog</span>
+<span class="keyword">SELECT</span> name, setting, unit, context
+<span class="keyword">FROM</span> pg_settings
+<span class="keyword">WHERE</span> name <span class="keyword">IN</span> (<span class="string">'shared_buffers'</span>, <span class="string">'work_mem'</span>, <span class="string">'maintenance_work_mem'</span>);
+
+<span class="comment">-- Reload configuration (no restart)</span>
+<span class="keyword">SELECT</span> pg_reload_conf();</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Important Settings</h5>
+            <table>
+                <thead><tr><th>Setting</th><th>Purpose</th><th>Typical Value</th></tr></thead>
+                <tbody>
+                    <tr><td><code>shared_buffers</code></td><td>Memory for caching</td><td>25% of RAM</td></tr>
+                    <tr><td><code>work_mem</code></td><td>Memory per operation</td><td>64MB-256MB</td></tr>
+                    <tr><td><code>maintenance_work_mem</code></td><td>Memory for maintenance</td><td>512MB-1GB</td></tr>
+                    <tr><td><code>effective_cache_size</code></td><td>Planner cache estimate</td><td>75% of RAM</td></tr>
+                    <tr><td><code>max_connections</code></td><td>Maximum connections</td><td>100-500</td></tr>
+                    <tr><td><code>checkpoint_completion_target</code></td><td>Checkpoint spreading</td><td>0.9</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Best Practices -->
+        <h3 class="section-title">Admin Best Practices</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="tip">
+                    <strong>Regular backups</strong> - Automate with cron/pg_cron
+                </div>
+                <div class="tip">
+                    <strong>Test restores</strong> - Backup is useless if you can't restore
+                </div>
+                <div class="tip">
+                    <strong>Monitor disk space</strong> - WAL can fill up quickly
+                </div>
+                <div class="tip">
+                    <strong>Use connection pooling</strong> - PgBouncer for high traffic
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="warning">
+                    <strong>Never run as superuser</strong> - Use least privilege
+                </div>
+                <div class="warning">
+                    <strong>Don't disable autovacuum</strong> - Critical for performance
+                </div>
+                <div class="danger">
+                    <strong>Protect pg_hba.conf</strong> - Controls who can connect
+                </div>
+                <div class="danger">
+                    <strong>Encrypt connections</strong> - Use SSL in production
+                </div>
+            </div>
+        </div>
+
+            </section>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
