@@ -756,16 +756,16 @@
 
         <div class="exercise-box">
           <h4>Exercise 3.4: Single Character Wildcard</h4>
-          <p>Find all product codes that have "M" as the second character (e.g., "WM-002", "KM-005").</p>
+          <p>Find all phone products where the code starts with 'PHONE-' followed by exactly 3 characters (e.g., "PHONE-X12").</p>
           <div class="hint-box">
-            <strong>Hint:</strong> Use the underscore (_) to match exactly one character.
+            <strong>Hint:</strong> Use the underscore (_) to match exactly one character. Three underscores match exactly three characters.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Show Solution</button>
           <div id="sol3-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-4-code')">
               <pre class="sourceCode sql" id="sol3-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
 <span class="kw">FROM</span> product_template
-<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'_M%'</span>;</span></code></pre>
+<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'PHONE-___'</span>;</span></code></pre>
             </div>
           </div>
         </div>
@@ -963,22 +963,21 @@
 
         <div class="challenge-box">
           <h4>Challenge 5: Product Code Pattern</h4>
-          <p>Find all products where the product code (default_code) follows the pattern of two letters,
-             a hyphen, and three digits (e.g., "LP-001"). Show the name and code, sorted by code.</p>
+          <p>Find all accessory products where the product code (default_code) follows the pattern of three letters,
+             a hyphen, and four characters (e.g., "ACC-WM01"). Show the name and code, sorted by code.</p>
           <div class="hint-box">
             <strong>Hint:</strong> Use multiple underscores for multiple single characters.
-            The pattern would be: two characters, hyphen, three characters.
+            The pattern would be: three characters, hyphen, four characters.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
           <div id="chal5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
               <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
 <span class="kw">FROM</span> product_template
-<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'__-___'</span>
+<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'___-____'</span>
 <span class="kw">ORDER BY</span> default_code;</span></code></pre>
             </div>
-            <p><strong>Note:</strong> This matches exactly 2 characters, hyphen, and 3 characters.
-            All sample products match this pattern.</p>
+            <p><strong>Note:</strong> This matches exactly 3 characters, hyphen, and 4 characters (e.g., ACC-WM01, ACC-KB01).</p>
           </div>
         </div>
       </section>

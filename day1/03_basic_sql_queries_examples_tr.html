@@ -756,16 +756,16 @@
 
         <div class="exercise-box">
           <h4>Alistirma 3.4: Tek Karakter Joker Karakteri</h4>
-          <p>Ikinci karakteri "M" olan tum urun kodlarini bulun (ornegin, "WM-002", "KM-005").</p>
+          <p>Kodu 'PHONE-' ile baslayip ardindan tam olarak 3 karakter gelen tum telefon urunlerini bulun (ornegin, "PHONE-X12").</p>
           <div class="hint-box">
-            <strong>Ipucu:</strong> Tam olarak bir karakteri eslemek icin alt cizgi (_) kullanin.
+            <strong>Ipucu:</strong> Tam olarak bir karakteri eslemek icin alt cizgi (_) kullanin. Uc alt cizgi tam olarak uc karakteri esler.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('sol3-4')">Cozumu Goster</button>
           <div id="sol3-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-4-code')">
               <pre class="sourceCode sql" id="sol3-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
 <span class="kw">FROM</span> product_template
-<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'_M%'</span>;</span></code></pre>
+<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'PHONE-___'</span>;</span></code></pre>
             </div>
           </div>
         </div>
@@ -963,21 +963,20 @@
 
         <div class="challenge-box">
           <h4>Meydan Okuma 5: Urun Kodu Deseni</h4>
-          <p>Urun kodunun (default_code) iki harf, tire ve uc rakam desenini takip ettigi tum urunleri bulun (ornegin, "LP-001"). Adi ve kodu gosterin, koda gore siralayin.</p>
+          <p>Urun kodunun (default_code) uc harf, tire ve dort karakter desenini takip ettigi tum aksesuar urunlerini bulun (ornegin, "ACC-WM01"). Adi ve kodu gosterin, koda gore siralayin.</p>
           <div class="hint-box">
             <strong>Ipucu:</strong> Birden fazla tek karakter icin birden fazla alt cizgi kullanin.
-            Desen soyle olacaktir: iki karakter, tire, uc karakter.
+            Desen soyle olacaktir: uc karakter, tire, dort karakter.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('chal5')">Cozumu Goster</button>
           <div id="chal5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
               <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, default_code
 <span class="kw">FROM</span> product_template
-<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'__-___'</span>
+<span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'___-____'</span>
 <span class="kw">ORDER BY</span> default_code;</span></code></pre>
             </div>
-            <p><strong>Not:</strong> Bu tam olarak 2 karakter, tire ve 3 karakteri esler.
-            Tum ornek urunler bu desene uymaktadir.</p>
+            <p><strong>Not:</strong> Bu tam olarak 3 karakter, tire ve 4 karakteri esler (ornegin, ACC-WM01, ACC-KB01).</p>
           </div>
         </div>
       </section>
