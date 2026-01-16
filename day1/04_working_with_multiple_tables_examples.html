@@ -481,6 +481,7 @@
           <ul>
             <li><code>orders.customer_id</code> &rarr; <code>customers.id</code> (Many orders belong to one customer)
             </li>
+            <li><code>customers.country_id</code> &rarr; <code>countries.id</code> (Each customer belongs to one country)</li>
             <li><code>order_lines.order_id</code> &rarr; <code>orders.id</code> (Each order line belongs to one order)</li>
             <li><code>order_lines.product_id</code> &rarr; <code>products.id</code> (Each order line references one product)</li>
             <li><code>products.category_id</code> &rarr; <code>categories.id</code> (Each product belongs to one
@@ -494,9 +495,9 @@
             <thead>
               <tr>
                 <th>id</th>
-                <th>customer_name</th>
+                <th>name</th>
                 <th>city</th>
-                <th>country</th>
+                <th>country_id</th>
               </tr>
             </thead>
             <tbody>
@@ -558,7 +559,7 @@
             <thead>
               <tr>
                 <th>id</th>
-                <th>category_name</th>
+                <th>name</th>
               </tr>
             </thead>
             <tbody>
@@ -660,7 +661,7 @@
                 <th>customer_id</th>
                 <th>order_date</th>
                 <th>subtotal</th>
-                <th>total</th>
+                <th>total_amount</th>
               </tr>
             </thead>
             <tbody>
@@ -883,17 +884,18 @@
 
         <div class="exercise-box">
           <h4>Exercise 1.4: JOIN with WHERE Filter</h4>
-          <p>Find all orders placed by customers from Turkey. Display customer name, order ID, and order total.</p>
+          <p>Find all orders placed by customers from Germany. Display customer name, order ID, and order total.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Show Solution</button>
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     c.name,
     o.id,
-    o.total
+    o.total_amount
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
-<span class="kw">WHERE</span> c.country = <span class="st">'Turkey'</span>;</code></pre>
+<span class="kw">INNER JOIN</span> countries co <span class="kw">ON</span> c.country_id = co.id
+<span class="kw">WHERE</span> co.name = <span class="st">'Germany'</span>;</code></pre>
             </div>
           </div>
         </div>
@@ -951,7 +953,7 @@
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     p.name,
     p.price,
-    cat.category_name
+    cat.name <span class="kw">AS</span> category_name
 <span class="kw">FROM</span> products p
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id;</code></pre>
             </div>
@@ -992,11 +994,11 @@
           <div id="sol3-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
               <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    cat.category_name,
+    cat.name <span class="kw">AS</span> category_name,
     <span class="fu">COUNT</span>(p.id) <span class="kw">AS</span> product_count
 <span class="kw">FROM</span> categories cat
 <span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> cat.id = p.category_id
-<span class="kw">GROUP BY</span> cat.id, cat.category_name
+<span class="kw">GROUP BY</span> cat.id, cat.name
 <span class="kw">ORDER BY</span> product_count <span class="kw">DESC</span>;</code></pre>
             </div>
             <p><strong>Note:</strong> This uses GROUP BY which you may cover in a later session.</p>
@@ -1014,7 +1016,7 @@
 <span class="kw">SELECT</span>
     c.name,
     o.id,
-    o.total
+    o.total_amount
 <span class="kw">FROM</span> customers c
 <span class="kw">FULL OUTER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
@@ -1064,7 +1066,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
     o.id,
     c.name,
     p.name,
-    cat.category_name,
+    cat.name <span class="kw">AS</span> category_name,
     o.order_date
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
@@ -1088,7 +1090,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
     c.city,
     o.id,
     p.name,
-    cat.category_name
+    cat.name <span class="kw">AS</span> category_name
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
 <span class="kw">LEFT JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
@@ -1098,61 +1100,6 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
             </div>
             <p><strong>Note:</strong> All JOINs after the first LEFT JOIN should also be LEFT JOINs to preserve
               customers without orders.</p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2 id="exercise-5">Exercise 5: Predict the Output</h2>
-        <p>For these exercises, try to predict what the query will return before checking the answer.</p>
-
-        <div class="exercise-box">
-          <h4>Exercise 5.1: What will this return?</h4>
-          <div class="sourceCode">
-            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> c.name, <span class="fu">COUNT</span>(o.id) <span class="kw">AS</span> order_count
-<span class="kw">FROM</span> customers c
-<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
-<span class="kw">GROUP BY</span> c.id, c.name
-<span class="kw">ORDER BY</span> order_count <span class="kw">DESC</span>;</code></pre>
-          </div>
-          <div class="predict-output">
-            <h5>What do you think this query returns?</h5>
-            <p>Think about: How many rows? What values?</p>
-          </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Show Answer</button>
-          <div id="sol5-1" class="solution-content">
-            <p><strong>Answer:</strong> This returns 8 rows - one for each customer - with a count of their orders:</p>
-            <ul>
-              <li>Cansu: 3 orders</li>
-              <li>TTC: 2 orders</li>
-              <li>MEXT, Audra Berg, Avram Guthrie: 1 order each</li>
-              <li>Macy Marquez, Hamish Rodgers, Henry Douglas: 0 orders each</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="exercise-box">
-          <h4>Exercise 5.2: INNER vs LEFT - What's the difference?</h4>
-          <p>Compare these two queries. How many rows does each return?</p>
-          <div class="sourceCode">
-            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Query A</span>
-<span class="kw">SELECT</span> c.name, o.id
-<span class="kw">FROM</span> customers c
-<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;
-
-<span class="co">-- Query B</span>
-<span class="kw">SELECT</span> c.name, o.id
-<span class="kw">FROM</span> customers c
-<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
-          </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Show Answer</button>
-          <div id="sol5-2" class="solution-content">
-            <p><strong>Answer:</strong></p>
-            <ul>
-              <li><strong>Query A (INNER JOIN):</strong> Returns 8 rows - only customers who have orders</li>
-              <li><strong>Query B (LEFT JOIN):</strong> Returns 11 rows - all 8 customers, but 3 of them (Macy, Hamish,
-                Henry) have NULL for order_id</li>
-            </ul>
           </div>
         </div>
       </section>
@@ -1170,11 +1117,12 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     c.name,
     c.city,
-    c.country,
-    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.total), <span class="dv">0</span>) <span class="kw">AS</span> total_spent
+    co.name <span class="kw">AS</span> country,
+    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.total_amount), <span class="dv">0</span>) <span class="kw">AS</span> total_spent
 <span class="kw">FROM</span> customers c
+<span class="kw">LEFT JOIN</span> countries co <span class="kw">ON</span> c.country_id = co.id
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
-<span class="kw">GROUP BY</span> c.id, c.name, c.city, c.country
+<span class="kw">GROUP BY</span> c.id, c.name, c.city, co.name
 <span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;</code></pre>
             </div>
             <p><strong>Note:</strong> COALESCE replaces NULL with 0 for customers without orders.</p>
@@ -1189,12 +1137,12 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
           <div id="chal2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
               <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    cat.category_name,
+    cat.name <span class="kw">AS</span> category_name,
     <span class="fu">SUM</span>(ol.quantity) <span class="kw">AS</span> total_quantity_ordered
 <span class="kw">FROM</span> categories cat
 <span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> cat.id = p.category_id
 <span class="kw">LEFT JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
-<span class="kw">GROUP BY</span> cat.id, cat.category_name
+<span class="kw">GROUP BY</span> cat.id, cat.name
 <span class="kw">ORDER BY</span> total_quantity_ordered <span class="kw">DESC</span>;</code></pre>
             </div>
           </div>
@@ -1210,15 +1158,16 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
             <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
               <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     c.name,
-    c.country,
+    co.name <span class="kw">AS</span> country,
     o.id,
     p.name,
-    cat.category_name,
+    cat.name <span class="kw">AS</span> category_name,
     ol.unit_price,
     ol.quantity,
     ol.line_total
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">INNER JOIN</span> countries co <span class="kw">ON</span> c.country_id = co.id
 <span class="kw">INNER JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
 <span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
@@ -1238,7 +1187,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
             <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
               <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     p.name,
-    cat.category_name,
+    cat.name <span class="kw">AS</span> category_name,
     p.price
 <span class="kw">FROM</span> products p
 <span class="kw">LEFT JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
@@ -1249,8 +1198,8 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
         </div>
 
         <div class="challenge-box">
-          <h4>Challenge 5: Electronics Orders from UK Customers</h4>
-          <p>Find all order lines for products in the 'Electronics' category placed by customers from the UK.
+          <h4>Challenge 5: Computer Orders from UK Customers</h4>
+          <p>Find all order lines for products in the 'Computers' category placed by customers from the United Kingdom.
             Display customer name, product name, order date, and line total.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
           <div id="chal5" class="solution-content">
@@ -1262,11 +1211,12 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
     ol.line_total
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
+<span class="kw">INNER JOIN</span> countries co <span class="kw">ON</span> c.country_id = co.id
 <span class="kw">INNER JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
 <span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
-<span class="kw">WHERE</span> c.country = <span class="st">'UK'</span>
-  <span class="kw">AND</span> cat.category_name = <span class="st">'Electronics'</span>;</code></pre>
+<span class="kw">WHERE</span> co.name = <span class="st">'United Kingdom'</span>
+  <span class="kw">AND</span> cat.name = <span class="st">'Computers'</span>;</code></pre>
             </div>
           </div>
         </div>
