@@ -326,13 +326,13 @@
                 <p><em>Ornek: Siparisleri ve siparisi veren musterilerin adlarini alin.</em></p>
                 <div class="sourceCode" id="cb5" onclick="CopyToClipboard('cb5')">
                     <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
-    o.order_id,
+    o.id,
     o.order_date,
-    c.customer_name
+    c.name
 <span class="kw">FROM</span>
     orders o
 <span class="kw">INNER JOIN</span>
-    customers c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
+    customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
                 </div>
             </section>
             <section>
@@ -355,13 +355,13 @@
                 <p><em>Ornek: Tum musterileri ve verdikleri siparisleri listeleyin.</em></p>
                 <div class="sourceCode" id="cb7" onclick="CopyToClipboard('cb7')">
                     <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
-    c.customer_name,
-    o.order_id,
+    c.name,
+    o.id,
     o.order_date
 <span class="kw">FROM</span>
     customers c
 <span class="kw">LEFT JOIN</span>
-    orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+    orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
                 </div>
             </section>
             <section>
@@ -404,36 +404,36 @@
                 <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
                     <pre><code class="language-sql">-- PostgreSQL / SQL Server / Oracle
 <span class="kw">SELECT</span>
-    c.customer_name,
-    o.order_id
+    c.name,
+    o.id
 <span class="kw">FROM</span>
     customers c
 <span class="kw">FULL OUTER JOIN</span>
-    orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+    orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
                 </div>
             </section>
             <section>
                 <h3 id="joining-multiple-tables">Birden Fazla Tabloyu Birlestirme</h3>
                 <p><code>JOIN</code> ifadelerini zincirleme yaparak ikiden fazla tabloyu birlestirebilirsiniz.</p>
-                <p><em>Ornek: Siparis detaylarini, musteri adini ve urun adini alin (bir
-                        <code>order_items</code>
-                        baglanti tablosu ve bir <code>products</code> tablosu oldugunu varsayarak).</em></p>
+                <p><em>Ornek: Siparis detaylarini, musteri adini ve urun adini alin (
+                        <code>order_lines</code>
+                        baglanti tablosu ve bir <code>products</code> tablosu kullanarak).</em></p>
                 <div class="sourceCode" id="cb11" onclick="CopyToClipboard('cb11')">
                     <pre><code class="language-sql"><span class="kw">SELECT</span>
-    o.order_id,
-    c.customer_name,
-    p.product_name,
-    oi.quantity
+    o.id,
+    c.name,
+    p.name <span class="kw">AS</span> product_name,
+    ol.quantity
 <span class="kw">FROM</span>
     orders o
 <span class="kw">INNER JOIN</span>
-    customers c <span class="kw">ON</span> o.customer_id = c.customer_id
+    customers c <span class="kw">ON</span> o.customer_id = c.id
 <span class="kw">INNER JOIN</span>
-    order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+    order_lines ol <span class="kw">ON</span> o.id = ol.order_id
 <span class="kw">INNER JOIN</span>
-    products p <span class="kw">ON</span> oi.product_id = p.product_id
+    products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">WHERE</span>
-    o.order_date >= '2025-01-01'; -- Ornek filtre</code></pre>
+    o.order_date >= '2024-01-01'; -- Ornek filtre</code></pre>
                 </div>
             </section>
             <section>
@@ -442,9 +442,9 @@
                     birden fazla tabloyu veya ayni tabloyu kendisine birlestirirken (self-join).</p>
                 <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
                     <pre><code class="language-sql">-- orders icin 'o' ve customers icin 'c' takma adlarini kullanma
-<span class="kw">SELECT</span> o.order_id, c.customer_name
+<span class="kw">SELECT</span> o.id, c.name
 <span class="kw">FROM</span> orders AS o
-<span class="kw">INNER JOIN</span> customers AS c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
+<span class="kw">INNER JOIN</span> customers AS c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
                 </div>
                 <ul>
                     <li><code>AS</code> anahtar kelimesi, cogu SQL lehcesinde (PostgreSQL dahil) tablo takma adlari icin istege baglidir.

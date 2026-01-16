@@ -481,7 +481,8 @@
           <ul>
             <li><code>orders.customer_id</code> &rarr; <code>customers.id</code> (Many orders belong to one customer)
             </li>
-            <li><code>orders.product_id</code> &rarr; <code>products.id</code> (Each order references one product)</li>
+            <li><code>order_lines.order_id</code> &rarr; <code>orders.id</code> (Each order line belongs to one order)</li>
+            <li><code>order_lines.product_id</code> &rarr; <code>products.id</code> (Each order line references one product)</li>
             <li><code>products.category_id</code> &rarr; <code>categories.id</code> (Each product belongs to one
               category)</li>
           </ul>
@@ -591,7 +592,7 @@
             <thead>
               <tr>
                 <th>id</th>
-                <th>product_name</th>
+                <th>name</th>
                 <th>category_id</th>
                 <th>price</th>
               </tr>
@@ -654,77 +655,159 @@
           <table>
             <thead>
               <tr>
-                <th>order_id</th>
+                <th>id</th>
+                <th>order_number</th>
                 <th>customer_id</th>
-                <th>product_id</th>
                 <th>order_date</th>
-                <th>quantity</th>
-                <th>order_total</th>
+                <th>subtotal</th>
+                <th>total</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>101</td>
                 <td>1</td>
+                <td>ORD-101</td>
                 <td>1</td>
                 <td>2024-01-15</td>
-                <td>1</td>
+                <td>999.99</td>
                 <td>999.99</td>
               </tr>
               <tr>
-                <td>102</td>
                 <td>2</td>
-                <td>3</td>
+                <td>ORD-102</td>
+                <td>2</td>
                 <td>2024-01-18</td>
-                <td>2</td>
+                <td>99.98</td>
                 <td>99.98</td>
               </tr>
               <tr>
-                <td>103</td>
+                <td>3</td>
+                <td>ORD-103</td>
                 <td>1</td>
-                <td>4</td>
                 <td>2024-02-01</td>
-                <td>1</td>
+                <td>149.99</td>
                 <td>149.99</td>
               </tr>
               <tr>
-                <td>104</td>
+                <td>4</td>
+                <td>ORD-104</td>
                 <td>3</td>
-                <td>2</td>
                 <td>2024-02-10</td>
-                <td>3</td>
+                <td>89.97</td>
                 <td>89.97</td>
               </tr>
               <tr>
-                <td>105</td>
                 <td>5</td>
-                <td>6</td>
+                <td>ORD-105</td>
+                <td>5</td>
                 <td>2024-02-15</td>
-                <td>1</td>
+                <td>119.99</td>
                 <td>119.99</td>
               </tr>
               <tr>
-                <td>106</td>
+                <td>6</td>
+                <td>ORD-106</td>
                 <td>1</td>
-                <td>7</td>
                 <td>2024-03-01</td>
-                <td>2</td>
+                <td>91.98</td>
                 <td>91.98</td>
               </tr>
               <tr>
-                <td>107</td>
+                <td>7</td>
+                <td>ORD-107</td>
                 <td>4</td>
-                <td>5</td>
                 <td>2024-03-05</td>
-                <td>4</td>
+                <td>359.96</td>
                 <td>359.96</td>
               </tr>
               <tr>
-                <td>108</td>
-                <td>2</td>
                 <td>8</td>
+                <td>ORD-108</td>
+                <td>2</td>
                 <td>2024-03-10</td>
+                <td>35.99</td>
+                <td>35.99</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="order-lines-table">order_lines</h3>
+        <div class="dataset-table">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>order_id</th>
+                <th>product_id</th>
+                <th>quantity</th>
+                <th>unit_price</th>
+                <th>line_total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
                 <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>999.99</td>
+                <td>999.99</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>3</td>
+                <td>2</td>
+                <td>49.99</td>
+                <td>99.98</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>4</td>
+                <td>1</td>
+                <td>149.99</td>
+                <td>149.99</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>4</td>
+                <td>2</td>
+                <td>3</td>
+                <td>29.99</td>
+                <td>89.97</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>5</td>
+                <td>6</td>
+                <td>1</td>
+                <td>119.99</td>
+                <td>119.99</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>6</td>
+                <td>7</td>
+                <td>2</td>
+                <td>45.99</td>
+                <td>91.98</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>7</td>
+                <td>5</td>
+                <td>4</td>
+                <td>89.99</td>
+                <td>359.96</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>8</td>
+                <td>8</td>
+                <td>1</td>
+                <td>35.99</td>
                 <td>35.99</td>
               </tr>
             </tbody>
@@ -754,8 +837,8 @@
           <div id="sol1-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    o.order_id,
-    c.customer_name,
+    o.id,
+    c.name,
     o.order_date
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
@@ -766,19 +849,19 @@
 
         <div class="exercise-box">
           <h4>Exercise 1.2: JOIN with Product Information</h4>
-          <p>Display orders with product names. Show <code>order_id</code>, <code>product_name</code>,
-            <code>quantity</code>, and <code>order_total</code>.
+          <p>Display order lines with product names. Show <code>order_id</code>, <code>product name</code>,
+            <code>quantity</code>, and <code>line_total</code>.
           </p>
           <button class="solution-toggle" onclick="toggleSolution('sol1-2')">Show Solution</button>
           <div id="sol1-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-2-code')">
               <pre class="sourceCode sql" id="sol1-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    o.order_id,
-    p.product_name,
-    o.quantity,
-    o.order_total
-<span class="kw">FROM</span> orders o
-<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id;</code></pre>
+    ol.order_id,
+    p.name,
+    ol.quantity,
+    ol.line_total
+<span class="kw">FROM</span> order_lines ol
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id;</code></pre>
             </div>
           </div>
         </div>
@@ -790,8 +873,8 @@
           <div id="sol1-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
               <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    o.order_id <span class="kw">AS</span> <span class="st">"Order Number"</span>,
-    c.customer_name <span class="kw">AS</span> <span class="st">"Customer"</span>,
+    o.id <span class="kw">AS</span> <span class="st">"Order Number"</span>,
+    c.name <span class="kw">AS</span> <span class="st">"Customer"</span>,
     o.order_date <span class="kw">AS</span> <span class="st">"Date Ordered"</span>
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
@@ -806,9 +889,9 @@
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
-    o.order_id,
-    o.order_total
+    c.name,
+    o.id,
+    o.total
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
 <span class="kw">WHERE</span> c.country = <span class="st">'Turkey'</span>;</code></pre>
@@ -832,9 +915,9 @@
           <div id="sol2-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
               <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
+    c.name,
     c.city,
-    o.order_id
+    o.id
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
@@ -853,11 +936,11 @@
           <div id="sol2-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-2-code')">
               <pre class="sourceCode sql" id="sol2-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
+    c.name,
     c.city
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
-<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;</code></pre>
+<span class="kw">WHERE</span> o.id <span class="kw">IS NULL</span>;</code></pre>
             </div>
             <p><strong>Expected Result:</strong> 3 customers - Macy Marquez, Hamish Rodgers, Henry Douglas.</p>
           </div>
@@ -871,7 +954,7 @@
           <div id="sol2-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    p.product_name,
+    p.name,
     p.price,
     cat.category_name
 <span class="kw">FROM</span> products p
@@ -895,9 +978,9 @@
           <div id="sol3-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
               <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
+    c.name,
     c.city,
-    o.order_id
+    o.id
 <span class="kw">FROM</span> orders o
 <span class="kw">RIGHT JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
             </div>
@@ -934,17 +1017,17 @@
             <div class="sourceCode" onclick="CopyToClipboard('sol3-3-code')">
               <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL / SQL Server / Oracle syntax</span>
 <span class="kw">SELECT</span>
-    c.customer_name,
-    o.order_id,
-    o.order_total
+    c.name,
+    o.id,
+    o.total
 <span class="kw">FROM</span> customers c
 <span class="kw">FULL OUTER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
             <div class="warning-box">
               <strong>MySQL Note:</strong> MySQL doesn't support FULL OUTER JOIN directly. You would need to use UNION:
-              <pre><code>SELECT c.customer_name, o.order_id FROM customers c LEFT JOIN orders o ON c.id = o.customer_id
+              <pre><code>SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON c.id = o.customer_id
 UNION
-SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id;</code></pre>
+SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id;</code></pre>
             </div>
           </div>
         </div>
@@ -955,41 +1038,43 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
 
         <div class="exercise-box">
           <h4>Exercise 4.1: Three-Table JOIN</h4>
-          <p>Display complete order information: customer name, product name, quantity, and order total.</p>
+          <p>Display complete order line information: customer name, product name, quantity, and line total.</p>
           <div class="hint-box">
-            <strong>Hint:</strong> You need to join <code>orders</code> with both <code>customers</code> AND
-            <code>products</code>.
+            <strong>Hint:</strong> You need to join <code>orders</code> with <code>customers</code>, then join through
+            <code>order_lines</code> to reach <code>products</code>.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Show Solution</button>
           <div id="sol4-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
               <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
-    p.product_name,
-    o.quantity,
-    o.order_total
+    c.name,
+    p.name,
+    ol.quantity,
+    ol.line_total
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
-<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id;</code></pre>
+<span class="kw">INNER JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id;</code></pre>
             </div>
           </div>
         </div>
 
         <div class="exercise-box">
-          <h4>Exercise 4.2: Four-Table JOIN</h4>
-          <p>Display orders with customer name, product name, AND category name. Sort by order date.</p>
+          <h4>Exercise 4.2: Five-Table JOIN</h4>
+          <p>Display order lines with customer name, product name, AND category name. Sort by order date.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Show Solution</button>
           <div id="sol4-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
               <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    o.order_id,
-    c.customer_name,
-    p.product_name,
+    o.id,
+    c.name,
+    p.name,
     cat.category_name,
     o.order_date
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
-<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">INNER JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">ORDER BY</span> o.order_date;</code></pre>
             </div>
@@ -1004,16 +1089,17 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
           <div id="sol4-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
               <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
+    c.name,
     c.city,
-    o.order_id,
-    p.product_name,
+    o.id,
+    p.name,
     cat.category_name
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
-<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">LEFT JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
-<span class="kw">ORDER BY</span> c.customer_name;</code></pre>
+<span class="kw">ORDER BY</span> c.name;</code></pre>
             </div>
             <p><strong>Note:</strong> All JOINs after the first LEFT JOIN should also be LEFT JOINs to preserve
               customers without orders.</p>
@@ -1028,10 +1114,10 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
         <div class="exercise-box">
           <h4>Exercise 5.1: What will this return?</h4>
           <div class="sourceCode">
-            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> c.customer_name, <span class="fu">COUNT</span>(o.order_id) <span class="kw">AS</span> order_count
+            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> c.name, <span class="fu">COUNT</span>(o.id) <span class="kw">AS</span> order_count
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
-<span class="kw">GROUP BY</span> c.id, c.customer_name
+<span class="kw">GROUP BY</span> c.id, c.name
 <span class="kw">ORDER BY</span> order_count <span class="kw">DESC</span>;</code></pre>
           </div>
           <div class="predict-output">
@@ -1055,12 +1141,12 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
           <p>Compare these two queries. How many rows does each return?</p>
           <div class="sourceCode">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Query A</span>
-<span class="kw">SELECT</span> c.customer_name, o.order_id
+<span class="kw">SELECT</span> c.name, o.id
 <span class="kw">FROM</span> customers c
 <span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;
 
 <span class="co">-- Query B</span>
-<span class="kw">SELECT</span> c.customer_name, o.order_id
+<span class="kw">SELECT</span> c.name, o.id
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
           </div>
@@ -1087,13 +1173,13 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
           <div id="chal1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
+    c.name,
     c.city,
     c.country,
-    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.order_total), <span class="dv">0</span>) <span class="kw">AS</span> total_spent
+    <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.total), <span class="dv">0</span>) <span class="kw">AS</span> total_spent
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
-<span class="kw">GROUP BY</span> c.id, c.customer_name, c.city, c.country
+<span class="kw">GROUP BY</span> c.id, c.name, c.city, c.country
 <span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;</code></pre>
             </div>
             <p><strong>Note:</strong> COALESCE replaces NULL with 0 for customers without orders.</p>
@@ -1109,10 +1195,10 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
             <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
               <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     cat.category_name,
-    <span class="fu">SUM</span>(o.quantity) <span class="kw">AS</span> total_quantity_ordered
+    <span class="fu">SUM</span>(ol.quantity) <span class="kw">AS</span> total_quantity_ordered
 <span class="kw">FROM</span> categories cat
 <span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> cat.id = p.category_id
-<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> p.id = o.product_id
+<span class="kw">LEFT JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
 <span class="kw">GROUP BY</span> cat.id, cat.category_name
 <span class="kw">ORDER BY</span> total_quantity_ordered <span class="kw">DESC</span>;</code></pre>
             </div>
@@ -1128,21 +1214,22 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
           <div id="chal3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal3-code')">
               <pre class="sourceCode sql" id="chal3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
+    c.name,
     c.country,
-    o.order_id,
-    p.product_name,
+    o.id,
+    p.name,
     cat.category_name,
-    p.price <span class="kw">AS</span> unit_price,
-    o.quantity,
-    o.order_total <span class="kw">AS</span> line_total
+    ol.unit_price,
+    ol.quantity,
+    ol.line_total
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
-<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">INNER JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">WHERE</span> o.order_date <span class="op">>=</span> <span class="st">'2024-01-01'</span>
   <span class="kw">AND</span> o.order_date <span class="op"><</span> <span class="st">'2025-01-01'</span>
-<span class="kw">ORDER BY</span> c.customer_name, o.order_date;</code></pre>
+<span class="kw">ORDER BY</span> c.name, o.order_date;</code></pre>
             </div>
           </div>
         </div>
@@ -1155,13 +1242,13 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
           <div id="chal4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal4-code')">
               <pre class="sourceCode sql" id="chal4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    p.product_name,
+    p.name,
     cat.category_name,
     p.price
 <span class="kw">FROM</span> products p
-<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> p.id = o.product_id
+<span class="kw">LEFT JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
-<span class="kw">WHERE</span> o.order_id <span class="kw">IS NULL</span>;</code></pre>
+<span class="kw">WHERE</span> ol.id <span class="kw">IS NULL</span>;</code></pre>
             </div>
             <p><strong>Expected Result:</strong> Products that haven't been ordered (depends on sample data - in our
               case, all products have orders).</p>
@@ -1170,19 +1257,20 @@ SELECT c.customer_name, o.order_id FROM customers c RIGHT JOIN orders o ON c.id 
 
         <div class="challenge-box">
           <h4>Challenge 5: Electronics Orders from UK Customers</h4>
-          <p>Find all orders for products in the 'Electronics' category placed by customers from the UK.
-            Display customer name, product name, order date, and order total.</p>
+          <p>Find all order lines for products in the 'Electronics' category placed by customers from the UK.
+            Display customer name, product name, order date, and line total.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal5')">Show Solution</button>
           <div id="chal5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal5-code')">
               <pre class="sourceCode sql" id="chal5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.customer_name,
-    p.product_name,
+    c.name,
+    p.name,
     o.order_date,
-    o.order_total
+    ol.line_total
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
-<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> o.product_id = p.id
+<span class="kw">INNER JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">INNER JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">INNER JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">WHERE</span> c.country = <span class="st">'UK'</span>
   <span class="kw">AND</span> cat.category_name = <span class="st">'Electronics'</span>;</code></pre>

@@ -344,13 +344,13 @@
                 <p><em>Example: Get orders and the names of the customers who placed them.</em></p>
                 <div class="sourceCode" id="cb5" onclick="CopyToClipboard('cb5')">
                     <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
-    o.order_id,
+    o.id,
     o.order_date,
-    c.customer_name
+    c.name
 <span class="kw">FROM</span>
     orders o
 <span class="kw">INNER JOIN</span>
-    customers c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
+    customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
                 </div>
             </section>
             <section>
@@ -374,13 +374,13 @@
                 <p><em>Example: List all customers and any orders they may have placed.</em></p>
                 <div class="sourceCode" id="cb7" onclick="CopyToClipboard('cb7')">
                     <pre class="language-sql"><code class="language-sql"><span class="kw">SELECT</span>
-    c.customer_name,
-    o.order_id,
+    c.name,
+    o.id,
     o.order_date
 <span class="kw">FROM</span>
     customers c
 <span class="kw">LEFT JOIN</span>
-    orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+    orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
                 </div>
             </section>
             <section>
@@ -424,36 +424,36 @@
                 <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
                     <pre><code class="language-sql">-- PostgreSQL / SQL Server / Oracle
 <span class="kw">SELECT</span>
-    c.customer_name,
-    o.order_id
+    c.name,
+    o.id
 <span class="kw">FROM</span>
     customers c
 <span class="kw">FULL OUTER JOIN</span>
-    orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+    orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
                 </div>
             </section>
             <section>
                 <h3 id="joining-multiple-tables">Joining Multiple Tables</h3>
                 <p>You can join more than two tables by chaining <code>JOIN</code> clauses.</p>
-                <p><em>Example: Get order details, customer name, and product name (assuming an
-                        <code>order_items</code>
+                <p><em>Example: Get order details, customer name, and product name (using
+                        <code>order_lines</code>
                         junction table and a <code>products</code> table).</em></p>
                 <div class="sourceCode" id="cb11" onclick="CopyToClipboard('cb11')">
                     <pre><code class="language-sql"><span class="kw">SELECT</span>
-    o.order_id,
-    c.customer_name,
-    p.product_name,
-    oi.quantity
+    o.id,
+    c.name,
+    p.name <span class="kw">AS</span> product_name,
+    ol.quantity
 <span class="kw">FROM</span>
     orders o
 <span class="kw">INNER JOIN</span>
-    customers c <span class="kw">ON</span> o.customer_id = c.customer_id
+    customers c <span class="kw">ON</span> o.customer_id = c.id
 <span class="kw">INNER JOIN</span>
-    order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
+    order_lines ol <span class="kw">ON</span> o.id = ol.order_id
 <span class="kw">INNER JOIN</span>
-    products p <span class="kw">ON</span> oi.product_id = p.product_id
+    products p <span class="kw">ON</span> ol.product_id = p.id
 <span class="kw">WHERE</span>
-    o.order_date >= '2025-01-01'; -- Example filter</code></pre>
+    o.order_date >= '2024-01-01'; -- Example filter</code></pre>
                 </div>
             </section>
             <section>
@@ -463,9 +463,9 @@
                     multiple tables or the same table to itself (self-join).</p>
                 <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
                     <pre><code class="language-sql">-- Using aliases 'o' for orders and 'c' for customers
-<span class="kw">SELECT</span> o.order_id, c.customer_name
+<span class="kw">SELECT</span> o.id, c.name
 <span class="kw">FROM</span> orders AS o
-<span class="kw">INNER JOIN</span> customers AS c <span class="kw">ON</span> o.customer_id = c.customer_id;</code></pre>
+<span class="kw">INNER JOIN</span> customers AS c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
                 </div>
                 <ul>
                     <li>The <code>AS</code> keyword is optional for table aliases in most SQL dialects (including
