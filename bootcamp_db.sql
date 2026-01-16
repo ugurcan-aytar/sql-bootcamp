@@ -2855,6 +2855,45 @@ CREATE INDEX idx_account_move_state ON account_move(state);
 CREATE INDEX idx_account_move_type ON account_move(move_type);
 
 -- ============================================================================
+-- PART 23: SALES DATA (For GROUPING SETS, ROLLUP, CUBE Examples)
+-- ============================================================================
+-- This table is used for advanced grouping examples in Day 1
+
+DROP TABLE IF EXISTS sales_data CASCADE;
+
+CREATE TABLE sales_data (
+    id SERIAL PRIMARY KEY,
+    product TEXT,
+    region TEXT,
+    year INT,
+    quarter INT,
+    month INT,
+    sales NUMERIC(10,2)
+);
+
+INSERT INTO sales_data (product, region, year, quarter, month, sales) VALUES
+    ('Smartphone', 'North', 2024, 1, 1, 15000.00),
+    ('Smartphone', 'South', 2024, 1, 2, 12000.00),
+    ('Smartphone', 'East', 2024, 1, 3, 13500.00),
+    ('Smartphone', 'West', 2024, 2, 4, 14000.00),
+    ('Laptop', 'North', 2024, 1, 1, 18000.00),
+    ('Laptop', 'East', 2024, 2, 4, 22000.00),
+    ('Laptop', 'South', 2024, 2, 5, 19500.00),
+    ('Laptop', 'West', 2024, 3, 7, 21000.00),
+    ('Tablet', 'North', 2024, 1, 2, 8500.00),
+    ('Tablet', 'South', 2024, 2, 6, 9000.00),
+    ('Tablet', 'East', 2024, 3, 8, 7500.00),
+    ('Tablet', 'West', 2024, 4, 11, 8000.00),
+    ('Headphones', 'North', 2024, 3, 8, 7000.00),
+    ('Headphones', 'South', 2024, 3, 9, 6500.00),
+    ('Headphones', 'East', 2024, 4, 10, 5500.00),
+    ('Headphones', 'West', 2024, 4, 12, 6000.00),
+    ('Smartphone', 'North', 2025, 1, 1, 16000.00),
+    ('Smartphone', 'South', 2025, 1, 2, 14500.00),
+    ('Laptop', 'North', 2025, 1, 1, 23000.00),
+    ('Laptop', 'East', 2025, 1, 3, 24500.00);
+
+-- ============================================================================
 -- END OF SQL BOOTCAMP DATABASE SETUP
 -- ============================================================================
 
