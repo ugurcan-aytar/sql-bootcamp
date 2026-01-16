@@ -457,10 +457,10 @@
         <p><strong>Examples</strong>:</p>
         <div class="sourceCode" id="cb9" onclick="CopyToClipboard('cb9')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Partners from the United States (assuming country_id 233 is US)</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Partners from the United States (assuming country_id 1 is US)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, city</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span>;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">1</span>;</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">-- Products with a list price greater than 100</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">SELECT</span> name, list_price</span>
@@ -481,15 +481,15 @@
         <p><strong>Examples</strong>:</p>
         <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 233, 20)</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 1, 2)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">20</span>;</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">1</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">2</span>;</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a></span>
-<span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 233, 20)</span></span>
+<span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 1, 2)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (233, 20);</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (1, 2);</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="co">-- Active products that are in stock</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="kw">SELECT</span> name, sq.quantity</span>
@@ -547,7 +547,7 @@
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">233</span>, <span class="dv">38</span>, <span class="dv">73</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
         </div>
         <p>This is often more readable than multiple <code>OR</code> conditions.</p>
       </section>
@@ -568,10 +568,10 @@
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">&#39;%.org&#39;</span>;</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="co">-- Product codes with &#39;X&#39; as the second character (e.g., &#39;AX123&#39;)</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="co">-- Product codes starting with &#39;ACC-&#39; (accessory products)</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a><span class="kw">SELECT</span> default_code</span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a><span class="kw">FROM</span> product_template</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">&#39;_-%&#39;</span>;</span></code></pre>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">&#39;ACC-%&#39;</span>;</span></code></pre>
         </div>
         <ul>
           <li><strong>Case Sensitivity</strong>: Standard SQL <code>LIKE</code> is case-sensitive. However, the default
@@ -594,8 +594,8 @@
           pattern matching using regular expressions, but the syntax varies significantly.</p>
         <div class="sourceCode" id="cb15" onclick="CopyToClipboard('cb15')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Names containing numbers</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email <span class="kw">FROM</span> res_partner <span class="kw">WHERE</span> email ~ <span class="st">&#39;[0-9]&#39;</span>;</span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Emails ending in .com</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email <span class="kw">FROM</span> res_partner <span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">&#39;%.com&#39;</span>;</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Case-insensitive regex for names starting with &#39;a&#39;</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="kw">SELECT</span> name <span class="kw">FROM</span> res_partner <span class="kw">WHERE</span> name ~<span class="op">*</span> <span class="st">&#39;^a&#39;</span>; </span>
@@ -730,62 +730,89 @@
         <h3 id="practical-examples-using-odoopostgresql-schema">Practical Examples (Using PostgreSQL Schema)</h3>
         <p>These examples use PostgreSQL syntax but illustrate common data retrieval tasks applicable to many business
           databases.</p>
-        <p><strong>Example 1: Find recent, high-value sales orders</strong></p>
+        <p><strong>Example 1: Find high-value confirmed sales orders</strong></p>
+        <div class="alert alert-secondary">
+          <p><strong>Scenario:</strong> The sales manager wants to review the top performing orders. They need a report showing orders that:</p>
+          <ul>
+            <li>Have been confirmed (state is 'sale') or completed (state is 'done')</li>
+            <li>Have a total amount greater than $1,000</li>
+            <li>Should be sorted by amount from highest to lowest</li>
+            <li>Limited to top 20 results</li>
+          </ul>
+          <p><strong>Table:</strong> <code>sale_order</code> — Contains columns: <code>name</code>, <code>date_order</code>, <code>amount_total</code>, <code>state</code></p>
+          <p><em>Think about which clauses you need: SELECT, FROM, WHERE, ORDER BY, LIMIT?</em></p>
+        </div>
+        <p><strong>Solution:</strong></p>
         <div class="sourceCode" id="cb22" onclick="CopyToClipboard('cb22')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    so.name <span class="kw">AS</span> order_ref,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    rp.name <span class="kw">AS</span> customer_name,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    so.date_order,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>    so.amount_total</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    name <span class="kw">AS</span> order_ref,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    date_order,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    amount_total,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>    state</span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    sale_order so</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>    res_partner rp <span class="kw">ON</span> so.partner_id <span class="op">=</span> rp.<span class="kw">id</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>) <span class="co">-- Consider only confirmed/done orders</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true"></a>    <span class="kw">AND</span> so.date_order <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;90 days&#39;</span> <span class="co">-- Orders in the last 90 days</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true"></a>    <span class="kw">AND</span> so.amount_total <span class="op">&gt;</span> <span class="dv">1000</span> <span class="co">-- Orders over $1000</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true"></a>    so.amount_total <span class="kw">DESC</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">20</span>;</span></code></pre>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    sale_order</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>    state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>) <span class="co">-- Only confirmed/done orders</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a>    <span class="kw">AND</span> amount_total <span class="op">&gt;</span> <span class="dv">1000</span> <span class="co">-- Orders over $1000</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true"></a>    amount_total <span class="kw">DESC</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">20</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Note</strong>: <code>CURRENT_DATE</code> and <code>INTERVAL</code> syntax might differ slightly in
-            other databases.</li>
+          <li><strong>Note</strong>: This query demonstrates <code>IN</code>, comparison operators, <code>ORDER BY</code>, and <code>LIMIT</code> on a single table.</li>
         </ul>
       </section>
       <section>
-        <p><strong>Example 2: Find products low on stock</strong></p>
+        <p><strong>Example 2: Find active products with specific criteria</strong></p>
+        <div class="alert alert-secondary">
+          <p><strong>Scenario:</strong> The inventory team needs to create a catalog of premium products. They want to find products that:</p>
+          <ul>
+            <li>Are currently active in the system (active = true)</li>
+            <li>Have a list price greater than $50</li>
+            <li>Have an internal reference code assigned (default_code is not empty)</li>
+            <li>Should be sorted by price from highest to lowest</li>
+            <li>Limited to top 10 results</li>
+          </ul>
+          <p><strong>Table:</strong> <code>product_template</code> — Contains columns: <code>name</code>, <code>default_code</code>, <code>list_price</code>, <code>type</code>, <code>active</code></p>
+          <p><em>Which operators will you use to check for non-empty values and boolean conditions?</em></p>
+        </div>
+        <p><strong>Solution:</strong></p>
         <div class="sourceCode" id="cb23" onclick="CopyToClipboard('cb23')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product_name,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    pt.default_code <span class="kw">AS</span> internal_reference,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity) <span class="kw">AS</span> quantity_on_hand <span class="co">-- Assumes stock.quant stores current levels</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>    product_template pt</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a>    product_product pp <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="co">-- Use LEFT JOIN in case a product has no stock record yet</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>    stock_quant sq <span class="kw">ON</span> sq.product_id <span class="op">=</span> pp.<span class="kw">id</span> <span class="co">-- Need to consider location too in real scenario</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a>    pt.active <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>    <span class="kw">AND</span> pt.<span class="kw">type</span> <span class="op">=</span> <span class="st">&#39;consu&#39;</span> <span class="co">-- Filter for storable products</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="co">-- Need GROUP BY when using SUM()</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true"></a>    pt.<span class="kw">id</span>, pt.name, pt.default_code</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true"></a><span class="kw">HAVING</span> <span class="co">-- Filter *after* aggregation</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity) <span class="op">&lt;</span> <span class="dv">10</span> <span class="co">-- Assuming reorder point is 10</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>    quantity_on_hand <span class="kw">ASC</span>;</span></code></pre>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>    name <span class="kw">AS</span> product_name,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    default_code <span class="kw">AS</span> internal_reference,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    list_price,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>    type</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>    product_template</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a>    active <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>    <span class="kw">AND</span> list_price <span class="op">&gt;</span> <span class="dv">50</span> <span class="co">-- Products priced above $50</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a>    <span class="kw">AND</span> default_code <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="co">-- Only products with internal reference</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>    list_price <span class="kw">DESC</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Note</strong>: <code>GROUP BY</code> and <code>HAVING</code> will be covered in more detail later.
-            The concept of querying inventory levels is common across systems.</li>
+          <li><strong>Note</strong>: This query uses <code>IS NOT NULL</code>, boolean comparison, and numeric filtering on a single table.</li>
         </ul>
       </section>
       <section>
         <p><strong>Example 3: Find customers with specific email domains</strong></p>
+        <div class="alert alert-secondary">
+          <p><strong>Scenario:</strong> The marketing team is preparing a targeted email campaign for partners from specific organizations. They need to find contacts that:</p>
+          <ul>
+            <li>Have an email address (email is not empty)</li>
+            <li>Their email ends with '@example.com' OR '@sample.org'</li>
+            <li>Results should be sorted alphabetically by name</li>
+            <li>Limited to first 50 results</li>
+          </ul>
+          <p><strong>Table:</strong> <code>res_partner</code> — Contains columns: <code>name</code>, <code>email</code></p>
+          <p><em>How can you use LIKE with wildcards to match email domains? How do you combine multiple conditions with OR?</em></p>
+        </div>
+        <p><strong>Solution:</strong></p>
         <div class="sourceCode" id="cb24" onclick="CopyToClipboard('cb24')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>

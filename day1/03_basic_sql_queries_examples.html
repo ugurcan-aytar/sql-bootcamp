@@ -488,14 +488,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>1</td><td>George Miller</td><td>george@example.com</td><td>+1-555-0101</td><td>New York</td><td>233</td><td>2023-01-15</td></tr>
-              <tr><td>2</td><td>Anna Schmidt</td><td>anna@sample.org</td><td>+49-555-0102</td><td>Berlin</td><td>73</td><td>2023-02-20</td></tr>
-              <tr><td>3</td><td>John Smith</td><td>NULL</td><td>+1-555-0103</td><td>Los Angeles</td><td>233</td><td>2023-03-10</td></tr>
-              <tr><td>4</td><td>Maria Garcia</td><td>maria@company.es</td><td>NULL</td><td>Madrid</td><td>195</td><td>2023-04-05</td></tr>
-              <tr><td>5</td><td>Gerard Dupont</td><td>gerard@example.com</td><td>+33-555-0105</td><td>Paris</td><td>68</td><td>2023-05-18</td></tr>
-              <tr><td>6</td><td>Sarah Johnson</td><td>sarah@sample.org</td><td>+1-555-0106</td><td>Toronto</td><td>20</td><td>2023-06-22</td></tr>
-              <tr><td>7</td><td>Kenji Tanaka</td><td>kenji123@tech.jp</td><td>+81-555-0107</td><td>Tokyo</td><td>107</td><td>2023-07-30</td></tr>
-              <tr><td>8</td><td>Emma Wilson</td><td>emma@example.com</td><td>+44-555-0108</td><td>London</td><td>229</td><td>2023-08-14</td></tr>
+              <tr><td>1</td><td>George Miller</td><td>george@example.com</td><td>+1-555-0101</td><td>New York</td><td>1</td><td>2023-01-15</td></tr>
+              <tr><td>2</td><td>Anna Schmidt</td><td>anna@sample.org</td><td>+49-555-0102</td><td>Berlin</td><td>4</td><td>2023-02-20</td></tr>
+              <tr><td>3</td><td>John Smith</td><td>NULL</td><td>+1-555-0103</td><td>Los Angeles</td><td>1</td><td>2023-03-10</td></tr>
+              <tr><td>4</td><td>Maria Garcia</td><td>maria@company.es</td><td>NULL</td><td>Madrid</td><td>5</td><td>2023-04-05</td></tr>
+              <tr><td>5</td><td>Gerard Dupont</td><td>gerard@example.com</td><td>+33-555-0105</td><td>Paris</td><td>6</td><td>2023-05-18</td></tr>
+              <tr><td>6</td><td>Sarah Johnson</td><td>sarah@sample.org</td><td>+1-555-0106</td><td>Toronto</td><td>2</td><td>2023-06-22</td></tr>
+              <tr><td>7</td><td>Kenji Tanaka</td><td>kenji123@tech.jp</td><td>+81-555-0107</td><td>Tokyo</td><td>10</td><td>2023-07-30</td></tr>
+              <tr><td>8</td><td>Emma Wilson</td><td>emma@example.com</td><td>+44-555-0108</td><td>London</td><td>3</td><td>2023-08-14</td></tr>
             </tbody>
           </table>
         </div>
@@ -616,7 +616,7 @@
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country_id
 <span class="kw">FROM</span> res_partner;</span></code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 7 unique country IDs (233, 73, 195, 68, 20, 107, 229).</p>
+            <p><strong>Expected Result:</strong> 8 unique country IDs (1, 2, 3, 4, 5, 6, 10).</p>
           </div>
         </div>
       </section>
@@ -662,19 +662,19 @@
 
         <div class="exercise-box">
           <h4>Exercise 2.3: Using OR Operator</h4>
-          <p>Find partners from the United States (country_id = 233) OR Canada (country_id = 20).</p>
+          <p>Find partners from the United States (country_id = 1) OR Canada (country_id = 2).</p>
           <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Show Solution</button>
           <div id="sol2-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-code')">
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city, country_id
 <span class="kw">FROM</span> res_partner
-<span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">20</span>;</span></code></pre>
+<span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">1</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">2</span>;</span></code></pre>
             </div>
             <p><strong>Alternative using IN:</strong></p>
             <div class="sourceCode" onclick="CopyToClipboard('sol2-3-alt')">
               <pre class="sourceCode sql" id="sol2-3-alt"><code class="sourceCode sql"><span class="kw">SELECT</span> name, city, country_id
 <span class="kw">FROM</span> res_partner
-<span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">233</span>, <span class="dv">20</span>);</span></code></pre>
+<span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>);</span></code></pre>
             </div>
             <p><strong>Expected Result:</strong> George Miller, John Smith, Sarah Johnson.</p>
           </div>

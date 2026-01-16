@@ -444,10 +444,10 @@
         <p><strong>Ornekler</strong>:</p>
         <div class="sourceCode" id="cb9" onclick="CopyToClipboard('cb9')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Partners from the United States (assuming country_id 233 is US)</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Partners from the United States (assuming country_id 1 is US)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, city</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span>;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">1</span>;</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="co">-- Products with a list price greater than 100</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">SELECT</span> name, list_price</span>
@@ -467,15 +467,15 @@
         <p><strong>Ornekler</strong>:</p>
         <div class="sourceCode" id="cb10" onclick="CopyToClipboard('cb10')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 233, 20)</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 1, 2)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">233</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">20</span>;</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="op">=</span> <span class="dv">1</span> <span class="kw">OR</span> country_id <span class="op">=</span> <span class="dv">2</span>;</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a></span>
-<span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 233, 20)</span></span>
+<span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Partners from the US OR Canada (IDs 1, 2)</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (233, 20);</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (1, 2);</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="co">-- Active products that are in stock</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="kw">SELECT</span> name, sq.quantity</span>
@@ -528,7 +528,7 @@
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">233</span>, <span class="dv">38</span>, <span class="dv">73</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
         </div>
         <p>Bu, genellikle birden fazla <code>OR</code> kosulundan daha okunabilirdir.</p>
       </section>
@@ -548,10 +548,10 @@
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">&#39;%.org&#39;</span>;</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="co">-- Product codes with &#39;X&#39; as the second character (e.g., &#39;AX123&#39;)</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="co">-- Product codes starting with &#39;ACC-&#39; (accessory products)</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a><span class="kw">SELECT</span> default_code</span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a><span class="kw">FROM</span> product_template</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">&#39;_-%&#39;</span>;</span></code></pre>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a><span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">&#39;ACC-%&#39;</span>;</span></code></pre>
         </div>
         <ul>
           <li><strong>Buyuk/Kucuk Harf Duyarliligi</strong>: Standart SQL <code>LIKE</code> buyuk/kucuk harf duyarlidir. Ancak, varsayilan davranis veritabanlari arasinda degisir ve harmanlama ayarlarina baglidir (ornegin, SQL Server ve MySQL'de genellikle varsayilan olarak buyuk/kucuk harf duyarsiz, PostgreSQL ve Oracle'da buyuk/kucuk harf duyarli).</li>
@@ -569,8 +569,8 @@
         <p><strong>Duzensiz Ifadeler (Standart SQL Degil, Soz Dizimi Degisir)</strong>: Cogu veritabani duzensiz ifadeler kullanarak daha guclu desen eslestirmeyi destekler, ancak soz dizimi onemli olcude degisir.</p>
         <div class="sourceCode" id="cb15" onclick="CopyToClipboard('cb15')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Names containing numbers</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email <span class="kw">FROM</span> res_partner <span class="kw">WHERE</span> email ~ <span class="st">&#39;[0-9]&#39;</span>;</span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Emails ending in .com</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email <span class="kw">FROM</span> res_partner <span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">&#39;%.com&#39;</span>;</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Case-insensitive regex for names starting with &#39;a&#39;</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="kw">SELECT</span> name <span class="kw">FROM</span> res_partner <span class="kw">WHERE</span> name ~<span class="op">*</span> <span class="st">&#39;^a&#39;</span>; </span>
@@ -696,61 +696,89 @@
       <section>
         <h3 id="practical-examples-using-odoopostgresql-schema">Pratik Ornekler (PostgreSQL Semasini Kullanarak)</h3>
         <p>Bu ornekler PostgreSQL soz dizimini kullanir ancak birçok is veritabanina uygulanabilir yaygin veri alma gorevlerini gosterir.</p>
-        <p><strong>Ornek 1: Son, yuksek degerli satis siparislerini bulma</strong></p>
+        <p><strong>Ornek 1: Yuksek degerli onaylanmis satis siparislerini bulma</strong></p>
+        <div class="alert alert-secondary">
+          <p><strong>Senaryo:</strong> Satis muduru en iyi performans gosteren siparisleri incelemek istiyor. Asagidaki kriterlere uyan siparisleri gosteren bir rapora ihtiyaclari var:</p>
+          <ul>
+            <li>Onaylanmis (state 'sale') veya tamamlanmis (state 'done') olmali</li>
+            <li>Toplam tutari 1.000$'dan fazla olmali</li>
+            <li>Tutara gore buyukten kucuge siralanmali</li>
+            <li>Ilk 20 sonucla sinirli olmali</li>
+          </ul>
+          <p><strong>Tablo:</strong> <code>sale_order</code> — Sutunlar: <code>name</code>, <code>date_order</code>, <code>amount_total</code>, <code>state</code></p>
+          <p><em>Hangi ifadelere ihtiyaciniz var: SELECT, FROM, WHERE, ORDER BY, LIMIT?</em></p>
+        </div>
+        <p><strong>Cozum:</strong></p>
         <div class="sourceCode" id="cb22" onclick="CopyToClipboard('cb22')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    so.name <span class="kw">AS</span> order_ref,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    rp.name <span class="kw">AS</span> customer_name,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    so.date_order,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>    so.amount_total</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    name <span class="kw">AS</span> order_ref,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    date_order,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    amount_total,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>    state</span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    sale_order so</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>    res_partner rp <span class="kw">ON</span> so.partner_id <span class="op">=</span> rp.<span class="kw">id</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a>    so.state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>) <span class="co">-- Consider only confirmed/done orders</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true"></a>    <span class="kw">AND</span> so.date_order <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;90 days&#39;</span> <span class="co">-- Orders in the last 90 days</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true"></a>    <span class="kw">AND</span> so.amount_total <span class="op">&gt;</span> <span class="dv">1000</span> <span class="co">-- Orders over $1000</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true"></a>    so.amount_total <span class="kw">DESC</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">20</span>;</span></code></pre>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    sale_order</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>    state <span class="kw">IN</span> (<span class="st">&#39;sale&#39;</span>, <span class="st">&#39;done&#39;</span>) <span class="co">-- Sadece onaylanmis/tamamlanmis siparisler</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a>    <span class="kw">AND</span> amount_total <span class="op">&gt;</span> <span class="dv">1000</span> <span class="co">-- 1000$&#39;in uzerindeki siparisler</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true"></a>    amount_total <span class="kw">DESC</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">20</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Not</strong>: <code>CURRENT_DATE</code> ve <code>INTERVAL</code> soz dizimi diger veritabanlarinda biraz farkli olabilir.</li>
+          <li><strong>Not</strong>: Bu sorgu tek bir tabloda <code>IN</code>, karsilastirma operatorleri, <code>ORDER BY</code> ve <code>LIMIT</code> kullanimini gostermektedir.</li>
         </ul>
       </section>
       <section>
-        <p><strong>Ornek 2: Stoku dusuk urunleri bulma</strong></p>
+        <p><strong>Ornek 2: Belirli kriterlere sahip aktif urunleri bulma</strong></p>
+        <div class="alert alert-secondary">
+          <p><strong>Senaryo:</strong> Envanter ekibi premium urunlerin bir katalogunu olusturmak istiyor. Asagidaki kriterlere uyan urunleri bulmak istiyorlar:</p>
+          <ul>
+            <li>Sistemde aktif olmali (active = true)</li>
+            <li>Liste fiyati 50$'dan yuksek olmali</li>
+            <li>Dahili referans kodu atanmis olmali (default_code bos olmamali)</li>
+            <li>Fiyata gore buyukten kucuge siralanmali</li>
+            <li>Ilk 10 sonucla sinirli olmali</li>
+          </ul>
+          <p><strong>Tablo:</strong> <code>product_template</code> — Sutunlar: <code>name</code>, <code>default_code</code>, <code>list_price</code>, <code>type</code>, <code>active</code></p>
+          <p><em>Bos olmayan degerleri ve boolean kosullari kontrol etmek icin hangi operatorleri kullanacaksiniz?</em></p>
+        </div>
+        <p><strong>Cozum:</strong></p>
         <div class="sourceCode" id="cb23" onclick="CopyToClipboard('cb23')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>    pt.name <span class="kw">AS</span> product_name,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    pt.default_code <span class="kw">AS</span> internal_reference,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity) <span class="kw">AS</span> quantity_on_hand <span class="co">-- Assumes stock.quant stores current levels</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a><span class="kw">FROM</span> </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>    product_template pt</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a>    product_product pp <span class="kw">ON</span> pp.product_tmpl_id <span class="op">=</span> pt.<span class="kw">id</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="co">-- Use LEFT JOIN in case a product has no stock record yet</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>    stock_quant sq <span class="kw">ON</span> sq.product_id <span class="op">=</span> pp.<span class="kw">id</span> <span class="co">-- Need to consider location too in real scenario</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a>    pt.active <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>    <span class="kw">AND</span> pt.<span class="kw">type</span> <span class="op">=</span> <span class="st">&#39;consu&#39;</span> <span class="co">-- Filter for storable products</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="co">-- Need GROUP BY when using SUM()</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true"></a>    pt.<span class="kw">id</span>, pt.name, pt.default_code</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true"></a><span class="kw">HAVING</span> <span class="co">-- Filter *after* aggregation</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true"></a>    <span class="fu">SUM</span>(sq.quantity) <span class="op">&lt;</span> <span class="dv">10</span> <span class="co">-- Assuming reorder point is 10</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>    quantity_on_hand <span class="kw">ASC</span>;</span></code></pre>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>    name <span class="kw">AS</span> product_name,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    default_code <span class="kw">AS</span> internal_reference,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    list_price,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>    type</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a><span class="kw">FROM</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>    product_template</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a>    active <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>    <span class="kw">AND</span> list_price <span class="op">&gt;</span> <span class="dv">50</span> <span class="co">-- 50$&#39;in uzerinde fiyatli urunler</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a>    <span class="kw">AND</span> default_code <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="co">-- Sadece dahili referansi olan urunler</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>    list_price <span class="kw">DESC</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Not</strong>: <code>GROUP BY</code> ve <code>HAVING</code> daha sonra daha ayrintili olarak ele alinacaktir.
-            Envanter seviyelerini sorgulama kavrami sistemler arasinda yaygindir.</li>
+          <li><strong>Not</strong>: Bu sorgu tek bir tabloda <code>IS NOT NULL</code>, boolean karsilastirma ve sayisal filtreleme kullanimini gostermektedir.</li>
         </ul>
       </section>
       <section>
         <p><strong>Ornek 3: Belirli e-posta alanli musterileri bulma</strong></p>
+        <div class="alert alert-secondary">
+          <p><strong>Senaryo:</strong> Pazarlama ekibi belirli kuruluslardan ortaklar icin hedefli bir e-posta kampanyasi hazirlıyor. Asagidaki kriterlere uyan kisileri bulmak istiyorlar:</p>
+          <ul>
+            <li>E-posta adresi olmali (email bos olmamali)</li>
+            <li>E-posta '@example.com' VEYA '@sample.org' ile bitmeli</li>
+            <li>Sonuclar isme gore alfabetik siralanmali</li>
+            <li>Ilk 50 sonucla sinirli olmali</li>
+          </ul>
+          <p><strong>Tablo:</strong> <code>res_partner</code> — Sutunlar: <code>name</code>, <code>email</code></p>
+          <p><em>E-posta alanlarini eslemek icin LIKE ile joker karakterleri nasil kullanabilirsiniz? Birden fazla kosulu OR ile nasil birlestirebilirsiniz?</em></p>
+        </div>
+        <p><strong>Cozum:</strong></p>
         <div class="sourceCode" id="cb24" onclick="CopyToClipboard('cb24')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
