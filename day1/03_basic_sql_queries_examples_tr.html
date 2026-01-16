@@ -568,7 +568,6 @@
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> name, email
 <span class="kw">FROM</span> res_partner;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Ortak adlarini ve e-posta adreslerini (NULL degerler dahil) gosteren 8 satir.</p>
           </div>
         </div>
 
@@ -616,7 +615,6 @@
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> country_id
 <span class="kw">FROM</span> res_partner;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> 8 benzersiz ulke kimigi (1, 2, 3, 4, 5, 6, 10).</p>
           </div>
         </div>
       </section>
@@ -634,7 +632,6 @@
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span> list_price <span class="op">></span> <span class="dv">100</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Laptop Pro 15, Monitor 27 inch, Keyboard Mechanical, Headphones Wireless.</p>
           </div>
         </div>
 
@@ -676,7 +673,6 @@
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>);</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> George Miller, John Smith, Sarah Johnson.</p>
           </div>
         </div>
 
@@ -693,7 +689,6 @@
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> email <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> John Smith.</p>
           </div>
         </div>
 
@@ -730,7 +725,6 @@
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">'G%'</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> George Miller, Gerard Dupont.</p>
           </div>
         </div>
 
@@ -744,7 +738,6 @@
 <span class="kw">FROM</span> res_partner
 <span class="kw">WHERE</span> email <span class="kw">LIKE</span> <span class="st">'%.org'</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Anna Schmidt, Sarah Johnson.</p>
           </div>
         </div>
 
@@ -758,7 +751,6 @@
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span> name <span class="kw">LIKE</span> <span class="st">'%Wireless%'</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Wireless Mouse, Headphones Wireless.</p>
           </div>
         </div>
 
@@ -775,7 +767,6 @@
 <span class="kw">FROM</span> product_template
 <span class="kw">WHERE</span> default_code <span class="kw">LIKE</span> <span class="st">'_M%'</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Wireless Mouse (WM-002), Keyboard Mechanical (KM-005).</p>
           </div>
         </div>
       </section>
@@ -846,7 +837,6 @@
 <span class="kw">ORDER BY</span> list_price <span class="kw">DESC</span>
 <span class="kw">FETCH FIRST</span> <span class="dv">3</span> <span class="kw">ROWS ONLY</span>;</span></code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Laptop Pro 15, Monitor 27 inch, Headphones Wireless.</p>
           </div>
         </div>
 
