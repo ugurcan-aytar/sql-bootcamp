@@ -522,7 +522,7 @@
                 <th>order_id</th>
                 <th>customer_id</th>
                 <th>order_date</th>
-                <th>order_total</th>
+                <th>total_amount</th>
                 <th>status</th>
                 <th>shipped_date</th>
               </tr>
@@ -624,10 +624,10 @@
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
               <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_revenue,
-    <span class="fu">AVG</span>(order_total) <span class="kw">AS</span> avg_order_value
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_revenue,
+    <span class="fu">AVG</span>(total_amount) <span class="kw">AS</span> avg_order_value
 <span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> status = <span class="st">'completed'</span>;</code></pre>
+<span class="kw">WHERE</span> status = <span class="st">'delivered'</span>;</code></pre>
             </div>
           </div>
         </div>
@@ -737,9 +737,9 @@
               <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     customer_id,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_orders,
-    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_spent
 <span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> status = <span class="st">'completed'</span>
+<span class="kw">WHERE</span> status = <span class="st">'delivered'</span>
 <span class="kw">GROUP BY</span> customer_id
 <span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;</code></pre>
             </div>
@@ -775,7 +775,7 @@
               <pre class="sourceCode sql" id="sol2-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">EXTRACT</span>(<span class="dt">MONTH</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> order_month,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_orders,
-    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> monthly_revenue
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> monthly_revenue
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) = <span class="dv">2024</span>
 <span class="kw">GROUP BY</span> <span class="fu">EXTRACT</span>(<span class="dt">MONTH</span> <span class="kw">FROM</span> order_date)
@@ -853,10 +853,10 @@
               <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     customer_id,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> num_orders,
-    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_spent
 <span class="kw">FROM</span> orders
 <span class="kw">GROUP BY</span> customer_id
-<span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">2</span> <span class="kw">AND</span> <span class="fu">SUM</span>(order_total) > <span class="dv">500</span>;</code></pre>
+<span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">2</span> <span class="kw">AND</span> <span class="fu">SUM</span>(total_amount) > <span class="dv">500</span>;</code></pre>
             </div>
           </div>
         </div>
@@ -898,7 +898,7 @@
           <div id="sol4-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
               <pre class="sourceCode sql" id="sol4-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    employee_name,
+    first_name || ' ' || last_name AS employee_name,
     department,
     salary,
     <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> salary_rank
@@ -918,7 +918,7 @@
             <div class="sourceCode" onclick="CopyToClipboard('sol4-2-code')">
               <pre class="sourceCode sql" id="sol4-2-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
     department,
-    employee_name,
+    first_name || ' ' || last_name AS employee_name,
     salary,
     <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
         <span class="kw">PARTITION BY</span> department
@@ -937,7 +937,7 @@
           <div id="sol4-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-3-code')">
               <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    employee_name,
+    first_name || ' ' || last_name AS employee_name,
     salary,
     <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> row_num,
     <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> rank_num,
@@ -962,10 +962,10 @@
           <div id="sol4-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-4-code')">
               <pre class="sourceCode sql" id="sol4-4-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    order_id,
+    id AS order_id,
     order_date,
-    order_total,
-    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> (
+    total_amount,
+    <span class="fu">SUM</span>(total_amount) <span class="kw">OVER</span> (
         <span class="kw">ORDER BY</span> order_date
         <span class="kw">ROWS UNBOUNDED PRECEDING</span>
     ) <span class="kw">AS</span> running_total
@@ -982,11 +982,11 @@
           <div id="sol4-5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-5-code')">
               <pre class="sourceCode sql" id="sol4-5-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    order_id,
+    id AS order_id,
     order_date,
-    order_total,
-    <span class="fu">LAG</span>(order_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date) <span class="kw">AS</span> prev_order_total,
-    order_total - <span class="fu">LAG</span>(order_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date) <span class="kw">AS</span> difference
+    total_amount,
+    <span class="fu">LAG</span>(total_amount, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date) <span class="kw">AS</span> prev_total_amount,
+    total_amount - <span class="fu">LAG</span>(total_amount, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date) <span class="kw">AS</span> difference
 <span class="kw">FROM</span> orders
 <span class="kw">ORDER BY</span> order_date;</code></pre>
             </div>
@@ -1001,11 +1001,11 @@
           <div id="sol4-6" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-6-code')">
               <pre class="sourceCode sql" id="sol4-6-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    order_id,
-    order_total,
-    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> () <span class="kw">AS</span> grand_total,
+    id AS order_id,
+    total_amount,
+    <span class="fu">SUM</span>(total_amount) <span class="kw">OVER</span> () <span class="kw">AS</span> grand_total,
     <span class="fu">ROUND</span>(
-        (order_total / <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> ()) * <span class="dv">100</span>,
+        (total_amount / <span class="fu">SUM</span>(total_amount) <span class="kw">OVER</span> ()) * <span class="dv">100</span>,
         <span class="dv">2</span>
     ) <span class="kw">AS</span> percentage_of_total
 <span class="kw">FROM</span> orders;</code></pre>
@@ -1039,65 +1039,6 @@
       </section>
 
       <section>
-        <h2 id="exercise-5">Alistirma 5: Ciktiyi Tahmin Edin</h2>
-
-        <div class="exercise-box">
-          <h4>Alistirma 5.1: Bu sorguda yanlis olan ne?</h4>
-          <div class="sourceCode">
-            <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    department,
-    employee_name,
-    <span class="fu">AVG</span>(salary)
-<span class="kw">FROM</span> employees
-<span class="kw">GROUP BY</span> department;</code></pre>
-          </div>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Cevabi Goster</button>
-          <div id="sol5-1" class="solution-content">
-            <p><strong>Hata:</strong> <code>employee_name</code> SELECT'te var ancak GROUP BY'da yok ve bir toplama fonksiyonu degil.
-            </p>
-            <p>GROUP BY kullanirken, SELECT'teki her sutun ya:</p>
-            <ul>
-              <li>GROUP BY'da listelenmeli, YA DA</li>
-              <li>Bir toplama fonksiyonu icinde kullanilmalidir</li>
-            </ul>
-            <p><strong>Dogru versiyon:</strong></p>
-            <div class="sourceCode">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    department,
-    <span class="fu">AVG</span>(salary) <span class="kw">AS</span> avg_salary
-<span class="kw">FROM</span> employees
-<span class="kw">GROUP BY</span> department;</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="exercise-box">
-          <h4>Alistirma 5.2: WHERE mi HAVING mi?</h4>
-          <p>Hangisini kullanmalisiniz:</p>
-          <ol>
-            <li>Analizinize sadece 2024'teki siparisleri dahil etmek icin?</li>
-            <li>Sadece toplam harcamasi 1000$'in uzerinde olan musterileri gostermek icin?</li>
-          </ol>
-          <button class="solution-toggle" onclick="toggleSolution('sol5-2')">Cevabi Goster</button>
-          <div id="sol5-2" class="solution-content">
-            <ol>
-              <li><strong>WHERE</strong> - gruplama oncesinde tek tek satirlari filtreleme</li>
-              <li><strong>HAVING</strong> - toplama (SUM) bazli gruplari filtreleme</li>
-            </ol>
-            <div class="sourceCode">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    customer_id,
-    <span class="fu">SUM</span>(order_total) <span class="kw">AS</span> total_spent
-<span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> order_date) = <span class="dv">2024</span>  <span class="co">-- Once satirlari filtrele</span>
-<span class="kw">GROUP BY</span> customer_id
-<span class="kw">HAVING</span> <span class="fu">SUM</span>(order_total) > <span class="dv">1000</span>;  <span class="co">-- Gruplari filtrele</span></code></pre>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
         <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
 
         <div class="challenge-box">
@@ -1108,7 +1049,7 @@
           <div id="chal1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal1-code')">
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">SELECT</span>
-    employee_name,
+    first_name || ' ' || last_name AS employee_name,
     department,
     salary,
     <span class="fu">ROUND</span>(<span class="fu">AVG</span>(salary) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> department), <span class="dv">2</span>) <span class="kw">AS</span> dept_avg_salary,
@@ -1132,7 +1073,7 @@
 <span class="kw">FROM</span> (
     <span class="kw">SELECT</span>
         department,
-        employee_name,
+        first_name || <span class="st">' '</span> || last_name <span class="kw">AS</span> employee_name,
         salary,
         <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
             <span class="kw">PARTITION BY</span> department
@@ -1196,8 +1137,8 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Meydan Okuma 5: Musteri Siparis Sikligi Analizi</h4>
-          <p>Musterileri siparis sayilarina gore kategorize edin: 'Sik' (3+ siparis), 'Duzenli' (2 siparis), 'Yeni' (1
+          <h4>Meydan Okuma 5: Musteri Siparis Sıklığı Analizi</h4>
+          <p>Musterileri siparis sayilarina gore kategorize edin: 'Sık' (3+ siparis), 'Duzenli' (2 siparis), 'Yeni' (1
             siparis). Her kategorideki musteri sayisini gosterin.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal5')">Cozumu Goster</button>
           <div id="chal5" class="solution-content">
@@ -1207,7 +1148,7 @@
         customer_id,
         <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
         <span class="kw">CASE</span>
-            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) >= <span class="dv">3</span> <span class="kw">THEN</span> <span class="st">'Sik'</span>
+            <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) >= <span class="dv">3</span> <span class="kw">THEN</span> <span class="st">'Sık'</span>
             <span class="kw">WHEN</span> <span class="fu">COUNT</span>(*) = <span class="dv">2</span> <span class="kw">THEN</span> <span class="st">'Duzenli'</span>
             <span class="kw">ELSE</span> <span class="st">'Yeni'</span>
         <span class="kw">END</span> <span class="kw">AS</span> customer_category

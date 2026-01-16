@@ -403,7 +403,7 @@
                 <div class="sourceCode" id="code2" onclick="CopyToClipboard('code1')">
                   <pre
                     class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Sum of completed orders</span></span></code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(<span class="op">total_amount</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = 'delivered'; <span class="co">-- Sum of delivered orders</span></span></code></pre>
                 </div>
               </li>
             </ol>
@@ -416,7 +416,7 @@
                 <div class="sourceCode" id="code3" onclick="CopyToClipboard('code3')">
                   <pre
                     class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Average order value</span></span></code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(<span class="op">total_amount</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = 'delivered'; <span class="co">-- Average order value</span></span></code></pre>
                 </div>
               </li>
               <li>
@@ -426,7 +426,7 @@
                 <div class="sourceCode" id="code4" onclick="CopyToClipboard('code4')">
                   <pre
                     class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = "completed"; <span class="co">-- Earliest order date</span></span></code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(<span class="op">total_amount</span>) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> status = 'delivered'; <span class="co">-- Minimum order total</span></span></code></pre>
                 </div>
               </li>
               <li>
@@ -435,7 +435,7 @@
                 <div class="sourceCode" id="code5" onclick="CopyToClipboard('code5')">
                   <pre
                     class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Standard SQL Examples</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="op">order_total</span>) <span class="kw">FROM</span> orders; <span class="co">-- Highest order total</span></span></code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="op">total_amount</span>) <span class="kw">FROM</span> orders; <span class="co">-- Highest order total</span></span></code></pre>
                 </div>
               </li>
             </ol>
@@ -462,9 +462,10 @@
             <div class="sourceCode" id="code6" onclick="CopyToClipboard('code6')">
               <pre
                 class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Comma-separated list of products in a category</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_name, STRING_AGG(product_name, <span class="ot">&quot;, &quot;</span> <span class="kw">ORDER</span> <span class="kw">BY</span> product_name)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">FROM</span> products</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> category_name;</span></code></pre>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">SELECT</span> c.name AS category_name, STRING_AGG(p.name, ', ' <span class="kw">ORDER</span> <span class="kw">BY</span> p.name)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">FROM</span> products p</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> c.name;</span></code></pre>
             </div>
           </li>
           <li><strong>Array Aggregation</strong>: Collects values into an array (less common, more specific to
@@ -476,7 +477,7 @@
             <div class="sourceCode" id="code7" onclick="CopyToClipboard('code7')">
               <pre
                 class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example: Array of product IDs per category</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_id, ARRAY_AGG(product_id <span class="kw">ORDER</span> <span class="kw">BY</span> product_id)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> category_id, ARRAY_AGG(id <span class="kw">ORDER</span> <span class="kw">BY</span> id)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> products</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> category_id;</span></code></pre>
             </div>
@@ -539,16 +540,16 @@
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">-- Standard SQL: Total sales amount per product category</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    p.category_id, </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    c.category_name, <span class="co">-- Include category_name in GROUP BY as it&#39;s in SELECT</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.unit_price) <span class="kw">AS</span> total_category_sales</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>    c.name AS category_name, <span class="co">-- Include category name in GROUP BY as it&#39;s in SELECT</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    <span class="fu">SUM</span>(ol.quantity <span class="op">*</span> ol.unit_price) <span class="kw">AS</span> total_category_sales</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="kw">FROM</span> </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>    order_items oi</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    products p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    p.category_id, c.category_name <span class="co">-- Group by both ID and name</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    p.category_id, c.name <span class="co">-- Group by both ID and name</span></span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    total_category_sales <span class="kw">DESC</span>;</span>
 </code></pre>
@@ -578,15 +579,14 @@
         <div class="row">
           <div class="col-md-6">
             <div class="sourceCode" id="cb332" onclick="CopyToClipboard('cb332')">
-              <pre><code class="language-sql">-- Standard SQL syntax for defining a foreign key
+              <pre><code class="language-sql">-- Create table for GROUPING SETS, ROLLUP, CUBE examples
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">CREATE TABLE</span> sales_data (</span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>product <span class="kw">TEXT,</span></span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>region <span class="kw">TEXT</span></span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>year <span class="kw">INT</span></span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>quarter <span class="kw">INT</span></span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>month <span class="kw">INT</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>region <span class="kw">TEXT,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>year <span class="kw">INT,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>quarter <span class="kw">INT,</span></span>
+    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>month <span class="kw">INT,</span></span>
     <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>sales <span class="kw">NUMERIC(10,2)</span></span>
-    <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>-- other columns...</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>);</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
 </code></pre>
@@ -684,7 +684,7 @@
       <section>
         <p><strong>Examples</strong>:</p>
         <div class="sourceCode" id="code13" onclick="CopyToClipboard('code13')">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Find customers with more than 5 orders</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Find customers with more than 2 orders</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    customer_id, </span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> number_of_orders</span>
@@ -693,7 +693,7 @@
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>    customer_id</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">5</span>; <span class="co">-- Filter groups based on the aggregate COUNT</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">2</span>; <span class="co">-- Filter groups based on the aggregate COUNT</span></span>
 </code></pre>
         </div>
       </section>
@@ -703,16 +703,16 @@
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a><span class="co">-- Standard SQL: Find product categories with average product price over $100</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    p.category_id, </span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>    c.category_name,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.list_price) <span class="kw">AS</span> average_price</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>    c.name AS category_name,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.price) <span class="kw">AS</span> average_price</span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="kw">FROM</span> </span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>    products p</span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>    p.category_id, c.category_name</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>    p.category_id, c.name</span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.list_price) <span class="op">&gt;</span> <span class="dv">100</span>;</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>    <span class="fu">AVG</span>(p.price) <span class="op">&gt;</span> <span class="dv">100</span>;</span>
 </code></pre>
         </div>
       </section>
@@ -721,22 +721,21 @@
         <div class="sourceCode" id="code15" onclick="CopyToClipboard('code15')">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a><span class="co">-- Standard SQL: Combining WHERE and HAVING</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a><span class="co">-- Find customers from 'USA' who placed more than 3 orders in 2023</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a><span class="co">-- Find customers who placed more than 1 order in 2024</span></span>
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a>    o.customer_id,</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a>    c.customer_name,</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> order_count_2023</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a>    c.name AS customer_name,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> order_count_2024</span>
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a><span class="kw">FROM</span> </span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true"></a>    orders o</span>
 <span id="cb7-34"><a href="#cb7-34" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a>    customers c <span class="kw">ON</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a>    customers c <span class="kw">ON</span> o.customer_id <span class="op">=</span> c.id</span>
 <span id="cb7-36"><a href="#cb7-36" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a>    c.country <span class="op">=</span> <span class="st">&#39;USA&#39;</span> </span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a>    <span class="kw">AND</span> <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> o.order_date) <span class="op">=</span> <span class="dv">2023</span> <span class="co">-- Filter rows first</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a>    o.customer_id, c.customer_name</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">3</span>; <span class="co">-- Filter groups after counting</span></span></code></pre>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a>    <span class="fu">EXTRACT</span>(<span class="dt">YEAR</span> <span class="kw">FROM</span> o.order_date) <span class="op">=</span> <span class="dv">2024</span> <span class="co">-- Filter rows first</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span> </span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a>    o.customer_id, c.name</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a><span class="kw">HAVING</span> </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">1</span>; <span class="co">-- Filter groups after counting</span></span></code></pre>
         </div>
       </section>
       <section>
@@ -786,10 +785,10 @@
             <div class="sourceCode" id="code17" onclick="CopyToClipboard('code17')">
               <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Rank employees by salary within each department</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    employee_name, </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    department_name, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    first_name || ' ' || last_name AS employee_name, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    department, </span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    salary,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> department_name <span class="kw">ORDER</span> <span class="kw">BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dept_salary_rank</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> department <span class="kw">ORDER</span> <span class="kw">BY</span> salary <span class="kw">DESC</span>) <span class="kw">AS</span> dept_salary_rank</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">FROM</span> employees;</span></code></pre>
             </div>
           </li>
@@ -813,10 +812,11 @@
               <pre
                 class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Calculate sales growth compared to the previous month</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    sales_month, </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    monthly_total,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="fu">LAG</span>(monthly_total, <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> sales_month) <span class="kw">AS</span> previous_month_total</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="kw">FROM</span> monthly_sales_summary;</span></code></pre>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    month, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    SUM(sales) AS monthly_total,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="fu">LAG</span>(SUM(sales), <span class="dv">1</span>, <span class="dv">0</span>) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> month) <span class="kw">AS</span> previous_month_total</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="kw">FROM</span> sales_data</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a><span class="kw">GROUP BY</span> month;</span></code></pre>
             </div>
           </li>
         </ol>
@@ -834,16 +834,16 @@
               <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">-- Standard SQL: Calculate running total of sales over time</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    order_date, </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    order_total,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> order_date <span class="kw">ROWS</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span>) <span class="kw">AS</span> running_total_sales</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    total_amount,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(total_amount) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> order_date <span class="kw">ROWS</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span>) <span class="kw">AS</span> running_total_sales</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="co">-- Standard SQL: Calculate each order's percentage of the total sales</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    order_id, </span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>    order_total,</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>    <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> () <span class="kw">AS</span> grand_total_sales, <span class="co">-- Window is entire result set</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    (order_total <span class="op">/</span> <span class="fu">SUM</span>(order_total) <span class="kw">OVER</span> ()) <span class="op">*</span> <span class="dv">100</span> <span class="kw">AS</span> percentage_of_total</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    id, </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>    total_amount,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>    <span class="fu">SUM</span>(total_amount) <span class="kw">OVER</span> () <span class="kw">AS</span> grand_total_sales, <span class="co">-- Window is entire result set</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    (total_amount <span class="op">/</span> <span class="fu">SUM</span>(total_amount) <span class="kw">OVER</span> ()) <span class="op">*</span> <span class="dv">100</span> <span class="kw">AS</span> percentage_of_total</span>
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span></code></pre>
             </div>
           </li>
@@ -859,12 +859,12 @@
           current row's <code>ORDER BY</code> value (more complex).</p>
         <div class="sourceCode" id="code20" onclick="CopyToClipboard('code20')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">-- Standard SQL: 3-day moving average of sales</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">-- Standard SQL: 3-order moving average of sales</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    sales_date,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    daily_total,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="fu">AVG</span>(daily_total) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> sales_date <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="dv">2</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span>) <span class="kw">AS</span> moving_avg_3day</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="kw">FROM</span> daily_sales;</span></code></pre>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    order_date,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    total_amount,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>    <span class="fu">AVG</span>(total_amount) <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> order_date <span class="kw">ROWS</span> <span class="kw">BETWEEN</span> <span class="dv">2</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">CURRENT</span> <span class="kw">ROW</span>) <span class="kw">AS</span> moving_avg_3orders</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="kw">FROM</span> orders;</span></code></pre>
         </div>
         <p><strong>Practical Applications</strong>: Window functions are extremely powerful for: - Calculating running
           totals, moving averages. - Ranking results within groups (Top-N queries). - Comparing rows with preceding or
