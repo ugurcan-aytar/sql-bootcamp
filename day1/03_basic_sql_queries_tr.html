@@ -375,7 +375,7 @@
         <p><strong>Belirli Sutunlari Secme</strong>: Her zaman ihtiyaciniz olan belirli sutunlari listelemeyi tercih edin:</p>
 
         <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using PostgreSQL schema</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
@@ -395,11 +395,11 @@
         <p><strong>SELECT'te Ifadeler (Standart SQL)</strong>: <code>SELECT</code> listesinde dogrudan sutunlar uzerinde hesaplamalar yapabilir veya fonksiyonlar kullanabilirsiniz.</p>
         <div class="sourceCode" id="cb5" onclick="CopyToClipboard('cb5')">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- Example using PostgreSQL schema</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    product_id,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    price_unit,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    product_uom_qty, <span class="co">-- Odoo often uses product_uom_qty for quantity</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    product_uom_qty, <span class="co">-- product_uom_qty for quantity</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>    price_unit <span class="op">*</span> product_uom_qty <span class="kw">AS</span> line_total</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="kw">FROM</span> sale_order_line;</span></code></pre>
         </div>
@@ -528,7 +528,7 @@
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">SELECT</span> name, country_id</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">FROM</span> res_partner</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">235</span>, <span class="dv">38</span>, <span class="dv">73</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">WHERE</span> country_id <span class="kw">IN</span> (<span class="dv">233</span>, <span class="dv">38</span>, <span class="dv">73</span>); <span class="co">-- US, Canada, Germany</span></span></code></pre>
         </div>
         <p>Bu, genellikle birden fazla <code>OR</code> kosulundan daha okunabilirdir.</p>
       </section>
@@ -694,7 +694,7 @@
         </p>
       </section>
       <section>
-        <h3 id="practical-examples-using-odoopostgresql-schema">Pratik Ornekler (Odoo/PostgreSQL Semasini Kullanarak)</h3>
+        <h3 id="practical-examples-using-odoopostgresql-schema">Pratik Ornekler (PostgreSQL Semasini Kullanarak)</h3>
         <p>Bu ornekler PostgreSQL soz dizimini kullanir ancak birçok is veritabanina uygulanabilir yaygin veri alma gorevlerini gosterir.</p>
         <p><strong>Ornek 1: Son, yuksek degerli satis siparislerini bulma</strong></p>
         <div class="sourceCode" id="cb22" onclick="CopyToClipboard('cb22')">
