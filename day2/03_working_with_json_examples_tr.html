@@ -715,21 +715,6 @@ FROM users;
 SELECT username, JSON_VALUE(data, '$.age') AS age
 FROM users
 WHERE CAST(JSON_VALUE(data, '$.age') AS INT) > 30;</code></pre>
-                        <p><strong>Sorgu 3 icin Beklenen Sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>username</th>
-                                <th>age</th>
-                            </tr>
-                            <tr>
-                                <td>john_doe</td>
-                                <td>32</td>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>45</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
 
@@ -1259,37 +1244,6 @@ SELECT
     tag.value AS tag
 FROM users
 CROSS APPLY OPENJSON(data, '$.tags') AS tag;</code></pre>
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>username</th>
-                                <th>tag</th>
-                            </tr>
-                            <tr>
-                                <td>john_doe</td>
-                                <td>admin</td>
-                            </tr>
-                            <tr>
-                                <td>john_doe</td>
-                                <td>developer</td>
-                            </tr>
-                            <tr>
-                                <td>jane_smith</td>
-                                <td>editor</td>
-                            </tr>
-                            <tr>
-                                <td>jane_smith</td>
-                                <td>reviewer</td>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>admin</td>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>manager</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
 
@@ -1341,37 +1295,6 @@ SELECT
     CAST(JSON_VALUE(item.value, '$.qty') AS INT) AS quantity
 FROM orders o
 CROSS APPLY OPENJSON(o.order_data, '$.items') AS item;</code></pre>
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>order_id</th>
-                                <th>item_name</th>
-                                <th>price</th>
-                                <th>quantity</th>
-                                <th>line_total</th>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Laptop Pro</td>
-                                <td>1299.99</td>
-                                <td>1</td>
-                                <td>1299.99</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Wireless Mouse</td>
-                                <td>49.99</td>
-                                <td>2</td>
-                                <td>99.98</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Monitor 4K</td>
-                                <td>599.00</td>
-                                <td>1</td>
-                                <td>599.00</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
 
@@ -1417,49 +1340,6 @@ SELECT
     pref.[value] AS preference_value
 FROM users
 CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
-                        <p><strong>Beklenen Sonuc (PostgreSQL):</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>username</th>
-                                <th>preference_name</th>
-                                <th>preference_value</th>
-                            </tr>
-                            <tr>
-                                <td>john_doe</td>
-                                <td>theme</td>
-                                <td>"dark"</td>
-                            </tr>
-                            <tr>
-                                <td>john_doe</td>
-                                <td>notifications</td>
-                                <td>true</td>
-                            </tr>
-                            <tr>
-                                <td>jane_smith</td>
-                                <td>theme</td>
-                                <td>"light"</td>
-                            </tr>
-                            <tr>
-                                <td>jane_smith</td>
-                                <td>notifications</td>
-                                <td>false</td>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>theme</td>
-                                <td>"dark"</td>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>notifications</td>
-                                <td>true</td>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>language</td>
-                                <td>"tr"</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
             </section>
@@ -1765,36 +1645,6 @@ SELECT
     oi.subtotal + (o.order_data->'shipping'->>'cost')::DECIMAL AS grand_total
 FROM orders o
 JOIN order_items oi ON o.id = oi.id;</code></pre>
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>order_id</th>
-                                <th>status</th>
-                                <th>item_count</th>
-                                <th>subtotal</th>
-                                <th>shipping_method</th>
-                                <th>shipping_cost</th>
-                                <th>grand_total</th>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>completed</td>
-                                <td>2</td>
-                                <td>1399.97</td>
-                                <td>express</td>
-                                <td>25.00</td>
-                                <td>1424.97</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>pending</td>
-                                <td>1</td>
-                                <td>599.00</td>
-                                <td>standard</td>
-                                <td>10.00</td>
-                                <td>609.00</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
 

@@ -510,13 +510,6 @@ $$ LANGUAGE plpgsql;
 
 -- Yeni kullanici kaydet
 SELECT register_user('jane_doe', 'jane@example.com', 'AnotherP@ss123');</code></pre>
-
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <div class="output-display">
-user_id | username | email
---------+----------+------------------
-      1 | john_doe | john@example.com
-                        </div>
                     </div>
                 </div>
 
@@ -666,14 +659,6 @@ CREATE TABLE api_tokens (
 INSERT INTO api_tokens (user_id, name, expires_at)
 VALUES (1, 'Benim API Tokenim', CURRENT_TIMESTAMP + INTERVAL '30 days')
 RETURNING token;</code></pre>
-
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <div class="output-display">
-document_id                          | title
--------------------------------------+------------------
-a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d | Proje Teklifi
-f6e5d4c3-b2a1-4987-6543-210fedcba987 | Toplanti Notlari
-                        </div>
                     </div>
                 </div>
             </section>
@@ -766,20 +751,6 @@ FROM products
 WHERE name ILIKE '%macb%'
 ORDER BY similarity(name, 'macb') DESC
 LIMIT 10;</code></pre>
-
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <div class="output-display">
--- 'PostgresQL' aramasi sonuclari:
-name                | sim_score
---------------------+-----------
-PostgreSQL Database | 0.5714286
-
--- 'Appel Macbook' sonuclari:
-suggestion        | similarity_score
-------------------+-----------------
-Apple MacBook Pro | 0.35
-Apple iPhone 15   | 0.15
-                        </div>
                     </div>
                 </div>
 
@@ -1093,17 +1064,6 @@ SELECT
     SUM(COALESCE(mar, 0)),
     SUM(COALESCE(jan, 0) + COALESCE(feb, 0) + COALESCE(mar, 0))
 FROM pivoted;</code></pre>
-
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <div class="output-display">
-product | ocak    | subat    | mart   | toplam
---------+---------+----------+--------+--------
-Laptop  | 15000   | 18000    | 22000  | 55000
-Monitor | 3000    | 3500     | 4000   | 10500
-Phone   | 8000    | 9500     | 11000  | 28500
-Tablet  | 5000    | 6000     | 7500   | 18500
-TOPLAM  | 31000   | 37000    | 44500  | 112500
-                        </div>
                     </div>
                 </div>
             </section>
@@ -1195,16 +1155,6 @@ SELECT
         (SELECT location::geography FROM stores WHERE name = 'Merkez Magaza'),
         (SELECT location::geography FROM stores WHERE name = 'Kadikoy Sube')
     )::numeric) AS distance_meters;</code></pre>
-
-                        <p><strong>Beklenen Sonuc:</strong></p>
-                        <div class="output-display">
--- Taksim Meydaninin 5km yakinindaki magazalar:
-name              | city      | distance_meters
-------------------+-----------+----------------
-Taksim Ekspres    | Istanbul  | 15
-Merkez Magaza     | Istanbul  | 3205
-Besiktas Magaza   | Besiktas  | 1523
-                        </div>
                     </div>
                 </div>
             </section>

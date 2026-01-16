@@ -584,7 +584,6 @@
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> 10</p>
           </div>
         </div>
 
@@ -603,7 +602,6 @@
 <span class="kw">SELECT</span> <span class="fu">COUNT</span>(shipped_date) <span class="kw">AS</span> shipped_orders
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> 10 toplam siparis, 7 kargolanan siparis (3 tanesinde shipped_date NULL).</p>
           </div>
         </div>
 
@@ -616,7 +614,6 @@
               <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> unique_customers
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> 5 benzersiz musteri (101, 102, 103, 104, 105).</p>
           </div>
         </div>
 
@@ -649,8 +646,6 @@
     <span class="fu">MAX</span>(hire_date) <span class="kw">AS</span> latest_hire
 <span class="kw">FROM</span> employees;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Min maas: 62000, Max maas: 95000, En erken: 2018-02-14, En gec:
-              2023-01-15</p>
           </div>
         </div>
 
@@ -693,7 +688,6 @@
 <span class="kw">FROM</span> employees
 <span class="kw">GROUP BY</span> department;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Engineering: 4, Marketing: 3, Sales: 3</p>
           </div>
         </div>
 
@@ -831,7 +825,6 @@
 <span class="kw">GROUP BY</span> department
 <span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">3</span>;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Engineering 4 calisanla.</p>
           </div>
         </div>
 
@@ -848,7 +841,6 @@
 <span class="kw">GROUP BY</span> department
 <span class="kw">HAVING</span> <span class="fu">AVG</span>(salary) > <span class="dv">70000</span>;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Engineering ve Sales.</p>
           </div>
         </div>
 
@@ -866,7 +858,6 @@
 <span class="kw">GROUP BY</span> customer_id
 <span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">2</span> <span class="kw">AND</span> <span class="fu">SUM</span>(order_total) > <span class="dv">500</span>;</code></pre>
             </div>
-            <p><strong>Beklenen Sonuc:</strong> Musteri 101, 4 siparis ve yuksek toplam harcamayla.</p>
           </div>
         </div>
 

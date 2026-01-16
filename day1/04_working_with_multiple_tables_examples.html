@@ -843,7 +843,6 @@
 <span class="kw">FROM</span> orders o
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 8 rows showing all orders with their customer names.</p>
           </div>
         </div>
 
@@ -896,7 +895,6 @@
 <span class="kw">INNER JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
 <span class="kw">WHERE</span> c.country = <span class="st">'Turkey'</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Orders from Cansu (3 orders) and TTC (2 orders).</p>
           </div>
         </div>
       </section>
@@ -921,8 +919,6 @@
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 11 rows (8 orders + 3 customers with NULL order_id: Macy, Hamish,
-              Henry).</p>
           </div>
         </div>
 
@@ -942,7 +938,6 @@
 <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
 <span class="kw">WHERE</span> o.id <span class="kw">IS NULL</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 3 customers - Macy Marquez, Hamish Rodgers, Henry Douglas.</p>
           </div>
         </div>
 
@@ -1250,8 +1245,6 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">WHERE</span> ol.id <span class="kw">IS NULL</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Products that haven't been ordered (depends on sample data - in our
-              case, all products have orders).</p>
           </div>
         </div>
 

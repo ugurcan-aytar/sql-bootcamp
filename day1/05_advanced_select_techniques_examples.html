@@ -583,7 +583,6 @@
               <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 10</p>
           </div>
         </div>
 
@@ -602,7 +601,6 @@
 <span class="kw">SELECT</span> <span class="fu">COUNT</span>(shipped_date) <span class="kw">AS</span> shipped_orders
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Expected Results:</strong> 10 total orders, 7 shipped orders (3 have NULL shipped_date).</p>
           </div>
         </div>
 
@@ -615,7 +613,6 @@
               <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> unique_customers
 <span class="kw">FROM</span> orders;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> 5 unique customers (101, 102, 103, 104, 105).</p>
           </div>
         </div>
 
@@ -648,8 +645,6 @@
     <span class="fu">MAX</span>(hire_date) <span class="kw">AS</span> latest_hire
 <span class="kw">FROM</span> employees;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Min salary: 62000, Max salary: 95000, Earliest: 2018-02-14, Latest:
-              2023-01-15</p>
           </div>
         </div>
 
@@ -692,7 +687,6 @@
 <span class="kw">FROM</span> employees
 <span class="kw">GROUP BY</span> department;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Engineering: 4, Marketing: 3, Sales: 3</p>
           </div>
         </div>
 
@@ -830,7 +824,6 @@
 <span class="kw">GROUP BY</span> department
 <span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">3</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Engineering with 4 employees.</p>
           </div>
         </div>
 
@@ -847,7 +840,6 @@
 <span class="kw">GROUP BY</span> department
 <span class="kw">HAVING</span> <span class="fu">AVG</span>(salary) > <span class="dv">70000</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Engineering and Sales.</p>
           </div>
         </div>
 
@@ -865,7 +857,6 @@
 <span class="kw">GROUP BY</span> customer_id
 <span class="kw">HAVING</span> <span class="fu">COUNT</span>(*) > <span class="dv">2</span> <span class="kw">AND</span> <span class="fu">SUM</span>(order_total) > <span class="dv">500</span>;</code></pre>
             </div>
-            <p><strong>Expected Result:</strong> Customer 101 with 4 orders and high total spending.</p>
           </div>
         </div>
 
