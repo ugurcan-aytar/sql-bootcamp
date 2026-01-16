@@ -379,7 +379,7 @@
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
-        <p><strong>Sutun Takma Adlari (Standart SQL)</strong>: Takma adlar, sorgu sonucundaki sutunlar veya ifadeler icin gecici ve genellikle daha okunabilir adlar saglar. <code>AS</code> anahtar kelimesi standarttir ancak genellikle istege baglidir.</p>
+        <p><strong>Sutun Takma Adlari (Aliases - Standart SQL)</strong>: Takma adlar, sorgu sonucundaki sutunlar veya ifadeler icin gecici ve genellikle daha okunabilir adlar saglar. <code>AS</code> anahtar kelimesi standarttir ancak genellikle istege baglidir.</p>
         <div class="sourceCode" id="cb4" onclick="CopyToClipboard('cb4')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    name <span class="kw">AS</span> <span class="ot">&quot;Customer Name&quot;</span>, <span class="co">-- Quoted alias preserves case/spaces (standard)</span></span>
@@ -388,7 +388,7 @@
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
         <ul>
-          <li><strong>Lehce Notu</strong>: Takma adlar icin cift tirnak standart SQL olsa da, bazi sistemler farkli
+          <li><strong>Lehce (Dialect) Notu</strong>: Takma adlar icin cift tirnak standart SQL olsa da, bazi sistemler farkli
             tirnaklama kullanir (ornegin, MySQL'de ters tirnak <code>`</code>, SQL Server'da koseli parantez <code>[]</code>). Tirnaksiz
             takma adlar genellikle buyuk/kucuk harf duyarsizdir.</li>
         </ul>
