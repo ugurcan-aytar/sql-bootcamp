@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
 
 
 <!-- Mirrored from code-mext.github.io/sql-training/alternative_examples/library_system.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 10 Jan 2026 07:44:40 GMT -->
@@ -13,7 +13,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Alternative Example: Library System</title>
+  <title>Alternatif Ornek: Kutuphane Sistemi</title>
   <style>
     .language-switcher {
       position: fixed;
@@ -46,12 +46,12 @@
 </head>
 
 <body>
-    <a href="../index_en.html" class="back-button">← Back to Index</a>
+    <a href="../index.html" class="back-button">← Anasayfaya Don</a>
     <div class="language-switcher">
-        <a href="library_system.html" class="active">EN</a>
-        <a href="library_system_tr.html">TR</a>
+        <a href="library_system.html">EN</a>
+        <a href="library_system_tr.html" class="active">TR</a>
     </div>
-  <div class="copy-notification" id="copyNotification">Copied!</div>
+  <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
 
   <div id="europeanunion-turkey">
     <img src="../static/eu.png" alt="">
@@ -71,37 +71,35 @@
   <div class="content-container">
     <div class="container">
       <section>
-        <h1 id="alternative-example-library-system">Alternative Example: Library System</h1>
-        <p>This example provides a simplified schema for a library system, demonstrating common SQL concepts in a
-          different context than the main Odoo ERP example.</p>
-        <h2 id="schema-definition">Schema Definition</h2>
-        <p>We will define four main tables:</p>
+        <h1 id="alternative-example-library-system">Alternatif Ornek: Kutuphane Sistemi</h1>
+        <p>Bu ornek, ana Odoo ERP orneginden farkli bir baglamda yaygin SQL kavramlarini gosteren basitlestirilmis bir kutuphane sistemi semasi sunmaktadir.</p>
+        <h2 id="schema-definition">Sema Tanimi</h2>
+        <p>Dort ana tablo tanimlayacagiz:</p>
         <ol type="1">
-          <li><code>Authors</code>: Stores information about book authors.</li>
-          <li><code>Books</code>: Stores information about books, linking to authors.</li>
-          <li><code>Members</code>: Stores information about library members.</li>
-          <li><code>Loans</code>: Tracks which member has borrowed which book and when (a junction table with additional
-            data).</li>
+          <li><code>Authors</code>: Kitap yazarlari hakkinda bilgi depolar.</li>
+          <li><code>Books</code>: Yazarlara baglanan kitap bilgilerini depolar.</li>
+          <li><code>Members</code>: Kutuphane uyeleri hakkinda bilgi depolar.</li>
+          <li><code>Loans</code>: Hangi uyenin hangi kitabi ne zaman odunc aldigini takip eder (ek verilerle birlikte bir iliski tablosu).</li>
         </ol>
       </section>
       <section>
         <div class="row">
           <div class="col-md-6">
             <div class="sourceCode" id="cb1">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Table for Authors</span></span>
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Yazarlar Tablosu</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> Authors (</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    author_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Or use SERIAL/AUTO_INCREMENT depending on DB</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>    author_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Veya DB'ye gore SERIAL/AUTO_INCREMENT kullanin</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>    first_name <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    last_name <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    birth_year <span class="dt">INTEGER</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>);</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">-- Table for Books</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">-- Kitaplar Tablosu</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> Books (</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>    book_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Or use SERIAL/AUTO_INCREMENT</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>    book_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Veya SERIAL/AUTO_INCREMENT kullanin</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>    title <span class="dt">VARCHAR</span>(<span class="dv">255</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>    author_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>, <span class="co">-- Foreign key to Authors table</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>    isbn <span class="dt">VARCHAR</span>(<span class="dv">20</span>) <span class="kw">UNIQUE</span>, <span class="co">-- International Standard Book Number</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>    author_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>, <span class="co">-- Authors tablosuna yabanci anahtar</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>    isbn <span class="dt">VARCHAR</span>(<span class="dv">20</span>) <span class="kw">UNIQUE</span>, <span class="co">-- Uluslararasi Standart Kitap Numarasi</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>    published_year <span class="dt">INTEGER</span>,</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>    genre <span class="dt">VARCHAR</span>(<span class="dv">50</span>),</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (author_id) <span class="kw">REFERENCES</span> Authors(author_id)</span>
@@ -110,49 +108,46 @@
           </div>
           <div class="col-md-6">
             <div class="sourceCode" id="cb2">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co">-- Table for Library Members</span></span>
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co">-- Kutuphane Uyeleri Tablosu</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> Members (</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>    member_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Or use SERIAL/AUTO_INCREMENT</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>    member_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Veya SERIAL/AUTO_INCREMENT kullanin</span></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a>    first_name <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a>    last_name <span class="dt">VARCHAR</span>(<span class="dv">100</span>) <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a>    email <span class="dt">VARCHAR</span>(<span class="dv">150</span>) <span class="kw">UNIQUE</span>,</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a>    join_date <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a>    membership_status <span class="dt">VARCHAR</span>(<span class="dv">20</span>) <span class="kw">DEFAULT</span> <span class="ot">&quot;active&quot;</span> <span class="co">-- e.g., active, expired, suspended</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a>    membership_status <span class="dt">VARCHAR</span>(<span class="dv">20</span>) <span class="kw">DEFAULT</span> <span class="ot">&quot;active&quot;</span> <span class="co">-- ornegin: active, expired, suspended</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a>);</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="co">-- Table for Book Loans (Junction Table for Members and Books)</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="co">-- Kitap Odunc Alma Tablosu (Uyeler ve Kitaplar icin Iliski Tablosu)</span></span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> Loans (</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a>    loan_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Or use SERIAL/AUTO_INCREMENT</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a>    loan_id <span class="dt">INTEGER</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, <span class="co">-- Veya SERIAL/AUTO_INCREMENT kullanin</span></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a>    book_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a>    member_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a>    loan_date <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true"></a>    due_date <span class="dt">DATE</span> <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true"></a>    return_date <span class="dt">DATE</span>, <span class="co">-- NULL if the book is still on loan</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true"></a>    return_date <span class="dt">DATE</span>, <span class="co">-- Kitap hala oduncte ise NULL</span></span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (book_id) <span class="kw">REFERENCES</span> Books(book_id),</span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (member_id) <span class="kw">REFERENCES</span> Members(member_id)</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true"></a>);</span></code></pre>
             </div>
           </div>
         </div>
-        <p><strong>Relationships</strong>: * One-to-Many: <code>Authors</code> to <code>Books</code> (one author can
-          write
-          many books). * Many-to-Many: <code>Members</code> to <code>Books</code> via the <code>Loans</code> table (one
-          member can borrow many books, one book can be borrowed by many members over time).</p>
+        <p><strong>Iliskiler</strong>: * Bire-Cok: <code>Authors</code> - <code>Books</code> (bir yazar birden fazla kitap yazabilir). * Coka-Cok: <code>Members</code> - <code>Books</code>, <code>Loans</code> tablosu uzerinden (bir uye birden fazla kitap odunc alabilir, bir kitap zaman icinde birden fazla uye tarafindan odunc alinabilir).</p>
       </section>
       <section>
-        <h2 id="sample-data">Sample Data</h2>
+        <h2 id="sample-data">Ornek Veriler</h2>
         <div class="row">
           <div class="col-md-6">
             <div class="sourceCode" id="cb2">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Sample Authors</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Ornek Yazarlar</span></span>
     <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Authors (author_id, first_name, last_name, birth_year)</span>
     <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">VALUES</span> </span>
     <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    (<span class="dv">1</span>, <span class="ot">&quot;Jane&quot;</span>, <span class="ot">&quot;Austen&quot;</span>, <span class="dv">1775</span>),</span>
     <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    (<span class="dv">2</span>, <span class="ot">&quot;George&quot;</span>, <span class="ot">&quot;Orwell&quot;</span>, <span class="dv">1903</span>),</span>
     <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    (<span class="dv">3</span>, <span class="ot">&quot;J.R.R.&quot;</span>, <span class="ot">&quot;Tolkien&quot;</span>, <span class="dv">1892</span>);</span>
     <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
-    <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co">-- Sample Books</span></span>
+    <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="co">-- Ornek Kitaplar</span></span>
     <span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Books (book_id, title, author_id, isbn, published_year, genre)</span>
     <span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a><span class="kw">VALUES</span></span>
     <span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    (<span class="dv">101</span>, <span class="ot">&quot;Pride and Prejudice&quot;</span>, <span class="dv">1</span>, <span class="ot">&quot;978-0141439518&quot;</span>, <span class="dv">1813</span>, <span class="ot">&quot;Romance&quot;</span>),</span>
@@ -166,7 +161,7 @@
           <div class="col-md-6">
             <div class="sourceCode" id="cb2">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">-- Sample Members</span></span>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a><span class="co">-- Ornek Uyeler</span></span>
     <span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Members (member_id, first_name, last_name, email, join_date, membership_status)</span>
     <span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a><span class="kw">VALUES</span></span>
     <span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>    (<span class="dv">1001</span>, <span class="ot">&quot;Alice&quot;</span>, <span class="ot">&quot;Smith&quot;</span>, <span class="ot">&quot;alice.s@email.com&quot;</span>, <span class="ot">&quot;2023-05-15&quot;</span>, <span class="ot">&quot;active&quot;</span>),</span>
@@ -174,21 +169,21 @@
     <span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>    (<span class="dv">1003</span>, <span class="ot">&quot;Charlie&quot;</span>, <span class="ot">&quot;Brown&quot;</span>, <span class="ot">&quot;charlie.b@email.com&quot;</span>, <span class="ot">&quot;2024-01-20&quot;</span>, <span class="ot">&quot;active&quot;</span>),</span>
     <span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>    (<span class="dv">1004</span>, <span class="ot">&quot;Diana&quot;</span>, <span class="ot">&quot;Prince&quot;</span>, <span class="ot">&quot;diana.p@email.com&quot;</span>, <span class="ot">&quot;2021-03-10&quot;</span>, <span class="ot">&quot;expired&quot;</span>);</span>
     <span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a></span>
-    <span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a><span class="co">-- Sample Loans</span></span>
+    <span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a><span class="co">-- Ornek Odunc Alma Kayitlari</span></span>
     <span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Loans (loan_id, book_id, member_id, loan_date, due_date, return_date)</span>
     <span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a><span class="kw">VALUES</span></span>
-    <span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>    (<span class="dv">5001</span>, <span class="dv">101</span>, <span class="dv">1001</span>, <span class="ot">&quot;2024-04-01&quot;</span>, <span class="ot">&quot;2024-04-15&quot;</span>, <span class="ot">&quot;2024-04-12&quot;</span>), <span class="co">-- Pride and Prejudice loaned to Alice</span></span>
-    <span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>    (<span class="dv">5002</span>, <span class="dv">103</span>, <span class="dv">1001</span>, <span class="ot">&quot;2024-04-10&quot;</span>, <span class="ot">&quot;2024-04-24&quot;</span>, <span class="kw">NULL</span>), <span class="co">-- Nineteen Eighty-Four loaned to Alice (current)</span></span>
-    <span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a>    (<span class="dv">5003</span>, <span class="dv">105</span>, <span class="dv">1002</span>, <span class="ot">&quot;2024-04-05&quot;</span>, <span class="ot">&quot;2024-04-19&quot;</span>, <span class="ot">&quot;2024-04-18&quot;</span>), <span class="co">-- The Hobbit loaned to Bob</span></span>
-    <span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>    (<span class="dv">5004</span>, <span class="dv">106</span>, <span class="dv">1003</span>, <span class="ot">&quot;2024-04-15&quot;</span>, <span class="ot">&quot;2024-04-29&quot;</span>, <span class="kw">NULL</span>), <span class="co">-- Lord of the Rings loaned to Charlie (current)</span></span>
-    <span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>    (<span class="dv">5005</span>, <span class="dv">104</span>, <span class="dv">1001</span>, <span class="ot">&quot;2024-03-01&quot;</span>, <span class="ot">&quot;2024-03-15&quot;</span>, <span class="ot">&quot;2024-03-14&quot;</span>); <span class="co">-- Animal Farm loaned to Alice (past)</span></span></code></pre>
+    <span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>    (<span class="dv">5001</span>, <span class="dv">101</span>, <span class="dv">1001</span>, <span class="ot">&quot;2024-04-01&quot;</span>, <span class="ot">&quot;2024-04-15&quot;</span>, <span class="ot">&quot;2024-04-12&quot;</span>), <span class="co">-- Pride and Prejudice Alice'e odunc verildi</span></span>
+    <span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>    (<span class="dv">5002</span>, <span class="dv">103</span>, <span class="dv">1001</span>, <span class="ot">&quot;2024-04-10&quot;</span>, <span class="ot">&quot;2024-04-24&quot;</span>, <span class="kw">NULL</span>), <span class="co">-- Nineteen Eighty-Four Alice'de (mevcut)</span></span>
+    <span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a>    (<span class="dv">5003</span>, <span class="dv">105</span>, <span class="dv">1002</span>, <span class="ot">&quot;2024-04-05&quot;</span>, <span class="ot">&quot;2024-04-19&quot;</span>, <span class="ot">&quot;2024-04-18&quot;</span>), <span class="co">-- The Hobbit Bob'a odunc verildi</span></span>
+    <span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>    (<span class="dv">5004</span>, <span class="dv">106</span>, <span class="dv">1003</span>, <span class="ot">&quot;2024-04-15&quot;</span>, <span class="ot">&quot;2024-04-29&quot;</span>, <span class="kw">NULL</span>), <span class="co">-- Lord of the Rings Charlie'de (mevcut)</span></span>
+    <span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>    (<span class="dv">5005</span>, <span class="dv">104</span>, <span class="dv">1001</span>, <span class="ot">&quot;2024-03-01&quot;</span>, <span class="ot">&quot;2024-03-15&quot;</span>, <span class="ot">&quot;2024-03-14&quot;</span>); <span class="co">-- Animal Farm Alice'e odunc verildi (gecmis)</span></span></code></pre>
             </div>
           </div>
         </div>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>1. Find all books by a specific author (e.g., Jane Austen)</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>1. Belirli bir yazarin tum kitaplarini bulma (ornegin Jane Austen)</strong></p>
         <div class="sourceCode" id="cb3">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    b.title, </span>
@@ -202,14 +197,14 @@
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>    b.published_year;</span></code></pre>
         </div>
-        <p><em>Concept Illustrated: INNER JOIN, WHERE clause, ORDER BY.</em></p>
+        <p><em>Gosterilen Kavram: INNER JOIN, WHERE ifadesi, ORDER BY.</em></p>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>2. Find all books currently on loan</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>2. Su anda oduncte olan tum kitaplari bulma</strong></p>
         <div class="sourceCode" id="cb4">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    m.first_name <span class="op">||</span> <span class="ot">&quot; &quot;</span> <span class="op">||</span> m.last_name <span class="kw">AS</span> member_name, <span class="co">-- Concatenation syntax may vary</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    m.first_name <span class="op">||</span> <span class="ot">&quot; &quot;</span> <span class="op">||</span> m.last_name <span class="kw">AS</span> member_name, <span class="co">-- Birlestirme sozdizimi degisebilir</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    b.title <span class="kw">AS</span> book_title,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    l.loan_date,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    l.due_date</span>
@@ -220,17 +215,17 @@
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="kw">JOIN</span> </span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    Members m <span class="kw">ON</span> l.member_id <span class="op">=</span> m.member_id</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    l.return_date <span class="kw">IS</span> <span class="kw">NULL</span> <span class="co">-- Key condition for current loans</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    l.return_date <span class="kw">IS</span> <span class="kw">NULL</span> <span class="co">-- Mevcut oduncler icin anahtar kosul</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    l.due_date;</span></code></pre>
         </div>
-        <p><em>Concept Illustrated: Multiple INNER JOINs, IS NULL condition.</em></p>
+        <p><em>Gosterilen Kavram: Coklu INNER JOIN, IS NULL kosulu.</em></p>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>3. Find members who have overdue books</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>3. Geciken kitaplari olan uyeleri bulma</strong></p>
         <div class="sourceCode" id="cb5">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="co">-- Use DISTINCT as a member might have multiple overdue books</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="co">-- Bir uyenin birden fazla geciken kitabi olabilecegi icin DISTINCT kullanin</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    m.member_id,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    m.first_name,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    m.last_name,</span>
@@ -241,15 +236,15 @@
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    Loans l <span class="kw">ON</span> m.member_id <span class="op">=</span> l.member_id</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>    l.return_date <span class="kw">IS</span> <span class="kw">NULL</span> </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    <span class="kw">AND</span> l.due_date <span class="op">&lt;</span> <span class="fu">CURRENT_DATE</span> <span class="co">-- Standard function for today&#39;s date</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>    <span class="kw">AND</span> l.due_date <span class="op">&lt;</span> <span class="fu">CURRENT_DATE</span> <span class="co">-- Bugunun tarihi icin standart fonksiyon</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>    m.last_name, m.first_name;</span></code></pre>
         </div>
-        <p><em>Concept Illustrated: JOIN, IS NULL, Date comparison, DISTINCT.</em></p>
+        <p><em>Gosterilen Kavram: JOIN, IS NULL, Tarih karsilastirmasi, DISTINCT.</em></p>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>4. Count the number of books loaned out per genre</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>4. Ture gore odunc verilen kitap sayisini sayma</strong></p>
         <div class="sourceCode" id="cb6">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
@@ -264,11 +259,11 @@
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>    number_of_loans <span class="kw">DESC</span>;</span></code></pre>
         </div>
-        <p><em>Concept Illustrated: JOIN, Aggregate function (COUNT), GROUP BY.</em></p>
+        <p><em>Gosterilen Kavram: JOIN, Toplama fonksiyonu (COUNT), GROUP BY.</em></p>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>5. Find members who joined in the last year and haven’t borrowed any books yet</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>5. Son bir yilda katilan ve henuz kitap odunc almamis uyeleri bulma</strong></p>
         <div class="sourceCode" id="cb7">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
@@ -281,45 +276,44 @@
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> </span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>    Loans l <span class="kw">ON</span> m.member_id <span class="op">=</span> l.member_id</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="kw">WHERE</span> </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>    m.join_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="ot">&quot;1&quot;</span> <span class="dt">YEAR</span> <span class="co">-- Interval syntax may vary</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    <span class="kw">AND</span> l.loan_id <span class="kw">IS</span> <span class="kw">NULL</span> <span class="co">-- Member has no matching record in Loans</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>    m.join_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="ot">&quot;1&quot;</span> <span class="dt">YEAR</span> <span class="co">-- Aralik sozdizimi degisebilir</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    <span class="kw">AND</span> l.loan_id <span class="kw">IS</span> <span class="kw">NULL</span> <span class="co">-- Uyenin Loans tablosunda eslesen kaydi yok</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> </span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    m.join_date <span class="kw">DESC</span>;</span></code></pre>
         </div>
-        <p><em>Concept Illustrated: LEFT JOIN, IS NULL check on right table, Date arithmetic.</em></p>
+        <p><em>Gosterilen Kavram: LEFT JOIN, sag tabloda IS NULL kontrolu, Tarih aritmetigi.</em></p>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>6. Add a new loan record (INSERT)</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>6. Yeni odunc kaydi ekleme (INSERT)</strong></p>
         <div class="sourceCode" id="cb8">
-          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">-- Assume Bob (1002) borrows Animal Farm (104) today</span></span>
+          <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">-- Bob (1002) bugun Animal Farm (104) odunc aliyor varsayalim</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Loans (loan_id, book_id, member_id, loan_date, due_date, return_date)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">VALUES</span> (</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="dv">5006</span>, <span class="co">-- Assuming next available ID</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="dv">5006</span>, <span class="co">-- Bir sonraki mevcut ID varsayilarak</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="dv">104</span>, </span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    <span class="dv">1002</span>, </span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>    <span class="fu">CURRENT_DATE</span>, </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>    <span class="fu">CURRENT_DATE</span> <span class="op">+</span> <span class="dt">INTERVAL</span> <span class="ot">&quot;14&quot;</span> <span class="dt">DAY</span>, <span class="co">-- Due in 14 days (syntax may vary)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>    <span class="fu">CURRENT_DATE</span> <span class="op">+</span> <span class="dt">INTERVAL</span> <span class="ot">&quot;14&quot;</span> <span class="dt">DAY</span>, <span class="co">-- 14 gun sonra teslim (sozdizimi degisebilir)</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    <span class="kw">NULL</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>);</span></code></pre>
         </div>
-        <p><em>Concept Illustrated: INSERT statement, Date functions/arithmetic.</em></p>
+        <p><em>Gosterilen Kavram: INSERT ifadesi, Tarih fonksiyonlari/aritmetigi.</em></p>
       </section>
       <section>
-        <h2 id="example-queries">Example Queries</h2>
-        <p><strong>7. Mark a book as returned (UPDATE)</strong></p>
+        <h2 id="example-queries">Ornek Sorgular</h2>
+        <p><strong>7. Kitabi iade edildi olarak isaretleme (UPDATE)</strong></p>
         <div class="sourceCode" id="cb9">
           <pre
-            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Assume Alice (1001) returns Nineteen Eighty-Four (103) today</span></span>
+            class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">-- Alice (1001) bugun Nineteen Eighty-Four (103) kitabini iade ediyor varsayalim</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="kw">UPDATE</span> Loans</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">SET</span> return_date <span class="op">=</span> <span class="fu">CURRENT_DATE</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="kw">WHERE</span> member_id <span class="op">=</span> <span class="dv">1001</span> </span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  <span class="kw">AND</span> book_id <span class="op">=</span> <span class="dv">103</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  <span class="kw">AND</span> return_date <span class="kw">IS</span> <span class="kw">NULL</span>; <span class="co">-- Important to only update the current loan</span></span></code></pre>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>  <span class="kw">AND</span> return_date <span class="kw">IS</span> <span class="kw">NULL</span>; <span class="co">-- Sadece mevcut odunc kaydini guncellemek icin onemli</span></span></code></pre>
         </div>
-        <p><em>Concept Illustrated: UPDATE statement, WHERE clause with multiple conditions.</em></p>
-        <p>This library example provides a different perspective on applying core SQL concepts like joins, filtering,
-          aggregation, and data manipulation.</p>
+        <p><em>Gosterilen Kavram: UPDATE ifadesi, birden fazla kosullu WHERE ifadesi.</em></p>
+        <p>Bu kutuphane ornegi, joinler, filtreleme, toplama ve veri manipulasyonu gibi temel SQL kavramlarini uygulamak icin farkli bir bakis acisi sunmaktadir.</p>
       </section>
     </div>
   </div> <!-- /container -->
