@@ -125,7 +125,7 @@
                     tablonun birincil anahtarina referans verir ve referans butunlugunu saglar.</p>
                 <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
                     <pre class="sourceCode sql">
-<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Odoo semasini kullanan ornek (PostgreSQL)</span></span>
+<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- PostgreSQL semasini kullanan ornek (PostgreSQL)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
                 </div>
@@ -452,9 +452,9 @@
                 </ul>
             </section>
             <section>
-                <h3 id="practical-examples-in-odoo-schema-postgresql">Odoo Semasinda Pratik Ornekler (PostgreSQL)
+                <h3 id="practical-examples-in-odoo-schema-postgresql">PostgreSQL Semasinda Pratik Ornekler (PostgreSQL)
                 </h3>
-                <p>Odoo veritabani kapsamli iliskiler kullanir. Birlestirilecek yaygin tablolar sunlardir:</p>
+                <p>PostgreSQL veritabani kapsamli iliskiler kullanir. Birlestirilecek yaygin tablolar sunlardir:</p>
                 <ul>
                     <li><code>res_partner</code> (Musteriler, Tedarikciler, Kisiler)</li>
                     <li><code>sale_order</code> (Satis Siparisleri)</li>
@@ -471,9 +471,9 @@
 
                 <p><em>Ornek: Satis Siparisi numaralarini ve Musteri adlarini alin.</em></p>
                 <div class="sourceCode" id="cb13" onclick="CopyToClipboard('cb13')">
-                    <pre><code class="language-sql">-- Odoo Ornegi (PostgreSQL)
+                    <pre><code class="language-sql">-- Şema Ornegi (PostgreSQL)
 <span class="kw">SELECT</span>
-    so.name <span class="kw">AS</span> sales_order_ref, -- Odoo genellikle kullaniciya gorunen tanimlamalar icin 'name' kullanir
+    so.name <span class="kw">AS</span> sales_order_ref, -- PostgreSQL genellikle kullaniciya gorunen tanimlamalar icin 'name' kullanir
     rp.name <span class="kw">AS</span> customer_name,
     so.date_order,
     so.amount_total
@@ -488,7 +488,7 @@
             <section>
                 <p><em>Ornek: Urun ve Miktari gosteren Satis Siparisi satirlarini alin.</em></p>
                 <div class="sourceCode" id="cb14" onclick="CopyToClipboard('cb14')">
-                    <pre><code class="language-sql">-- Odoo Ornegi (PostgreSQL)
+                    <pre><code class="language-sql">-- Şema Ornegi (PostgreSQL)
 <span class="kw">SELECT</span>
     so.name <span class="kw">AS</span> sales_order_ref,
     pt.name <span class="kw">AS</span> product_name,
@@ -507,7 +507,7 @@
 <span class="kw">ORDER BY</span>
     so.name, pt.name;</code></pre>
                 </div>
-                <p>Bu ornekler, Odoo'nun normalize edilmis veritabani gibi farkli tablolara yayilmis verileri birlestirerek
+                <p>Bu ornekler, PostgreSQL'in normalize edilmis veritabani gibi farkli tablolara yayilmis verileri birlestirerek
                     anlamli bilgiler almak icin JOIN'lerin ne kadar gerekli oldugunu gostermektedir.</p>
             </section>
             <section>

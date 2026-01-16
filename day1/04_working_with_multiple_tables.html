@@ -143,7 +143,7 @@
                     primary key of another table, ensuring referential integrity.</p>
                 <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
                     <pre class="sourceCode sql">
-<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using Odoo schema (PostgreSQL)</span></span>
+<code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Example using schema (PostgreSQL)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
                 </div>
@@ -474,9 +474,9 @@
                 </ul>
             </section>
             <section>
-                <h3 id="practical-examples-in-odoo-schema-postgresql">Practical Examples in Odoo Schema (PostgreSQL)
+                <h3 id="practical-examples-in-odoo-schema-postgresql">Practical Examples in Schema (PostgreSQL)
                 </h3>
-                <p>The Odoo database uses extensive relationships. Common tables to join include:</p>
+                <p>The PostgreSQL database uses extensive relationships. Common tables to join include:</p>
                 <ul>
                     <li><code>res_partner</code> (Customers, Suppliers, Contacts)</li>
                     <li><code>sale_order</code> (Sales Orders)</li>
@@ -493,9 +493,9 @@
 
                 <p><em>Example: Get Sales Order numbers and the Customer names.</em></p>
                 <div class="sourceCode" id="cb13" onclick="CopyToClipboard('cb13')">
-                    <pre><code class="language-sql">-- Odoo Example (PostgreSQL)
+                    <pre><code class="language-sql">-- Schema Example (PostgreSQL)
 <span class="kw">SELECT</span>
-    so.name <span class="kw">AS</span> sales_order_ref, -- Odoo often uses 'name' for user-visible identifiers
+    so.name <span class="kw">AS</span> sales_order_ref, -- PostgreSQL often uses 'name' for user-visible identifiers
     rp.name <span class="kw">AS</span> customer_name,
     so.date_order,
     so.amount_total
@@ -510,7 +510,7 @@
             <section>
                 <p><em>Example: Get Sales Order lines showing Product and Quantity.</em></p>
                 <div class="sourceCode" id="cb14" onclick="CopyToClipboard('cb14')">
-                    <pre><code class="language-sql">-- Odoo Example (PostgreSQL)
+                    <pre><code class="language-sql">-- Schema Example (PostgreSQL)
 <span class="kw">SELECT</span>
     so.name <span class="kw">AS</span> sales_order_ref,
     pt.name <span class="kw">AS</span> product_name,
@@ -532,7 +532,7 @@
                 <p>These examples demonstrate how JOINs are essential for retrieving meaningful information by
                     combining
                     data
-                    spread across different tables in a normalized database like Odoo's.</p>
+                    spread across different tables in a normalized database like PostgreSQL.</p>
             </section>
             <section>
                 <h3 id="practice-exercises">Practice What You Learned</h3>
