@@ -486,8 +486,8 @@
           <table>
             <thead>
               <tr>
-                <th>product_id</th>
-                <th>product_name</th>
+                <th>id</th>
+                <th>name</th>
                 <th>category_id</th>
                 <th>price</th>
                 <th>stock_quantity</th>
@@ -510,8 +510,8 @@
           <table>
             <thead>
               <tr>
-                <th>category_id</th>
-                <th>category_name</th>
+                <th>id</th>
+                <th>name</th>
                 <th>parent_id</th>
               </tr>
             </thead>
@@ -528,7 +528,7 @@
           <table>
             <thead>
               <tr>
-                <th>customer_id</th>
+                <th>id</th>
                 <th>name</th>
                 <th>email</th>
                 <th>status</th>
@@ -550,7 +550,7 @@
           <table>
             <thead>
               <tr>
-                <th>order_id</th>
+                <th>id</th>
                 <th>customer_id</th>
                 <th>order_date</th>
                 <th>total_amount</th>
@@ -558,11 +558,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>101</td><td>1</td><td>2024-01-10</td><td>1029.98</td><td>completed</td></tr>
-              <tr><td>102</td><td>2</td><td>2024-01-15</td><td>45.99</td><td>completed</td></tr>
-              <tr><td>103</td><td>1</td><td>2024-02-01</td><td>199.99</td><td>pending</td></tr>
+              <tr><td>101</td><td>1</td><td>2024-01-10</td><td>1029.98</td><td>delivered</td></tr>
+              <tr><td>102</td><td>2</td><td>2024-01-15</td><td>45.99</td><td>delivered</td></tr>
+              <tr><td>103</td><td>1</td><td>2024-02-01</td><td>199.99</td><td>confirmed</td></tr>
               <tr><td>104</td><td>4</td><td>2024-02-10</td><td>29.99</td><td>cancelled</td></tr>
-              <tr><td>105</td><td>3</td><td>2024-02-15</td><td>12.99</td><td>pending</td></tr>
+              <tr><td>105</td><td>3</td><td>2024-02-15</td><td>12.99</td><td>confirmed</td></tr>
             </tbody>
           </table>
         </div>
@@ -572,15 +572,15 @@
           <table>
             <thead>
               <tr>
-                <th>account_id</th>
-                <th>account_holder</th>
+                <th>id</th>
+                <th>holder_name</th>
                 <th>balance</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>A001</td><td>John Doe</td><td>5000.00</td></tr>
-              <tr><td>A002</td><td>Jane Smith</td><td>3500.00</td></tr>
-              <tr><td>A003</td><td>Bob Wilson</td><td>1200.00</td></tr>
+              <tr><td>ACC-001</td><td>Acme Corporation</td><td>125000.00</td></tr>
+              <tr><td>ACC-003</td><td>John Doe</td><td>5420.50</td></tr>
+              <tr><td>ACC-004</td><td>Jane Smith</td><td>3150.75</td></tr>
             </tbody>
           </table>
         </div>
@@ -595,7 +595,7 @@
           <button class="solution-toggle" onclick="toggleSolution('sol1-1')">Cozumu Goster</button>
           <div id="sol1-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-1-code')">
-              <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+              <pre class="sourceCode sql" id="sol1-1-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> products (name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="st">'Mechanical Keyboard'</span>, <span class="dv">1</span>, <span class="fl">79.99</span>, <span class="dv">75</span>, <span class="kw">true</span>);</code></pre>
             </div>
           </div>
@@ -628,12 +628,12 @@
           <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Cozumu Goster</button>
           <div id="sol1-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
-              <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> categories (category_name, parent_id)
+              <pre class="sourceCode sql" id="sol1-3-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> categories (name, parent_id)
 <span class="kw">VALUES</span> (<span class="st">'Accessories'</span>, <span class="kw">NULL</span>);</code></pre>
             </div>
             <p><strong>Acik DEFAULT ile alternatif:</strong></p>
             <div class="sourceCode">
-              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> categories (category_name, parent_id)
+              <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> categories (name, parent_id)
 <span class="kw">VALUES</span> (<span class="st">'Accessories'</span>, <span class="kw">DEFAULT</span>);</code></pre>
             </div>
           </div>
@@ -649,8 +649,19 @@
           <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Cozumu Goster</button>
           <div id="sol1-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-4-code')">
-              <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="kw">INSERT INTO</span> products_backup (product_name, category_id, price, stock_quantity, active)
-<span class="kw">SELECT</span> product_name, category_id, price, stock_quantity, active
+              <pre class="sourceCode sql" id="sol1-4-code"><code class="sourceCode sql"><span class="co">-- Once yedek tabloyu olusturun</span>
+<span class="kw">CREATE TABLE</span> products_backup (
+    id <span class="kw">SERIAL PRIMARY KEY</span>,
+    name <span class="kw">VARCHAR</span>(<span class="dv">255</span>),
+    category_id <span class="kw">INTEGER</span>,
+    price <span class="kw">DECIMAL</span>(<span class="dv">10</span>,<span class="dv">2</span>),
+    stock_quantity <span class="kw">INTEGER</span>,
+    active <span class="kw">BOOLEAN</span>
+);
+
+<span class="co">-- Sonra verileri ekleyin</span>
+<span class="kw">INSERT INTO</span> products_backup (name, category_id, price, stock_quantity, active)
+<span class="kw">SELECT</span> name, category_id, price, stock_quantity, active
 <span class="kw">FROM</span> products
 <span class="kw">WHERE</span> category_id = <span class="dv">1</span>;</code></pre>
             </div>
@@ -659,14 +670,14 @@
 
         <div class="exercise-box">
           <h4>Alistirma 1.5: RETURNING ile Ekleme (PostgreSQL)</h4>
-          <p>Yeni bir urun ekleyin ve olusturulan product_id'yi urun adiyla birlikte donduren bir sorgu yazin.</p>
+          <p>Yeni bir urun ekleyin ve olusturulan id'yi urun adiyla birlikte donduren bir sorgu yazin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol1-5')">Cozumu Goster</button>
           <div id="sol1-5" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-5-code')">
               <pre class="sourceCode sql" id="sol1-5-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL sozdizimi</span>
-<span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">INSERT INTO</span> products (name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="st">'Webcam HD'</span>, <span class="dv">1</span>, <span class="fl">89.99</span>, <span class="dv">40</span>, <span class="kw">true</span>)
-<span class="kw">RETURNING</span> product_id, product_name;</code></pre>
+<span class="kw">RETURNING</span> id, name;</code></pre>
             </div>
             <div class="info-box">
               <strong>MySQL alternatifi:</strong> INSERT'ten sonra <code>SELECT LAST_INSERT_ID();</code> kullanin.
@@ -697,12 +708,12 @@
           <div id="sol2-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-1-code')">
               <pre class="sourceCode sql" id="sol2-1-code"><code class="sourceCode sql"><span class="co">-- Once hangi satirin etkilenecegini dogrulayin</span>
-<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_id = <span class="dv">5</span>;
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers <span class="kw">WHERE</span> id = <span class="dv">5</span>;
 
 <span class="co">-- Sonra guncelleyin</span>
 <span class="kw">UPDATE</span> customers
 <span class="kw">SET</span> email = <span class="st">'eve@new-email.com'</span>
-<span class="kw">WHERE</span> customer_id = <span class="dv">5</span>;</code></pre>
+<span class="kw">WHERE</span> id = <span class="dv">5</span>;</code></pre>
             </div>
           </div>
         </div>
@@ -739,20 +750,20 @@
               <pre class="sourceCode sql" id="sol2-3-code"><code class="sourceCode sql"><span class="kw">UPDATE</span> products
 <span class="kw">SET</span> active = <span class="kw">true</span>,
     stock_quantity = <span class="dv">25</span>
-<span class="kw">WHERE</span> product_id = <span class="dv">5</span>;</code></pre>
+<span class="kw">WHERE</span> id = <span class="dv">5</span>;</code></pre>
             </div>
           </div>
         </div>
 
         <div class="exercise-box">
           <h4>Alistirma 2.4: Mevcut Degere Gore UPDATE</h4>
-          <p>product_id = 2 icin stock_quantity'yi 1 azaltin, ancak sadece stock_quantity 0'dan buyukse.</p>
+          <p>id = 2 icin stock_quantity'yi 1 azaltin, ancak sadece stock_quantity 0'dan buyukse.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol2-4')">Cozumu Goster</button>
           <div id="sol2-4" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol2-4-code')">
               <pre class="sourceCode sql" id="sol2-4-code"><code class="sourceCode sql"><span class="kw">UPDATE</span> products
 <span class="kw">SET</span> stock_quantity = stock_quantity - <span class="dv">1</span>
-<span class="kw">WHERE</span> product_id = <span class="dv">2</span>
+<span class="kw">WHERE</span> id = <span class="dv">2</span>
   <span class="kw">AND</span> stock_quantity > <span class="dv">0</span>;</code></pre>
             </div>
             <p><strong>Not:</strong> Ekstra kosul, negatif stok degerlerini onler.</p>
@@ -772,7 +783,7 @@
 <span class="kw">UPDATE</span> orders o
 <span class="kw">SET</span> status = <span class="st">'cancelled'</span>
 <span class="kw">FROM</span> customers c
-<span class="kw">WHERE</span> o.customer_id = c.customer_id
+<span class="kw">WHERE</span> o.customer_id = c.id
   <span class="kw">AND</span> c.status = <span class="st">'inactive'</span>;</code></pre>
             </div>
             <p><strong>Alt sorgu kullanan alternatif (cogu veritabaninda calisir):</strong></p>
@@ -780,7 +791,7 @@
               <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">UPDATE</span> orders
 <span class="kw">SET</span> status = <span class="st">'cancelled'</span>
 <span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (
-    <span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
+    <span class="kw">SELECT</span> id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
 );</code></pre>
             </div>
           </div>
@@ -797,35 +808,40 @@
 
         <div class="exercise-box">
           <h4>Alistirma 3.1: Tek Satir Silme</h4>
-          <p>Iptal edilen siparisi (order_id = 104) silin.</p>
+          <p>Iptal edilen siparisi (id = 104) silin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Cozumu Goster</button>
           <div id="sol3-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-1-code')">
               <pre class="sourceCode sql" id="sol3-1-code"><code class="sourceCode sql"><span class="co">-- Once dogrulayin</span>
-<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders <span class="kw">WHERE</span> order_id = <span class="dv">104</span>;
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders <span class="kw">WHERE</span> id = <span class="dv">104</span>;
 
 <span class="co">-- Sonra silin</span>
 <span class="kw">DELETE FROM</span> orders
-<span class="kw">WHERE</span> order_id = <span class="dv">104</span>;</code></pre>
+<span class="kw">WHERE</span> id = <span class="dv">104</span>;</code></pre>
             </div>
           </div>
         </div>
 
         <div class="exercise-box">
           <h4>Alistirma 3.2: Kosullu Silme</h4>
-          <p>2022'den once olusturulan tum pasif musterileri silin.</p>
+          <p>2022'den once olusturulan ve siparisi olmayan tum pasif musterileri silin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol3-2')">Cozumu Goster</button>
           <div id="sol3-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol3-2-code')">
               <pre class="sourceCode sql" id="sol3-2-code"><code class="sourceCode sql"><span class="co">-- Once hangi satirlarin silinecegini dogrulayin</span>
-<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
-<span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
-  <span class="kw">AND</span> created_at < <span class="st">'2022-01-01'</span>;
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
+<span class="kw">WHERE</span> c.status = <span class="st">'inactive'</span>
+  <span class="kw">AND</span> c.created_at < <span class="st">'2022-01-01'</span>
+  <span class="kw">AND NOT EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.id);
 
 <span class="co">-- Sonra silin</span>
-<span class="kw">DELETE FROM</span> customers
-<span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
-  <span class="kw">AND</span> created_at < <span class="st">'2022-01-01'</span>;</code></pre>
+<span class="kw">DELETE FROM</span> customers c
+<span class="kw">WHERE</span> c.status = <span class="st">'inactive'</span>
+  <span class="kw">AND</span> c.created_at < <span class="st">'2022-01-01'</span>
+  <span class="kw">AND NOT EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.id);</code></pre>
+            </div>
+            <div class="info-box">
+              <strong>Not:</strong> Siparisi olan musterileri silmekten kacinmak icin NOT EXISTS kullaniyoruz, aksi takdirde yabanci anahtar kisitlamasi ihlal edilir.
             </div>
           </div>
         </div>
@@ -839,14 +855,14 @@
               <pre class="sourceCode sql" id="sol3-3-code"><code class="sourceCode sql"><span class="co">-- Alt sorgu kullanarak (cogu veritabaninda calisir)</span>
 <span class="kw">DELETE FROM</span> orders
 <span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (
-    <span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
+    <span class="kw">SELECT</span> id <span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'inactive'</span>
 );</code></pre>
             </div>
             <p><strong>USING ile PostgreSQL alternatifi:</strong></p>
             <div class="sourceCode">
               <pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">DELETE FROM</span> orders o
 <span class="kw">USING</span> customers c
-<span class="kw">WHERE</span> o.customer_id = c.customer_id
+<span class="kw">WHERE</span> o.customer_id = c.id
   <span class="kw">AND</span> c.status = <span class="st">'inactive'</span>;</code></pre>
             </div>
           </div>
@@ -897,7 +913,7 @@
 
         <div class="exercise-box">
           <h4>Alistirma 4.1: Temel Islem</h4>
-          <p>A001 hesabindan A002 hesabina $500 aktaran bir islem yazin. Her iki islem de basarili olmali veya her ikisi de basarisiz olmalidir.</p>
+          <p>ACC-001 hesabindan ACC-003 hesabina $500 aktaran bir islem yazin. Her iki islem de basarili olmali veya her ikisi de basarisiz olmalidir.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Cozumu Goster</button>
           <div id="sol4-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol4-1-code')">
@@ -906,12 +922,12 @@
 <span class="co">-- Kaynak hesaptan dus</span>
 <span class="kw">UPDATE</span> accounts
 <span class="kw">SET</span> balance = balance - <span class="fl">500.00</span>
-<span class="kw">WHERE</span> account_id = <span class="st">'A001'</span>;
+<span class="kw">WHERE</span> id = <span class="st">'ACC-001'</span>;
 
 <span class="co">-- Hedef hesaba ekle</span>
 <span class="kw">UPDATE</span> accounts
 <span class="kw">SET</span> balance = balance + <span class="fl">500.00</span>
-<span class="kw">WHERE</span> account_id = <span class="st">'A002'</span>;
+<span class="kw">WHERE</span> id = <span class="st">'ACC-003'</span>;
 
 <span class="co">-- Her sey dogruysa, kaydet</span>
 <span class="kw">COMMIT</span>;
@@ -922,11 +938,11 @@
             <div class="before-after">
               <div class="before">
                 <h5>Once</h5>
-                <p>A001: $5000.00<br>A002: $3500.00</p>
+                <p>ACC-001: $125000.00<br>ACC-003: $5420.50</p>
               </div>
               <div class="after">
                 <h5>COMMIT Sonrasi</h5>
-                <p>A001: $4500.00<br>A002: $4000.00</p>
+                <p>ACC-001: $124500.00<br>ACC-003: $5920.50</p>
               </div>
             </div>
           </div>
@@ -946,7 +962,7 @@
 <span class="co">-- Dusmeyi dene (yeterli bakiye kontrolu ile)</span>
 <span class="kw">UPDATE</span> accounts
 <span class="kw">SET</span> balance = balance - <span class="fl">500.00</span>
-<span class="kw">WHERE</span> account_id = <span class="st">'A001'</span>
+<span class="kw">WHERE</span> id = <span class="st">'ACC-001'</span>
   <span class="kw">AND</span> balance >= <span class="fl">500.00</span>;  <span class="co">-- Sadece yeterli bakiye varsa guncelle</span>
 
 <span class="co">-- Guncellemenin gercekten yapilip yapilmadigini kontrol edin (uygulama kodunda)</span>
@@ -955,7 +971,7 @@
 
 <span class="kw">UPDATE</span> accounts
 <span class="kw">SET</span> balance = balance + <span class="fl">500.00</span>
-<span class="kw">WHERE</span> account_id = <span class="st">'A002'</span>;
+<span class="kw">WHERE</span> id = <span class="st">'ACC-003'</span>;
 
 <span class="kw">COMMIT</span>;</code></pre>
             </div>
@@ -972,14 +988,14 @@
               <pre class="sourceCode sql" id="sol4-3-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
 
 <span class="co">-- Ilk ekleme</span>
-<span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">INSERT INTO</span> products (name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="st">'Product A'</span>, <span class="dv">1</span>, <span class="fl">19.99</span>, <span class="dv">100</span>, <span class="kw">true</span>);
 
 <span class="co">-- Savepoint olustur</span>
 <span class="kw">SAVEPOINT</span> after_first_insert;
 
 <span class="co">-- Ikinci ekleme (basarisiz olabilir)</span>
-<span class="kw">INSERT INTO</span> products (product_name, category_id, price, stock_quantity, active)
+<span class="kw">INSERT INTO</span> products (name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="st">'Product B'</span>, <span class="dv">1</span>, <span class="fl">29.99</span>, <span class="dv">50</span>, <span class="kw">true</span>);
 
 <span class="co">-- Ikinci ekleme basarisiz olursa:</span>
@@ -997,14 +1013,14 @@
 
         <div class="exercise-box">
           <h4>Alistirma 5.1: INSERT veya UPDATE (PostgreSQL)</h4>
-          <p>product_id = 100 ile bir urun ekleyin. Zaten varsa, bunun yerine fiyatini ve stock_quantity'sini guncelleyin.</p>
+          <p>id = 100 ile bir urun ekleyin. Zaten varsa, bunun yerine fiyatini ve stock_quantity'sini guncelleyin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol5-1')">Cozumu Goster</button>
           <div id="sol5-1" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol5-1-code')">
               <pre class="sourceCode sql" id="sol5-1-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL sozdizimi</span>
-<span class="kw">INSERT INTO</span> products (product_id, product_name, category_id, price, stock_quantity, active)
+<span class="kw">INSERT INTO</span> products (id, name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="dv">100</span>, <span class="st">'New Product'</span>, <span class="dv">1</span>, <span class="fl">49.99</span>, <span class="dv">75</span>, <span class="kw">true</span>)
-<span class="kw">ON CONFLICT</span> (product_id)
+<span class="kw">ON CONFLICT</span> (id)
 <span class="kw">DO UPDATE SET</span>
     price = EXCLUDED.price,
     stock_quantity = EXCLUDED.stock_quantity;</code></pre>
@@ -1022,9 +1038,9 @@
           <div id="sol5-2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol5-2-code')">
               <pre class="sourceCode sql" id="sol5-2-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL sozdizimi</span>
-<span class="kw">INSERT INTO</span> products (product_id, product_name, category_id, price, stock_quantity, active)
+<span class="kw">INSERT INTO</span> products (id, name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="dv">100</span>, <span class="st">'New Product'</span>, <span class="dv">1</span>, <span class="fl">49.99</span>, <span class="dv">75</span>, <span class="kw">true</span>)
-<span class="kw">ON CONFLICT</span> (product_id)
+<span class="kw">ON CONFLICT</span> (id)
 <span class="kw">DO NOTHING</span>;</code></pre>
             </div>
           </div>
@@ -1037,9 +1053,9 @@
           <div id="sol5-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol5-3-code')">
               <pre class="sourceCode sql" id="sol5-3-code"><code class="sourceCode sql"><span class="co">-- PostgreSQL sozdizimi</span>
-<span class="kw">INSERT INTO</span> products (product_id, product_name, category_id, price, stock_quantity, active)
+<span class="kw">INSERT INTO</span> products (id, name, category_id, price, stock_quantity, active)
 <span class="kw">VALUES</span> (<span class="dv">2</span>, <span class="st">'Wireless Mouse'</span>, <span class="dv">1</span>, <span class="fl">29.99</span>, <span class="dv">50</span>, <span class="kw">true</span>)
-<span class="kw">ON CONFLICT</span> (product_id)
+<span class="kw">ON CONFLICT</span> (id)
 <span class="kw">DO UPDATE SET</span>
     stock_quantity = products.stock_quantity + EXCLUDED.stock_quantity;</code></pre>
             </div>
@@ -1061,7 +1077,7 @@
               <pre class="sourceCode sql" id="chal1-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
 
 <span class="co">-- Once neyin etkilenecegini gorun</span>
-<span class="kw">SELECT</span> product_name, price, price * <span class="fl">0.80</span> <span class="kw">AS</span> new_price
+<span class="kw">SELECT</span> name, price, price * <span class="fl">0.80</span> <span class="kw">AS</span> new_price
 <span class="kw">FROM</span> products
 <span class="kw">WHERE</span> category_id = <span class="dv">2</span>
   <span class="kw">AND</span> stock_quantity > <span class="dv">0</span>;
@@ -1084,11 +1100,20 @@
           <button class="solution-toggle" onclick="toggleSolution('chal2')">Cozumu Goster</button>
           <div id="chal2" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('chal2-code')">
-              <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="kw">BEGIN</span>;
+              <pre class="sourceCode sql" id="chal2-code"><code class="sourceCode sql"><span class="co">-- Once arsiv tablosunu olusturun</span>
+<span class="kw">CREATE TABLE</span> orders_archive (
+    id <span class="kw">INTEGER PRIMARY KEY</span>,
+    customer_id <span class="kw">INTEGER</span>,
+    order_date <span class="kw">DATE</span>,
+    total_amount <span class="kw">DECIMAL</span>(<span class="dv">12</span>,<span class="dv">2</span>),
+    status <span class="kw">VARCHAR</span>(<span class="dv">20</span>)
+);
+
+<span class="kw">BEGIN</span>;
 
 <span class="co">-- Adim 1: Iptal edilmis siparisleri arsive kopyala</span>
-<span class="kw">INSERT INTO</span> orders_archive (order_id, customer_id, order_date, total_amount, status)
-<span class="kw">SELECT</span> order_id, customer_id, order_date, total_amount, status
+<span class="kw">INSERT INTO</span> orders_archive (id, customer_id, order_date, total_amount, status)
+<span class="kw">SELECT</span> id, customer_id, order_date, total_amount, status
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> status = <span class="st">'cancelled'</span>;
 
@@ -1103,7 +1128,7 @@
 
         <div class="challenge-box">
           <h4>Meydan Okuma 3: Envanter Ayarlamasi</h4>
-          <p>Bir siparisi isleyen bir islem yazin: product_id = 1 icin stock_quantity'yi 5 birim azaltin,
+          <p>Bir siparisi isleyen bir islem yazin: id = 1 icin stock_quantity'yi 5 birim azaltin,
             ancak sadece yeterli stok varsa. Basarili olursa, siparis durumunu da 'shipped' olarak guncelleyin.
             Yetersiz stok varsa, her seyi geri alin.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal3')">Cozumu Goster</button>
@@ -1114,7 +1139,7 @@
 <span class="co">-- Stoku dusurmeyi dene (sadece yeterliyse)</span>
 <span class="kw">UPDATE</span> products
 <span class="kw">SET</span> stock_quantity = stock_quantity - <span class="dv">5</span>
-<span class="kw">WHERE</span> product_id = <span class="dv">1</span>
+<span class="kw">WHERE</span> id = <span class="dv">1</span>
   <span class="kw">AND</span> stock_quantity >= <span class="dv">5</span>;
 
 <span class="co">-- Uygulama kodunda: 1 satir etkilenip etkilenmedigini kontrol edin</span>
@@ -1122,7 +1147,7 @@
 
 <span class="kw">UPDATE</span> orders
 <span class="kw">SET</span> status = <span class="st">'shipped'</span>
-<span class="kw">WHERE</span> order_id = <span class="dv">103</span>;
+<span class="kw">WHERE</span> id = <span class="dv">103</span>;
 
 <span class="kw">COMMIT</span>;
 
@@ -1144,13 +1169,13 @@
 <span class="kw">SET</span> status = <span class="st">'inactive'</span>
 <span class="kw">WHERE</span> <span class="kw">NOT EXISTS</span> (
     <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o
-    <span class="kw">WHERE</span> o.customer_id = c.customer_id
+    <span class="kw">WHERE</span> o.customer_id = c.id
 );
 
 <span class="co">-- NOT IN kullanan alternatif</span>
 <span class="kw">UPDATE</span> customers
 <span class="kw">SET</span> status = <span class="st">'inactive'</span>
-<span class="kw">WHERE</span> customer_id <span class="kw">NOT IN</span> (
+<span class="kw">WHERE</span> id <span class="kw">NOT IN</span> (
     <span class="kw">SELECT DISTINCT</span> customer_id <span class="kw">FROM</span> orders
 );</code></pre>
             </div>
