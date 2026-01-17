@@ -357,7 +357,7 @@
 
             <!-- Normal Formlar Hizli Referans -->
             <section>
-                <h2 id="normal-forms-reference">Normal Formlar Hizli Referans</h2>
+                <h2 id="normal-forms-reference">Normal Formlar (Normal Forms) Hizli Referans</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
@@ -374,12 +374,12 @@
                         </tr>
                         <tr>
                             <td><span class="nf-badge nf-2nf">2NF</span></td>
-                            <td>1NF'de + Kismi bagimlilik yok (anahtar olmayan, bilesik anahtarin bir parcasina bagimli)</td>
+                            <td>1NF'de + Kismi Bagimlilik (Partial Dependency) yok (anahtar olmayan, Bilesik Anahtarin (Composite Key) bir parcasina bagimli)</td>
                             <td>OrderItems(OrderID, ProductID, ProductName) - ProductName sadece ProductID'ye bagimli</td>
                         </tr>
                         <tr>
                             <td><span class="nf-badge nf-3nf">3NF</span></td>
-                            <td>2NF'de + Gecisli bagimlilik yok (anahtar olmayan baska anahtar olmayana bagimli)</td>
+                            <td>2NF'de + Gecisli Bagimlilik (Transitive Dependency) yok (anahtar olmayan baska anahtar olmayana bagimli)</td>
                             <td>Employee(EmpID, DeptID, DeptLocation) - DeptLocation, DeptID'ye bagimli</td>
                         </tr>
                     </tbody>
@@ -388,11 +388,14 @@
 
             <!-- Alistirma 1: Normalizasyon Sorunlarini Tespit Etme -->
             <section>
-                <h2 id="exercise-1">Alistirma 1: Normalizasyon Sorunlarini Tespit Etme</h2>
-                <p>Bir tablonun hangi normal formu ihlal ettigini ve nasil duzeltilecegini ogrenmek.</p>
+                <h2 id="exercise-1">Alistirma 1: Normalizasyon (Normalization) Sorunlarini Tespit Etme</h2>
+                <p>Bir tablonun hangi Normal Form'u ihlal ettigini ve nasil duzeltilecegini ogrenmek.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.1: Birinci Normal Form (1NF) Ihlalleri</h4>
+                    <h4>Alistirma 1.1: Birinci Normal Form (1NF - First Normal Form) Ihlalleri</h4>
+                    <p><strong>Amac:</strong> Bir tabloda 1NF ihlallerini tespit etmeyi ve duzeltmeyi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Bir universitenin ogrenci kayit sistemi var. Asagidaki tablo ogrenci bilgilerini sakliyor ancak bazi tasarim sorunlari mevcut.</p>
+                    <p><strong>Aranacaklar:</strong> Virgul ile ayrilmis degerler, bir hucrede birden fazla veri, tekrarlayan gruplar.</p>
                     <p>Bu tabloyu inceleyin ve 1NF ihlalini tespit edin:</p>
 
                     <div class="bad-design">
@@ -544,8 +547,11 @@ CREATE TABLE student_phones (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.2: Ikinci Normal Form (2NF) Ihlalleri</h4>
-                    <p>Bilesik birincil anahtari olan bu tabloyu inceleyin:</p>
+                    <h4>Alistirma 1.2: Ikinci Normal Form (2NF - Second Normal Form) Ihlalleri</h4>
+                    <p><strong>Amac:</strong> Kismi Bagimlilik (Partial Dependency) sorunlarini tespit etmeyi ve 2NF'ye normalestirmeyi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Bir e-ticaret sistemi siparis kalemlerini takip ediyor. Tablo Bilesik Birincil Anahtar (Composite Primary Key) kullaniyor.</p>
+                    <p><strong>Anahtar Kavram:</strong> 2NF ihlali, bir sutunun Bilesik Anahtarin (Composite Key) tamamina degil, sadece bir parcasina bagimli oldugunda olusur.</p>
+                    <p>Bilesik Birincil Anahtari (Composite Primary Key) olan bu tabloyu inceleyin:</p>
 
                     <div class="bad-design">
                         <strong>order_items Tablosu (PK: order_id, product_id)</strong>
@@ -596,9 +602,9 @@ CREATE TABLE student_phones (
                     <div class="anomaly-box">
                         <strong>Bu tasarimdaki sorunlar:</strong>
                         <ul>
-                            <li><strong>Guncelleme Anomalisi:</strong> Laptop fiyati degisirse, birden fazla satiri guncellemeniz gerekir</li>
-                            <li><strong>Fazlalik:</strong> Urun adi ve fiyati her siparis icin tekrarlanir</li>
-                            <li><strong>Kismi Bagimlilik:</strong> product_name sadece product_id'ye bagimli, tam anahtara degil</li>
+                            <li><strong>Guncelleme Anomalisi (Update Anomaly):</strong> Laptop fiyati degisirse, birden fazla satiri guncellemeniz gerekir</li>
+                            <li><strong>Fazlalik (Redundancy):</strong> Urun adi ve fiyati her siparis icin tekrarlanir</li>
+                            <li><strong>Kismi Bagimlilik (Partial Dependency):</strong> product_name sadece product_id'ye bagimli, tam anahtara degil</li>
                         </ul>
                     </div>
 
@@ -643,8 +649,11 @@ CREATE TABLE order_items (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.3: Ucuncu Normal Form (3NF) Ihlalleri</h4>
-                    <p>Gecisli bagimliliklar icin bu tabloyu inceleyin:</p>
+                    <h4>Alistirma 1.3: Ucuncu Normal Form (3NF - Third Normal Form) Ihlalleri</h4>
+                    <p><strong>Amac:</strong> Gecisli Bagimlilik (Transitive Dependency) sorunlarini tespit etmeyi ve 3NF'ye normalestirmeyi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Bir sirket calisan ve departman bilgilerini ayni tabloda sakliyor. Bu durum veri tutarsizliklarina yol acabilir.</p>
+                    <p><strong>Anahtar Kavram:</strong> 3NF ihlali, bir anahtar olmayan sutun baska bir anahtar olmayan sutuna bagimli oldugunda (A → B → C zinciri) olusur.</p>
+                    <p>Gecisli Bagimliliklar (Transitive Dependencies) icin bu tabloyu inceleyin:</p>
 
                     <div class="bad-design">
                         <strong>employees Tablosu</strong>
@@ -735,16 +744,19 @@ CREATE TABLE employees (
 
             <!-- Alistirma 2: Varlik-Iliski Modelleme -->
             <section>
-                <h2 id="exercise-2">Alistirma 2: Varlik-Iliski Modelleme</h2>
-                <p>Gercek dunya senaryolari icin varliklari, iliskileri ve kardinaliteyi tespit etme pratiği yapin.</p>
+                <h2 id="exercise-2">Alistirma 2: Varlik-Iliski (Entity-Relationship) Modelleme</h2>
+                <p>Gercek dunya senaryolari icin Varliklari (Entities), Iliskileri (Relationships) ve Kardinaliteyi (Cardinality) tespit etme pratiği yapin.</p>
 
                 <div class="concept-box">
-                    Kardinalite, bir varligin kac orneginin bir baska varlikla iliskili oldugunu tanimlar:
-                    <strong>1:1</strong> (bire-bir), <strong>1:N</strong> (birden-coka), <strong>M:N</strong> (coktan-coka).
+                    Kardinalite (Cardinality), bir Varligin (Entity) kac orneginin bir baska Varlik ile iliskili oldugunu tanimlar:
+                    <strong>1:1</strong> (bire-bir / one-to-one), <strong>1:N</strong> (birden-coka / one-to-many), <strong>M:N</strong> (coktan-coka / many-to-many).
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.1: Kutuphane Yonetim Sistemi</h4>
+                    <p><strong>Amac:</strong> Gercek dunya gereksinimlerinden Varlik-Iliski (ER) modeli olusturmayi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Bir kutuphane otomasyonu sistemi tasarliyorsunuz. Kitaplari, yazarlari, uyeleri ve odunc alma islemlerini takip etmeniz gerekiyor.</p>
+                    <p><strong>Aranacaklar:</strong> Her Varlik (Entity) icin ozellikler (attributes), Varliklar arasindaki Iliskiler (Relationships), ve her iliskinin Kardinalitesi (Cardinality).</p>
                     <p>Su gereksinimlere sahip bir kutuphane icin ER modeli tasarlayin:</p>
                     <ul>
                         <li>Kutuphanede baslik, ISBN, yayin yili ve tur bilgilerine sahip kitaplar vardir</li>
@@ -865,8 +877,11 @@ CREATE TABLE loans (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.2: Kardinaliteyi Belirleme</h4>
-                    <p>Her varlik cifti icin kardinaliteyi belirleyin (1:1, 1:N veya M:N):</p>
+                    <h4>Alistirma 2.2: Kardinaliteyi (Cardinality) Belirleme</h4>
+                    <p><strong>Amac:</strong> Farkli iliski turlerini tanimayi ve dogru Kardinaliteyi (Cardinality) belirlemeyi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Farkli is alanlarina ait varlik ciftleri verildi. Her biri icin iliski tipini belirlemeniz gerekiyor.</p>
+                    <p><strong>Ipucu:</strong> "Bir X'in kac tane Y'si olabilir?" ve "Bir Y'nin kac tane X'i olabilir?" sorularini sorun.</p>
+                    <p>Her Varlik (Entity) cifti icin Kardinaliteyi (Cardinality) belirleyin (1:1, 1:N veya M:N):</p>
 
                     <table class="dataset-table">
                         <thead>
@@ -987,17 +1002,20 @@ CREATE TABLE loans (
 
             <!-- Alistirma 3: Birincil ve Yabanci Anahtarlar -->
             <section>
-                <h2 id="exercise-3">Alistirma 3: Anahtarlari Uygulama</h2>
-                <p>Uygun anahtar turlerini secme ve referans butunlugunu uygulama pratiği yapin.</p>
+                <h2 id="exercise-3">Alistirma 3: Anahtarlari (Keys) Uygulama</h2>
+                <p>Uygun anahtar turlerini secme ve Referans Butunlugunu (Referential Integrity) uygulama pratiği yapin.</p>
 
                 <div class="concept-box">
-                    <strong>Vekil anahtarlar</strong> (otomatik olusturulan ID'ler) genellikle kararlilik ve basitlik icin
-                    <strong>dogal anahtarlardan</strong> (is degerleri) tercih edilir.
+                    <strong>Vekil Anahtarlar (Surrogate Keys)</strong> (otomatik olusturulan ID'ler) genellikle kararlilik ve basitlik icin
+                    <strong>Dogal Anahtarlardan (Natural Keys)</strong> (is degerleri) tercih edilir.
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.1: Dogal vs Vekil Anahtarlar</h4>
-                    <p>Her tablo icin dogal anahtar mi yoksa vekil anahtar mi kullanacaginiza karar verin ve nedenini aciklayin:</p>
+                    <h4>Alistirma 3.1: Dogal (Natural) vs Vekil (Surrogate) Anahtarlar</h4>
+                    <p><strong>Amac:</strong> Farkli senaryolar icin dogru anahtar tipini secmeyi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Farkli tablolar icin Birincil Anahtar (Primary Key) secimi yapmaniz gerekiyor.</p>
+                    <p><strong>Karar Kriterleri:</strong> Degerin degisip degismeyecegi, is anlaminin olup olmadigi, performans etkileri.</p>
+                    <p>Her tablo icin Dogal Anahtar (Natural Key) mi yoksa Vekil Anahtar (Surrogate Key) mi kullanacaginiza karar verin ve nedenini aciklayin:</p>
 
                     <ol>
                         <li><strong>Countries tablosu</strong> - ulke kodu (US, UK, TR) ve ulke adi ile</li>
@@ -1076,8 +1094,11 @@ CREATE TABLE log_entries (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.2: Referans Eylemleri</h4>
-                    <p>Bu tablolar verildiginde, her yabanci anahtar icin uygun referans eylemini secin:</p>
+                    <h4>Alistirma 3.2: Referans Eylemleri (Referential Actions)</h4>
+                    <p><strong>Amac:</strong> Yabanci Anahtar (Foreign Key) referans eylemlerini (CASCADE, SET NULL, RESTRICT) dogru kullanmayi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Bir e-ticaret veritabaninda tablolar arasindaki iliskiler icin silme ve guncelleme davranislarini belirlemeniz gerekiyor.</p>
+                    <p><strong>Dusunulecekler:</strong> Veri butunlugu, is gereksinimleri, tarihsel kayitlarin korunmasi.</p>
+                    <p>Bu tablolar verildiginde, her Yabanci Anahtar (Foreign Key) icin uygun referans eylemini secin:</p>
 
                     <pre><code class="language-sql">-- Senaryo: E-ticaret sistemi
 
@@ -1190,12 +1211,15 @@ CREATE TABLE order_items (
 
             <!-- Alistirma 4: Kisitlamalar -->
             <section>
-                <h2 id="exercise-4">Alistirma 4: Kisitlamalari Uygulama</h2>
-                <p>Veritabani duzeyinde is kurallarini uygulamak icin kisitlamalar yazma pratiği yapin.</p>
+                <h2 id="exercise-4">Alistirma 4: Kisitlamalari (Constraints) Uygulama</h2>
+                <p>Veritabani duzeyinde is kurallarini uygulamak icin Kisitlamalar (Constraints) yazma pratiği yapin.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.1: Kisitlamalar Yazma</h4>
-                    <p>Bu is kurallari icin uygun kisitlamalarla tablolar olusturun:</p>
+                    <h4>Alistirma 4.1: Kisitlamalar (Constraints) Yazma</h4>
+                    <p><strong>Amac:</strong> CHECK, UNIQUE, NOT NULL gibi kisitlamalar kullanarak is kurallarini veritabani duzeyinde uygulamayi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Bir insan kaynaklari sistemi ve urun yonetim sistemi icin veri dogrulama kurallari belirlemeniz gerekiyor.</p>
+                    <p><strong>Kisitlama Turleri:</strong> CHECK (deger kontrolu), UNIQUE (benzersizlik), NOT NULL (bos deger yasagi), DEFAULT (varsayilan deger).</p>
+                    <p>Bu is kurallari icin uygun Kisitlamalarla (Constraints) tablolar olusturun:</p>
 
                     <ol>
                         <li><strong>Employees tablosu:</strong>
@@ -1288,8 +1312,11 @@ VALUES (1, 'Widget', 99.99, 150, 100);
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.2: Cok Sutunlu Kisitlamalar</h4>
-                    <p>Birden fazla sutun iceren kisitlamalar yazin:</p>
+                    <h4>Alistirma 4.2: Cok Sutunlu Kisitlamalar (Multi-Column Constraints)</h4>
+                    <p><strong>Amac:</strong> Birden fazla sutunu iceren karmasik kisitlamalar yazmayi ogrenmek.</p>
+                    <p><strong>Senaryo:</strong> Is kurallari bazen tek bir sutun yerine birden fazla sutunun birlikte degerlendirilmesini gerektirir.</p>
+                    <p><strong>Ornekler:</strong> Tarih araligi kontrolu, benzersiz kombinasyonlar, cakisma onleme.</p>
+                    <p>Birden fazla sutun iceren Kisitlamalar (Constraints) yazin:</p>
 
                     <ol>
                         <li><strong>Events tablosu:</strong> end_date, start_date'den sonra olmali</li>
@@ -1356,11 +1383,14 @@ CREATE TABLE appointments (
 
             <!-- Meydan Okuma Alistirmalari -->
             <section>
-                <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
-                <p>Tam veritabani semalari tasarlamak icin tum kavramlari uygulayin.</p>
+                <h2 id="challenge-exercises">Meydan Okuma Alistirmalari (Challenge Exercises)</h2>
+                <p>Tam veritabani semalari (database schemas) tasarlamak icin tum kavramlari uygulayin.</p>
 
                 <div class="challenge-box">
                     <h4>Meydan Okuma 1: Otel Rezervasyon Sistemi</h4>
+                    <p><strong>Zorluk Seviyesi:</strong> Orta-Ileri</p>
+                    <p><strong>Amac:</strong> Gercek dunya gereksinimlerinden normallestirilmis bir veritabani semasi tasarlamak.</p>
+                    <p><strong>Uygulanacak Kavramlar:</strong> Varlik-Iliski (ER) modelleme, Normalizasyon (Normalization), Kisitlamalar (Constraints), Referans Butunlugu (Referential Integrity).</p>
                     <p>Su gereksinimlere sahip bir otel rezervasyon sistemi icin veritabani semasi tasarlayin:</p>
                     <ul>
                         <li>Otellerin farkli tiplerde (single, double, suit) birden fazla odasi vardir</li>
@@ -1498,6 +1528,9 @@ CREATE INDEX idx_reservations_room_dates
 
                 <div class="challenge-box">
                     <h4>Meydan Okuma 2: Tasarim Sorunlarini Tespit Etme ve Duzeltme</h4>
+                    <p><strong>Zorluk Seviyesi:</strong> Orta</p>
+                    <p><strong>Amac:</strong> Mevcut bir tasarimdaki tum normalizasyon ihlallerini ve veri anomalilerini tespit edip duzeltmek.</p>
+                    <p><strong>Aranacaklar:</strong> 1NF, 2NF, 3NF ihlalleri, Fazlalik (Redundancy), eksik kisitlamalar, hesaplanan alanlar.</p>
                     <p>Bu tablonun birden fazla tasarim sorunu var. Tum sorunlari tespit edin ve normallestirilmis bir tasarim olusturun:</p>
 
                     <div class="bad-design">
@@ -1634,7 +1667,10 @@ GROUP BY i.invoice_id, i.invoice_number, i.invoice_date,
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Meydan Okuma 3: Ne Zaman Denormalize Edilir</h4>
+                    <h4>Meydan Okuma 3: Ne Zaman Denormalize (Denormalization) Edilir</h4>
+                    <p><strong>Zorluk Seviyesi:</strong> Ileri</p>
+                    <p><strong>Amac:</strong> Performans icin ne zaman ve nasil Denormalizasyon (Denormalization) yapilacagini ogrenmek.</p>
+                    <p><strong>Dikkat:</strong> Denormalizasyon, Fazlalik (Redundancy) ve veri tutarsizligi riski getirir. Sadece performans sorunu kanitlandığında uygulanmalidir.</p>
                     <p>Tam normallestirilmis bir e-ticaret veritabaniniz var, ancak su sorgular yavas:</p>
 
                     <ol>
@@ -1763,50 +1799,50 @@ CREATE TRIGGER trg_update_product_rating
 
             <!-- Temel Cikarilar -->
             <section>
-                <h2 id="key-takeaways">Temel Cikarilar</h2>
+                <h2 id="key-takeaways">Temel Cikarilar (Key Takeaways)</h2>
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Kavram</th>
-                            <th>En Iyi Uygulama</th>
+                            <th>Kavram (Concept)</th>
+                            <th>En Iyi Uygulama (Best Practice)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Normalizasyon</td>
-                            <td>3NF ile baslayin; sadece performans icin gerekli oldugu kanitlandiginda denormalize edin</td>
+                            <td>Normalizasyon (Normalization)</td>
+                            <td>3NF ile baslayin; sadece performans icin gerekli oldugu kanitlandiginda Denormalize (Denormalization) edin</td>
                         </tr>
                         <tr>
-                            <td>1NF</td>
+                            <td>1NF (First Normal Form)</td>
                             <td>Her hucre bir deger icerir; virgul ayirmali listeler yok</td>
                         </tr>
                         <tr>
-                            <td>2NF</td>
-                            <td>Bilesik anahtarlarda kismi bagimlilik yok</td>
+                            <td>2NF (Second Normal Form)</td>
+                            <td>Bilesik Anahtarlarda (Composite Keys) Kismi Bagimlilik (Partial Dependency) yok</td>
                         </tr>
                         <tr>
-                            <td>3NF</td>
-                            <td>Gecisli bagimlilik yok (anahtar olmayan → anahtar olmayan)</td>
+                            <td>3NF (Third Normal Form)</td>
+                            <td>Gecisli Bagimlilik (Transitive Dependency) yok (anahtar olmayan → anahtar olmayan)</td>
                         </tr>
                         <tr>
-                            <td>Birincil Anahtarlar</td>
-                            <td>Cogu tablo icin vekil anahtarlar tercih edin; kararli referans verileri icin dogal anahtarlar</td>
+                            <td>Birincil Anahtarlar (Primary Keys)</td>
+                            <td>Cogu tablo icin Vekil Anahtarlar (Surrogate Keys) tercih edin; kararli referans verileri icin Dogal Anahtarlar (Natural Keys)</td>
                         </tr>
                         <tr>
-                            <td>Yabanci Anahtarlar</td>
-                            <td>Her zaman FK kisitlamalarini tanimlayin; referans eylemlerini dikkatli secin</td>
+                            <td>Yabanci Anahtarlar (Foreign Keys)</td>
+                            <td>Her zaman FK kisitlamalarini tanimlayin; Referans Eylemlerini (Referential Actions) dikkatli secin</td>
                         </tr>
                         <tr>
-                            <td>M:N Iliskileri</td>
-                            <td>Bilesik PK'lar veya vekil PK ile baglanti tablolari kullanin</td>
+                            <td>M:N Iliskileri (Many-to-Many)</td>
+                            <td>Bilesik PK'lar veya Vekil PK ile Baglanti Tablolari (Junction Tables) kullanin</td>
                         </tr>
                         <tr>
-                            <td>Kisitlamalar</td>
+                            <td>Kisitlamalar (Constraints)</td>
                             <td>Is kurallarini veritabani duzeyinde CHECK, UNIQUE, NOT NULL ile uygulayin</td>
                         </tr>
                         <tr>
-                            <td>Denormalizasyon</td>
-                            <td>Kararlari belgeleyin; tutarlilik saglamak icin trigger veya gerceklestirilmis gorunumler kullanin</td>
+                            <td>Denormalizasyon (Denormalization)</td>
+                            <td>Kararlari belgeleyin; tutarlilik saglamak icin Trigger veya Gerceklestirilmis Gorunumler (Materialized Views) kullanin</td>
                         </tr>
                     </tbody>
                 </table>

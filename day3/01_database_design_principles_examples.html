@@ -392,6 +392,9 @@
 
                 <div class="exercise-box">
                     <h4>Exercise 1.1: First Normal Form (1NF) Violations</h4>
+                    <p><strong>Goal:</strong> Learn to identify and fix 1NF violations in a table.</p>
+                    <p><strong>Scenario:</strong> A university has a student registration system. The table below stores student information but has some design problems.</p>
+                    <p><strong>What to Look For:</strong> Comma-separated values, multiple values in a single cell, repeating groups.</p>
                     <p>Examine this table and identify the 1NF violation:</p>
 
                     <div class="bad-design">
@@ -544,6 +547,9 @@ CREATE TABLE student_phones (
 
                 <div class="exercise-box">
                     <h4>Exercise 1.2: Second Normal Form (2NF) Violations</h4>
+                    <p><strong>Goal:</strong> Learn to identify partial dependency issues and normalize to 2NF.</p>
+                    <p><strong>Scenario:</strong> An e-commerce system tracks order items. The table uses a composite primary key.</p>
+                    <p><strong>Key Concept:</strong> A 2NF violation occurs when a column depends on only part of a composite key, not the entire key.</p>
                     <p>Examine this table with a composite primary key:</p>
 
                     <div class="bad-design">
@@ -643,6 +649,9 @@ CREATE TABLE order_items (
 
                 <div class="exercise-box">
                     <h4>Exercise 1.3: Third Normal Form (3NF) Violations</h4>
+                    <p><strong>Goal:</strong> Learn to identify transitive dependency issues and normalize to 3NF.</p>
+                    <p><strong>Scenario:</strong> A company stores employee and department information in the same table. This can lead to data inconsistencies.</p>
+                    <p><strong>Key Concept:</strong> A 3NF violation occurs when a non-key column depends on another non-key column (A → B → C chain).</p>
                     <p>Examine this table for transitive dependencies:</p>
 
                     <div class="bad-design">
@@ -744,6 +753,9 @@ CREATE TABLE employees (
 
                 <div class="exercise-box">
                     <h4>Exercise 2.1: Library Management System</h4>
+                    <p><strong>Goal:</strong> Learn to create an Entity-Relationship (ER) model from real-world requirements.</p>
+                    <p><strong>Scenario:</strong> You are designing a library automation system. You need to track books, authors, members, and borrowing transactions.</p>
+                    <p><strong>What to Look For:</strong> Attributes for each entity, relationships between entities, and cardinality of each relationship.</p>
                     <p>Design an ER model for a library with these requirements:</p>
                     <ul>
                         <li>The library has books with title, ISBN, publication year, and genre</li>
@@ -865,6 +877,9 @@ CREATE TABLE loans (
 
                 <div class="exercise-box">
                     <h4>Exercise 2.2: Identify Cardinality</h4>
+                    <p><strong>Goal:</strong> Learn to recognize different relationship types and determine correct cardinality.</p>
+                    <p><strong>Scenario:</strong> Entity pairs from different business domains are given. You need to determine the relationship type for each.</p>
+                    <p><strong>Hint:</strong> Ask "How many Y can one X have?" and "How many X can one Y have?"</p>
                     <p>For each pair of entities, identify the cardinality (1:1, 1:N, or M:N):</p>
 
                     <table class="dataset-table">
@@ -996,6 +1011,9 @@ CREATE TABLE loans (
 
                 <div class="exercise-box">
                     <h4>Exercise 3.1: Natural vs Surrogate Keys</h4>
+                    <p><strong>Goal:</strong> Learn to choose the right key type for different scenarios.</p>
+                    <p><strong>Scenario:</strong> You need to select primary keys for different tables.</p>
+                    <p><strong>Decision Criteria:</strong> Whether the value can change, whether it has business meaning, performance implications.</p>
                     <p>For each table, decide whether to use a natural key or surrogate key and explain why:</p>
 
                     <ol>
@@ -1076,6 +1094,9 @@ CREATE TABLE log_entries (
 
                 <div class="exercise-box">
                     <h4>Exercise 3.2: Referential Actions</h4>
+                    <p><strong>Goal:</strong> Learn to properly use foreign key referential actions (CASCADE, SET NULL, RESTRICT).</p>
+                    <p><strong>Scenario:</strong> You need to determine delete and update behaviors for relationships in an e-commerce database.</p>
+                    <p><strong>Considerations:</strong> Data integrity, business requirements, preservation of historical records.</p>
                     <p>Given these tables, choose the appropriate referential action for each foreign key:</p>
 
                     <pre><code class="language-sql">-- Scenario: E-commerce system
@@ -1194,6 +1215,9 @@ CREATE TABLE order_items (
 
                 <div class="exercise-box">
                     <h4>Exercise 4.1: Write Constraints</h4>
+                    <p><strong>Goal:</strong> Learn to implement business rules at the database level using CHECK, UNIQUE, NOT NULL, and DEFAULT constraints.</p>
+                    <p><strong>Scenario:</strong> You need to define data validation rules for a human resources system and a product management system.</p>
+                    <p><strong>Constraint Types:</strong> CHECK (value validation), UNIQUE (uniqueness), NOT NULL (required), DEFAULT (default value).</p>
                     <p>Create tables with appropriate constraints for these business rules:</p>
 
                     <ol>
@@ -1288,6 +1312,9 @@ VALUES (1, 'Widget', 99.99, 150, 100);
 
                 <div class="exercise-box">
                     <h4>Exercise 4.2: Multi-Column Constraints</h4>
+                    <p><strong>Goal:</strong> Learn to write complex constraints involving multiple columns.</p>
+                    <p><strong>Scenario:</strong> Business rules sometimes require evaluating multiple columns together rather than a single column.</p>
+                    <p><strong>Examples:</strong> Date range validation, unique combinations, overlap prevention.</p>
                     <p>Write constraints that involve multiple columns:</p>
 
                     <ol>
@@ -1360,6 +1387,9 @@ CREATE TABLE appointments (
 
                 <div class="challenge-box">
                     <h4>Challenge 1: Hotel Booking System</h4>
+                    <p><strong>Difficulty Level:</strong> Intermediate-Advanced</p>
+                    <p><strong>Goal:</strong> Design a normalized database schema from real-world requirements.</p>
+                    <p><strong>Concepts Applied:</strong> ER Modeling, Normalization, Constraints, Referential Integrity.</p>
                     <p>Design a database schema for a hotel booking system with these requirements:</p>
                     <ul>
                         <li>Hotels have multiple rooms of different types (single, double, suite)</li>
@@ -1497,6 +1527,9 @@ CREATE INDEX idx_reservations_room_dates
 
                 <div class="challenge-box">
                     <h4>Challenge 2: Identify and Fix Design Problems</h4>
+                    <p><strong>Difficulty Level:</strong> Intermediate</p>
+                    <p><strong>Goal:</strong> Identify and fix all normalization violations and data anomalies in an existing design.</p>
+                    <p><strong>What to Look For:</strong> 1NF, 2NF, 3NF violations, redundancy, missing constraints, calculated fields.</p>
                     <p>This table has multiple design problems. Identify all issues and create a normalized design:</p>
 
                     <div class="bad-design">
@@ -1634,6 +1667,9 @@ GROUP BY i.invoice_id, i.invoice_number, i.invoice_date,
 
                 <div class="challenge-box">
                     <h4>Challenge 3: When to Denormalize</h4>
+                    <p><strong>Difficulty Level:</strong> Advanced</p>
+                    <p><strong>Goal:</strong> Learn when and how to denormalize for performance.</p>
+                    <p><strong>Warning:</strong> Denormalization introduces redundancy and risk of data inconsistency. Only apply when performance issues are proven.</p>
                     <p>You have a fully normalized e-commerce database, but these queries are slow:</p>
 
                     <ol>
