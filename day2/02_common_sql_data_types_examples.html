@@ -397,31 +397,31 @@
                     </tbody>
                 </table>
 
-                <h4>user_profiles Table (JSON example)</h4>
-                <p>Shows JSON data type usage:</p>
+                <h4>products Table (JSON example)</h4>
+                <p>Shows JSONB data type usage in the attributes column:</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
-                            <th>user_id<br><span class="type-badge type-numeric">INTEGER</span></th>
-                            <th>username<br><span class="type-badge type-string">VARCHAR(50)</span></th>
-                            <th>preferences<br><span class="type-badge type-json">JSONB</span></th>
+                            <th>id<br><span class="type-badge type-numeric">INTEGER</span></th>
+                            <th>name<br><span class="type-badge type-string">VARCHAR(255)</span></th>
+                            <th>attributes<br><span class="type-badge type-json">JSONB</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>john_doe</td>
-                            <td>{"theme": "dark", "language": "en", "notifications": true}</td>
+                            <td>ProBook Laptop 15"</td>
+                            <td>{"brand": "TechPro", "processor": "Intel i7", "ram": "16GB", "warranty_months": 24}</td>
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>jane_smith</td>
-                            <td>{"theme": "light", "language": "fr", "notifications": false}</td>
+                            <td>5</td>
+                            <td>SmartPhone Pro Max</td>
+                            <td>{"brand": "TechMobile", "screen": "6.7 inch", "5g": true, "battery": "5000mAh"}</td>
                         </tr>
                         <tr>
-                            <td>3</td>
-                            <td>bob_wilson</td>
-                            <td>{"theme": "dark", "language": "en", "notifications": true, "timezone": "UTC"}</td>
+                            <td>8</td>
+                            <td>Wireless Headphones Pro</td>
+                            <td>{"brand": "AudioMax", "battery": "30h", "noise_canceling": true}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -753,19 +753,19 @@ SELECT
                     <h4>Exercise 3.3: Pattern Matching with Different Data Types</h4>
                     <p>Using the <code>products</code> table, write queries to:</p>
                     <ol>
-                        <li>Find products where SKU starts with 'MON' or 'MOU'</li>
+                        <li>Find products where SKU starts with 'COMP' or 'PHONE'</li>
                         <li>Find products with names containing numbers</li>
                         <li>Find products where SKU ends with '3', '4', or '5'</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
                     <div id="solution3_3" class="solution-box">
-                        <pre><code class="language-sql">-- 1. SKU starts with 'MON' or 'MOU'
+                        <pre><code class="language-sql">-- 1. SKU starts with 'COMP' or 'PHONE'
 SELECT name, sku
 FROM products
-WHERE sku LIKE 'MON%' OR sku LIKE 'MOU%';
+WHERE sku LIKE 'COMP%' OR sku LIKE 'PHONE%';
 -- Or using regular expression (PostgreSQL):
--- WHERE sku ~ '^MO[NU]'
+-- WHERE sku ~ '^(COMP|PHONE)'
 
 -- 2. Names containing numbers
 SELECT name, sku
@@ -777,8 +777,9 @@ WHERE name ~ '[0-9]';  -- PostgreSQL
 -- 3. SKU ends with 3, 4, or 5
 SELECT name, sku
 FROM products
-WHERE sku LIKE '%-00[345]';
--- Or: WHERE RIGHT(sku, 1) IN ('3', '4', '5')</code></pre>
+WHERE RIGHT(sku, 1) IN ('3', '4', '5');
+-- Or using regular expression (PostgreSQL):
+-- WHERE sku ~ '[345]$'</code></pre>
                         <p><strong>Results for query 1:</strong></p>
                         <table class="dataset-table">
                             <tr>
@@ -786,12 +787,12 @@ WHERE sku LIKE '%-00[345]';
                                 <th>sku</th>
                             </tr>
                             <tr>
-                                <td>Wireless Mouse</td>
-                                <td>MOU-002</td>
+                                <td>ProBook Laptop 15"</td>
+                                <td>COMP-001</td>
                             </tr>
                             <tr>
-                                <td>Monitor 27"</td>
-                                <td>MON-004</td>
+                                <td>SmartPhone Pro Max</td>
+                                <td>PHONE-001</td>
                             </tr>
                         </table>
                     </div>
@@ -810,10 +811,10 @@ WHERE sku LIKE '%-00[345]';
 
                 <div class="exercise-box">
                     <h4>Exercise 4.1: Date Extraction and Formatting</h4>
-                    <p>Using the <code>events</code> table, write queries to:</p>
+                    <p>Using the <code>orders</code> table, write queries to:</p>
                     <ol>
-                        <li>Extract the year, month, and day from event_date</li>
-                        <li>Get the day of the week for each event</li>
+                        <li>Extract the year, month, and day from order_date</li>
+                        <li>Get the day of the week for each order</li>
                         <li>Format the date as 'Month DD, YYYY' (e.g., 'March 15, 2024')</li>
                     </ol>
 
@@ -821,91 +822,96 @@ WHERE sku LIKE '%-00[345]';
                     <div id="solution4_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    event_name,
-    event_date,
-    EXTRACT(YEAR FROM event_date) AS year,
-    EXTRACT(MONTH FROM event_date) AS month,
-    EXTRACT(DAY FROM event_date) AS day,
-    TO_CHAR(event_date, 'Day') AS day_of_week,
-    TO_CHAR(event_date, 'Month DD, YYYY') AS formatted_date
-FROM events;
+    order_number,
+    order_date,
+    EXTRACT(YEAR FROM order_date) AS year,
+    EXTRACT(MONTH FROM order_date) AS month,
+    EXTRACT(DAY FROM order_date) AS day,
+    TO_CHAR(order_date, 'Day') AS day_of_week,
+    TO_CHAR(order_date, 'Month DD, YYYY') AS formatted_date
+FROM orders;
 
 -- MySQL
 SELECT
-    event_name,
-    event_date,
-    YEAR(event_date) AS year,
-    MONTH(event_date) AS month,
-    DAY(event_date) AS day,
-    DAYNAME(event_date) AS day_of_week,
-    DATE_FORMAT(event_date, '%M %d, %Y') AS formatted_date
-FROM events;
+    order_number,
+    order_date,
+    YEAR(order_date) AS year,
+    MONTH(order_date) AS month,
+    DAY(order_date) AS day,
+    DAYNAME(order_date) AS day_of_week,
+    DATE_FORMAT(order_date, '%M %d, %Y') AS formatted_date
+FROM orders;
 
 -- SQL Server
 SELECT
-    event_name,
-    event_date,
-    YEAR(event_date) AS year,
-    MONTH(event_date) AS month,
-    DAY(event_date) AS day,
-    DATENAME(WEEKDAY, event_date) AS day_of_week,
-    FORMAT(event_date, 'MMMM dd, yyyy') AS formatted_date
-FROM events;</code></pre>
+    order_number,
+    order_date,
+    YEAR(order_date) AS year,
+    MONTH(order_date) AS month,
+    DAY(order_date) AS day,
+    DATENAME(WEEKDAY, order_date) AS day_of_week,
+    FORMAT(order_date, 'MMMM dd, yyyy') AS formatted_date
+FROM orders;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 4.2: Date Arithmetic</h4>
-                    <p>Using the <code>events</code> table:</p>
+                    <p>Using the <code>orders</code> table:</p>
                     <ol>
-                        <li>Calculate how many days until each event (from today)</li>
-                        <li>Find events that were created more than 5 days before the event date</li>
-                        <li>Calculate the end time of each event (start_time + duration)</li>
+                        <li>Calculate how many days between order_date and required_date</li>
+                        <li>Find orders where required_date is more than 7 days after order_date</li>
+                        <li>Calculate how many days it took to ship (shipped_date - order_date)</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
                     <div id="solution4_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Days until each event
+-- 1. Days between order and required date
 SELECT
-    event_name,
-    event_date,
-    event_date - CURRENT_DATE AS days_until
-FROM events;
+    order_number,
+    order_date,
+    required_date,
+    required_date - order_date AS days_until_required
+FROM orders
+WHERE required_date IS NOT NULL;
 
--- 2. Events created more than 5 days before event date
+-- 2. Orders with required_date more than 7 days after order
 SELECT
-    event_name,
-    created_at::DATE AS created_date,
-    event_date,
-    event_date - created_at::DATE AS days_before
-FROM events
-WHERE event_date - created_at::DATE > 5;
+    order_number,
+    order_date,
+    required_date,
+    required_date - order_date AS days_difference
+FROM orders
+WHERE required_date - order_date > 7;
 
--- 3. Calculate end time
+-- 3. Days to ship
 SELECT
-    event_name,
-    start_time,
-    duration,
-    start_time + duration AS end_time
-FROM events;
+    order_number,
+    order_date,
+    shipped_date,
+    shipped_date - order_date AS days_to_ship
+FROM orders
+WHERE shipped_date IS NOT NULL;
 
 -- MySQL
--- 1. Days until each event
+-- 1. Days between order and required date
 SELECT
-    event_name,
-    event_date,
-    DATEDIFF(event_date, CURDATE()) AS days_until
-FROM events;
+    order_number,
+    order_date,
+    required_date,
+    DATEDIFF(required_date, order_date) AS days_until_required
+FROM orders
+WHERE required_date IS NOT NULL;
 
--- 2. Events created more than 5 days before
+-- 2. Orders with required_date more than 7 days after order
 SELECT
-    event_name,
-    DATE(created_at) AS created_date,
-    event_date,
-    DATEDIFF(event_date, DATE(created_at)) AS days_before
-FROM events
-WHERE DATEDIFF(event_date, DATE(created_at)) > 5;</code></pre>
+    order_number,
+    order_date,
+    required_date,
+    DATEDIFF(required_date, order_date) AS days_difference
+FROM orders
+WHERE DATEDIFF(required_date, order_date) > 7;</code></pre>
                     </div>
                 </div>
 
@@ -949,50 +955,52 @@ SELECT
 
                 <div class="exercise-box">
                     <h4>Exercise 5.1: Querying JSON Data</h4>
-                    <p>Using the <code>user_profiles</code> table, write queries to:</p>
+                    <p>Using the <code>products</code> table with its <code>attributes</code> JSONB column, write queries to:</p>
                     <ol>
-                        <li>Get the theme preference for all users</li>
-                        <li>Find users who have notifications enabled</li>
-                        <li>Find users who have a timezone setting</li>
+                        <li>Get the brand from product attributes</li>
+                        <li>Find products that have 5G support (5g = true)</li>
+                        <li>Find products that have a warranty_months attribute</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
                     <div id="solution5_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get theme preference
+-- 1. Get brand from attributes
 SELECT
-    username,
-    preferences->>'theme' AS theme
-FROM user_profiles;
+    name,
+    attributes->>'brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Users with notifications enabled
-SELECT username, preferences
-FROM user_profiles
-WHERE (preferences->>'notifications')::BOOLEAN = TRUE;
--- Or: WHERE preferences @> '{"notifications": true}'
+-- 2. Products with 5G support
+SELECT name, attributes
+FROM products
+WHERE (attributes->>'5g')::BOOLEAN = TRUE;
+-- Or: WHERE attributes @> '{"5g": true}'
 
--- 3. Users with timezone setting
-SELECT username, preferences->>'timezone' AS timezone
-FROM user_profiles
-WHERE preferences ? 'timezone';
+-- 3. Products with warranty_months attribute
+SELECT name, attributes->>'warranty_months' AS warranty_months
+FROM products
+WHERE attributes ? 'warranty_months';
 
 -- MySQL
--- 1. Get theme preference
+-- 1. Get brand from attributes
 SELECT
-    username,
-    JSON_EXTRACT(preferences, '$.theme') AS theme
-    -- Or: preferences->>'$.theme'
-FROM user_profiles;
+    name,
+    JSON_EXTRACT(attributes, '$.brand') AS brand
+    -- Or: attributes->>'$.brand'
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Users with notifications enabled
-SELECT username, preferences
-FROM user_profiles
-WHERE JSON_EXTRACT(preferences, '$.notifications') = true;
+-- 2. Products with 5G support
+SELECT name, attributes
+FROM products
+WHERE JSON_EXTRACT(attributes, '$.5g') = true;
 
--- 3. Users with timezone setting
-SELECT username, JSON_EXTRACT(preferences, '$.timezone') AS timezone
-FROM user_profiles
-WHERE JSON_CONTAINS_PATH(preferences, 'one', '$.timezone');</code></pre>
+-- 3. Products with warranty_months attribute
+SELECT name, JSON_EXTRACT(attributes, '$.warranty_months') AS warranty_months
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.warranty_months');</code></pre>
                     </div>
                 </div>
 
@@ -1000,31 +1008,33 @@ WHERE JSON_CONTAINS_PATH(preferences, 'one', '$.timezone');</code></pre>
                     <h4>Exercise 5.2: Modifying JSON Data</h4>
                     <p>Write queries to:</p>
                     <ol>
-                        <li>Add a new key "email_digest" with value "weekly" to all user preferences</li>
-                        <li>Update the theme to "system" for user john_doe</li>
+                        <li>Add a new key "eco_friendly" with value true to all product attributes</li>
+                        <li>Update the warranty_months to 36 for product 'ProBook Laptop 15"'</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
                     <div id="solution5_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Add new key to all users
-UPDATE user_profiles
-SET preferences = preferences || '{"email_digest": "weekly"}'::jsonb;
+-- 1. Add new key to all products
+UPDATE products
+SET attributes = attributes || '{"eco_friendly": true}'::jsonb
+WHERE attributes IS NOT NULL;
 
--- 2. Update theme for specific user
-UPDATE user_profiles
-SET preferences = jsonb_set(preferences, '{theme}', '"system"')
-WHERE username = 'john_doe';
+-- 2. Update warranty_months for specific product
+UPDATE products
+SET attributes = jsonb_set(attributes, '{warranty_months}', '36')
+WHERE name = 'ProBook Laptop 15"';
 
 -- MySQL
--- 1. Add new key to all users
-UPDATE user_profiles
-SET preferences = JSON_SET(preferences, '$.email_digest', 'weekly');
+-- 1. Add new key to all products
+UPDATE products
+SET attributes = JSON_SET(attributes, '$.eco_friendly', true)
+WHERE attributes IS NOT NULL;
 
--- 2. Update theme for specific user
-UPDATE user_profiles
-SET preferences = JSON_SET(preferences, '$.theme', 'system')
-WHERE username = 'john_doe';</code></pre>
+-- 2. Update warranty_months for specific product
+UPDATE products
+SET attributes = JSON_SET(attributes, '$.warranty_months', 36)
+WHERE name = 'ProBook Laptop 15"';</code></pre>
                     </div>
                 </div>
             </section>
@@ -1156,146 +1166,140 @@ WHERE id IS NOT NULL;</code></pre>
 
                 <div class="challenge-box">
                     <h4>Challenge 3: Complex Date Calculations</h4>
-                    <p>Write a query that generates a report of all events with:</p>
+                    <p>Write a query that generates a report of all orders with:</p>
                     <ul>
-                        <li>Event name and date</li>
-                        <li>Calculated end time (start_time + duration)</li>
-                        <li>Days from creation to event</li>
-                        <li>Status: 'upcoming', 'today', or 'past' based on current date</li>
+                        <li>Order number and date</li>
+                        <li>Days until required date</li>
+                        <li>Days to ship (if shipped)</li>
+                        <li>Status: 'upcoming', 'today', or 'past' based on required_date</li>
                         <li>Week number of the year</li>
-                        <li>Whether the event is on a weekend</li>
+                        <li>Whether the order was placed on a weekend</li>
                     </ul>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
                     <div id="challenge3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    event_name,
-    event_date,
-    start_time,
-    start_time + duration AS end_time,
+    order_number,
+    order_date,
+    required_date,
+    shipped_date,
 
-    -- Days from creation to event
-    event_date - created_at::DATE AS days_from_creation,
+    -- Days until required
+    required_date - order_date AS days_until_required,
 
-    -- Event status
+    -- Days to ship (if shipped)
+    shipped_date - order_date AS days_to_ship,
+
+    -- Required date status
     CASE
-        WHEN event_date > CURRENT_DATE THEN 'upcoming'
-        WHEN event_date = CURRENT_DATE THEN 'today'
+        WHEN required_date > CURRENT_DATE THEN 'upcoming'
+        WHEN required_date = CURRENT_DATE THEN 'today'
         ELSE 'past'
-    END AS status,
+    END AS required_status,
 
     -- Week number
-    EXTRACT(WEEK FROM event_date) AS week_number,
+    EXTRACT(WEEK FROM order_date) AS week_number,
 
     -- Is weekend (Saturday=6, Sunday=0 in PostgreSQL)
     CASE
-        WHEN EXTRACT(DOW FROM event_date) IN (0, 6) THEN TRUE
+        WHEN EXTRACT(DOW FROM order_date) IN (0, 6) THEN TRUE
         ELSE FALSE
     END AS is_weekend,
 
     -- Day name for reference
-    TO_CHAR(event_date, 'Day') AS day_name
-FROM events
-ORDER BY event_date;
+    TO_CHAR(order_date, 'Day') AS day_name
+FROM orders
+WHERE required_date IS NOT NULL
+ORDER BY order_date;
 
 -- MySQL equivalent
 SELECT
-    event_name,
-    event_date,
-    start_time,
-    ADDTIME(start_time, SEC_TO_TIME(
-        CASE
-            WHEN duration LIKE '%hour%'
-            THEN CAST(REGEXP_SUBSTR(duration, '[0-9]+') AS SIGNED) * 3600
-            ELSE 0
-        END
-    )) AS end_time,
+    order_number,
+    order_date,
+    required_date,
+    shipped_date,
 
-    DATEDIFF(event_date, DATE(created_at)) AS days_from_creation,
+    DATEDIFF(required_date, order_date) AS days_until_required,
+
+    DATEDIFF(shipped_date, order_date) AS days_to_ship,
 
     CASE
-        WHEN event_date > CURDATE() THEN 'upcoming'
-        WHEN event_date = CURDATE() THEN 'today'
+        WHEN required_date > CURDATE() THEN 'upcoming'
+        WHEN required_date = CURDATE() THEN 'today'
         ELSE 'past'
-    END AS status,
+    END AS required_status,
 
-    WEEK(event_date) AS week_number,
+    WEEK(order_date) AS week_number,
 
-    DAYOFWEEK(event_date) IN (1, 7) AS is_weekend,
+    DAYOFWEEK(order_date) IN (1, 7) AS is_weekend,
 
-    DAYNAME(event_date) AS day_name
-FROM events
-ORDER BY event_date;</code></pre>
+    DAYNAME(order_date) AS day_name
+FROM orders
+WHERE required_date IS NOT NULL
+ORDER BY order_date;</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
                     <h4>Challenge 4: JSON Analytics</h4>
-                    <p>Using the user_profiles table, write a query that:</p>
+                    <p>Using the products table with attributes JSONB column, write a query that:</p>
                     <ul>
-                        <li>Counts users by theme preference</li>
-                        <li>Lists all unique languages used</li>
-                        <li>Shows percentage of users with notifications enabled</li>
-                        <li>Identifies users with custom/non-standard preferences (more than 3 keys)</li>
+                        <li>Counts products by brand</li>
+                        <li>Lists all unique brands</li>
+                        <li>Shows percentage of products with 5G support</li>
+                        <li>Identifies products with many attributes (more than 5 keys)</li>
                     </ul>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge4')">Show Solution</button>
                     <div id="challenge4" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- Count users by theme
+-- Count products by brand
 SELECT
-    preferences->>'theme' AS theme,
-    COUNT(*) AS user_count
-FROM user_profiles
-GROUP BY preferences->>'theme';
+    attributes->>'brand' AS brand,
+    COUNT(*) AS product_count
+FROM products
+WHERE attributes IS NOT NULL
+GROUP BY attributes->>'brand';
 
--- List unique languages
-SELECT DISTINCT preferences->>'language' AS language
-FROM user_profiles
-WHERE preferences->>'language' IS NOT NULL;
+-- List unique brands
+SELECT DISTINCT attributes->>'brand' AS brand
+FROM products
+WHERE attributes->>'brand' IS NOT NULL
+ORDER BY brand;
 
--- Percentage with notifications enabled
+-- Percentage with 5G support
 SELECT
     ROUND(
-        100.0 * SUM(CASE WHEN (preferences->>'notifications')::BOOLEAN THEN 1 ELSE 0 END)
+        100.0 * SUM(CASE WHEN (attributes->>'5g')::BOOLEAN THEN 1 ELSE 0 END)
         / COUNT(*),
         2
-    ) AS notification_percentage
-FROM user_profiles;
+    ) AS five_g_percentage
+FROM products
+WHERE attributes IS NOT NULL;
 
--- Users with more than 3 preference keys (custom preferences)
+-- Products with more than 5 attribute keys (feature-rich products)
 SELECT
-    username,
-    preferences,
-    jsonb_object_keys(preferences) AS keys
-FROM user_profiles
-WHERE (
-    SELECT COUNT(*)
-    FROM jsonb_object_keys(preferences)
-) > 3;
-
--- Or more elegantly:
-SELECT
-    username,
-    preferences,
-    jsonb_array_length(jsonb_path_query_array(preferences, '$.keyvalue()')) AS key_count
-FROM user_profiles
-HAVING jsonb_array_length(jsonb_path_query_array(preferences, '$.keyvalue()')) > 3;
+    name,
+    attributes,
+    (SELECT COUNT(*) FROM jsonb_object_keys(attributes)) AS attribute_count
+FROM products
+WHERE attributes IS NOT NULL
+  AND (SELECT COUNT(*) FROM jsonb_object_keys(attributes)) > 5;
 
 -- Combined analytics report
 SELECT
-    (SELECT jsonb_object_agg(theme, cnt)
-     FROM (SELECT preferences->>'theme' AS theme, COUNT(*) AS cnt
-           FROM user_profiles GROUP BY 1) t) AS themes_breakdown,
+    (SELECT jsonb_object_agg(brand, cnt)
+     FROM (SELECT attributes->>'brand' AS brand, COUNT(*) AS cnt
+           FROM products WHERE attributes IS NOT NULL GROUP BY 1) t) AS brands_breakdown,
 
-    (SELECT jsonb_agg(DISTINCT preferences->>'language')
-     FROM user_profiles) AS languages,
+    (SELECT jsonb_agg(DISTINCT attributes->>'brand')
+     FROM products WHERE attributes IS NOT NULL) AS unique_brands,
 
-    (SELECT ROUND(100.0 * AVG(CASE WHEN (preferences->>'notifications')::BOOLEAN
+    (SELECT ROUND(100.0 * AVG(CASE WHEN (attributes->>'5g')::BOOLEAN
                                    THEN 1 ELSE 0 END), 2)
-     FROM user_profiles) AS notification_percentage;</code></pre>
+     FROM products WHERE attributes IS NOT NULL) AS five_g_percentage;</code></pre>
                     </div>
                 </div>
             </section>
