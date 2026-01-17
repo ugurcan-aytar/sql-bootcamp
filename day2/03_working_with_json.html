@@ -393,10 +393,10 @@
             <code>#&gt;&gt;</code> (get at path as text).
             <div class="sourceCode" id="cb1">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Examples</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;'user'-&gt;&gt;'name' <span class="kw">FROM</span> logs <span class="kw">WHERE</span> id = 1;</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> data_column#&gt;&gt;'{address,city}' <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = 1;</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> data_column-&gt;'tags'-&gt;&gt;0 <span class="kw">FROM</span> posts <span class="kw">WHERE</span> id = 1; -- Access first array element</span></code></pre>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Examples (using bootcamp_db)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> attributes-&gt;&gt;'brand' <span class="kw">FROM</span> products <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> attributes#&gt;&gt;'{warranty_months}' <span class="kw">FROM</span> products <span class="kw">WHERE</span> id = 1;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">SELECT</span> attributes-&gt;'colors'-&gt;&gt;0 <span class="kw">FROM</span> products <span class="kw">WHERE</span> id = 1; -- Access first array element</span></code></pre>
             </div>
           </li>
           <li><strong>MySQL</strong>: Uses <code>-&gt;</code> (equivalent to <code>JSON_EXTRACT</code>),
@@ -442,7 +442,7 @@
             <code>?&amp;</code> (all keys exist).
             <div class="sourceCode" id="cb1">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a></span><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column ? 'address';</span><span class="co">-- PostgreSQL Example</span></code></pre>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a></span><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> products <span class="kw">WHERE</span> attributes ? 'brand';</span><span class="co">-- PostgreSQL Example</span></code></pre>
             </div>
           </li>
           <li><strong>MySQL</strong>: <code>JSON_CONTAINS_PATH</code>, <code>JSON_KEYS</code>, <code>JSON_TYPE</code>.
@@ -470,9 +470,9 @@
           <li><strong>PostgreSQL (JSONB)</strong>: <code>@&gt;</code> (contains), <code>&lt;@</code> (is contained by).
             <div class="sourceCode" id="cb1">
               <pre
-                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column-&gt;'tags' @&gt; '"admin"'::jsonb;
-<span class="co">-- PostgreSQL Example: Find users with a specific tag</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> data_column &lt;@ '{"roles": ["editor"], "status": "active"}'::jsonb;</span></code></pre>
+                class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> products <span class="kw">WHERE</span> attributes-&gt;'colors' @&gt; '"Black"'::jsonb;
+<span class="co">-- PostgreSQL Example: Find products with a specific color</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">SELECT</span> * <span class="kw">FROM</span> products <span class="kw">WHERE</span> attributes @&gt; '{"5g": true}'::jsonb;</span></code></pre>
             </div>
           </li>
           <li><strong>MySQL</strong>: <code>JSON_CONTAINS</code>, <code>JSON_SEARCH</code>.
@@ -509,7 +509,7 @@
             <div class="sourceCode" id="cb1">
               <pre
                 class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- PostgreSQL Example</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_user_email <span class="kw">ON</span> users ((data_column<span class="op">-&gt;&gt;</span><span class="st">&#39;email&#39;</span>));</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_product_brand <span class="kw">ON</span> products ((attributes<span class="op">-&gt;&gt;</span><span class="st">&#39;brand&#39;</span>));</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="co">-- MySQL Example (Generated Column)</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> users <span class="kw">ADD</span> <span class="kw">COLUMN</span> email_virtual <span class="dt">VARCHAR</span>(<span class="dv">100</span>) </span>

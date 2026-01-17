@@ -364,182 +364,62 @@
             <!-- Ornek Veri Setleri Bolumu -->
             <section>
                 <h2 id="sample-datasets">Ornek Veri Setleri</h2>
-                <p>Asagidaki tablolar JSON veri yapilarini gostermektedir. Alistirmalar icin referans olarak kullanin.</p>
-
-                <h4>users Tablosu</h4>
-                <p>JSON tercihleri ve adres verileri iceren kullanici profilleri:</p>
-                <table class="dataset-table">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>username</th>
-                            <th>data (JSONB)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>john_doe</td>
-                            <td>
-                                <div class="json-display">{
-  "email": "john@example.com",
-  "age": 32,
-  "address": {
-    "city": "New York",
-    "country": "USA",
-    "zip": "10001"
-  },
-  "tags": ["admin", "developer"],
-  "preferences": {
-    "theme": "dark",
-    "notifications": true
-  }
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>jane_smith</td>
-                            <td>
-                                <div class="json-display">{
-  "email": "jane@example.com",
-  "age": 28,
-  "address": {
-    "city": "London",
-    "country": "UK",
-    "zip": "SW1A 1AA"
-  },
-  "tags": ["editor", "reviewer"],
-  "preferences": {
-    "theme": "light",
-    "notifications": false
-  }
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>bob_wilson</td>
-                            <td>
-                                <div class="json-display">{
-  "email": "bob@example.com",
-  "age": 45,
-  "address": {
-    "city": "Istanbul",
-    "country": "Turkey",
-    "zip": "34000"
-  },
-  "tags": ["admin", "manager"],
-  "preferences": {
-    "theme": "dark",
-    "notifications": true,
-    "language": "tr"
-  }
-}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <p>bootcamp_db veritabanindan asagidaki tablolar JSON veri yapilarini gostermektedir. Alistirmalar icin referans olarak kullanin.</p>
 
                 <h4>products Tablosu</h4>
-                <p>JSON ozellikleri iceren urunler:</p>
+                <p>JSON ozellikleri iceren urunler (marka, ozellikler):</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
                             <th>id</th>
                             <th>name</th>
-                            <th>specs (JSONB)</th>
+                            <th>attributes (JSONB)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Laptop Pro</td>
+                            <td>ProBook Laptop 15"</td>
                             <td>
                                 <div class="json-display">{
-  "brand": "TechCorp",
-  "price": 1299.99,
-  "in_stock": true,
-  "features": ["16GB RAM", "512GB SSD", "15.6 inch"],
-  "dimensions": {"width": 35.5, "height": 1.8, "depth": 24.0},
-  "ratings": [4.5, 4.8, 4.2, 5.0]
+  "brand": "TechPro",
+  "processor": "Intel i7-12700H",
+  "ram": "16GB DDR5",
+  "storage": "512GB NVMe SSD",
+  "display": "15.6 inch FHD",
+  "battery": "72Wh",
+  "warranty_months": 24
 }</div>
                             </td>
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>Wireless Mouse</td>
+                            <td>5</td>
+                            <td>SmartPhone Pro Max</td>
                             <td>
                                 <div class="json-display">{
-  "brand": "PeripheralCo",
-  "price": 49.99,
-  "in_stock": true,
-  "features": ["Bluetooth", "Ergonomic", "Rechargeable"],
-  "colors": ["black", "white", "gray"],
-  "ratings": [4.0, 4.3, 3.9]
+  "brand": "TechMobile",
+  "screen": "6.7 inch OLED",
+  "storage": "256GB",
+  "ram": "12GB",
+  "camera": "108MP + 12MP + 10MP",
+  "battery": "5000mAh",
+  "5g": true,
+  "colors": ["Black", "Silver", "Blue"]
 }</div>
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
-                            <td>Monitor 4K</td>
+                            <td>6</td>
+                            <td>SmartPhone Lite</td>
                             <td>
                                 <div class="json-display">{
-  "brand": "DisplayTech",
-  "price": 599.00,
-  "in_stock": false,
-  "features": ["4K UHD", "HDR", "USB-C"],
-  "dimensions": {"width": 61.0, "height": 36.5, "depth": 5.2},
-  "ratings": [4.7, 4.9, 4.6, 4.8, 5.0]
-}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h4>logs Tablosu</h4>
-                <p>JSON olay verileri iceren uygulama loglari:</p>
-                <table class="dataset-table">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>timestamp</th>
-                            <th>event_data (JSONB)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>2024-03-15 09:30:00</td>
-                            <td>
-                                <div class="json-display">{
-  "event": "login",
-  "user": {"id": 1, "name": "john_doe"},
-  "metadata": {"ip": "192.168.1.100", "browser": "Chrome"}
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2024-03-15 10:15:00</td>
-                            <td>
-                                <div class="json-display">{
-  "event": "purchase",
-  "user": {"id": 1, "name": "john_doe"},
-  "items": [{"product_id": 1, "qty": 1}, {"product_id": 2, "qty": 2}],
-  "total": 1399.97
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>2024-03-15 11:00:00</td>
-                            <td>
-                                <div class="json-display">{
-  "event": "error",
-  "error_code": 500,
-  "message": "Database connection failed",
-  "metadata": {"service": "api", "endpoint": "/users"}
+  "brand": "TechMobile",
+  "screen": "6.1 inch LCD",
+  "storage": "64GB",
+  "ram": "4GB",
+  "camera": "48MP + 2MP",
+  "battery": "4000mAh",
+  "5g": false
 }</div>
                             </td>
                         </tr>
@@ -547,42 +427,62 @@
                 </table>
 
                 <h4>orders Tablosu</h4>
-                <p>Ic ice JSON ogeleri iceren siparisler:</p>
+                <p>JSON metadata iceren siparisler (kaynak, kampanya bilgisi):</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>customer_id</th>
-                            <th>order_data (JSONB)</th>
+                            <th>order_number</th>
+                            <th>metadata (JSONB)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>1</td>
+                            <td>ORD-2023-0001</td>
                             <td>
                                 <div class="json-display">{
-  "status": "completed",
-  "items": [
-    {"name": "Laptop Pro", "price": 1299.99, "qty": 1},
-    {"name": "Wireless Mouse", "price": 49.99, "qty": 2}
-  ],
-  "shipping": {"method": "express", "cost": 25.00},
-  "payment": {"method": "credit_card", "last_four": "4242"}
+  "source": "website",
+  "campaign": "new_year"
 }</div>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>2</td>
+                            <td>ORD-2023-0002</td>
                             <td>
                                 <div class="json-display">{
-  "status": "pending",
-  "items": [
-    {"name": "Monitor 4K", "price": 599.00, "qty": 1}
-  ],
-  "shipping": {"method": "standard", "cost": 10.00},
-  "payment": {"method": "paypal", "email": "jane@example.com"}
+  "source": "mobile_app"
+}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>ORD-2023-0003</td>
+                            <td>
+                                <div class="json-display">{
+  "source": "website",
+  "b2b": true
+}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>ORD-2023-0004</td>
+                            <td>
+                                <div class="json-display">{
+  "source": "sales_rep",
+  "rep_id": 10
+}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>ORD-2023-0008</td>
+                            <td>
+                                <div class="json-display">{
+  "source": "website",
+  "returning_customer": true
 }</div>
                             </td>
                         </tr>
@@ -661,172 +561,192 @@
 
                 <div class="exercise-box">
                     <h4>Alistirma 1.1: Basit Alanlari Cikarma</h4>
-                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>products</code> tablosundaki <code>attributes</code> JSONB sutununu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Tum kullanicilarin e-postasini alin</li>
-                        <li>Tum kullanicilarin kullanici adi ve yasini alin</li>
-                        <li>30 yasindan buyuk kullanicilari alin</li>
+                        <li>Attributes'u olan tum urunlerin markasini alin</li>
+                        <li>Urun adi ve RAM ozelligini alin</li>
+                        <li>Garantisi 12 aydan fazla olan urunleri alin</li>
                     </ol>
 
                     <div class="hint-box">
-                        Karsilastirma yaparken yasi tamsayiya donusturmeyi unutmayin: <code>(data->>'age')::INTEGER</code>
+                        Karsilastirma yaparken warranty_months'i tamsayiya donusturmeyi unutmayin: <code>(attributes->>'warranty_months')::INTEGER</code>
                     </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Tum kullanicilarin e-postasini al
-SELECT username, data->>'email' AS email
-FROM users;
+-- 1. Tum urunlerin markasini al
+SELECT name, attributes->>'brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Kullanici adi ve yasini al
-SELECT username, data->>'age' AS age
-FROM users;
+-- 2. Urun adi ve RAM'i al
+SELECT name, attributes->>'ram' AS ram
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 3. 30 yasindan buyuk kullanicilar
-SELECT username, data->>'age' AS age
-FROM users
-WHERE (data->>'age')::INTEGER > 30;
+-- 3. Garantisi 12 aydan fazla olan urunler
+SELECT name, attributes->>'warranty_months' AS warranty
+FROM products
+WHERE attributes IS NOT NULL
+  AND (attributes->>'warranty_months')::INTEGER > 12;
 
 -- MySQL
--- 1. E-postayi al
-SELECT username, data->>'$.email' AS email
-FROM users;
+-- 1. Markayi al
+SELECT name, attributes->>'$.brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Kullanici adi ve yasini al
-SELECT username, data->>'$.age' AS age
-FROM users;
+-- 2. Urun adi ve RAM'i al
+SELECT name, attributes->>'$.ram' AS ram
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 3. 30 yasindan buyuk kullanicilar
-SELECT username, data->>'$.age' AS age
-FROM users
-WHERE CAST(data->>'$.age' AS UNSIGNED) > 30;
+-- 3. Garantisi 12 aydan fazla olan urunler
+SELECT name, attributes->>'$.warranty_months' AS warranty
+FROM products
+WHERE attributes IS NOT NULL
+  AND CAST(attributes->>'$.warranty_months' AS UNSIGNED) > 12;
 
 -- SQL Server
--- 1. E-postayi al
-SELECT username, JSON_VALUE(data, '$.email') AS email
-FROM users;
+-- 1. Markayi al
+SELECT name, JSON_VALUE(attributes, '$.brand') AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Kullanici adi ve yasini al
-SELECT username, JSON_VALUE(data, '$.age') AS age
-FROM users;
+-- 2. Urun adi ve RAM'i al
+SELECT name, JSON_VALUE(attributes, '$.ram') AS ram
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 3. 30 yasindan buyuk kullanicilar
-SELECT username, JSON_VALUE(data, '$.age') AS age
-FROM users
-WHERE CAST(JSON_VALUE(data, '$.age') AS INT) > 30;</code></pre>
+-- 3. Garantisi 12 aydan fazla olan urunler
+SELECT name, JSON_VALUE(attributes, '$.warranty_months') AS warranty
+FROM products
+WHERE attributes IS NOT NULL
+  AND CAST(JSON_VALUE(attributes, '$.warranty_months') AS INT) > 12;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.2: Ic Ice Alanlari Cikarma</h4>
-                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <h4>Alistirma 1.2: Siparis Metadata'sindan Cikarma</h4>
+                    <p><code>orders</code> tablosundaki <code>metadata</code> JSONB sutununu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Her kullanici icin adres nesnesinden sehri alin</li>
-                        <li>Her kullanici icin tema tercihini alin</li>
-                        <li>ABD'den kullanicilari bulun</li>
+                        <li>Tum siparisler icin siparis kaynagini alin</li>
+                        <li>Campaign alani olan siparisleri alin</li>
+                        <li>Website kaynakli siparisleri bulun</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Ic ice adresten sehri al
-SELECT username, data->'address'->>'city' AS city
-FROM users;
+-- 1. Siparis kaynagini al
+SELECT order_number, metadata->>'source' AS source
+FROM orders
+WHERE metadata IS NOT NULL;
 
--- Yol notasyonu ile alternatif
-SELECT username, data#>>'{address,city}' AS city
-FROM users;
+-- 2. Campaign alani olan siparisler
+SELECT order_number, metadata->>'campaign' AS campaign
+FROM orders
+WHERE metadata ? 'campaign';
 
--- 2. Tema tercihini al
-SELECT username, data->'preferences'->>'theme' AS theme
-FROM users;
-
--- 3. ABD'den kullanicilari bul
-SELECT username, data->'address'->>'country' AS country
-FROM users
-WHERE data->'address'->>'country' = 'USA';
+-- 3. Website'den gelen siparisler
+SELECT order_number, metadata->>'source' AS source
+FROM orders
+WHERE metadata->>'source' = 'website';
 
 -- MySQL
--- 1. Sehri al
-SELECT username, data->>'$.address.city' AS city
-FROM users;
+-- 1. Siparis kaynagini al
+SELECT order_number, metadata->>'$.source' AS source
+FROM orders
+WHERE metadata IS NOT NULL;
 
--- 2. Tema tercihini al
-SELECT username, data->>'$.preferences.theme' AS theme
-FROM users;
+-- 2. Campaign alani olan siparisler
+SELECT order_number, metadata->>'$.campaign' AS campaign
+FROM orders
+WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.campaign');
 
--- 3. ABD'den kullanicilari bul
-SELECT username, data->>'$.address.country' AS country
-FROM users
-WHERE data->>'$.address.country' = 'USA';
+-- 3. Website'den gelen siparisler
+SELECT order_number, metadata->>'$.source' AS source
+FROM orders
+WHERE metadata->>'$.source' = 'website';
 
 -- SQL Server
--- 1. Sehri al
-SELECT username, JSON_VALUE(data, '$.address.city') AS city
-FROM users;
+-- 1. Siparis kaynagini al
+SELECT order_number, JSON_VALUE(metadata, '$.source') AS source
+FROM orders
+WHERE metadata IS NOT NULL;
 
--- 2. Tema tercihini al
-SELECT username, JSON_VALUE(data, '$.preferences.theme') AS theme
-FROM users;
+-- 2. Campaign alani olan siparisler
+SELECT order_number, JSON_VALUE(metadata, '$.campaign') AS campaign
+FROM orders
+WHERE JSON_VALUE(metadata, '$.campaign') IS NOT NULL;
 
--- 3. ABD'den kullanicilari bul
-SELECT username, JSON_VALUE(data, '$.address.country') AS country
-FROM users
-WHERE JSON_VALUE(data, '$.address.country') = 'USA';</code></pre>
+-- 3. Website'den gelen siparisler
+SELECT order_number, JSON_VALUE(metadata, '$.source') AS source
+FROM orders
+WHERE JSON_VALUE(metadata, '$.source') = 'website';</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 1.3: Dizi Elemanlarina Erisim</h4>
-                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Her kullanici icin ilk etiketi alin</li>
-                        <li>Tum etiketleri JSON dizisi olarak alin</li>
-                        <li>Her kullanicinin kac etiketi oldugunu sayın</li>
+                        <li>Colors dizisi olan urunlerden ilk rengi alin</li>
+                        <li>Tum renkleri JSON dizisi olarak alin</li>
+                        <li>Her urunun kac rengi oldugunu sayin</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
                     <div id="solution1_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Ilk etiketi al
-SELECT username, data->'tags'->>0 AS first_tag
-FROM users;
+-- 1. Ilk rengi al
+SELECT name, attributes->'colors'->>0 AS first_color
+FROM products
+WHERE attributes ? 'colors';
 
--- 2. Tum etiketleri JSON dizisi olarak al
-SELECT username, data->'tags' AS tags
-FROM users;
+-- 2. Tum renkleri JSON dizisi olarak al
+SELECT name, attributes->'colors' AS colors
+FROM products
+WHERE attributes ? 'colors';
 
--- 3. Etiketleri say
-SELECT username, jsonb_array_length(data->'tags') AS tag_count
-FROM users;
+-- 3. Renkleri say
+SELECT name, jsonb_array_length(attributes->'colors') AS color_count
+FROM products
+WHERE attributes ? 'colors';
 
 -- MySQL
--- 1. Ilk etiketi al
-SELECT username, data->>'$.tags[0]' AS first_tag
-FROM users;
+-- 1. Ilk rengi al
+SELECT name, attributes->>'$.colors[0]' AS first_color
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
--- 2. Tum etiketleri JSON dizisi olarak al
-SELECT username, data->'$.tags' AS tags
-FROM users;
+-- 2. Tum renkleri JSON dizisi olarak al
+SELECT name, attributes->'$.colors' AS colors
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
--- 3. Etiketleri say
-SELECT username, JSON_LENGTH(data->'$.tags') AS tag_count
-FROM users;
+-- 3. Renkleri say
+SELECT name, JSON_LENGTH(attributes->'$.colors') AS color_count
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
 -- SQL Server
--- 1. Ilk etiketi al
-SELECT username, JSON_VALUE(data, '$.tags[0]') AS first_tag
-FROM users;
+-- 1. Ilk rengi al
+SELECT name, JSON_VALUE(attributes, '$.colors[0]') AS first_color
+FROM products
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;
 
--- 2. Tum etiketleri JSON dizisi olarak al
-SELECT username, JSON_QUERY(data, '$.tags') AS tags
-FROM users;
+-- 2. Tum renkleri JSON dizisi olarak al
+SELECT name, JSON_QUERY(attributes, '$.colors') AS colors
+FROM products
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;
 
--- 3. Etiketleri say (OPENJSON gerektirir)
-SELECT username,
-       (SELECT COUNT(*) FROM OPENJSON(data, '$.tags')) AS tag_count
-FROM users;</code></pre>
+-- 3. Renkleri say (OPENJSON gerektirir)
+SELECT name,
+       (SELECT COUNT(*) FROM OPENJSON(attributes, '$.colors')) AS color_count
+FROM products
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;</code></pre>
                     </div>
                 </div>
             </section>
@@ -843,132 +763,117 @@ FROM users;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.1: Anahtar Varligini Kontrol Etme</h4>
-                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>products</code> ve <code>orders</code> tablolarini kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>"language" tercihi ayarlanmis kullanicilari bulun</li>
-                        <li>Tercihleri "notifications" anahtari iceren kullanicilari bulun</li>
-                        <li>Ozelliklerinde "colors" alani olan urunleri bulun</li>
+                        <li>Ozelliklerinde "5g" alani olan urunleri bulun</li>
+                        <li>"warranty_months" alani olan urunleri bulun</li>
+                        <li>Metadata'sinda "campaign" alani olan siparisleri bulun</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Dil tercihi olan kullanicilar
-SELECT username, data->'preferences'->>'language' AS language
-FROM users
-WHERE data->'preferences' ? 'language';
-
--- 2. Notifications anahtari olan kullanicilar
-SELECT username
-FROM users
-WHERE data->'preferences' ? 'notifications';
-
--- 3. Colors alani olan urunler
-SELECT name
+-- 1. 5g alani olan urunler
+SELECT name, attributes->>'5g' AS has_5g
 FROM products
-WHERE specs ? 'colors';
+WHERE attributes ? '5g';
+
+-- 2. warranty_months alani olan urunler
+SELECT name, attributes->>'warranty_months' AS warranty
+FROM products
+WHERE attributes ? 'warranty_months';
+
+-- 3. Campaign alani olan siparisler
+SELECT order_number, metadata->>'campaign' AS campaign
+FROM orders
+WHERE metadata ? 'campaign';
 
 -- MySQL
--- 1. Dil tercihi olan kullanicilar
-SELECT username, data->>'$.preferences.language' AS language
-FROM users
-WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.language');
-
--- 2. Notifications anahtari olan kullanicilar
-SELECT username
-FROM users
-WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.notifications');
-
--- 3. Colors alani olan urunler
-SELECT name
+-- 1. 5g alani olan urunler
+SELECT name, attributes->>'$.5g' AS has_5g
 FROM products
-WHERE JSON_CONTAINS_PATH(specs, 'one', '$.colors');
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.5g');
+
+-- 2. warranty_months alani olan urunler
+SELECT name, attributes->>'$.warranty_months' AS warranty
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.warranty_months');
+
+-- 3. Campaign alani olan siparisler
+SELECT order_number, metadata->>'$.campaign' AS campaign
+FROM orders
+WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.campaign');
 
 -- SQL Server
--- 1. Dil tercihi olan kullanicilar
-SELECT username, JSON_VALUE(data, '$.preferences.language') AS language
-FROM users
-WHERE JSON_VALUE(data, '$.preferences.language') IS NOT NULL;
+-- 1. 5g alani olan urunler
+SELECT name, JSON_VALUE(attributes, '$.5g') AS has_5g
+FROM products
+WHERE JSON_VALUE(attributes, '$.5g') IS NOT NULL;
 
--- 2. Notifications anahtari olan kullanicilar
-SELECT username
-FROM users
-WHERE JSON_VALUE(data, '$.preferences.notifications') IS NOT NULL;</code></pre>
-                        <p><strong>Sorgu 1 icin Sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>username</th>
-                                <th>language</th>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>tr</td>
-                            </tr>
-                        </table>
+-- 2. warranty_months alani olan urunler
+SELECT name, JSON_VALUE(attributes, '$.warranty_months') AS warranty
+FROM products
+WHERE JSON_VALUE(attributes, '$.warranty_months') IS NOT NULL;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.2: Icerik Sorgulari</h4>
-                    <p><code>users</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>products</code> ve <code>orders</code> tablolarini kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Etiketlerinde "admin" olan kullanicilari bulun</li>
-                        <li>Koyu tema tercihine sahip kullanicilari bulun</li>
-                        <li>Turkiye'den ve bildirimleri acik olan kullanicilari bulun</li>
+                        <li>5G destegi olan urunleri bulun (5g = true)</li>
+                        <li>"TechMobile" markasindaki urunleri bulun</li>
+                        <li>B2B siparisleri bulun (metadata'da b2b = true)</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
                     <div id="solution2_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. "admin" etiketi olan kullanicilar
-SELECT username, data->'tags' AS tags
-FROM users
-WHERE data->'tags' @> '"admin"'::jsonb;
+-- 1. 5G destegi olan urunler
+SELECT name, attributes
+FROM products
+WHERE attributes @> '{"5g": true}'::jsonb;
 
--- Alternatif: dizinin deger icerip icermedigini kontrol et
-SELECT username
-FROM users
-WHERE data @> '{"tags": ["admin"]}'::jsonb;
+-- Metin cikarma ve donusum ile alternatif
+SELECT name
+FROM products
+WHERE (attributes->>'5g')::BOOLEAN = TRUE;
 
--- 2. Koyu tema olan kullanicilar
-SELECT username
-FROM users
-WHERE data->'preferences' @> '{"theme": "dark"}'::jsonb;
+-- 2. TechMobile markasindaki urunler
+SELECT name, attributes->>'brand' AS brand
+FROM products
+WHERE attributes @> '{"brand": "TechMobile"}'::jsonb;
 
--- 3. Turkiye'den ve bildirimleri acik olan kullanicilar
-SELECT username
-FROM users
-WHERE data @> '{"address": {"country": "Turkey"}, "preferences": {"notifications": true}}'::jsonb;
+-- 3. B2B siparisler
+SELECT order_number, metadata
+FROM orders
+WHERE metadata @> '{"b2b": true}'::jsonb;
 
 -- MySQL
--- 1. "admin" etiketi olan kullanicilar
-SELECT username, data->'$.tags' AS tags
-FROM users
-WHERE JSON_CONTAINS(data->'$.tags', '"admin"');
+-- 1. 5G destegi olan urunler
+SELECT name, attributes
+FROM products
+WHERE JSON_EXTRACT(attributes, '$.5g') = true;
 
--- 2. Koyu tema olan kullanicilar
-SELECT username
-FROM users
-WHERE JSON_CONTAINS(data, '{"theme": "dark"}', '$.preferences');
+-- 2. TechMobile markasindaki urunler
+SELECT name, attributes->>'$.brand' AS brand
+FROM products
+WHERE JSON_CONTAINS(attributes, '"TechMobile"', '$.brand');
 
--- 3. Turkiye'den ve bildirimleri acik olan kullanicilar
-SELECT username
-FROM users
-WHERE data->>'$.address.country' = 'Turkey'
-  AND JSON_EXTRACT(data, '$.preferences.notifications') = true;</code></pre>
-                        <p><strong>Sorgu 1 icin Sonuc:</strong></p>
+-- 3. B2B siparisler
+SELECT order_number, metadata
+FROM orders
+WHERE JSON_EXTRACT(metadata, '$.b2b') = true;</code></pre>
+                        <p><strong>5G urunleri icin sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
-                                <th>username</th>
-                                <th>tags</th>
+                                <th>name</th>
                             </tr>
                             <tr>
-                                <td>john_doe</td>
-                                <td>["admin", "developer"]</td>
+                                <td>SmartPhone Pro Max</td>
                             </tr>
                             <tr>
-                                <td>bob_wilson</td>
-                                <td>["admin", "manager"]</td>
+                                <td>SmartPhone Plus</td>
                             </tr>
                         </table>
                     </div>
@@ -978,43 +883,43 @@ WHERE data->>'$.address.country' = 'Turkey'
                     <h4>Alistirma 2.3: Coklu Anahtar Varligi</h4>
                     <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>HEM "dimensions" HEM DE "colors" alanina sahip urunleri bulun</li>
-                        <li>"dimensions" VEYA "colors" alanina sahip urunleri bulun</li>
+                        <li>HEM "5g" HEM DE "colors" alanina sahip urunleri bulun</li>
+                        <li>"warranty_months" VEYA "colors" alanina sahip urunleri bulun</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Cozumu Goster</button>
                     <div id="solution2_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. HEM dimensions HEM DE colors olan urunler
+-- 1. HEM 5g HEM DE colors olan urunler
 SELECT name
 FROM products
-WHERE specs ?& ARRAY['dimensions', 'colors'];
+WHERE attributes ?& ARRAY['5g', 'colors'];
 
 -- AND kullanan alternatif
 SELECT name
 FROM products
-WHERE specs ? 'dimensions' AND specs ? 'colors';
+WHERE attributes ? '5g' AND attributes ? 'colors';
 
--- 2. dimensions VEYA colors olan urunler
+-- 2. warranty_months VEYA colors olan urunler
 SELECT name
 FROM products
-WHERE specs ?| ARRAY['dimensions', 'colors'];
+WHERE attributes ?| ARRAY['warranty_months', 'colors'];
 
 -- OR kullanan alternatif
 SELECT name
 FROM products
-WHERE specs ? 'dimensions' OR specs ? 'colors';
+WHERE attributes ? 'warranty_months' OR attributes ? 'colors';
 
 -- MySQL
 -- 1. HER IKISI de olan urunler
 SELECT name
 FROM products
-WHERE JSON_CONTAINS_PATH(specs, 'all', '$.dimensions', '$.colors');
+WHERE JSON_CONTAINS_PATH(attributes, 'all', '$.5g', '$.colors');
 
 -- 2. HERHANGI BIRI olan urunler
 SELECT name
 FROM products
-WHERE JSON_CONTAINS_PATH(specs, 'one', '$.dimensions', '$.colors');</code></pre>
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.warranty_months', '$.colors');</code></pre>
                     </div>
                 </div>
             </section>
@@ -1033,65 +938,65 @@ WHERE JSON_CONTAINS_PATH(specs, 'one', '$.dimensions', '$.colors');</code></pre>
                     <h4>Alistirma 3.1: JSON Alanlarini Guncelleme</h4>
                     <p>Asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>john_doe'nun tema tercihini "system" olarak guncelleyin</li>
-                        <li>bob_wilson'in verisine yeni bir "phone" alani ekleyin</li>
-                        <li>Products tablosunda "Laptop Pro"nun fiyatini guncelleyin</li>
+                        <li>'ProBook Laptop 15"' icin warranty_months'i 36 olarak guncelleyin</li>
+                        <li>Bir urune true degeriyle yeni bir "eco_friendly" alani ekleyin</li>
+                        <li>Siparis metadata'sina "priority" alani ekleyin</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Tema tercihini guncelle
-UPDATE users
-SET data = jsonb_set(data, '{preferences,theme}', '"system"')
-WHERE username = 'john_doe';
-
--- 2. Phone alani ekle
-UPDATE users
-SET data = jsonb_set(data, '{phone}', '"555-1234"')
-WHERE username = 'bob_wilson';
-
--- Alternatif: yeni veri birlestir
-UPDATE users
-SET data = data || '{"phone": "555-1234"}'::jsonb
-WHERE username = 'bob_wilson';
-
--- 3. Urun fiyatini guncelle
+-- 1. warranty_months'i guncelle
 UPDATE products
-SET specs = jsonb_set(specs, '{price}', '1199.99')
-WHERE name = 'Laptop Pro';
+SET attributes = jsonb_set(attributes, '{warranty_months}', '36')
+WHERE name = 'ProBook Laptop 15"';
+
+-- 2. eco_friendly alani ekle
+UPDATE products
+SET attributes = attributes || '{"eco_friendly": true}'::jsonb
+WHERE name = 'ProBook Laptop 15"';
+
+-- jsonb_set ile alternatif
+UPDATE products
+SET attributes = jsonb_set(attributes, '{eco_friendly}', 'true')
+WHERE name = 'ProBook Laptop 15"';
+
+-- 3. Siparis metadata'sina priority ekle
+UPDATE orders
+SET metadata = metadata || '{"priority": "high"}'::jsonb
+WHERE id = 1;
 
 -- MySQL
--- 1. Tema tercihini guncelle
-UPDATE users
-SET data = JSON_SET(data, '$.preferences.theme', 'system')
-WHERE username = 'john_doe';
-
--- 2. Phone alani ekle
-UPDATE users
-SET data = JSON_SET(data, '$.phone', '555-1234')
-WHERE username = 'bob_wilson';
-
--- 3. Urun fiyatini guncelle
+-- 1. warranty_months'i guncelle
 UPDATE products
-SET specs = JSON_SET(specs, '$.price', 1199.99)
-WHERE name = 'Laptop Pro';
+SET attributes = JSON_SET(attributes, '$.warranty_months', 36)
+WHERE name = 'ProBook Laptop 15"';
+
+-- 2. eco_friendly alani ekle
+UPDATE products
+SET attributes = JSON_SET(attributes, '$.eco_friendly', true)
+WHERE name = 'ProBook Laptop 15"';
+
+-- 3. Siparis metadata'sina priority ekle
+UPDATE orders
+SET metadata = JSON_SET(metadata, '$.priority', 'high')
+WHERE id = 1;
 
 -- SQL Server
--- 1. Tema tercihini guncelle
-UPDATE users
-SET data = JSON_MODIFY(data, '$.preferences.theme', 'system')
-WHERE username = 'john_doe';
-
--- 2. Phone alani ekle
-UPDATE users
-SET data = JSON_MODIFY(data, '$.phone', '555-1234')
-WHERE username = 'bob_wilson';
-
--- 3. Urun fiyatini guncelle
+-- 1. warranty_months'i guncelle
 UPDATE products
-SET specs = JSON_MODIFY(specs, '$.price', 1199.99)
-WHERE name = 'Laptop Pro';</code></pre>
+SET attributes = JSON_MODIFY(attributes, '$.warranty_months', 36)
+WHERE name = 'ProBook Laptop 15"';
+
+-- 2. eco_friendly alani ekle
+UPDATE products
+SET attributes = JSON_MODIFY(attributes, '$.eco_friendly', CAST('true' AS BIT))
+WHERE name = 'ProBook Laptop 15"';
+
+-- 3. Siparis metadata'sina priority ekle
+UPDATE orders
+SET metadata = JSON_MODIFY(metadata, '$.priority', 'high')
+WHERE id = 1;</code></pre>
                     </div>
                 </div>
 
@@ -1099,45 +1004,49 @@ WHERE name = 'Laptop Pro';</code></pre>
                     <h4>Alistirma 3.2: JSON Alanlarini Kaldirma</h4>
                     <p>Asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>bob_wilson'dan "language" tercihini kaldirin</li>
-                        <li>Wireless Mouse urununden "colors" dizisini kaldirin</li>
+                        <li>Bir urunun attributes'undan "battery" alanini kaldirin</li>
+                        <li>Bir siparisin metadata'sindan "campaign" alanini kaldirin</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Language tercihini kaldir
-UPDATE users
-SET data = data #- '{preferences,language}'
-WHERE username = 'bob_wilson';
-
--- Alternatif: ic ice nesneden anahtari kaldir
-UPDATE users
-SET data = jsonb_set(data, '{preferences}',
-           (data->'preferences') - 'language')
-WHERE username = 'bob_wilson';
-
--- 2. Urunden colors'i kaldir
+-- 1. Urunden battery alanini kaldir
 UPDATE products
-SET specs = specs - 'colors'
-WHERE name = 'Wireless Mouse';
+SET attributes = attributes - 'battery'
+WHERE name = 'SmartPhone Lite';
+
+-- 2. Siparis metadata'sindan campaign'i kaldir
+UPDATE orders
+SET metadata = metadata - 'campaign'
+WHERE id = 1;
+
+-- Ic ice yollar icin #- kullanan alternatif
+UPDATE orders
+SET metadata = metadata #- '{campaign}'
+WHERE id = 1;
 
 -- MySQL
--- 1. Language tercihini kaldir
-UPDATE users
-SET data = JSON_REMOVE(data, '$.preferences.language')
-WHERE username = 'bob_wilson';
-
--- 2. Urunden colors'i kaldir
+-- 1. battery alanini kaldir
 UPDATE products
-SET specs = JSON_REMOVE(specs, '$.colors')
-WHERE name = 'Wireless Mouse';
+SET attributes = JSON_REMOVE(attributes, '$.battery')
+WHERE name = 'SmartPhone Lite';
+
+-- 2. Siparis metadata'sindan campaign'i kaldir
+UPDATE orders
+SET metadata = JSON_REMOVE(metadata, '$.campaign')
+WHERE id = 1;
 
 -- SQL Server
--- 1. Language tercihini kaldir (null'a ayarla)
-UPDATE users
-SET data = JSON_MODIFY(data, '$.preferences.language', NULL)
-WHERE username = 'bob_wilson';</code></pre>
+-- 1. battery alanini kaldir (null'a ayarla)
+UPDATE products
+SET attributes = JSON_MODIFY(attributes, '$.battery', NULL)
+WHERE name = 'SmartPhone Lite';
+
+-- 2. Siparis metadata'sindan campaign'i kaldir
+UPDATE orders
+SET metadata = JSON_MODIFY(metadata, '$.campaign', NULL)
+WHERE id = 1;</code></pre>
                     </div>
                 </div>
 
@@ -1145,54 +1054,70 @@ WHERE username = 'bob_wilson';</code></pre>
                     <h4>Alistirma 3.3: Dizi Degisiklikleri</h4>
                     <p>Asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>bob_wilson'in etiketlerine "supervisor" etiketi ekleyin</li>
-                        <li>Monitor 4K urunune "Touch Screen" ozelligi ekleyin</li>
+                        <li>Bir urunun colors dizisine yeni bir renk "Gold" ekleyin</li>
+                        <li>Tum colors dizisini yeni bir renk setiyle degistirin</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Cozumu Goster</button>
                     <div id="solution3_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Kullaniciya yeni etiket ekle
-UPDATE users
-SET data = jsonb_set(data, '{tags}',
-           (data->'tags') || '"supervisor"'::jsonb)
-WHERE username = 'bob_wilson';
+-- 1. Diziye yeni renk ekle
+UPDATE products
+SET attributes = jsonb_set(
+    attributes,
+    '{colors}',
+    (attributes->'colors') || '"Gold"'::jsonb
+)
+WHERE name = 'SmartPhone Pro Max';
 
 -- Alternatif: dizileri birlestir
-UPDATE users
-SET data = jsonb_set(data, '{tags}',
-           data->'tags' || '["supervisor"]'::jsonb)
-WHERE username = 'bob_wilson';
-
--- 2. Urune ozellik ekle
 UPDATE products
-SET specs = jsonb_set(specs, '{features}',
-            specs->'features' || '["Touch Screen"]'::jsonb)
-WHERE name = 'Monitor 4K';
+SET attributes = jsonb_set(
+    attributes,
+    '{colors}',
+    attributes->'colors' || '["Gold"]'::jsonb
+)
+WHERE name = 'SmartPhone Pro Max';
+
+-- 2. Tum colors dizisini degistir
+UPDATE products
+SET attributes = jsonb_set(
+    attributes,
+    '{colors}',
+    '["Red", "Green", "Blue"]'::jsonb
+)
+WHERE name = 'SmartPhone Pro Max';
 
 -- MySQL
--- 1. Yeni etiket ekle (MySQL 8.0+)
-UPDATE users
-SET data = JSON_ARRAY_APPEND(data, '$.tags', 'supervisor')
-WHERE username = 'bob_wilson';
-
--- 2. Urune ozellik ekle
+-- 1. Yeni renk ekle (MySQL 8.0+)
 UPDATE products
-SET specs = JSON_ARRAY_APPEND(specs, '$.features', 'Touch Screen')
-WHERE name = 'Monitor 4K';
+SET attributes = JSON_ARRAY_APPEND(attributes, '$.colors', 'Gold')
+WHERE name = 'SmartPhone Pro Max';
+
+-- 2. Tum colors dizisini degistir
+UPDATE products
+SET attributes = JSON_SET(
+    attributes,
+    '$.colors',
+    JSON_ARRAY('Red', 'Green', 'Blue')
+)
+WHERE name = 'SmartPhone Pro Max';
 
 -- SQL Server (diziyi yeniden olusturmayi gerektirir)
--- 1. Yeni etiket ekle
-UPDATE users
-SET data = JSON_MODIFY(data, '$.tags',
-           JSON_QUERY(
-               CONCAT(
-                   LEFT(JSON_QUERY(data, '$.tags'),
-                        LEN(JSON_QUERY(data, '$.tags')) - 1),
-                   ',"supervisor"]'
-               )
-           ))
-WHERE username = 'bob_wilson';</code></pre>
+-- 1. Diziye yeni renk ekle
+UPDATE products
+SET attributes = JSON_MODIFY(
+    attributes,
+    '$.colors',
+    JSON_QUERY(
+        CONCAT(
+            LEFT(JSON_QUERY(attributes, '$.colors'),
+                 LEN(JSON_QUERY(attributes, '$.colors')) - 1),
+            ',"Gold"]'
+        )
+    )
+)
+WHERE name = 'SmartPhone Pro Max';</code></pre>
                     </div>
                 </div>
             </section>
@@ -1209,137 +1134,141 @@ WHERE username = 'bob_wilson';</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 4.1: JSON Dizilerini Genisletme</h4>
-                    <p><code>users</code> tablosunu kullanarak, her kullaniciyi etiketleri ayri satirlara
-                        genisletilmis olarak gosteren bir sorgu yazin (kullanici basina etiket basina bir satir).</p>
+                    <p><code>products</code> tablosunu kullanarak, her urunu renkleri ayri satirlara
+                        genisletilmis olarak gosteren bir sorgu yazin (urun basina renk basina bir satir).</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    username,
-    jsonb_array_elements_text(data->'tags') AS tag
-FROM users;
+    name,
+    jsonb_array_elements_text(attributes->'colors') AS color
+FROM products
+WHERE attributes ? 'colors';
 
 -- Indeks konumu ile
 SELECT
-    username,
-    ordinality AS tag_position,
-    tag
-FROM users,
-     jsonb_array_elements_text(data->'tags')
-     WITH ORDINALITY AS t(tag, ordinality);
+    name,
+    ordinality AS color_position,
+    color
+FROM products,
+     jsonb_array_elements_text(attributes->'colors')
+     WITH ORDINALITY AS t(color, ordinality)
+WHERE attributes ? 'colors';
 
 -- MySQL
 SELECT
-    username,
-    jt.tag
-FROM users,
-     JSON_TABLE(data, '$.tags[*]' COLUMNS(
-         tag VARCHAR(50) PATH '$'
-     )) AS jt;
+    name,
+    jt.color
+FROM products,
+     JSON_TABLE(attributes, '$.colors[*]' COLUMNS(
+         color VARCHAR(50) PATH '$'
+     )) AS jt
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
 -- SQL Server
 SELECT
-    username,
-    tag.value AS tag
-FROM users
-CROSS APPLY OPENJSON(data, '$.tags') AS tag;</code></pre>
+    name,
+    color.value AS color
+FROM products
+CROSS APPLY OPENJSON(attributes, '$.colors') AS color
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.2: Ic Ice Nesneleri Genisletme</h4>
-                    <p><code>orders</code> tablosunu kullanarak, items dizisini genisleten ve her oge icin
-                        order_id, oge adi, fiyat ve miktari gosteren bir sorgu yazin.</p>
+                    <h4>Alistirma 4.2: JSON Nesnesini Anahtar-Deger Ciftlerine Donusturme</h4>
+                    <p><code>products</code> tablosunu kullanarak, her urun icin attributes'u
+                        anahtar-deger ciftlerine genisleten bir sorgu yazin.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    o.id AS order_id,
-    item->>'name' AS item_name,
-    (item->>'price')::DECIMAL AS price,
-    (item->>'qty')::INTEGER AS quantity
-FROM orders o,
-     jsonb_array_elements(o.order_data->'items') AS item;
+    name AS product_name,
+    attr.key AS attribute_name,
+    attr.value AS attribute_value
+FROM products,
+     jsonb_each(attributes) AS attr(key, value)
+WHERE attributes IS NOT NULL
+LIMIT 20;
 
--- Hesaplanmis satir toplami ile
+-- Sadece skaler degerleri filtrele (dizileri haric tut)
 SELECT
-    o.id AS order_id,
-    item->>'name' AS item_name,
-    (item->>'price')::DECIMAL AS price,
-    (item->>'qty')::INTEGER AS quantity,
-    (item->>'price')::DECIMAL * (item->>'qty')::INTEGER AS line_total
-FROM orders o,
-     jsonb_array_elements(o.order_data->'items') AS item;
+    name AS product_name,
+    attr.key AS attribute_name,
+    attr.value AS attribute_value
+FROM products,
+     jsonb_each(attributes) AS attr(key, value)
+WHERE attributes IS NOT NULL
+  AND jsonb_typeof(attr.value) != 'array';
 
--- MySQL
+-- MySQL (belirli anahtarlar kullanarak)
 SELECT
-    o.id AS order_id,
-    jt.item_name,
-    jt.price,
-    jt.quantity,
-    jt.price * jt.quantity AS line_total
-FROM orders o,
-     JSON_TABLE(o.order_data, '$.items[*]' COLUMNS(
-         item_name VARCHAR(100) PATH '$.name',
-         price DECIMAL(10,2) PATH '$.price',
-         quantity INT PATH '$.qty'
-     )) AS jt;
+    name AS product_name,
+    'brand' AS attribute_name,
+    attributes->>'$.brand' AS attribute_value
+FROM products
+WHERE attributes IS NOT NULL
+UNION ALL
+SELECT
+    name,
+    'processor',
+    attributes->>'$.processor'
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.processor')
+UNION ALL
+SELECT
+    name,
+    'ram',
+    attributes->>'$.ram'
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.ram');
 
 -- SQL Server
 SELECT
-    o.id AS order_id,
-    JSON_VALUE(item.value, '$.name') AS item_name,
-    CAST(JSON_VALUE(item.value, '$.price') AS DECIMAL(10,2)) AS price,
-    CAST(JSON_VALUE(item.value, '$.qty') AS INT) AS quantity
-FROM orders o
-CROSS APPLY OPENJSON(o.order_data, '$.items') AS item;</code></pre>
+    name AS product_name,
+    attr.[key] AS attribute_name,
+    attr.[value] AS attribute_value
+FROM products
+CROSS APPLY OPENJSON(attributes) AS attr
+WHERE attributes IS NOT NULL;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.3: JSON Nesnesini Anahtar-Deger Ciftlerine Donusturme</h4>
-                    <p><code>users</code> tablosunu kullanarak, her kullanici icin preferences
+                    <h4>Alistirma 4.3: Siparis Metadata'sini Genisletme</h4>
+                    <p><code>orders</code> tablosunu kullanarak, her siparis icin metadata
                         nesnesini anahtar-deger ciftlerine genisleten bir sorgu yazin.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Cozumu Goster</button>
                     <div id="solution4_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    username,
-    pref.key AS preference_name,
-    pref.value AS preference_value
-FROM users,
-     jsonb_each(data->'preferences') AS pref(key, value);
+    order_number,
+    meta.key AS metadata_key,
+    meta.value AS metadata_value
+FROM orders,
+     jsonb_each(metadata) AS meta(key, value)
+WHERE metadata IS NOT NULL;
 
--- MySQL (JSON_KEYS ve ozyinelemeli yaklasim veya belirli anahtarlar kullanarak)
+-- JSON yerine metin degerleri al
 SELECT
-    username,
-    'theme' AS preference_name,
-    data->>'$.preferences.theme' AS preference_value
-FROM users
-UNION ALL
-SELECT
-    username,
-    'notifications' AS preference_name,
-    CAST(data->'$.preferences.notifications' AS CHAR) AS preference_value
-FROM users
-UNION ALL
-SELECT
-    username,
-    'language' AS preference_name,
-    data->>'$.preferences.language' AS preference_value
-FROM users
-WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.language');
+    order_number,
+    meta.key AS metadata_key,
+    meta.value::TEXT AS metadata_value
+FROM orders,
+     jsonb_each_text(metadata) AS meta(key, value)
+WHERE metadata IS NOT NULL;
 
 -- SQL Server
 SELECT
-    username,
-    pref.[key] AS preference_name,
-    pref.[value] AS preference_value
-FROM users
-CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
+    order_number,
+    meta.[key] AS metadata_key,
+    meta.[value] AS metadata_value
+FROM orders
+CROSS APPLY OPENJSON(metadata) AS meta
+WHERE metadata IS NOT NULL;</code></pre>
                     </div>
                 </div>
             </section>
@@ -1351,7 +1280,7 @@ CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 5.1: JSON Nesneleri Olusturma</h4>
-                    <p>Her urun icin urun bilgilerini (isim, marka, fiyat) iceren bir JSON nesnesi
+                    <p>Attributes'u olan her urun icin urun bilgilerini (isim, marka, fiyat) iceren bir JSON nesnesi
                         olusturan bir sorgu yazin.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
@@ -1360,121 +1289,132 @@ CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
 SELECT
     jsonb_build_object(
         'product_name', name,
-        'brand', specs->>'brand',
-        'price', (specs->>'price')::DECIMAL,
-        'in_stock', (specs->>'in_stock')::BOOLEAN
+        'sku', sku,
+        'brand', attributes->>'brand',
+        'price', price,
+        'has_5g', COALESCE((attributes->>'5g')::BOOLEAN, false)
     ) AS product_json
-FROM products;
+FROM products
+WHERE attributes IS NOT NULL;
 
 -- Guzel formatlama ile
 SELECT
     jsonb_pretty(
         jsonb_build_object(
             'product_name', name,
-            'brand', specs->>'brand',
-            'price', (specs->>'price')::DECIMAL
+            'brand', attributes->>'brand',
+            'price', price
         )
     ) AS product_json
-FROM products;
+FROM products
+WHERE attributes IS NOT NULL;
 
 -- MySQL
 SELECT
     JSON_OBJECT(
         'product_name', name,
-        'brand', specs->>'$.brand',
-        'price', CAST(specs->>'$.price' AS DECIMAL(10,2)),
-        'in_stock', CAST(specs->'$.in_stock' AS JSON)
+        'sku', sku,
+        'brand', attributes->>'$.brand',
+        'price', price
     ) AS product_json
-FROM products;
+FROM products
+WHERE attributes IS NOT NULL;
 
 -- SQL Server
 SELECT
     name AS product_name,
-    JSON_VALUE(specs, '$.brand') AS brand,
-    JSON_VALUE(specs, '$.price') AS price
+    sku,
+    JSON_VALUE(attributes, '$.brand') AS brand,
+    price
 FROM products
+WHERE attributes IS NOT NULL
 FOR JSON PATH;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 5.2: JSON Dizilerine Toplama</h4>
-                    <p>Tum kullanici adlarini JSON dizisi olarak donduren ve kullanici verilerini
-                        ulkeye gore gruplayan bir sorgu olusturun.</p>
+                    <p>Tum urun adlarini JSON dizisi olarak donduren ve urunleri markaya gore
+                        gruplayan bir sorgu olusturun.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
                     <div id="solution5_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Tum kullanici adlari JSON dizisi olarak
-SELECT jsonb_agg(username) AS all_usernames
-FROM users;
+-- 1. Tum urun adlari JSON dizisi olarak
+SELECT jsonb_agg(name) AS all_products
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Ulkeye gore gruplu kullanicilar
+-- 2. Markaya gore gruplu urunler
 SELECT
-    data->'address'->>'country' AS country,
+    attributes->>'brand' AS brand,
     jsonb_agg(
         jsonb_build_object(
-            'username', username,
-            'email', data->>'email',
-            'city', data->'address'->>'city'
+            'name', name,
+            'price', price,
+            'sku', sku
         )
-    ) AS users_in_country
-FROM users
-GROUP BY data->'address'->>'country';
+    ) AS products_by_brand
+FROM products
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+GROUP BY attributes->>'brand';
 
--- 3. Urunler ve degerlendirme ozetleri
+-- 3. Siparis kaynaklari ve sayilari JSON olarak
 SELECT
-    name,
-    jsonb_build_object(
-        'count', jsonb_array_length(specs->'ratings'),
-        'ratings', specs->'ratings',
-        'average', (
-            SELECT AVG(r::DECIMAL)
-            FROM jsonb_array_elements_text(specs->'ratings') r
-        )
-    ) AS rating_summary
-FROM products;
+    jsonb_object_agg(
+        source,
+        order_count
+    ) AS source_summary
+FROM (
+    SELECT
+        metadata->>'source' AS source,
+        COUNT(*) AS order_count
+    FROM orders
+    WHERE metadata IS NOT NULL
+      AND metadata->>'source' IS NOT NULL
+    GROUP BY metadata->>'source'
+) AS source_counts;
 
 -- MySQL
--- 1. Tum kullanici adlari JSON dizisi olarak
-SELECT JSON_ARRAYAGG(username) AS all_usernames
-FROM users;
+-- 1. Tum urun adlari JSON dizisi olarak
+SELECT JSON_ARRAYAGG(name) AS all_products
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Ulkeye gore gruplu kullanicilar
+-- 2. Markaya gore gruplu urunler
 SELECT
-    data->>'$.address.country' AS country,
+    attributes->>'$.brand' AS brand,
     JSON_ARRAYAGG(
         JSON_OBJECT(
-            'username', username,
-            'email', data->>'$.email',
-            'city', data->>'$.address.city'
+            'name', name,
+            'price', price,
+            'sku', sku
         )
-    ) AS users_in_country
-FROM users
-GROUP BY data->>'$.address.country';
+    ) AS products_by_brand
+FROM products
+WHERE attributes IS NOT NULL
+GROUP BY attributes->>'$.brand';
 
 -- SQL Server
--- 1. Tum kullanici adlari JSON dizisi olarak
-SELECT username
-FROM users
+-- 1. Tum urun adlari JSON dizisi olarak
+SELECT name
+FROM products
+WHERE attributes IS NOT NULL
 FOR JSON PATH;</code></pre>
-                        <p><strong>Ulkeye gore gruplu sonuc:</strong></p>
+                        <p><strong>Markaya gore gruplu sonuc:</strong></p>
                         <table class="dataset-table">
                             <tr>
-                                <th>country</th>
-                                <th>users_in_country</th>
+                                <th>brand</th>
+                                <th>products_by_brand</th>
                             </tr>
                             <tr>
-                                <td>USA</td>
-                                <td>[{"username": "john_doe", "email": "john@example.com", "city": "New York"}]</td>
+                                <td>TechPro</td>
+                                <td>[{"name": "ProBook Laptop 15\"", "price": 1299.99, "sku": "COMP-001"}, ...]</td>
                             </tr>
                             <tr>
-                                <td>UK</td>
-                                <td>[{"username": "jane_smith", "email": "jane@example.com", "city": "London"}]</td>
-                            </tr>
-                            <tr>
-                                <td>Turkey</td>
-                                <td>[{"username": "bob_wilson", "email": "bob@example.com", "city": "Istanbul"}]</td>
+                                <td>TechMobile</td>
+                                <td>[{"name": "SmartPhone Pro Max", "price": 1199.99, "sku": "PHONE-001"}, ...]</td>
                             </tr>
                         </table>
                     </div>
@@ -1487,164 +1427,169 @@ FOR JSON PATH;</code></pre>
                 <p>Bu ileri duzey zorluklarla JSON islemlerinin kapsamli anlayisinizi test edin.</p>
 
                 <div class="challenge-box">
-                    <h4>Zorluk 1: Log Analizi</h4>
-                    <p><code>logs</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <h4>Zorluk 1: Siparis Kaynagi Analizi</h4>
+                    <p><code>orders</code> tablosundaki <code>metadata</code> JSONB'yi kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Olaylari tur bazinda sayin</li>
-                        <li>Tum hata olaylarini bulun ve hata kodu ile mesajini cikarin</li>
-                        <li>Giris yapmis tum benzersiz kullanicilarin listesini alin</li>
-                        <li>Tum satislarin toplam degerini hesaplayin</li>
+                        <li>Siparisleri kaynaga gore sayin (website, mobile_app, sales_rep)</li>
+                        <li>Tum B2B siparisleri bulun ve toplam tutarlarini gosterin</li>
+                        <li>Kampanyali siparislerin listesini ve kampanya adlarini alin</li>
+                        <li>Siparis kaynagina gore toplam geliri hesaplayin</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Ture gore olaylari say
+-- 1. Siparisleri kaynaga gore say
 SELECT
-    event_data->>'event' AS event_type,
-    COUNT(*) AS event_count
-FROM logs
-GROUP BY event_data->>'event';
+    metadata->>'source' AS source,
+    COUNT(*) AS order_count
+FROM orders
+WHERE metadata IS NOT NULL
+GROUP BY metadata->>'source'
+ORDER BY order_count DESC;
 
--- 2. Hata olaylarini detaylari ile bul
+-- 2. Toplamlarla B2B siparisleri
 SELECT
-    timestamp,
-    (event_data->>'error_code')::INTEGER AS error_code,
-    event_data->>'message' AS error_message,
-    event_data->'metadata'->>'service' AS service,
-    event_data->'metadata'->>'endpoint' AS endpoint
-FROM logs
-WHERE event_data->>'event' = 'error';
+    order_number,
+    customer_id,
+    total_amount,
+    metadata
+FROM orders
+WHERE metadata @> '{"b2b": true}'::jsonb;
 
--- 3. Giris yapmis benzersiz kullanicilar
-SELECT DISTINCT
-    event_data->'user'->>'id' AS user_id,
-    event_data->'user'->>'name' AS username
-FROM logs
-WHERE event_data->>'event' = 'login';
-
--- 4. Toplam satis degeri
+-- 3. Kampanyali siparisler
 SELECT
-    SUM((event_data->>'total')::DECIMAL) AS total_revenue
-FROM logs
-WHERE event_data->>'event' = 'purchase';
+    order_number,
+    metadata->>'campaign' AS campaign_name,
+    order_date,
+    total_amount
+FROM orders
+WHERE metadata ? 'campaign';
 
--- Bonus: Detayli satis dokumu
+-- 4. Kaynaga gore toplam gelir
 SELECT
-    event_data->'user'->>'name' AS customer,
-    (event_data->>'total')::DECIMAL AS order_total,
-    jsonb_array_length(event_data->'items') AS item_count
-FROM logs
-WHERE event_data->>'event' = 'purchase';</code></pre>
+    metadata->>'source' AS source,
+    SUM(total_amount) AS total_revenue,
+    COUNT(*) AS order_count,
+    ROUND(AVG(total_amount), 2) AS avg_order_value
+FROM orders
+WHERE metadata IS NOT NULL
+GROUP BY metadata->>'source'
+ORDER BY total_revenue DESC;</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
                     <h4>Zorluk 2: Urun Analitikleri</h4>
-                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>products</code> tablosundaki <code>attributes</code> JSONB'yi kullanarak asagidaki sorgulari yazin:</p>
                     <ol>
-                        <li>Her urun icin ortalama derecelendirmeyi bulun</li>
-                        <li>Ortalama derecelendirmesi 4.5'in uzerinde olan urunleri bulun</li>
-                        <li>Tum urunlerdeki benzersiz ozellikleri listeleyin</li>
-                        <li>3'ten fazla ozelligi olan urunleri bulun</li>
+                        <li>Urunleri markaya gore sayin</li>
+                        <li>5G destegi olan tum urunleri ve fiyatlarini bulun</li>
+                        <li>Veritabanindaki tum benzersiz markalari listeleyin</li>
+                        <li>Garantisi 12 aydan uzun olan urunleri bulun</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
                     <div id="challenge2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Her urun icin ortalama derecelendirme
+-- 1. Urunleri markaya gore say
 SELECT
-    name,
-    ROUND(
-        (SELECT AVG(r::DECIMAL)
-         FROM jsonb_array_elements_text(specs->'ratings') r),
-        2
-    ) AS avg_rating
-FROM products;
-
--- 2. Ortalama derecelendirmesi 4.5 uzerinde olan urunler
-SELECT
-    name,
-    avg_rating
-FROM (
-    SELECT
-        name,
-        (SELECT AVG(r::DECIMAL)
-         FROM jsonb_array_elements_text(specs->'ratings') r) AS avg_rating
-    FROM products
-) subq
-WHERE avg_rating > 4.5;
-
--- 3. Tum benzersiz ozellikler
-SELECT DISTINCT feature
-FROM products,
-     jsonb_array_elements_text(specs->'features') AS feature
-ORDER BY feature;
-
--- 4. 3'ten fazla ozelligi olan urunler
-SELECT
-    name,
-    jsonb_array_length(specs->'features') AS feature_count
+    attributes->>'brand' AS brand,
+    COUNT(*) AS product_count
 FROM products
-WHERE jsonb_array_length(specs->'features') > 3;</code></pre>
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+GROUP BY attributes->>'brand'
+ORDER BY product_count DESC;
+
+-- 2. 5G'li urunler ve fiyatlari
+SELECT
+    name,
+    price,
+    attributes->>'brand' AS brand,
+    attributes->>'storage' AS storage
+FROM products
+WHERE attributes @> '{"5g": true}'::jsonb
+ORDER BY price DESC;
+
+-- 3. Tum benzersiz markalar
+SELECT DISTINCT attributes->>'brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+ORDER BY brand;
+
+-- 4. Garantisi 12 aydan uzun olan urunler
+SELECT
+    name,
+    attributes->>'brand' AS brand,
+    (attributes->>'warranty_months')::INTEGER AS warranty_months,
+    price
+FROM products
+WHERE attributes ? 'warranty_months'
+  AND (attributes->>'warranty_months')::INTEGER > 12
+ORDER BY warranty_months DESC;</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Zorluk 3: Siparis Raporu Olusturma</h4>
-                    <p><code>orders</code> tablosunu kullanarak asagidakileri gosteren kapsamli bir siparis raporu olusturun:</p>
+                    <h4>Zorluk 3: Birlesik Analitik Raporu</h4>
+                    <p>Urun ve siparis verilerini birlestiren kapsamli bir analitik rapor olusturun:</p>
                     <ol>
-                        <li>Siparis ID, durum ve musteri ID</li>
-                        <li>Her siparisteki oge sayisi</li>
-                        <li>Ara toplam (tum ogeler icin fiyat * miktar toplami)</li>
-                        <li>Kargo maliyeti ve yontemi</li>
-                        <li>Genel toplam (ara toplam + kargo)</li>
+                        <li>Urun markalarini urun sayisi ve ortalama fiyat ile gosterin</li>
+                        <li>Siparis kaynaklarini toplam gelir ve siparis sayisi ile gosterin</li>
+                        <li>Temel metriklerle bir ozet JSON nesnesi olusturun</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge3')">Cozumu Goster</button>
                     <div id="challenge3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
+-- 1. Marka analitigi
 SELECT
-    id AS order_id,
-    customer_id,
-    order_data->>'status' AS status,
-    jsonb_array_length(order_data->'items') AS item_count,
-    (
-        SELECT SUM(
-            (item->>'price')::DECIMAL * (item->>'qty')::INTEGER
-        )
-        FROM jsonb_array_elements(order_data->'items') AS item
-    ) AS subtotal,
-    order_data->'shipping'->>'method' AS shipping_method,
-    (order_data->'shipping'->>'cost')::DECIMAL AS shipping_cost,
-    (
-        SELECT SUM(
-            (item->>'price')::DECIMAL * (item->>'qty')::INTEGER
-        )
-        FROM jsonb_array_elements(order_data->'items') AS item
-    ) + (order_data->'shipping'->>'cost')::DECIMAL AS grand_total
-FROM orders;
+    attributes->>'brand' AS brand,
+    COUNT(*) AS product_count,
+    ROUND(AVG(price), 2) AS avg_price,
+    MIN(price) AS min_price,
+    MAX(price) AS max_price
+FROM products
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+GROUP BY attributes->>'brand'
+ORDER BY product_count DESC;
 
--- Daha temiz kod icin CTE ile alternatif
-WITH order_items AS (
-    SELECT
-        o.id,
-        SUM((item->>'price')::DECIMAL * (item->>'qty')::INTEGER) AS subtotal
-    FROM orders o,
-         jsonb_array_elements(o.order_data->'items') AS item
-    GROUP BY o.id
-)
+-- 2. Siparis kaynagi analitigi
 SELECT
-    o.id AS order_id,
-    o.customer_id,
-    o.order_data->>'status' AS status,
-    jsonb_array_length(o.order_data->'items') AS item_count,
-    oi.subtotal,
-    o.order_data->'shipping'->>'method' AS shipping_method,
-    (o.order_data->'shipping'->>'cost')::DECIMAL AS shipping_cost,
-    oi.subtotal + (o.order_data->'shipping'->>'cost')::DECIMAL AS grand_total
-FROM orders o
-JOIN order_items oi ON o.id = oi.id;</code></pre>
+    metadata->>'source' AS source,
+    COUNT(*) AS order_count,
+    SUM(total_amount) AS total_revenue,
+    ROUND(AVG(total_amount), 2) AS avg_order_value
+FROM orders
+WHERE metadata IS NOT NULL
+GROUP BY metadata->>'source'
+ORDER BY total_revenue DESC;
+
+-- 3. Ozet JSON nesnesi
+SELECT jsonb_build_object(
+    'product_stats', (
+        SELECT jsonb_build_object(
+            'total_products', COUNT(*),
+            'products_with_5g', SUM(CASE WHEN attributes @> '{"5g": true}'::jsonb THEN 1 ELSE 0 END),
+            'brands', (SELECT jsonb_agg(DISTINCT attributes->>'brand')
+                      FROM products WHERE attributes->>'brand' IS NOT NULL)
+        )
+        FROM products
+        WHERE attributes IS NOT NULL
+    ),
+    'order_stats', (
+        SELECT jsonb_build_object(
+            'total_orders', COUNT(*),
+            'total_revenue', SUM(total_amount),
+            'sources', (SELECT jsonb_agg(DISTINCT metadata->>'source')
+                       FROM orders WHERE metadata IS NOT NULL)
+        )
+        FROM orders
+    )
+) AS analytics_summary;</code></pre>
                     </div>
                 </div>
 
@@ -1652,60 +1597,70 @@ JOIN order_items oi ON o.id = oi.id;</code></pre>
                     <h4>Zorluk 4: Indeksleme Stratejisi Olusturma</h4>
                     <p>Asagidaki sorgu kaliplari icin uygun indeksler olusturmak uzere SQL ifadeleri tasarlayin ve yazin:</p>
                     <ol>
-                        <li>Kullanicilari e-postaya gore sik sorgulama</li>
-                        <li>Belirli etiketler iceren urunleri sik arama</li>
-                        <li>Siparisleri duruma gore arama</li>
+                        <li>Urunleri attributes'tan siklikla markaya gore sorgulama</li>
+                        <li>5G destegi olan urunleri siklikla arama</li>
+                        <li>Metadata'daki kaynaga gore siparisleri arama</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge4')">Cozumu Goster</button>
                     <div id="challenge4" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- 1. E-posta sorgulari icin indeks (cikarilan degerde B-tree)
-CREATE INDEX idx_users_email ON users ((data->>'email'));
+-- 1. Marka sorgulari icin indeks (cikarilan deger uzerinde B-tree)
+CREATE INDEX idx_products_brand ON products ((attributes->>'brand'));
 
--- 2. Etiket icerik sorgulari icin GIN indeksi
-CREATE INDEX idx_users_tags ON users USING GIN ((data->'tags'));
--- Bu su sorgulari destekler: WHERE data->'tags' @> '"admin"'
+-- 2. 5G icerik sorgulari icin GIN indeksi
+CREATE INDEX idx_products_5g ON products USING GIN (attributes);
+-- Bu sorguyu destekler: WHERE attributes @> '{"5g": true}'
 
--- 3. Siparis durumu icin indeks
-CREATE INDEX idx_orders_status ON orders ((order_data->>'status'));
+-- Alternatif: belirli boolean kontrolu icin ifade indeksi
+CREATE INDEX idx_products_5g_true ON products ((attributes->>'5g'))
+WHERE attributes->>'5g' = 'true';
 
--- Esnek sorgulama icin tam JSONB GIN indeksi
-CREATE INDEX idx_users_data_gin ON users USING GIN (data);
+-- 3. Siparis kaynagi icin indeks
+CREATE INDEX idx_orders_source ON orders ((metadata->>'source'));
+
+-- Urunlerde esnek sorgulama icin tam JSONB GIN indeksi
+CREATE INDEX idx_products_attrs_gin ON products USING GIN (attributes);
 -- Bu ?, ?|, ?&, @>, <@ operatorlerini destekler
 
--- Yalnizca icerik sorgulari icin jsonb_path_ops ile GIN (daha kucuk indeks)
-CREATE INDEX idx_users_data_path ON users USING GIN (data jsonb_path_ops);
+-- Siparisler metadata icin tam JSONB GIN indeksi
+CREATE INDEX idx_orders_meta_gin ON orders USING GIN (metadata);
+
+-- Sadece icerik sorgulari icin jsonb_path_ops ile GIN (daha kucuk indeks)
+CREATE INDEX idx_products_attrs_path ON products USING GIN (attributes jsonb_path_ops);
 
 -- MySQL
 
--- 1. E-posta icin indeksli olusturulan sutun
-ALTER TABLE users
-ADD COLUMN email_idx VARCHAR(255)
-GENERATED ALWAYS AS (data->>'$.email') STORED;
-CREATE INDEX idx_users_email ON users(email_idx);
+-- 1. Marka icin indeksli olusturulmus sutun
+ALTER TABLE products
+ADD COLUMN brand_idx VARCHAR(100)
+GENERATED ALWAYS AS (attributes->>'$.brand') STORED;
+CREATE INDEX idx_products_brand ON products(brand_idx);
 
--- 2. Etiketler icin coklu degerli indeks (MySQL 8.0.17+)
-CREATE INDEX idx_users_tags ON users((CAST(data->'$.tags' AS CHAR(100) ARRAY)));
+-- 2. 5g bayragi icin olusturulmus sutun
+ALTER TABLE products
+ADD COLUMN has_5g_idx BOOLEAN
+GENERATED ALWAYS AS (CAST(attributes->>'$.5g' AS UNSIGNED) = 1) STORED;
+CREATE INDEX idx_products_5g ON products(has_5g_idx);
 
--- 3. Durum icin olusturulan sutun
+-- 3. Kaynak icin olusturulmus sutun
 ALTER TABLE orders
-ADD COLUMN status_idx VARCHAR(50)
-GENERATED ALWAYS AS (order_data->>'$.status') STORED;
-CREATE INDEX idx_orders_status ON orders(status_idx);
+ADD COLUMN source_idx VARCHAR(50)
+GENERATED ALWAYS AS (metadata->>'$.source') STORED;
+CREATE INDEX idx_orders_source ON orders(source_idx);
 
 -- SQL Server
 
--- 1. E-posta icin indeksli hesaplanan sutun
-ALTER TABLE users
-ADD email_computed AS JSON_VALUE(data, '$.email');
-CREATE INDEX idx_users_email ON users(email_computed);
+-- 1. Marka icin indeksli hesaplanmis sutun
+ALTER TABLE products
+ADD brand_computed AS JSON_VALUE(attributes, '$.brand');
+CREATE INDEX idx_products_brand ON products(brand_computed);
 
--- 3. Durum icin hesaplanan sutun
+-- 3. Kaynak icin hesaplanmis sutun
 ALTER TABLE orders
-ADD status_computed AS JSON_VALUE(order_data, '$.status');
-CREATE INDEX idx_orders_status ON orders(status_computed);</code></pre>
+ADD source_computed AS JSON_VALUE(metadata, '$.source');
+CREATE INDEX idx_orders_source ON orders(source_computed);</code></pre>
                     </div>
                 </div>
             </section>

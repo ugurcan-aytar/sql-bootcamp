@@ -355,182 +355,62 @@
             <!-- Sample Datasets Section -->
             <section>
                 <h2 id="sample-datasets">Sample Datasets</h2>
-                <p>The following tables demonstrate JSON data structures. Use these as reference for the exercises.</p>
-
-                <h4>users Table</h4>
-                <p>User profiles with JSON preferences and address data:</p>
-                <table class="dataset-table">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>username</th>
-                            <th>data (JSONB)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>john_doe</td>
-                            <td>
-                                <div class="json-display">{
-  "email": "john@example.com",
-  "age": 32,
-  "address": {
-    "city": "New York",
-    "country": "USA",
-    "zip": "10001"
-  },
-  "tags": ["admin", "developer"],
-  "preferences": {
-    "theme": "dark",
-    "notifications": true
-  }
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>jane_smith</td>
-                            <td>
-                                <div class="json-display">{
-  "email": "jane@example.com",
-  "age": 28,
-  "address": {
-    "city": "London",
-    "country": "UK",
-    "zip": "SW1A 1AA"
-  },
-  "tags": ["editor", "reviewer"],
-  "preferences": {
-    "theme": "light",
-    "notifications": false
-  }
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>bob_wilson</td>
-                            <td>
-                                <div class="json-display">{
-  "email": "bob@example.com",
-  "age": 45,
-  "address": {
-    "city": "Istanbul",
-    "country": "Turkey",
-    "zip": "34000"
-  },
-  "tags": ["admin", "manager"],
-  "preferences": {
-    "theme": "dark",
-    "notifications": true,
-    "language": "tr"
-  }
-}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <p>The following tables from bootcamp_db demonstrate JSON data structures. Use these as reference for the exercises.</p>
 
                 <h4>products Table</h4>
-                <p>Products with JSON specifications:</p>
+                <p>Products with JSON attributes (brand, specs, features):</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
                             <th>id</th>
                             <th>name</th>
-                            <th>specs (JSONB)</th>
+                            <th>attributes (JSONB)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Laptop Pro</td>
+                            <td>ProBook Laptop 15"</td>
                             <td>
                                 <div class="json-display">{
-  "brand": "TechCorp",
-  "price": 1299.99,
-  "in_stock": true,
-  "features": ["16GB RAM", "512GB SSD", "15.6 inch"],
-  "dimensions": {"width": 35.5, "height": 1.8, "depth": 24.0},
-  "ratings": [4.5, 4.8, 4.2, 5.0]
+  "brand": "TechPro",
+  "processor": "Intel i7-12700H",
+  "ram": "16GB DDR5",
+  "storage": "512GB NVMe SSD",
+  "display": "15.6 inch FHD",
+  "battery": "72Wh",
+  "warranty_months": 24
 }</div>
                             </td>
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>Wireless Mouse</td>
+                            <td>5</td>
+                            <td>SmartPhone Pro Max</td>
                             <td>
                                 <div class="json-display">{
-  "brand": "PeripheralCo",
-  "price": 49.99,
-  "in_stock": true,
-  "features": ["Bluetooth", "Ergonomic", "Rechargeable"],
-  "colors": ["black", "white", "gray"],
-  "ratings": [4.0, 4.3, 3.9]
+  "brand": "TechMobile",
+  "screen": "6.7 inch OLED",
+  "storage": "256GB",
+  "ram": "12GB",
+  "camera": "108MP + 12MP + 10MP",
+  "battery": "5000mAh",
+  "5g": true,
+  "colors": ["Black", "Silver", "Blue"]
 }</div>
                             </td>
                         </tr>
                         <tr>
-                            <td>3</td>
-                            <td>Monitor 4K</td>
+                            <td>6</td>
+                            <td>SmartPhone Lite</td>
                             <td>
                                 <div class="json-display">{
-  "brand": "DisplayTech",
-  "price": 599.00,
-  "in_stock": false,
-  "features": ["4K UHD", "HDR", "USB-C"],
-  "dimensions": {"width": 61.0, "height": 36.5, "depth": 5.2},
-  "ratings": [4.7, 4.9, 4.6, 4.8, 5.0]
-}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h4>logs Table</h4>
-                <p>Application logs with JSON event data:</p>
-                <table class="dataset-table">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>timestamp</th>
-                            <th>event_data (JSONB)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>2024-03-15 09:30:00</td>
-                            <td>
-                                <div class="json-display">{
-  "event": "login",
-  "user": {"id": 1, "name": "john_doe"},
-  "metadata": {"ip": "192.168.1.100", "browser": "Chrome"}
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2024-03-15 10:15:00</td>
-                            <td>
-                                <div class="json-display">{
-  "event": "purchase",
-  "user": {"id": 1, "name": "john_doe"},
-  "items": [{"product_id": 1, "qty": 1}, {"product_id": 2, "qty": 2}],
-  "total": 1399.97
-}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>2024-03-15 11:00:00</td>
-                            <td>
-                                <div class="json-display">{
-  "event": "error",
-  "error_code": 500,
-  "message": "Database connection failed",
-  "metadata": {"service": "api", "endpoint": "/users"}
+  "brand": "TechMobile",
+  "screen": "6.1 inch LCD",
+  "storage": "64GB",
+  "ram": "4GB",
+  "camera": "48MP + 2MP",
+  "battery": "4000mAh",
+  "5g": false
 }</div>
                             </td>
                         </tr>
@@ -538,42 +418,62 @@
                 </table>
 
                 <h4>orders Table</h4>
-                <p>Orders with nested JSON items:</p>
+                <p>Orders with JSON metadata (source, campaign info):</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>customer_id</th>
-                            <th>order_data (JSONB)</th>
+                            <th>order_number</th>
+                            <th>metadata (JSONB)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>1</td>
+                            <td>ORD-2023-0001</td>
                             <td>
                                 <div class="json-display">{
-  "status": "completed",
-  "items": [
-    {"name": "Laptop Pro", "price": 1299.99, "qty": 1},
-    {"name": "Wireless Mouse", "price": 49.99, "qty": 2}
-  ],
-  "shipping": {"method": "express", "cost": 25.00},
-  "payment": {"method": "credit_card", "last_four": "4242"}
+  "source": "website",
+  "campaign": "new_year"
 }</div>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <td>2</td>
+                            <td>ORD-2023-0002</td>
                             <td>
                                 <div class="json-display">{
-  "status": "pending",
-  "items": [
-    {"name": "Monitor 4K", "price": 599.00, "qty": 1}
-  ],
-  "shipping": {"method": "standard", "cost": 10.00},
-  "payment": {"method": "paypal", "email": "jane@example.com"}
+  "source": "mobile_app"
+}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>ORD-2023-0003</td>
+                            <td>
+                                <div class="json-display">{
+  "source": "website",
+  "b2b": true
+}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>ORD-2023-0004</td>
+                            <td>
+                                <div class="json-display">{
+  "source": "sales_rep",
+  "rep_id": 10
+}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>ORD-2023-0008</td>
+                            <td>
+                                <div class="json-display">{
+  "source": "website",
+  "returning_customer": true
 }</div>
                             </td>
                         </tr>
@@ -652,172 +552,192 @@
 
                 <div class="exercise-box">
                     <h4>Exercise 1.1: Extract Simple Fields</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <p>Using the <code>products</code> table with <code>attributes</code> JSONB column, write queries to:</p>
                     <ol>
-                        <li>Get the email of all users</li>
-                        <li>Get the username and age of all users</li>
-                        <li>Get users who are older than 30</li>
+                        <li>Get the brand of all products that have attributes</li>
+                        <li>Get the product name and RAM specification</li>
+                        <li>Get products with warranty greater than 12 months</li>
                     </ol>
 
                     <div class="hint-box">
-                        Remember to cast the age to integer when comparing: <code>(data->>'age')::INTEGER</code>
+                        Remember to cast warranty_months to integer when comparing: <code>(attributes->>'warranty_months')::INTEGER</code>
                     </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
                     <div id="solution1_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get email of all users
-SELECT username, data->>'email' AS email
-FROM users;
+-- 1. Get brand of all products
+SELECT name, attributes->>'brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Get username and age
-SELECT username, data->>'age' AS age
-FROM users;
+-- 2. Get product name and RAM
+SELECT name, attributes->>'ram' AS ram
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 3. Users older than 30
-SELECT username, data->>'age' AS age
-FROM users
-WHERE (data->>'age')::INTEGER > 30;
+-- 3. Products with warranty > 12 months
+SELECT name, attributes->>'warranty_months' AS warranty
+FROM products
+WHERE attributes IS NOT NULL
+  AND (attributes->>'warranty_months')::INTEGER > 12;
 
 -- MySQL
--- 1. Get email
-SELECT username, data->>'$.email' AS email
-FROM users;
+-- 1. Get brand
+SELECT name, attributes->>'$.brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Get username and age
-SELECT username, data->>'$.age' AS age
-FROM users;
+-- 2. Get product name and RAM
+SELECT name, attributes->>'$.ram' AS ram
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 3. Users older than 30
-SELECT username, data->>'$.age' AS age
-FROM users
-WHERE CAST(data->>'$.age' AS UNSIGNED) > 30;
+-- 3. Products with warranty > 12 months
+SELECT name, attributes->>'$.warranty_months' AS warranty
+FROM products
+WHERE attributes IS NOT NULL
+  AND CAST(attributes->>'$.warranty_months' AS UNSIGNED) > 12;
 
 -- SQL Server
--- 1. Get email
-SELECT username, JSON_VALUE(data, '$.email') AS email
-FROM users;
+-- 1. Get brand
+SELECT name, JSON_VALUE(attributes, '$.brand') AS brand
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Get username and age
-SELECT username, JSON_VALUE(data, '$.age') AS age
-FROM users;
+-- 2. Get product name and RAM
+SELECT name, JSON_VALUE(attributes, '$.ram') AS ram
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 3. Users older than 30
-SELECT username, JSON_VALUE(data, '$.age') AS age
-FROM users
-WHERE CAST(JSON_VALUE(data, '$.age') AS INT) > 30;</code></pre>
+-- 3. Products with warranty > 12 months
+SELECT name, JSON_VALUE(attributes, '$.warranty_months') AS warranty
+FROM products
+WHERE attributes IS NOT NULL
+  AND CAST(JSON_VALUE(attributes, '$.warranty_months') AS INT) > 12;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.2: Extract Nested Fields</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <h4>Exercise 1.2: Extract from Orders Metadata</h4>
+                    <p>Using the <code>orders</code> table with <code>metadata</code> JSONB column, write queries to:</p>
                     <ol>
-                        <li>Get the city from the address object for each user</li>
-                        <li>Get the theme preference for each user</li>
-                        <li>Find users from the USA</li>
+                        <li>Get the order source for all orders</li>
+                        <li>Get orders that have a campaign field</li>
+                        <li>Find orders from the website source</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
                     <div id="solution1_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get city from nested address
-SELECT username, data->'address'->>'city' AS city
-FROM users;
+-- 1. Get order source
+SELECT order_number, metadata->>'source' AS source
+FROM orders
+WHERE metadata IS NOT NULL;
 
--- Alternative using path notation
-SELECT username, data#>>'{address,city}' AS city
-FROM users;
+-- 2. Get orders with campaign field
+SELECT order_number, metadata->>'campaign' AS campaign
+FROM orders
+WHERE metadata ? 'campaign';
 
--- 2. Get theme preference
-SELECT username, data->'preferences'->>'theme' AS theme
-FROM users;
-
--- 3. Find users from USA
-SELECT username, data->'address'->>'country' AS country
-FROM users
-WHERE data->'address'->>'country' = 'USA';
+-- 3. Find orders from website
+SELECT order_number, metadata->>'source' AS source
+FROM orders
+WHERE metadata->>'source' = 'website';
 
 -- MySQL
--- 1. Get city
-SELECT username, data->>'$.address.city' AS city
-FROM users;
+-- 1. Get order source
+SELECT order_number, metadata->>'$.source' AS source
+FROM orders
+WHERE metadata IS NOT NULL;
 
--- 2. Get theme preference
-SELECT username, data->>'$.preferences.theme' AS theme
-FROM users;
+-- 2. Get orders with campaign field
+SELECT order_number, metadata->>'$.campaign' AS campaign
+FROM orders
+WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.campaign');
 
--- 3. Find users from USA
-SELECT username, data->>'$.address.country' AS country
-FROM users
-WHERE data->>'$.address.country' = 'USA';
+-- 3. Find orders from website
+SELECT order_number, metadata->>'$.source' AS source
+FROM orders
+WHERE metadata->>'$.source' = 'website';
 
 -- SQL Server
--- 1. Get city
-SELECT username, JSON_VALUE(data, '$.address.city') AS city
-FROM users;
+-- 1. Get order source
+SELECT order_number, JSON_VALUE(metadata, '$.source') AS source
+FROM orders
+WHERE metadata IS NOT NULL;
 
--- 2. Get theme preference
-SELECT username, JSON_VALUE(data, '$.preferences.theme') AS theme
-FROM users;
+-- 2. Get orders with campaign field
+SELECT order_number, JSON_VALUE(metadata, '$.campaign') AS campaign
+FROM orders
+WHERE JSON_VALUE(metadata, '$.campaign') IS NOT NULL;
 
--- 3. Find users from USA
-SELECT username, JSON_VALUE(data, '$.address.country') AS country
-FROM users
-WHERE JSON_VALUE(data, '$.address.country') = 'USA';</code></pre>
+-- 3. Find orders from website
+SELECT order_number, JSON_VALUE(metadata, '$.source') AS source
+FROM orders
+WHERE JSON_VALUE(metadata, '$.source') = 'website';</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 1.3: Access Array Elements</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <p>Using the <code>products</code> table, write queries to:</p>
                     <ol>
-                        <li>Get the first tag for each user</li>
-                        <li>Get all tags as a JSON array</li>
-                        <li>Count how many tags each user has</li>
+                        <li>Get the first color from products that have a colors array</li>
+                        <li>Get all colors as a JSON array</li>
+                        <li>Count how many colors each product has</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
                     <div id="solution1_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Get first tag
-SELECT username, data->'tags'->>0 AS first_tag
-FROM users;
+-- 1. Get first color
+SELECT name, attributes->'colors'->>0 AS first_color
+FROM products
+WHERE attributes ? 'colors';
 
--- 2. Get all tags as JSON array
-SELECT username, data->'tags' AS tags
-FROM users;
+-- 2. Get all colors as JSON array
+SELECT name, attributes->'colors' AS colors
+FROM products
+WHERE attributes ? 'colors';
 
--- 3. Count tags
-SELECT username, jsonb_array_length(data->'tags') AS tag_count
-FROM users;
+-- 3. Count colors
+SELECT name, jsonb_array_length(attributes->'colors') AS color_count
+FROM products
+WHERE attributes ? 'colors';
 
 -- MySQL
--- 1. Get first tag
-SELECT username, data->>'$.tags[0]' AS first_tag
-FROM users;
+-- 1. Get first color
+SELECT name, attributes->>'$.colors[0]' AS first_color
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
--- 2. Get all tags as JSON array
-SELECT username, data->'$.tags' AS tags
-FROM users;
+-- 2. Get all colors as JSON array
+SELECT name, attributes->'$.colors' AS colors
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
--- 3. Count tags
-SELECT username, JSON_LENGTH(data->'$.tags') AS tag_count
-FROM users;
+-- 3. Count colors
+SELECT name, JSON_LENGTH(attributes->'$.colors') AS color_count
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
 -- SQL Server
--- 1. Get first tag
-SELECT username, JSON_VALUE(data, '$.tags[0]') AS first_tag
-FROM users;
+-- 1. Get first color
+SELECT name, JSON_VALUE(attributes, '$.colors[0]') AS first_color
+FROM products
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;
 
--- 2. Get all tags as JSON array
-SELECT username, JSON_QUERY(data, '$.tags') AS tags
-FROM users;
+-- 2. Get all colors as JSON array
+SELECT name, JSON_QUERY(attributes, '$.colors') AS colors
+FROM products
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;
 
--- 3. Count tags (requires OPENJSON)
-SELECT username,
-       (SELECT COUNT(*) FROM OPENJSON(data, '$.tags')) AS tag_count
-FROM users;</code></pre>
+-- 3. Count colors (requires OPENJSON)
+SELECT name,
+       (SELECT COUNT(*) FROM OPENJSON(attributes, '$.colors')) AS color_count
+FROM products
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;</code></pre>
                     </div>
                 </div>
             </section>
@@ -834,132 +754,117 @@ FROM users;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Exercise 2.1: Check Key Existence</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <p>Using the <code>products</code> and <code>orders</code> tables, write queries to:</p>
                     <ol>
-                        <li>Find users who have a "language" preference set</li>
-                        <li>Find users whose preferences contain a "notifications" key</li>
-                        <li>Find products that have a "colors" field in their specs</li>
+                        <li>Find products that have a "5g" field in their attributes</li>
+                        <li>Find products that have a "warranty_months" field</li>
+                        <li>Find orders that have a "campaign" field in metadata</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
                     <div id="solution2_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Users with language preference
-SELECT username, data->'preferences'->>'language' AS language
-FROM users
-WHERE data->'preferences' ? 'language';
-
--- 2. Users with notifications key
-SELECT username
-FROM users
-WHERE data->'preferences' ? 'notifications';
-
--- 3. Products with colors field
-SELECT name
+-- 1. Products with 5g field
+SELECT name, attributes->>'5g' AS has_5g
 FROM products
-WHERE specs ? 'colors';
+WHERE attributes ? '5g';
+
+-- 2. Products with warranty_months field
+SELECT name, attributes->>'warranty_months' AS warranty
+FROM products
+WHERE attributes ? 'warranty_months';
+
+-- 3. Orders with campaign field
+SELECT order_number, metadata->>'campaign' AS campaign
+FROM orders
+WHERE metadata ? 'campaign';
 
 -- MySQL
--- 1. Users with language preference
-SELECT username, data->>'$.preferences.language' AS language
-FROM users
-WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.language');
-
--- 2. Users with notifications key
-SELECT username
-FROM users
-WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.notifications');
-
--- 3. Products with colors field
-SELECT name
+-- 1. Products with 5g field
+SELECT name, attributes->>'$.5g' AS has_5g
 FROM products
-WHERE JSON_CONTAINS_PATH(specs, 'one', '$.colors');
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.5g');
+
+-- 2. Products with warranty_months field
+SELECT name, attributes->>'$.warranty_months' AS warranty
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.warranty_months');
+
+-- 3. Orders with campaign field
+SELECT order_number, metadata->>'$.campaign' AS campaign
+FROM orders
+WHERE JSON_CONTAINS_PATH(metadata, 'one', '$.campaign');
 
 -- SQL Server
--- 1. Users with language preference
-SELECT username, JSON_VALUE(data, '$.preferences.language') AS language
-FROM users
-WHERE JSON_VALUE(data, '$.preferences.language') IS NOT NULL;
+-- 1. Products with 5g field
+SELECT name, JSON_VALUE(attributes, '$.5g') AS has_5g
+FROM products
+WHERE JSON_VALUE(attributes, '$.5g') IS NOT NULL;
 
--- 2. Users with notifications key
-SELECT username
-FROM users
-WHERE JSON_VALUE(data, '$.preferences.notifications') IS NOT NULL;</code></pre>
-                        <p><strong>Result for query 1:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>username</th>
-                                <th>language</th>
-                            </tr>
-                            <tr>
-                                <td>bob_wilson</td>
-                                <td>tr</td>
-                            </tr>
-                        </table>
+-- 2. Products with warranty_months field
+SELECT name, JSON_VALUE(attributes, '$.warranty_months') AS warranty
+FROM products
+WHERE JSON_VALUE(attributes, '$.warranty_months') IS NOT NULL;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 2.2: Containment Queries</h4>
-                    <p>Using the <code>users</code> table, write queries to:</p>
+                    <p>Using the <code>products</code> and <code>orders</code> tables, write queries to:</p>
                     <ol>
-                        <li>Find users who have "admin" in their tags</li>
-                        <li>Find users with dark theme preference</li>
-                        <li>Find users from Turkey with notifications enabled</li>
+                        <li>Find products with 5G support (5g = true)</li>
+                        <li>Find products from the "TechMobile" brand</li>
+                        <li>Find B2B orders (b2b = true in metadata)</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
                     <div id="solution2_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Users with "admin" tag
-SELECT username, data->'tags' AS tags
-FROM users
-WHERE data->'tags' @> '"admin"'::jsonb;
+-- 1. Products with 5G support
+SELECT name, attributes
+FROM products
+WHERE attributes @> '{"5g": true}'::jsonb;
 
--- Alternative: check if array contains value
-SELECT username
-FROM users
-WHERE data @> '{"tags": ["admin"]}'::jsonb;
+-- Alternative using text extraction and cast
+SELECT name
+FROM products
+WHERE (attributes->>'5g')::BOOLEAN = TRUE;
 
--- 2. Users with dark theme
-SELECT username
-FROM users
-WHERE data->'preferences' @> '{"theme": "dark"}'::jsonb;
+-- 2. Products from TechMobile brand
+SELECT name, attributes->>'brand' AS brand
+FROM products
+WHERE attributes @> '{"brand": "TechMobile"}'::jsonb;
 
--- 3. Users from Turkey with notifications enabled
-SELECT username
-FROM users
-WHERE data @> '{"address": {"country": "Turkey"}, "preferences": {"notifications": true}}'::jsonb;
+-- 3. B2B orders
+SELECT order_number, metadata
+FROM orders
+WHERE metadata @> '{"b2b": true}'::jsonb;
 
 -- MySQL
--- 1. Users with "admin" tag
-SELECT username, data->'$.tags' AS tags
-FROM users
-WHERE JSON_CONTAINS(data->'$.tags', '"admin"');
+-- 1. Products with 5G support
+SELECT name, attributes
+FROM products
+WHERE JSON_EXTRACT(attributes, '$.5g') = true;
 
--- 2. Users with dark theme
-SELECT username
-FROM users
-WHERE JSON_CONTAINS(data, '{"theme": "dark"}', '$.preferences');
+-- 2. Products from TechMobile brand
+SELECT name, attributes->>'$.brand' AS brand
+FROM products
+WHERE JSON_CONTAINS(attributes, '"TechMobile"', '$.brand');
 
--- 3. Users from Turkey with notifications enabled
-SELECT username
-FROM users
-WHERE data->>'$.address.country' = 'Turkey'
-  AND JSON_EXTRACT(data, '$.preferences.notifications') = true;</code></pre>
-                        <p><strong>Result for query 1:</strong></p>
+-- 3. B2B orders
+SELECT order_number, metadata
+FROM orders
+WHERE JSON_EXTRACT(metadata, '$.b2b') = true;</code></pre>
+                        <p><strong>Result for 5G products:</strong></p>
                         <table class="dataset-table">
                             <tr>
-                                <th>username</th>
-                                <th>tags</th>
+                                <th>name</th>
                             </tr>
                             <tr>
-                                <td>john_doe</td>
-                                <td>["admin", "developer"]</td>
+                                <td>SmartPhone Pro Max</td>
                             </tr>
                             <tr>
-                                <td>bob_wilson</td>
-                                <td>["admin", "manager"]</td>
+                                <td>SmartPhone Plus</td>
                             </tr>
                         </table>
                     </div>
@@ -969,43 +874,43 @@ WHERE data->>'$.address.country' = 'Turkey'
                     <h4>Exercise 2.3: Multiple Key Existence</h4>
                     <p>Using the <code>products</code> table, write queries to:</p>
                     <ol>
-                        <li>Find products that have BOTH "dimensions" and "colors" fields</li>
-                        <li>Find products that have EITHER "dimensions" OR "colors" fields</li>
+                        <li>Find products that have BOTH "5g" AND "colors" fields</li>
+                        <li>Find products that have EITHER "warranty_months" OR "colors" fields</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Show Solution</button>
                     <div id="solution2_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Products with BOTH dimensions AND colors
+-- 1. Products with BOTH 5g AND colors
 SELECT name
 FROM products
-WHERE specs ?& ARRAY['dimensions', 'colors'];
+WHERE attributes ?& ARRAY['5g', 'colors'];
 
 -- Alternative using AND
 SELECT name
 FROM products
-WHERE specs ? 'dimensions' AND specs ? 'colors';
+WHERE attributes ? '5g' AND attributes ? 'colors';
 
--- 2. Products with EITHER dimensions OR colors
+-- 2. Products with EITHER warranty_months OR colors
 SELECT name
 FROM products
-WHERE specs ?| ARRAY['dimensions', 'colors'];
+WHERE attributes ?| ARRAY['warranty_months', 'colors'];
 
 -- Alternative using OR
 SELECT name
 FROM products
-WHERE specs ? 'dimensions' OR specs ? 'colors';
+WHERE attributes ? 'warranty_months' OR attributes ? 'colors';
 
 -- MySQL
 -- 1. Products with BOTH
 SELECT name
 FROM products
-WHERE JSON_CONTAINS_PATH(specs, 'all', '$.dimensions', '$.colors');
+WHERE JSON_CONTAINS_PATH(attributes, 'all', '$.5g', '$.colors');
 
 -- 2. Products with EITHER
 SELECT name
 FROM products
-WHERE JSON_CONTAINS_PATH(specs, 'one', '$.dimensions', '$.colors');</code></pre>
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.warranty_months', '$.colors');</code></pre>
                     </div>
                 </div>
             </section>
@@ -1024,65 +929,65 @@ WHERE JSON_CONTAINS_PATH(specs, 'one', '$.dimensions', '$.colors');</code></pre>
                     <h4>Exercise 3.1: Update JSON Fields</h4>
                     <p>Write queries to:</p>
                     <ol>
-                        <li>Update john_doe's theme preference to "system"</li>
-                        <li>Add a new "phone" field to bob_wilson's data</li>
-                        <li>Update the price of "Laptop Pro" in the products table</li>
+                        <li>Update the warranty_months to 36 for 'ProBook Laptop 15"'</li>
+                        <li>Add a new "eco_friendly" field with value true to a product</li>
+                        <li>Update order metadata to add a "priority" field</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
                     <div id="solution3_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Update theme preference
-UPDATE users
-SET data = jsonb_set(data, '{preferences,theme}', '"system"')
-WHERE username = 'john_doe';
-
--- 2. Add phone field
-UPDATE users
-SET data = jsonb_set(data, '{phone}', '"555-1234"')
-WHERE username = 'bob_wilson';
-
--- Alternative: merge new data
-UPDATE users
-SET data = data || '{"phone": "555-1234"}'::jsonb
-WHERE username = 'bob_wilson';
-
--- 3. Update product price
+-- 1. Update warranty_months
 UPDATE products
-SET specs = jsonb_set(specs, '{price}', '1199.99')
-WHERE name = 'Laptop Pro';
+SET attributes = jsonb_set(attributes, '{warranty_months}', '36')
+WHERE name = 'ProBook Laptop 15"';
+
+-- 2. Add eco_friendly field
+UPDATE products
+SET attributes = attributes || '{"eco_friendly": true}'::jsonb
+WHERE name = 'ProBook Laptop 15"';
+
+-- Alternative using jsonb_set
+UPDATE products
+SET attributes = jsonb_set(attributes, '{eco_friendly}', 'true')
+WHERE name = 'ProBook Laptop 15"';
+
+-- 3. Add priority to order metadata
+UPDATE orders
+SET metadata = metadata || '{"priority": "high"}'::jsonb
+WHERE id = 1;
 
 -- MySQL
--- 1. Update theme preference
-UPDATE users
-SET data = JSON_SET(data, '$.preferences.theme', 'system')
-WHERE username = 'john_doe';
-
--- 2. Add phone field
-UPDATE users
-SET data = JSON_SET(data, '$.phone', '555-1234')
-WHERE username = 'bob_wilson';
-
--- 3. Update product price
+-- 1. Update warranty_months
 UPDATE products
-SET specs = JSON_SET(specs, '$.price', 1199.99)
-WHERE name = 'Laptop Pro';
+SET attributes = JSON_SET(attributes, '$.warranty_months', 36)
+WHERE name = 'ProBook Laptop 15"';
+
+-- 2. Add eco_friendly field
+UPDATE products
+SET attributes = JSON_SET(attributes, '$.eco_friendly', true)
+WHERE name = 'ProBook Laptop 15"';
+
+-- 3. Add priority to order metadata
+UPDATE orders
+SET metadata = JSON_SET(metadata, '$.priority', 'high')
+WHERE id = 1;
 
 -- SQL Server
--- 1. Update theme preference
-UPDATE users
-SET data = JSON_MODIFY(data, '$.preferences.theme', 'system')
-WHERE username = 'john_doe';
-
--- 2. Add phone field
-UPDATE users
-SET data = JSON_MODIFY(data, '$.phone', '555-1234')
-WHERE username = 'bob_wilson';
-
--- 3. Update product price
+-- 1. Update warranty_months
 UPDATE products
-SET specs = JSON_MODIFY(specs, '$.price', 1199.99)
-WHERE name = 'Laptop Pro';</code></pre>
+SET attributes = JSON_MODIFY(attributes, '$.warranty_months', 36)
+WHERE name = 'ProBook Laptop 15"';
+
+-- 2. Add eco_friendly field
+UPDATE products
+SET attributes = JSON_MODIFY(attributes, '$.eco_friendly', CAST('true' AS BIT))
+WHERE name = 'ProBook Laptop 15"';
+
+-- 3. Add priority to order metadata
+UPDATE orders
+SET metadata = JSON_MODIFY(metadata, '$.priority', 'high')
+WHERE id = 1;</code></pre>
                     </div>
                 </div>
 
@@ -1090,45 +995,49 @@ WHERE name = 'Laptop Pro';</code></pre>
                     <h4>Exercise 3.2: Remove JSON Fields</h4>
                     <p>Write queries to:</p>
                     <ol>
-                        <li>Remove the "language" preference from bob_wilson</li>
-                        <li>Remove the "colors" array from the Wireless Mouse product</li>
+                        <li>Remove the "battery" field from a product's attributes</li>
+                        <li>Remove the "campaign" field from an order's metadata</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
                     <div id="solution3_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Remove language preference
-UPDATE users
-SET data = data #- '{preferences,language}'
-WHERE username = 'bob_wilson';
-
--- Alternative: remove key from nested object
-UPDATE users
-SET data = jsonb_set(data, '{preferences}',
-           (data->'preferences') - 'language')
-WHERE username = 'bob_wilson';
-
--- 2. Remove colors from product
+-- 1. Remove battery field from product
 UPDATE products
-SET specs = specs - 'colors'
-WHERE name = 'Wireless Mouse';
+SET attributes = attributes - 'battery'
+WHERE name = 'SmartPhone Lite';
+
+-- 2. Remove campaign from order metadata
+UPDATE orders
+SET metadata = metadata - 'campaign'
+WHERE id = 1;
+
+-- Alternative using #- for nested paths
+UPDATE orders
+SET metadata = metadata #- '{campaign}'
+WHERE id = 1;
 
 -- MySQL
--- 1. Remove language preference
-UPDATE users
-SET data = JSON_REMOVE(data, '$.preferences.language')
-WHERE username = 'bob_wilson';
-
--- 2. Remove colors from product
+-- 1. Remove battery field
 UPDATE products
-SET specs = JSON_REMOVE(specs, '$.colors')
-WHERE name = 'Wireless Mouse';
+SET attributes = JSON_REMOVE(attributes, '$.battery')
+WHERE name = 'SmartPhone Lite';
+
+-- 2. Remove campaign from order metadata
+UPDATE orders
+SET metadata = JSON_REMOVE(metadata, '$.campaign')
+WHERE id = 1;
 
 -- SQL Server
--- 1. Remove language preference (set to null)
-UPDATE users
-SET data = JSON_MODIFY(data, '$.preferences.language', NULL)
-WHERE username = 'bob_wilson';</code></pre>
+-- 1. Remove battery field (set to null)
+UPDATE products
+SET attributes = JSON_MODIFY(attributes, '$.battery', NULL)
+WHERE name = 'SmartPhone Lite';
+
+-- 2. Remove campaign from order metadata
+UPDATE orders
+SET metadata = JSON_MODIFY(metadata, '$.campaign', NULL)
+WHERE id = 1;</code></pre>
                     </div>
                 </div>
 
@@ -1136,54 +1045,70 @@ WHERE username = 'bob_wilson';</code></pre>
                     <h4>Exercise 3.3: Array Modifications</h4>
                     <p>Write queries to:</p>
                     <ol>
-                        <li>Add a new tag "supervisor" to bob_wilson's tags</li>
-                        <li>Add a new feature "Touch Screen" to the Monitor 4K product</li>
+                        <li>Add a new color "Gold" to a product's colors array</li>
+                        <li>Replace the entire colors array with a new set of colors</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
                     <div id="solution3_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Add new tag to user
-UPDATE users
-SET data = jsonb_set(data, '{tags}',
-           (data->'tags') || '"supervisor"'::jsonb)
-WHERE username = 'bob_wilson';
+-- 1. Add new color to array
+UPDATE products
+SET attributes = jsonb_set(
+    attributes,
+    '{colors}',
+    (attributes->'colors') || '"Gold"'::jsonb
+)
+WHERE name = 'SmartPhone Pro Max';
 
 -- Alternative: concatenate arrays
-UPDATE users
-SET data = jsonb_set(data, '{tags}',
-           data->'tags' || '["supervisor"]'::jsonb)
-WHERE username = 'bob_wilson';
-
--- 2. Add feature to product
 UPDATE products
-SET specs = jsonb_set(specs, '{features}',
-            specs->'features' || '["Touch Screen"]'::jsonb)
-WHERE name = 'Monitor 4K';
+SET attributes = jsonb_set(
+    attributes,
+    '{colors}',
+    attributes->'colors' || '["Gold"]'::jsonb
+)
+WHERE name = 'SmartPhone Pro Max';
+
+-- 2. Replace entire colors array
+UPDATE products
+SET attributes = jsonb_set(
+    attributes,
+    '{colors}',
+    '["Red", "Green", "Blue"]'::jsonb
+)
+WHERE name = 'SmartPhone Pro Max';
 
 -- MySQL
--- 1. Add new tag (MySQL 8.0+)
-UPDATE users
-SET data = JSON_ARRAY_APPEND(data, '$.tags', 'supervisor')
-WHERE username = 'bob_wilson';
-
--- 2. Add feature to product
+-- 1. Add new color (MySQL 8.0+)
 UPDATE products
-SET specs = JSON_ARRAY_APPEND(specs, '$.features', 'Touch Screen')
-WHERE name = 'Monitor 4K';
+SET attributes = JSON_ARRAY_APPEND(attributes, '$.colors', 'Gold')
+WHERE name = 'SmartPhone Pro Max';
+
+-- 2. Replace entire colors array
+UPDATE products
+SET attributes = JSON_SET(
+    attributes,
+    '$.colors',
+    JSON_ARRAY('Red', 'Green', 'Blue')
+)
+WHERE name = 'SmartPhone Pro Max';
 
 -- SQL Server (requires rebuilding array)
--- 1. Add new tag
-UPDATE users
-SET data = JSON_MODIFY(data, '$.tags',
-           JSON_QUERY(
-               CONCAT(
-                   LEFT(JSON_QUERY(data, '$.tags'),
-                        LEN(JSON_QUERY(data, '$.tags')) - 1),
-                   ',"supervisor"]'
-               )
-           ))
-WHERE username = 'bob_wilson';</code></pre>
+-- 1. Add new color to array
+UPDATE products
+SET attributes = JSON_MODIFY(
+    attributes,
+    '$.colors',
+    JSON_QUERY(
+        CONCAT(
+            LEFT(JSON_QUERY(attributes, '$.colors'),
+                 LEN(JSON_QUERY(attributes, '$.colors')) - 1),
+            ',"Gold"]'
+        )
+    )
+)
+WHERE name = 'SmartPhone Pro Max';</code></pre>
                     </div>
                 </div>
             </section>
@@ -1200,137 +1125,141 @@ WHERE username = 'bob_wilson';</code></pre>
 
                 <div class="exercise-box">
                     <h4>Exercise 4.1: Expand JSON Arrays</h4>
-                    <p>Using the <code>users</code> table, write a query that shows each user with their tags
-                        expanded into separate rows (one row per tag per user).</p>
+                    <p>Using the <code>products</code> table, write a query that shows each product with their colors
+                        expanded into separate rows (one row per color per product).</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
                     <div id="solution4_1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    username,
-    jsonb_array_elements_text(data->'tags') AS tag
-FROM users;
+    name,
+    jsonb_array_elements_text(attributes->'colors') AS color
+FROM products
+WHERE attributes ? 'colors';
 
 -- With index position
 SELECT
-    username,
-    ordinality AS tag_position,
-    tag
-FROM users,
-     jsonb_array_elements_text(data->'tags')
-     WITH ORDINALITY AS t(tag, ordinality);
+    name,
+    ordinality AS color_position,
+    color
+FROM products,
+     jsonb_array_elements_text(attributes->'colors')
+     WITH ORDINALITY AS t(color, ordinality)
+WHERE attributes ? 'colors';
 
 -- MySQL
 SELECT
-    username,
-    jt.tag
-FROM users,
-     JSON_TABLE(data, '$.tags[*]' COLUMNS(
-         tag VARCHAR(50) PATH '$'
-     )) AS jt;
+    name,
+    jt.color
+FROM products,
+     JSON_TABLE(attributes, '$.colors[*]' COLUMNS(
+         color VARCHAR(50) PATH '$'
+     )) AS jt
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.colors');
 
 -- SQL Server
 SELECT
-    username,
-    tag.value AS tag
-FROM users
-CROSS APPLY OPENJSON(data, '$.tags') AS tag;</code></pre>
+    name,
+    color.value AS color
+FROM products
+CROSS APPLY OPENJSON(attributes, '$.colors') AS color
+WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.2: Expand Nested Objects</h4>
-                    <p>Using the <code>orders</code> table, write a query that expands the items array,
-                        showing order_id, item name, price, and quantity for each item.</p>
+                    <h4>Exercise 4.2: JSON Object to Key-Value Pairs</h4>
+                    <p>Using the <code>products</code> table, write a query that expands the product attributes
+                        into key-value pairs for each product.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
                     <div id="solution4_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    o.id AS order_id,
-    item->>'name' AS item_name,
-    (item->>'price')::DECIMAL AS price,
-    (item->>'qty')::INTEGER AS quantity
-FROM orders o,
-     jsonb_array_elements(o.order_data->'items') AS item;
+    name AS product_name,
+    attr.key AS attribute_name,
+    attr.value AS attribute_value
+FROM products,
+     jsonb_each(attributes) AS attr(key, value)
+WHERE attributes IS NOT NULL
+LIMIT 20;
 
--- With calculated line total
+-- Filter to only scalar values (exclude arrays)
 SELECT
-    o.id AS order_id,
-    item->>'name' AS item_name,
-    (item->>'price')::DECIMAL AS price,
-    (item->>'qty')::INTEGER AS quantity,
-    (item->>'price')::DECIMAL * (item->>'qty')::INTEGER AS line_total
-FROM orders o,
-     jsonb_array_elements(o.order_data->'items') AS item;
+    name AS product_name,
+    attr.key AS attribute_name,
+    attr.value AS attribute_value
+FROM products,
+     jsonb_each(attributes) AS attr(key, value)
+WHERE attributes IS NOT NULL
+  AND jsonb_typeof(attr.value) != 'array';
 
--- MySQL
+-- MySQL (using specific keys)
 SELECT
-    o.id AS order_id,
-    jt.item_name,
-    jt.price,
-    jt.quantity,
-    jt.price * jt.quantity AS line_total
-FROM orders o,
-     JSON_TABLE(o.order_data, '$.items[*]' COLUMNS(
-         item_name VARCHAR(100) PATH '$.name',
-         price DECIMAL(10,2) PATH '$.price',
-         quantity INT PATH '$.qty'
-     )) AS jt;
+    name AS product_name,
+    'brand' AS attribute_name,
+    attributes->>'$.brand' AS attribute_value
+FROM products
+WHERE attributes IS NOT NULL
+UNION ALL
+SELECT
+    name,
+    'processor',
+    attributes->>'$.processor'
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.processor')
+UNION ALL
+SELECT
+    name,
+    'ram',
+    attributes->>'$.ram'
+FROM products
+WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.ram');
 
 -- SQL Server
 SELECT
-    o.id AS order_id,
-    JSON_VALUE(item.value, '$.name') AS item_name,
-    CAST(JSON_VALUE(item.value, '$.price') AS DECIMAL(10,2)) AS price,
-    CAST(JSON_VALUE(item.value, '$.qty') AS INT) AS quantity
-FROM orders o
-CROSS APPLY OPENJSON(o.order_data, '$.items') AS item;</code></pre>
+    name AS product_name,
+    attr.[key] AS attribute_name,
+    attr.[value] AS attribute_value
+FROM products
+CROSS APPLY OPENJSON(attributes) AS attr
+WHERE attributes IS NOT NULL;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 4.3: JSON Object to Key-Value Pairs</h4>
-                    <p>Using the <code>users</code> table, write a query that expands the preferences
-                        object into key-value pairs for each user.</p>
+                    <h4>Exercise 4.3: Expand Order Metadata</h4>
+                    <p>Using the <code>orders</code> table, write a query that expands the metadata
+                        object into key-value pairs for each order.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Show Solution</button>
                     <div id="solution4_3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 SELECT
-    username,
-    pref.key AS preference_name,
-    pref.value AS preference_value
-FROM users,
-     jsonb_each(data->'preferences') AS pref(key, value);
+    order_number,
+    meta.key AS metadata_key,
+    meta.value AS metadata_value
+FROM orders,
+     jsonb_each(metadata) AS meta(key, value)
+WHERE metadata IS NOT NULL;
 
--- MySQL (using JSON_KEYS and a recursive approach or specific keys)
+-- Get text values instead of JSON
 SELECT
-    username,
-    'theme' AS preference_name,
-    data->>'$.preferences.theme' AS preference_value
-FROM users
-UNION ALL
-SELECT
-    username,
-    'notifications' AS preference_name,
-    CAST(data->'$.preferences.notifications' AS CHAR) AS preference_value
-FROM users
-UNION ALL
-SELECT
-    username,
-    'language' AS preference_name,
-    data->>'$.preferences.language' AS preference_value
-FROM users
-WHERE JSON_CONTAINS_PATH(data, 'one', '$.preferences.language');
+    order_number,
+    meta.key AS metadata_key,
+    meta.value::TEXT AS metadata_value
+FROM orders,
+     jsonb_each_text(metadata) AS meta(key, value)
+WHERE metadata IS NOT NULL;
 
 -- SQL Server
 SELECT
-    username,
-    pref.[key] AS preference_name,
-    pref.[value] AS preference_value
-FROM users
-CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
+    order_number,
+    meta.[key] AS metadata_key,
+    meta.[value] AS metadata_value
+FROM orders
+CROSS APPLY OPENJSON(metadata) AS meta
+WHERE metadata IS NOT NULL;</code></pre>
                     </div>
                 </div>
             </section>
@@ -1343,7 +1272,7 @@ CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
                 <div class="exercise-box">
                     <h4>Exercise 5.1: Build JSON Objects</h4>
                     <p>Create a query that builds a JSON object containing product information
-                        (name, brand, price) for each product.</p>
+                        (name, brand, price) for each product with attributes.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
                     <div id="solution5_1" class="solution-box">
@@ -1351,121 +1280,132 @@ CROSS APPLY OPENJSON(data, '$.preferences') AS pref;</code></pre>
 SELECT
     jsonb_build_object(
         'product_name', name,
-        'brand', specs->>'brand',
-        'price', (specs->>'price')::DECIMAL,
-        'in_stock', (specs->>'in_stock')::BOOLEAN
+        'sku', sku,
+        'brand', attributes->>'brand',
+        'price', price,
+        'has_5g', COALESCE((attributes->>'5g')::BOOLEAN, false)
     ) AS product_json
-FROM products;
+FROM products
+WHERE attributes IS NOT NULL;
 
 -- With pretty formatting
 SELECT
     jsonb_pretty(
         jsonb_build_object(
             'product_name', name,
-            'brand', specs->>'brand',
-            'price', (specs->>'price')::DECIMAL
+            'brand', attributes->>'brand',
+            'price', price
         )
     ) AS product_json
-FROM products;
+FROM products
+WHERE attributes IS NOT NULL;
 
 -- MySQL
 SELECT
     JSON_OBJECT(
         'product_name', name,
-        'brand', specs->>'$.brand',
-        'price', CAST(specs->>'$.price' AS DECIMAL(10,2)),
-        'in_stock', CAST(specs->'$.in_stock' AS JSON)
+        'sku', sku,
+        'brand', attributes->>'$.brand',
+        'price', price
     ) AS product_json
-FROM products;
+FROM products
+WHERE attributes IS NOT NULL;
 
 -- SQL Server
 SELECT
     name AS product_name,
-    JSON_VALUE(specs, '$.brand') AS brand,
-    JSON_VALUE(specs, '$.price') AS price
+    sku,
+    JSON_VALUE(attributes, '$.brand') AS brand,
+    price
 FROM products
+WHERE attributes IS NOT NULL
 FOR JSON PATH;</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 5.2: Aggregate into JSON Arrays</h4>
-                    <p>Create a query that returns all usernames as a JSON array, and another that
-                        returns user data grouped by country.</p>
+                    <p>Create a query that returns all product names as a JSON array, and another that
+                        groups products by brand.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
                     <div id="solution5_2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. All usernames as JSON array
-SELECT jsonb_agg(username) AS all_usernames
-FROM users;
+-- 1. All product names as JSON array
+SELECT jsonb_agg(name) AS all_products
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Users grouped by country
+-- 2. Products grouped by brand
 SELECT
-    data->'address'->>'country' AS country,
+    attributes->>'brand' AS brand,
     jsonb_agg(
         jsonb_build_object(
-            'username', username,
-            'email', data->>'email',
-            'city', data->'address'->>'city'
+            'name', name,
+            'price', price,
+            'sku', sku
         )
-    ) AS users_in_country
-FROM users
-GROUP BY data->'address'->>'country';
+    ) AS products_by_brand
+FROM products
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+GROUP BY attributes->>'brand';
 
--- 3. Products with their ratings as summary
+-- 3. Order sources with counts as JSON
 SELECT
-    name,
-    jsonb_build_object(
-        'count', jsonb_array_length(specs->'ratings'),
-        'ratings', specs->'ratings',
-        'average', (
-            SELECT AVG(r::DECIMAL)
-            FROM jsonb_array_elements_text(specs->'ratings') r
-        )
-    ) AS rating_summary
-FROM products;
+    jsonb_object_agg(
+        source,
+        order_count
+    ) AS source_summary
+FROM (
+    SELECT
+        metadata->>'source' AS source,
+        COUNT(*) AS order_count
+    FROM orders
+    WHERE metadata IS NOT NULL
+      AND metadata->>'source' IS NOT NULL
+    GROUP BY metadata->>'source'
+) AS source_counts;
 
 -- MySQL
--- 1. All usernames as JSON array
-SELECT JSON_ARRAYAGG(username) AS all_usernames
-FROM users;
+-- 1. All product names as JSON array
+SELECT JSON_ARRAYAGG(name) AS all_products
+FROM products
+WHERE attributes IS NOT NULL;
 
--- 2. Users grouped by country
+-- 2. Products grouped by brand
 SELECT
-    data->>'$.address.country' AS country,
+    attributes->>'$.brand' AS brand,
     JSON_ARRAYAGG(
         JSON_OBJECT(
-            'username', username,
-            'email', data->>'$.email',
-            'city', data->>'$.address.city'
+            'name', name,
+            'price', price,
+            'sku', sku
         )
-    ) AS users_in_country
-FROM users
-GROUP BY data->>'$.address.country';
+    ) AS products_by_brand
+FROM products
+WHERE attributes IS NOT NULL
+GROUP BY attributes->>'$.brand';
 
 -- SQL Server
--- 1. All usernames as JSON array
-SELECT username
-FROM users
+-- 1. All product names as JSON array
+SELECT name
+FROM products
+WHERE attributes IS NOT NULL
 FOR JSON PATH;</code></pre>
-                        <p><strong>Result for grouped by country:</strong></p>
+                        <p><strong>Result for grouped by brand:</strong></p>
                         <table class="dataset-table">
                             <tr>
-                                <th>country</th>
-                                <th>users_in_country</th>
+                                <th>brand</th>
+                                <th>products_by_brand</th>
                             </tr>
                             <tr>
-                                <td>USA</td>
-                                <td>[{"username": "john_doe", "email": "john@example.com", "city": "New York"}]</td>
+                                <td>TechPro</td>
+                                <td>[{"name": "ProBook Laptop 15\"", "price": 1299.99, "sku": "COMP-001"}, ...]</td>
                             </tr>
                             <tr>
-                                <td>UK</td>
-                                <td>[{"username": "jane_smith", "email": "jane@example.com", "city": "London"}]</td>
-                            </tr>
-                            <tr>
-                                <td>Turkey</td>
-                                <td>[{"username": "bob_wilson", "email": "bob@example.com", "city": "Istanbul"}]</td>
+                                <td>TechMobile</td>
+                                <td>[{"name": "SmartPhone Pro Max", "price": 1199.99, "sku": "PHONE-001"}, ...]</td>
                             </tr>
                         </table>
                     </div>
@@ -1478,164 +1418,169 @@ FOR JSON PATH;</code></pre>
                 <p>Test your comprehensive understanding of JSON operations with these advanced challenges.</p>
 
                 <div class="challenge-box">
-                    <h4>Challenge 1: Log Analysis</h4>
-                    <p>Using the <code>logs</code> table, write queries to:</p>
+                    <h4>Challenge 1: Order Source Analysis</h4>
+                    <p>Using the <code>orders</code> table with <code>metadata</code> JSONB, write queries to:</p>
                     <ol>
-                        <li>Count events by event type</li>
-                        <li>Find all error events and extract the error code and message</li>
-                        <li>Get a list of all unique users who have logged in</li>
-                        <li>Calculate the total value of all purchases</li>
+                        <li>Count orders by source (website, mobile_app, sales_rep)</li>
+                        <li>Find all B2B orders and show their total amounts</li>
+                        <li>Get a list of orders with campaigns and their campaign names</li>
+                        <li>Calculate total revenue by order source</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
                     <div id="challenge1" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Count events by type
+-- 1. Count orders by source
 SELECT
-    event_data->>'event' AS event_type,
-    COUNT(*) AS event_count
-FROM logs
-GROUP BY event_data->>'event';
+    metadata->>'source' AS source,
+    COUNT(*) AS order_count
+FROM orders
+WHERE metadata IS NOT NULL
+GROUP BY metadata->>'source'
+ORDER BY order_count DESC;
 
--- 2. Find error events with details
+-- 2. B2B orders with totals
 SELECT
-    timestamp,
-    (event_data->>'error_code')::INTEGER AS error_code,
-    event_data->>'message' AS error_message,
-    event_data->'metadata'->>'service' AS service,
-    event_data->'metadata'->>'endpoint' AS endpoint
-FROM logs
-WHERE event_data->>'event' = 'error';
+    order_number,
+    customer_id,
+    total_amount,
+    metadata
+FROM orders
+WHERE metadata @> '{"b2b": true}'::jsonb;
 
--- 3. Unique users who logged in
-SELECT DISTINCT
-    event_data->'user'->>'id' AS user_id,
-    event_data->'user'->>'name' AS username
-FROM logs
-WHERE event_data->>'event' = 'login';
-
--- 4. Total purchase value
+-- 3. Orders with campaigns
 SELECT
-    SUM((event_data->>'total')::DECIMAL) AS total_revenue
-FROM logs
-WHERE event_data->>'event' = 'purchase';
+    order_number,
+    metadata->>'campaign' AS campaign_name,
+    order_date,
+    total_amount
+FROM orders
+WHERE metadata ? 'campaign';
 
--- Bonus: Detailed purchase breakdown
+-- 4. Total revenue by source
 SELECT
-    event_data->'user'->>'name' AS customer,
-    (event_data->>'total')::DECIMAL AS order_total,
-    jsonb_array_length(event_data->'items') AS item_count
-FROM logs
-WHERE event_data->>'event' = 'purchase';</code></pre>
+    metadata->>'source' AS source,
+    SUM(total_amount) AS total_revenue,
+    COUNT(*) AS order_count,
+    ROUND(AVG(total_amount), 2) AS avg_order_value
+FROM orders
+WHERE metadata IS NOT NULL
+GROUP BY metadata->>'source'
+ORDER BY total_revenue DESC;</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
                     <h4>Challenge 2: Product Analytics</h4>
-                    <p>Using the <code>products</code> table, write queries to:</p>
+                    <p>Using the <code>products</code> table with <code>attributes</code> JSONB, write queries to:</p>
                     <ol>
-                        <li>Find the average rating for each product</li>
-                        <li>Find products with average rating above 4.5</li>
-                        <li>List all unique features across all products</li>
-                        <li>Find products that have more than 3 features</li>
+                        <li>Count products by brand</li>
+                        <li>Find all products with 5G support and their prices</li>
+                        <li>List all unique brands in the database</li>
+                        <li>Find products with warranty longer than 12 months</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
                     <div id="challenge2" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
--- 1. Average rating for each product
+-- 1. Count products by brand
 SELECT
-    name,
-    ROUND(
-        (SELECT AVG(r::DECIMAL)
-         FROM jsonb_array_elements_text(specs->'ratings') r),
-        2
-    ) AS avg_rating
-FROM products;
-
--- 2. Products with avg rating above 4.5
-SELECT
-    name,
-    avg_rating
-FROM (
-    SELECT
-        name,
-        (SELECT AVG(r::DECIMAL)
-         FROM jsonb_array_elements_text(specs->'ratings') r) AS avg_rating
-    FROM products
-) subq
-WHERE avg_rating > 4.5;
-
--- 3. All unique features
-SELECT DISTINCT feature
-FROM products,
-     jsonb_array_elements_text(specs->'features') AS feature
-ORDER BY feature;
-
--- 4. Products with more than 3 features
-SELECT
-    name,
-    jsonb_array_length(specs->'features') AS feature_count
+    attributes->>'brand' AS brand,
+    COUNT(*) AS product_count
 FROM products
-WHERE jsonb_array_length(specs->'features') > 3;</code></pre>
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+GROUP BY attributes->>'brand'
+ORDER BY product_count DESC;
+
+-- 2. Products with 5G and prices
+SELECT
+    name,
+    price,
+    attributes->>'brand' AS brand,
+    attributes->>'storage' AS storage
+FROM products
+WHERE attributes @> '{"5g": true}'::jsonb
+ORDER BY price DESC;
+
+-- 3. All unique brands
+SELECT DISTINCT attributes->>'brand' AS brand
+FROM products
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+ORDER BY brand;
+
+-- 4. Products with warranty > 12 months
+SELECT
+    name,
+    attributes->>'brand' AS brand,
+    (attributes->>'warranty_months')::INTEGER AS warranty_months,
+    price
+FROM products
+WHERE attributes ? 'warranty_months'
+  AND (attributes->>'warranty_months')::INTEGER > 12
+ORDER BY warranty_months DESC;</code></pre>
                     </div>
                 </div>
 
                 <div class="challenge-box">
-                    <h4>Challenge 3: Order Report Generation</h4>
-                    <p>Using the <code>orders</code> table, create a comprehensive order report that shows:</p>
+                    <h4>Challenge 3: Combined Analytics Report</h4>
+                    <p>Create a comprehensive analytics report that combines product and order data:</p>
                     <ol>
-                        <li>Order ID, status, and customer ID</li>
-                        <li>Number of items in each order</li>
-                        <li>Subtotal (sum of price * qty for all items)</li>
-                        <li>Shipping cost and method</li>
-                        <li>Grand total (subtotal + shipping)</li>
+                        <li>Show product brands with their product count and average price</li>
+                        <li>Show order sources with total revenue and order count</li>
+                        <li>Create a summary JSON object with key metrics</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge3')">Show Solution</button>
                     <div id="challenge3" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
+-- 1. Brand analytics
 SELECT
-    id AS order_id,
-    customer_id,
-    order_data->>'status' AS status,
-    jsonb_array_length(order_data->'items') AS item_count,
-    (
-        SELECT SUM(
-            (item->>'price')::DECIMAL * (item->>'qty')::INTEGER
-        )
-        FROM jsonb_array_elements(order_data->'items') AS item
-    ) AS subtotal,
-    order_data->'shipping'->>'method' AS shipping_method,
-    (order_data->'shipping'->>'cost')::DECIMAL AS shipping_cost,
-    (
-        SELECT SUM(
-            (item->>'price')::DECIMAL * (item->>'qty')::INTEGER
-        )
-        FROM jsonb_array_elements(order_data->'items') AS item
-    ) + (order_data->'shipping'->>'cost')::DECIMAL AS grand_total
-FROM orders;
+    attributes->>'brand' AS brand,
+    COUNT(*) AS product_count,
+    ROUND(AVG(price), 2) AS avg_price,
+    MIN(price) AS min_price,
+    MAX(price) AS max_price
+FROM products
+WHERE attributes IS NOT NULL
+  AND attributes->>'brand' IS NOT NULL
+GROUP BY attributes->>'brand'
+ORDER BY product_count DESC;
 
--- Alternative with CTE for cleaner code
-WITH order_items AS (
-    SELECT
-        o.id,
-        SUM((item->>'price')::DECIMAL * (item->>'qty')::INTEGER) AS subtotal
-    FROM orders o,
-         jsonb_array_elements(o.order_data->'items') AS item
-    GROUP BY o.id
-)
+-- 2. Order source analytics
 SELECT
-    o.id AS order_id,
-    o.customer_id,
-    o.order_data->>'status' AS status,
-    jsonb_array_length(o.order_data->'items') AS item_count,
-    oi.subtotal,
-    o.order_data->'shipping'->>'method' AS shipping_method,
-    (o.order_data->'shipping'->>'cost')::DECIMAL AS shipping_cost,
-    oi.subtotal + (o.order_data->'shipping'->>'cost')::DECIMAL AS grand_total
-FROM orders o
-JOIN order_items oi ON o.id = oi.id;</code></pre>
+    metadata->>'source' AS source,
+    COUNT(*) AS order_count,
+    SUM(total_amount) AS total_revenue,
+    ROUND(AVG(total_amount), 2) AS avg_order_value
+FROM orders
+WHERE metadata IS NOT NULL
+GROUP BY metadata->>'source'
+ORDER BY total_revenue DESC;
+
+-- 3. Summary JSON object
+SELECT jsonb_build_object(
+    'product_stats', (
+        SELECT jsonb_build_object(
+            'total_products', COUNT(*),
+            'products_with_5g', SUM(CASE WHEN attributes @> '{"5g": true}'::jsonb THEN 1 ELSE 0 END),
+            'brands', (SELECT jsonb_agg(DISTINCT attributes->>'brand')
+                      FROM products WHERE attributes->>'brand' IS NOT NULL)
+        )
+        FROM products
+        WHERE attributes IS NOT NULL
+    ),
+    'order_stats', (
+        SELECT jsonb_build_object(
+            'total_orders', COUNT(*),
+            'total_revenue', SUM(total_amount),
+            'sources', (SELECT jsonb_agg(DISTINCT metadata->>'source')
+                       FROM orders WHERE metadata IS NOT NULL)
+        )
+        FROM orders
+    )
+) AS analytics_summary;</code></pre>
                     </div>
                 </div>
 
@@ -1643,60 +1588,70 @@ JOIN order_items oi ON o.id = oi.id;</code></pre>
                     <h4>Challenge 4: Create Indexing Strategy</h4>
                     <p>Design and write SQL statements to create appropriate indexes for the following query patterns:</p>
                     <ol>
-                        <li>Frequently query users by email</li>
-                        <li>Frequently search for products containing specific tags</li>
-                        <li>Search for orders by status</li>
+                        <li>Frequently query products by brand from attributes</li>
+                        <li>Frequently search for products with 5G support</li>
+                        <li>Search for orders by source in metadata</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge4')">Show Solution</button>
                     <div id="challenge4" class="solution-box">
                         <pre><code class="language-sql">-- PostgreSQL
 
--- 1. Index for email queries (B-tree on extracted value)
-CREATE INDEX idx_users_email ON users ((data->>'email'));
+-- 1. Index for brand queries (B-tree on extracted value)
+CREATE INDEX idx_products_brand ON products ((attributes->>'brand'));
 
--- 2. GIN index for tag containment queries
-CREATE INDEX idx_users_tags ON users USING GIN ((data->'tags'));
--- This supports queries like: WHERE data->'tags' @> '"admin"'
+-- 2. GIN index for 5G containment queries
+CREATE INDEX idx_products_5g ON products USING GIN (attributes);
+-- This supports queries like: WHERE attributes @> '{"5g": true}'
 
--- 3. Index for order status
-CREATE INDEX idx_orders_status ON orders ((order_data->>'status'));
+-- Alternative: expression index for specific boolean check
+CREATE INDEX idx_products_5g_true ON products ((attributes->>'5g'))
+WHERE attributes->>'5g' = 'true';
 
--- Full JSONB GIN index for flexible querying
-CREATE INDEX idx_users_data_gin ON users USING GIN (data);
+-- 3. Index for order source
+CREATE INDEX idx_orders_source ON orders ((metadata->>'source'));
+
+-- Full JSONB GIN index for flexible querying on products
+CREATE INDEX idx_products_attrs_gin ON products USING GIN (attributes);
 -- This supports ?, ?|, ?&, @>, <@ operators
 
+-- Full JSONB GIN index for orders metadata
+CREATE INDEX idx_orders_meta_gin ON orders USING GIN (metadata);
+
 -- GIN with jsonb_path_ops for containment-only queries (smaller index)
-CREATE INDEX idx_users_data_path ON users USING GIN (data jsonb_path_ops);
+CREATE INDEX idx_products_attrs_path ON products USING GIN (attributes jsonb_path_ops);
 
 -- MySQL
 
--- 1. Generated column with index for email
-ALTER TABLE users
-ADD COLUMN email_idx VARCHAR(255)
-GENERATED ALWAYS AS (data->>'$.email') STORED;
-CREATE INDEX idx_users_email ON users(email_idx);
+-- 1. Generated column with index for brand
+ALTER TABLE products
+ADD COLUMN brand_idx VARCHAR(100)
+GENERATED ALWAYS AS (attributes->>'$.brand') STORED;
+CREATE INDEX idx_products_brand ON products(brand_idx);
 
--- 2. Multi-valued index for tags (MySQL 8.0.17+)
-CREATE INDEX idx_users_tags ON users((CAST(data->'$.tags' AS CHAR(100) ARRAY)));
+-- 2. Generated column for 5g flag
+ALTER TABLE products
+ADD COLUMN has_5g_idx BOOLEAN
+GENERATED ALWAYS AS (CAST(attributes->>'$.5g' AS UNSIGNED) = 1) STORED;
+CREATE INDEX idx_products_5g ON products(has_5g_idx);
 
--- 3. Generated column for status
+-- 3. Generated column for source
 ALTER TABLE orders
-ADD COLUMN status_idx VARCHAR(50)
-GENERATED ALWAYS AS (order_data->>'$.status') STORED;
-CREATE INDEX idx_orders_status ON orders(status_idx);
+ADD COLUMN source_idx VARCHAR(50)
+GENERATED ALWAYS AS (metadata->>'$.source') STORED;
+CREATE INDEX idx_orders_source ON orders(source_idx);
 
 -- SQL Server
 
--- 1. Computed column with index for email
-ALTER TABLE users
-ADD email_computed AS JSON_VALUE(data, '$.email');
-CREATE INDEX idx_users_email ON users(email_computed);
+-- 1. Computed column with index for brand
+ALTER TABLE products
+ADD brand_computed AS JSON_VALUE(attributes, '$.brand');
+CREATE INDEX idx_products_brand ON products(brand_computed);
 
--- 3. Computed column for status
+-- 3. Computed column for source
 ALTER TABLE orders
-ADD status_computed AS JSON_VALUE(order_data, '$.status');
-CREATE INDEX idx_orders_status ON orders(status_computed);</code></pre>
+ADD source_computed AS JSON_VALUE(metadata, '$.source');
+CREATE INDEX idx_orders_source ON orders(source_computed);</code></pre>
                     </div>
                 </div>
             </section>
