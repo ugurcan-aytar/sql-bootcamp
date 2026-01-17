@@ -364,10 +364,10 @@
             <!-- Ornek Veri Setleri Bolumu -->
             <section>
                 <h2 id="sample-datasets">Ornek Veri Setleri</h2>
-                <p>bootcamp_db veritabanindan asagidaki tablolar JSON veri yapilarini gostermektedir. Alistirmalar icin referans olarak kullanin.</p>
+                <p><code>bootcamp_db</code> veritabanindaki asagidaki tablolar JSONB sutunlari icermektedir. Alisturmalara baslamadan once veri yapisini anlamak icin bu ornekleri inceleyin.</p>
 
-                <h4>products Tablosu</h4>
-                <p>JSON ozellikleri iceren urunler (marka, ozellikler):</p>
+                <h4>products Tablosu (attributes JSONB sutunu)</h4>
+                <p><code>attributes</code> sutunu urun ozelliklerini JSON olarak saklar. Farkli urun turleri farkli ozelliklere sahiptir (laptoplar islemci/ram, telefonlar ekran/kamera vb.):</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -426,8 +426,8 @@
                     </tbody>
                 </table>
 
-                <h4>orders Tablosu</h4>
-                <p>JSON metadata iceren siparisler (kaynak, kampanya bilgisi):</p>
+                <h4>orders Tablosu (metadata JSONB sutunu)</h4>
+                <p><code>metadata</code> sutunu siparis baglam bilgilerini saklar. Not: Tum siparislerin metadatasi yoktur ve farkli siparisler farkli anahtarlara sahip olabilir (source, campaign, b2b, rep_id, returning_customer):</p>
                 <table class="dataset-table">
                     <thead>
                         <tr>
@@ -552,24 +552,24 @@
             <!-- Alistirma 1: Temel JSON Cikarma -->
             <section>
                 <h2 id="exercise-1">Alistirma 1: Temel JSON Yol Gezintisi</h2>
-                <p>Yol gezintisi operatorlerini kullanarak JSON sutunlarindan deger cikarmayi ogrenin.</p>
+                <p>Yol gezintisi operatorlerini kullanarak JSON sutunlarindan deger cikarmayi ogrenin. Bunlar neredeyse her JSON sorgusunda kullanacaginiz temel islemlerdir.</p>
 
                 <div class="concept-box">
                     JSON/JSONB ciktisi almak icin <code>-></code>, metin ciktisi almak icin <code>->></code> kullanin.
-                    Fark, degerleri karsilastirirken veya WHERE ifadelerinde kullanirken onemlidir.
+                    Fark, degerleri karsilastirirken veya WHERE ifadelerinde kullanirken onemlidir. Metin ciktisi karsilastirma ve gosterim icin gereklidir.
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 1.1: Basit Alanlari Cikarma</h4>
-                    <p><code>products</code> tablosundaki <code>attributes</code> JSONB sutununu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>products</code> tablosundaki <code>attributes</code> JSONB sutununu kullanarak JSON'dan skaler degerler cikarin:</p>
                     <ol>
-                        <li>Attributes'u olan tum urunlerin markasini alin</li>
-                        <li>Urun adi ve RAM ozelligini alin</li>
-                        <li>Garantisi 12 aydan fazla olan urunleri alin</li>
+                        <li><strong>Marka cikarma:</strong> Tum urun adlarini markalariyla birlikte listeleyin (attributes icindeki <code>brand</code> anahtarindan). Sadece attributes'u olan urunleri dahil edin.</li>
+                        <li><strong>RAM ozelligi:</strong> Urun adlarini <code>ram</code> anahtarindan RAM ozellikleriyle birlikte gosterin.</li>
+                        <li><strong>Garanti filtreleme:</strong> Garantisi 12 aydan uzun olan urunleri bulun. <code>warranty_months</code> anahtari tamsayi deger saklar.</li>
                     </ol>
 
                     <div class="hint-box">
-                        Karsilastirma yaparken warranty_months'i tamsayiya donusturmeyi unutmayin: <code>(attributes->>'warranty_months')::INTEGER</code>
+                        JSON degerleri varsayilan olarak metin olarak cikarilir. Sayisal degerleri karsilastirmak icin donusum yapin: <code>(attributes->>'warranty_months')::INTEGER > 12</code>
                     </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
@@ -629,11 +629,11 @@ WHERE attributes IS NOT NULL
 
                 <div class="exercise-box">
                     <h4>Alistirma 1.2: Siparis Metadata'sindan Cikarma</h4>
-                    <p><code>orders</code> tablosundaki <code>metadata</code> JSONB sutununu kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>orders</code> tablosundaki <code>metadata</code> JSONB sutununu kullanarak deger cikarma ve JSON icerigine gore filtreleme pratiği yapin:</p>
                     <ol>
-                        <li>Tum siparisler icin siparis kaynagini alin</li>
-                        <li>Campaign alani olan siparisleri alin</li>
-                        <li>Website kaynakli siparisleri bulun</li>
+                        <li><strong>Kaynak cikarma:</strong> Tum siparis numaralarini kaynak kanallariyla birlikte listeleyin (<code>source</code> anahtarindan). Not: Bazi siparislerin metadata'si NULL olabilir.</li>
+                        <li><strong>Kampanyali siparisler:</strong> Metadata'larinda <code>campaign</code> alani olan siparisleri bulun ve kampanya adini gosterin.</li>
+                        <li><strong>Website siparisleri:</strong> Sadece kaynak 'website' olan siparisleri gostermek icin filtreleyin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
@@ -690,11 +690,11 @@ WHERE JSON_VALUE(metadata, '$.source') = 'website';</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 1.3: Dizi Elemanlarina Erisim</h4>
-                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p>Bazi urunler (akilli telefonlar gibi) attributes'larinda <code>colors</code> dizisine sahiptir. JSON dizileriyle calismayi pratiğe dokun:</p>
                     <ol>
-                        <li>Colors dizisi olan urunlerden ilk rengi alin</li>
-                        <li>Tum renkleri JSON dizisi olarak alin</li>
-                        <li>Her urunun kac rengi oldugunu sayin</li>
+                        <li><strong>Ilk eleman:</strong> Colors dizisi olan urunlerden ilk rengi (index 0) cikarin. Dizi indeksleri 0'dan baslar.</li>
+                        <li><strong>Tam dizi:</strong> Her urun icin tum colors dizisini JSON olarak dondurün.</li>
+                        <li><strong>Dizi uzunlugu:</strong> <code>jsonb_array_length()</code> kullanarak her urunun kac renk secenegine sahip oldugunu sayin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
@@ -754,20 +754,20 @@ WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;</code></pre>
             <!-- Alistirma 2: Varlik ve Icerik Kontrolleri -->
             <section>
                 <h2 id="exercise-2">Alistirma 2: Varlik ve Icerik Kontrolleri</h2>
-                <p>JSON verilerinde anahtar varligi ve deger icerme kontrollerini ogrenin.</p>
+                <p>JSON verilerinde anahtar varligi ve deger icerme kontrollerini ogrenin. Bu islemler, tum kayitlarin ayni alanlara sahip olmadigi yari-yapilandirilmis verileri sorgulamak icin onemlidir.</p>
 
                 <div class="concept-box">
-                    PostgreSQL'in <code>?</code> operatoru anahtar varligini kontrol eder. <code>@></code> sol JSON'un
-                    sag JSON'u icerip icermedigini kontrol eder. Bu operatorler GIN indeksleri ile verimlidir.
+                    PostgreSQL'in <code>?</code> operatoru bir anahtarin var olup olmadigini kontrol eder. <code>@></code> sol JSON'un sag JSON'u icerip icermedigini kontrol eder (belirli degerleri eslemek icin kullanisli).
+                    Her iki operator de GIN indeksleri ile birlestirildiginde verimlidir.
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.1: Anahtar Varligini Kontrol Etme</h4>
-                    <p><code>products</code> ve <code>orders</code> tablolarini kullanarak asagidaki sorgulari yazin:</p>
+                    <p>Tum urunler ayni ozelliklere sahip degildir (laptoplarda 5g yok, telefonlarda warranty_months yok). Belirli anahtarlara sahip kayitlari bulmak icin <code>?</code> operatorunu kullanin:</p>
                     <ol>
-                        <li>Ozelliklerinde "5g" alani olan urunleri bulun</li>
-                        <li>"warranty_months" alani olan urunleri bulun</li>
-                        <li>Metadata'sinda "campaign" alani olan siparisleri bulun</li>
+                        <li><strong>5G yetenegi:</strong> Ozelliklerinde "5g" alani tanimlanmis tum urunleri bulun (degerinden bagimsiz olarak).</li>
+                        <li><strong>Garanti bilgisi:</strong> Garanti bilgisi olan urunleri bulun ("warranty_months" anahtari mevcut).</li>
+                        <li><strong>Kampanya takibi:</strong> Metadata'sinda "campaign" alani kaydedilmis siparisleri bulun.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
@@ -819,11 +819,11 @@ WHERE JSON_VALUE(attributes, '$.warranty_months') IS NOT NULL;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.2: Icerik Sorgulari</h4>
-                    <p><code>products</code> ve <code>orders</code> tablolarini kullanarak asagidaki sorgulari yazin:</p>
+                    <p>Belirli JSON degerlerini eslesen kayitlari bulmak icin <code>@></code> icerik operatorunu kullanin. Bu, cikarip karsilastirmaktan daha verimlidir:</p>
                     <ol>
-                        <li>5G destegi olan urunleri bulun (5g = true)</li>
-                        <li>"TechMobile" markasindaki urunleri bulun</li>
-                        <li>B2B siparisleri bulun (metadata'da b2b = true)</li>
+                        <li><strong>5G telefonlar:</strong> 5g'nin true oldugu urunleri bulun (sadece anahtarin var oldugu degil, degerin true oldugu).</li>
+                        <li><strong>Marka filtresi:</strong> Icerik kullanarak "TechMobile" markasindaki tum urunleri bulun.</li>
+                        <li><strong>B2B siparisler:</strong> Metadata'si <code>{"b2b": true}</code> iceren isletmeler arasi siparisleri bulun.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
@@ -864,27 +864,15 @@ WHERE JSON_CONTAINS(attributes, '"TechMobile"', '$.brand');
 SELECT order_number, metadata
 FROM orders
 WHERE JSON_EXTRACT(metadata, '$.b2b') = true;</code></pre>
-                        <p><strong>5G urunleri icin sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>name</th>
-                            </tr>
-                            <tr>
-                                <td>SmartPhone Pro Max</td>
-                            </tr>
-                            <tr>
-                                <td>SmartPhone Plus</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.3: Coklu Anahtar Varligi</h4>
-                    <p><code>products</code> tablosunu kullanarak asagidaki sorgulari yazin:</p>
+                    <p>PostgreSQL birden fazla anahtari ayni anda kontrol etmek icin <code>?&</code> (tum anahtarlar mevcut) ve <code>?|</code> (herhangi bir anahtar mevcut) saglar:</p>
                     <ol>
-                        <li>HEM "5g" HEM DE "colors" alanina sahip urunleri bulun</li>
-                        <li>"warranty_months" VEYA "colors" alanina sahip urunleri bulun</li>
+                        <li><strong>VE mantigi:</strong> HEM "5g" HEM DE "colors" alanina sahip urunleri bulun (renk secenekli akilli telefonlar).</li>
+                        <li><strong>VEYA mantigi:</strong> "warranty_months" VEYA "colors" alanina sahip urunleri bulun (genisletilmis bilgiye sahip urunler).</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Cozumu Goster</button>
@@ -927,20 +915,20 @@ WHERE JSON_CONTAINS_PATH(attributes, 'one', '$.warranty_months', '$.colors');</c
             <!-- Alistirma 3: JSON Verisini Degistirme -->
             <section>
                 <h2 id="exercise-3">Alistirma 3: JSON Verisini Degistirme</h2>
-                <p>JSON belgelerinde alanlari guncelleme, ekleme ve kaldirmayi ogrenin.</p>
+                <p>JSON belgelerinde alanlari guncelleme, ekleme ve kaldirmayi ogrenin. Bu UPDATE sorgulari bir JSON sutununun belirli bolumlerini nasil degistireceginizi gosterir.</p>
 
                 <div class="warning-box">
-                    JSON'u degistirmek tum belgeyi gunceller. Sik guncellenen alanlar icin
-                    bunlari ayri iliskisel sutunlarda saklamayi dusunun.
+                    JSON'u degistirmek dahili olarak tum belgeyi gunceller. Sik guncellenen alanlar icin
+                    daha iyi performans icin bunlari ayri iliskisel sutunlarda saklamayi dusunun.
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 3.1: JSON Alanlarini Guncelleme</h4>
-                    <p>Asagidaki sorgulari yazin:</p>
+                    <p>JSON degerlerini degistirmek icin <code>jsonb_set()</code> ve <code>||</code> birlestirme operatorunu kullanin:</p>
                     <ol>
-                        <li>'ProBook Laptop 15"' icin warranty_months'i 36 olarak guncelleyin</li>
-                        <li>Bir urune true degeriyle yeni bir "eco_friendly" alani ekleyin</li>
-                        <li>Siparis metadata'sina "priority" alani ekleyin</li>
+                        <li><strong>Mevcut degeri guncelle:</strong> 'ProBook Laptop 15"' icin warranty_months'i <code>jsonb_set()</code> kullanarak 24'ten 36'ya degistirin.</li>
+                        <li><strong>Yeni alan ekle:</strong> <code>||</code> birlestirme operatorunu kullanarak bir urunun attributes'una true degeriyle "eco_friendly" alani ekleyin.</li>
+                        <li><strong>Metadata'yi genislet:</strong> Siparis id=1'in metadata'sina "high" degeriyle "priority" alani ekleyin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
@@ -1002,10 +990,10 @@ WHERE id = 1;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 3.2: JSON Alanlarini Kaldirma</h4>
-                    <p>Asagidaki sorgulari yazin:</p>
+                    <p>JSONB'den anahtarlari kaldirmak icin <code>-</code> operatorunu kullanin (ic ice yollar icin <code>#-</code>):</p>
                     <ol>
-                        <li>Bir urunun attributes'undan "battery" alanini kaldirin</li>
-                        <li>Bir siparisin metadata'sindan "campaign" alanini kaldirin</li>
+                        <li><strong>Urun alanini kaldir:</strong> 'SmartPhone Lite' attributes'undan "battery" alanini kaldirin.</li>
+                        <li><strong>Metadata alanini kaldir:</strong> Siparis id=1'in metadata'sindan "campaign" alanini kaldirin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
@@ -1052,10 +1040,10 @@ WHERE id = 1;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 3.3: Dizi Degisiklikleri</h4>
-                    <p>Asagidaki sorgulari yazin:</p>
+                    <p>JSON dizilerini degistirmek ozel teknikler gerektirir. <code>jsonb_set()</code>'i dizi birlestirme ile birlikte kullanin:</p>
                     <ol>
-                        <li>Bir urunun colors dizisine yeni bir renk "Gold" ekleyin</li>
-                        <li>Tum colors dizisini yeni bir renk setiyle degistirin</li>
+                        <li><strong>Diziye eleman ekle:</strong> 'SmartPhone Pro Max' colors dizisinin sonuna "Gold" ekleyin (su anda ["Black", "Silver", "Blue"] iceriyor).</li>
+                        <li><strong>Diziyi degistir:</strong> Bir urun icin tum colors dizisini ["Red", "Green", "Blue"] ile degistirin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Cozumu Goster</button>
@@ -1125,17 +1113,18 @@ WHERE name = 'SmartPhone Pro Max';</code></pre>
             <!-- Alistirma 4: JSON'dan Iliskisel Formata Donusum -->
             <section>
                 <h2 id="exercise-4">Alistirma 4: JSON'u Iliskisel Formata Donusturme</h2>
-                <p>JSON dizilerini ve nesnelerini satirlara ve sutunlara genisletmeyi ogrenin.</p>
+                <p>JSON dizilerini ve nesnelerini satirlara ve sutunlara genisletmeyi ogrenin. Bu, JSON verisini iliskisel tablolarla birlestirmek veya raporlama icin kullanislidir.</p>
 
                 <div class="concept-box">
-                    <code>jsonb_array_elements</code> (PostgreSQL), <code>JSON_TABLE</code> (MySQL/Oracle),
-                    ve <code>OPENJSON</code> (SQL Server) JSON'u iliskisel satirlara donusturur.
+                    <code>jsonb_array_elements()</code> bir JSON dizisini satirlara genisletir (eleman basina bir satir).
+                    <code>jsonb_each()</code> bir JSON nesnesini anahtar-deger ciftlerine genisletir.
+                    MySQL <code>JSON_TABLE</code>, SQL Server <code>OPENJSON</code> kullanir.
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 4.1: JSON Dizilerini Genisletme</h4>
-                    <p><code>products</code> tablosunu kullanarak, her urunu renkleri ayri satirlara
-                        genisletilmis olarak gosteren bir sorgu yazin (urun basina renk basina bir satir).</p>
+                    <p>Akilli telefonlarin colors dizisi var. Bunu her renk kendi satiri olacak sekilde genisletin:</p>
+                    <p><strong>Hedef:</strong> Bir urunun colors'i ["Black", "Silver", "Blue"] ise, urun adiyla birlikte 3 satir uretin - her renk icin bir tane.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
@@ -1178,8 +1167,8 @@ WHERE JSON_QUERY(attributes, '$.colors') IS NOT NULL;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 4.2: JSON Nesnesini Anahtar-Deger Ciftlerine Donusturme</h4>
-                    <p><code>products</code> tablosunu kullanarak, her urun icin attributes'u
-                        anahtar-deger ciftlerine genisleten bir sorgu yazin.</p>
+                    <p>Tum attributes nesnesini her satirin bir anahtar-deger cifti gosterdigi satirlara genisletin:</p>
+                    <p><strong>Hedef:</strong> {"brand": "TechPro", "ram": "16GB"} olan bir urun icin 2 satir uretin: (product_name, "brand", "TechPro") ve (product_name, "ram", "16GB").</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
@@ -1238,8 +1227,8 @@ WHERE attributes IS NOT NULL;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 4.3: Siparis Metadata'sini Genisletme</h4>
-                    <p><code>orders</code> tablosunu kullanarak, her siparis icin metadata
-                        nesnesini anahtar-deger ciftlerine genisleten bir sorgu yazin.</p>
+                    <p>Analiz icin siparis metadata'sini anahtar-deger ciftlerine genisletin:</p>
+                    <p><strong>Hedef:</strong> {"source": "website", "campaign": "new_year"} olan bir siparis icin, order_number ile birlikte her metadata anahtarini ve degerini gosteren satirlar uretin.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4_3')">Cozumu Goster</button>
                     <div id="solution4_3" class="solution-box">
@@ -1276,12 +1265,12 @@ WHERE metadata IS NOT NULL;</code></pre>
             <!-- Alistirma 5: Iliskisel Veriden JSON Olusturma -->
             <section>
                 <h2 id="exercise-5">Alistirma 5: Iliskisel Veriden JSON Olusturma</h2>
-                <p>Iliskisel sorgu sonuclarindan JSON nesneleri ve dizileri olusturmayi ogrenin.</p>
+                <p>Iliskisel sorgu sonuclarindan JSON nesneleri ve dizileri olusturmayi ogrenin. API'ler ve veri aktarimi icin kullanislidir.</p>
 
                 <div class="exercise-box">
                     <h4>Alistirma 5.1: JSON Nesneleri Olusturma</h4>
-                    <p>Attributes'u olan her urun icin urun bilgilerini (isim, marka, fiyat) iceren bir JSON nesnesi
-                        olusturan bir sorgu yazin.</p>
+                    <p>Sorgu sonuclarindan ozel JSON yapilari olusturmak icin <code>jsonb_build_object()</code> kullanin:</p>
+                    <p><strong>Hedef:</strong> Her urun icin su bilgileri iceren bir JSON nesnesi olusturun: product_name, sku, brand (attributes'tan) ve price.</p>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
                     <div id="solution5_1" class="solution-box">
@@ -1334,8 +1323,12 @@ FOR JSON PATH;</code></pre>
 
                 <div class="exercise-box">
                     <h4>Alistirma 5.2: JSON Dizilerine Toplama</h4>
-                    <p>Tum urun adlarini JSON dizisi olarak donduren ve urunleri markaya gore
-                        gruplayan bir sorgu olusturun.</p>
+                    <p>Birden fazla satiri JSON dizisine toplamak icin <code>jsonb_agg()</code> ve anahtar-deger toplamalari olusturmak icin <code>jsonb_object_agg()</code> kullanin:</p>
+                    <ol>
+                        <li><strong>Basit dizi:</strong> Tum urun adlarini iceren tek bir JSON dizisi olusturun.</li>
+                        <li><strong>Gruplu toplama:</strong> Urunleri markaya gore gruplayin ve her marka icin urun nesnelerinin JSON dizisini olusturun.</li>
+                        <li><strong>Anahtar-deger toplama:</strong> Siparis kaynaklarini anahtar, sayilarini deger olarak gosteren bir JSON nesnesi olusturun.</li>
+                    </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
                     <div id="solution5_2" class="solution-box">
@@ -1402,21 +1395,6 @@ SELECT name
 FROM products
 WHERE attributes IS NOT NULL
 FOR JSON PATH;</code></pre>
-                        <p><strong>Markaya gore gruplu sonuc:</strong></p>
-                        <table class="dataset-table">
-                            <tr>
-                                <th>brand</th>
-                                <th>products_by_brand</th>
-                            </tr>
-                            <tr>
-                                <td>TechPro</td>
-                                <td>[{"name": "ProBook Laptop 15\"", "price": 1299.99, "sku": "COMP-001"}, ...]</td>
-                            </tr>
-                            <tr>
-                                <td>TechMobile</td>
-                                <td>[{"name": "SmartPhone Pro Max", "price": 1199.99, "sku": "PHONE-001"}, ...]</td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
             </section>
@@ -1424,16 +1402,16 @@ FOR JSON PATH;</code></pre>
             <!-- Zorluk Alistirmalari -->
             <section>
                 <h2 id="challenge-exercises">Zorluk Alistirmalari</h2>
-                <p>Bu ileri duzey zorluklarla JSON islemlerinin kapsamli anlayisinizi test edin.</p>
+                <p>Bu gercek dunya analitik senaryolarinda ogrendiklerinizin tumunu uygulayin. Bu zorluklar birden fazla JSON islemini birlestirir.</p>
 
                 <div class="challenge-box">
                     <h4>Zorluk 1: Siparis Kaynagi Analizi</h4>
-                    <p><code>orders</code> tablosundaki <code>metadata</code> JSONB'yi kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>metadata</code> JSONB sutununu kullanarak siparis verilerini analiz edin. Metadata kaynak kanal bilgisi (website, mobile_app, sales_rep), kampanya adlari ve B2B bayraklari icerir:</p>
                     <ol>
-                        <li>Siparisleri kaynaga gore sayin (website, mobile_app, sales_rep)</li>
-                        <li>Tum B2B siparisleri bulun ve toplam tutarlarini gosterin</li>
-                        <li>Kampanyali siparislerin listesini ve kampanya adlarini alin</li>
-                        <li>Siparis kaynagina gore toplam geliri hesaplayin</li>
+                        <li><strong>Kanal dagilimi:</strong> Her kaynak kanaldan kac siparis geldigini sayin.</li>
+                        <li><strong>B2B siparisleri:</strong> Tum isletmeler arasi siparisleri (b2b = true) bulun ve toplam tutarlarini gosterin.</li>
+                        <li><strong>Pazarlama kampanyalari:</strong> Campaign alani olan tum siparisleri listeleyin ve kampanya adini gosterin.</li>
+                        <li><strong>Kanala gore gelir:</strong> Her kaynak icin toplam gelir, siparis sayisi ve ortalama siparis degerini hesaplayin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
@@ -1481,12 +1459,12 @@ ORDER BY total_revenue DESC;</code></pre>
 
                 <div class="challenge-box">
                     <h4>Zorluk 2: Urun Analitikleri</h4>
-                    <p><code>products</code> tablosundaki <code>attributes</code> JSONB'yi kullanarak asagidaki sorgulari yazin:</p>
+                    <p><code>attributes</code> JSONB sutununu kullanarak urun katalogunuzu analiz edin. Urunler marka, 5g destegi, warranty_months, colors gibi degisken ozelliklere sahiptir:</p>
                     <ol>
-                        <li>Urunleri markaya gore sayin</li>
-                        <li>5G destegi olan tum urunleri ve fiyatlarini bulun</li>
-                        <li>Veritabanindaki tum benzersiz markalari listeleyin</li>
-                        <li>Garantisi 12 aydan uzun olan urunleri bulun</li>
+                        <li><strong>Marka envanteri:</strong> Her markanin katalogda kac urunu oldugunu sayin.</li>
+                        <li><strong>5G urunleri:</strong> Tum 5G destekli urunleri adlari, fiyatlari ve depolama ozellikleriyle listeleyin.</li>
+                        <li><strong>Marka listesi:</strong> Urun katalogunuzdaki tum benzersiz markalarin listesini alin.</li>
+                        <li><strong>Uzatilmis garanti:</strong> Garantisi 12 aydan uzun olan urunleri bulun ve garanti suresini gosterin.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
@@ -1534,11 +1512,11 @@ ORDER BY warranty_months DESC;</code></pre>
 
                 <div class="challenge-box">
                     <h4>Zorluk 3: Birlesik Analitik Raporu</h4>
-                    <p>Urun ve siparis verilerini birlestiren kapsamli bir analitik rapor olusturun:</p>
+                    <p>Toplama ile JSON islemlerini birlestiren kapsamli analitik raporlar olusturun:</p>
                     <ol>
-                        <li>Urun markalarini urun sayisi ve ortalama fiyat ile gosterin</li>
-                        <li>Siparis kaynaklarini toplam gelir ve siparis sayisi ile gosterin</li>
-                        <li>Temel metriklerle bir ozet JSON nesnesi olusturun</li>
+                        <li><strong>Marka analitigi:</strong> Her markayi urun sayisi, ortalama fiyat, minimum fiyat ve maksimum fiyat ile gosterin.</li>
+                        <li><strong>Kanal analitigi:</strong> Her siparis kaynagini siparis sayisi, toplam gelir ve ortalama siparis degeri ile gosterin.</li>
+                        <li><strong>Ozet JSON:</strong> Temel is metriklerini (toplam urun, 5G urun sayisi, marka listesi, toplam siparis, toplam gelir, kaynak listesi) iceren tek bir JSON nesnesi olusturun.</li>
                     </ol>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge3')">Cozumu Goster</button>
@@ -1595,12 +1573,16 @@ SELECT jsonb_build_object(
 
                 <div class="challenge-box">
                     <h4>Zorluk 4: Indeksleme Stratejisi Olusturma</h4>
-                    <p>Asagidaki sorgu kaliplari icin uygun indeksler olusturmak uzere SQL ifadeleri tasarlayin ve yazin:</p>
+                    <p>JSON sorgularini optimize etmek icin indeksler tasarlayin. Ifade indeksleri (cikarilan degerler uzerinde B-tree) ve GIN indeksleri (tam JSON indeksleme) arasinda secim yapin:</p>
                     <ol>
-                        <li>Urunleri attributes'tan siklikla markaya gore sorgulama</li>
-                        <li>5G destegi olan urunleri siklikla arama</li>
-                        <li>Metadata'daki kaynaga gore siparisleri arama</li>
+                        <li><strong>Marka sorgulari:</strong> Markaya gore filtreleme sorgularini hizlandirmak icin bir indeks olusturun (ornegin, WHERE attributes->>'brand' = 'TechPro').</li>
+                        <li><strong>5G icerik:</strong> Icerik sorgularini desteklemek icin bir GIN indeksi olusturun (ornegin, WHERE attributes @> '{"5g": true}').</li>
+                        <li><strong>Siparis kaynagi:</strong> Siparisleri kaynak kanala gore filtrelemeyi optimize etmek icin bir indeks olusturun.</li>
                     </ol>
+
+                    <div class="hint-box">
+                        Ifade indeksleri, B-tree islemleri (=, <, >) ile belirli yollar icin iyi calisir. GIN indeksleri icerik (@>), varlik (?) destekler ve esnektir ancak daha buyuktur.
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge4')">Cozumu Goster</button>
                     <div id="challenge4" class="solution-box">
