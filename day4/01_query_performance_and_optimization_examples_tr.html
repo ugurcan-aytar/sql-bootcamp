@@ -1041,16 +1041,25 @@ Index Cond: (order_date >= ... AND ...)</pre>
                 </div>
             </section>
 
-            <!-- Bolum 4: Zorluk Alistirmalari -->
+            <!-- Bolum 4: Zorluk Alistirmalari (Adim Adim) -->
             <section>
-                <h2>Bolum 4: Zorluk Alistirmalari</h2>
-                <p>Birden fazla optimizasyon teknigini birlestiren karmasik senaryolar.</p>
+                <h2>Bolum 4: Zorluk Alistirmalari (Adim Adim)</h2>
+                <p>Bu gercek dunya senaryolarini rehberli sorularla adim adim cozun. Aceleniz olmasin!</p>
+
+                <div class="hint-box">
+                    <strong>Bu zorluklara nasil yaklasmalı:</strong>
+                    <ul class="mb-0">
+                        <li>Bir sonrakine gecmeden once her adimi dikkatlice okuyun</li>
+                        <li>"Cevabi Goster"e tiklamadan once her soruyu cevaplamaya calisin</li>
+                        <li>Her seyi dogru yapmasaniz da endiselenmein - ogrenmek amac!</li>
+                    </ul>
+                </div>
 
                 <div class="exercise-box">
-                    <h4>Zorluk 4.1: Bir Raporlama Sorgusunu Optimize Etme</h4>
-                    <p>Bu aylik satis raporu 45 saniye calisiyor. Optimize edin:</p>
+                    <h4>Zorluk 4.1: Raporlama Sorgusunu Optimize Etme (Rehberli)</h4>
+                    <p>Aylik satis raporu yavas calisiyor (45 saniye). Adim adim optimize edelim!</p>
 
-                    <pre><code class="sourceCode sql"><span class="co">-- Mevcut yavas sorgu</span>
+                    <pre><code class="sourceCode sql"><span class="co">-- Optimize etmemiz gereken yavas sorgu</span>
 <span class="kw">SELECT</span>
     c.name <span class="kw">AS</span> category,
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
@@ -1065,12 +1074,67 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
 <span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
 
-                    <p><strong>Gorev:</strong> Yurutme suresini azaltmak icin optimizasyonlari (indeksler, sorgu yeniden yazmalari) tanimlayin.</p>
+                    <h5>Adim 1: Tablolari Tanimlayin</h5>
+                    <p><strong>Soru:</strong> Bu sorguda kac tablo birlestirilmis? Listeleyin.</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step1')">Cevabi Goster</button>
+                    <div id="sol4_1_step1" class="solution-content">
+                        <p><strong>4 tablo birlestirilmis:</strong></p>
+                        <ol>
+                            <li><code>orders</code> (<code>o</code> olarak takma adli)</li>
+                            <li><code>order_lines</code> (<code>ol</code> olarak takma adli)</li>
+                            <li><code>products</code> (<code>p</code> olarak takma adli)</li>
+                            <li><code>categories</code> (<code>c</code> olarak takma adli)</li>
+                        </ol>
+                    </div>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol4_1')">Cozumu Goster</button>
+                    <h5>Adim 2: WHERE Filtrelerini Bulun</h5>
+                    <p><strong>Soru:</strong> WHERE ifadesinde hangi sutunlar filtreleniyor?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step2')">Cevabi Goster</button>
+                    <div id="sol4_1_step2" class="solution-content">
+                        <p><strong>Iki sutun filtreleniyor:</strong></p>
+                        <ol>
+                            <li><code>o.order_date >= '2024-01-01'</code> - Tarih filtresi</li>
+                            <li><code>o.status IN ('delivered', 'shipped')</code> - Durum filtresi</li>
+                        </ol>
+                        <p>Her iki filtre de <code>orders</code> tablosunda!</p>
+                    </div>
+
+                    <h5>Adim 3: Filtreler Icin Indeks Tasarlayin</h5>
+                    <p><strong>Soru:</strong> WHERE ifadesine hangi indeks yardimci olur? (Ipucu: esitlik sutunlarini once, aralik sutunlarini sonra koyun)</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step3')">Cevabi Goster</button>
+                    <div id="sol4_1_step3" class="solution-content">
+                        <p><strong>orders uzerinde bilesik indeks:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
+<span class="kw">ON</span> sales.orders (order_date, status);</code></pre>
+                        <p>Veya daha iyi, sadece ihtiyacimiz olan durumlar icin kismi indeks:</p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
+<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);</code></pre>
+                    </div>
+
+                    <h5>Adim 4: JOIN'ler Icin Indeks Tasarlayin</h5>
+                    <p><strong>Soru:</strong> JOIN kosullarinda hangi sutunlar kullaniliyor? Hangi indeksler yardimci olur?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step4')">Cevabi Goster</button>
+                    <div id="sol4_1_step4" class="solution-content">
+                        <p><strong>JOIN sutunlari ve indeksler:</strong></p>
+                        <table class="table table-bordered">
+                            <tr><th>JOIN</th><th>Sutun</th><th>Gerekli Indeks</th></tr>
+                            <tr><td>orders → order_lines</td><td>o.id = ol.order_id</td><td>order_lines(order_id) uzerinde indeks</td></tr>
+                            <tr><td>order_lines → products</td><td>ol.product_id = p.id</td><td>products(id) uzerinde birincil anahtar zaten var</td></tr>
+                            <tr><td>products → categories</td><td>p.category_id = c.id</td><td>categories(id) uzerinde birincil anahtar zaten var</td></tr>
+                        </table>
+                        <pre><code class="sourceCode sql"><span class="co">-- order_lines join icin indeks</span>
+<span class="kw">CREATE INDEX</span> idx_order_lines_order_id
+<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">INCLUDE</span> (product_id, line_total);</code></pre>
+                    </div>
+
+                    <h5>Adim 5: Tam Cozum</h5>
+                    <p><strong>Simdi tum indeksler ve opsiyonel iyilestirmelerle tam optimizasyonu gorelim:</strong></p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1')">Tam Cozumu Goster</button>
                     <div id="sol4_1" class="solution-content">
-                        <p><strong>Adim 1: Destekleyici Indeksler Olusturun</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Siparis filtreleme ve birlestirme icin indeks</span>
+                        <p><strong>Tum onerilen indeksler:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- orders filtreleme icin indeks</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date_status
 <span class="kw">ON</span> sales.orders (order_date, status)
 <span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);
@@ -1085,28 +1149,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">ON</span> sales.products (id)
 <span class="kw">INCLUDE</span> (category_id);</code></pre>
 
-                        <p><strong>Adim 2: Sorgu Optimizasyonu</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Daha iyi plan icin CTE kullanan optimize edilmis sorgu</span>
-<span class="kw">WITH</span> filtered_orders <span class="kw">AS</span> (
-    <span class="kw">SELECT</span> id, order_date
-    <span class="kw">FROM</span> sales.orders
-    <span class="kw">WHERE</span> order_date >= <span class="st">'2024-01-01'</span>
-      <span class="kw">AND</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
-)
-<span class="kw">SELECT</span>
-    c.name <span class="kw">AS</span> category,
-    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date) <span class="kw">AS</span> month,
-    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> fo.id) <span class="kw">AS</span> order_count,
-    <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> filtered_orders fo
-<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> fo.id = ol.order_id
-<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
-<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
-<span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date)
-<span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
-
-                        <p><strong>Adim 3: Sik Raporlar Icin Materialized View Dusunun</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Bu rapor sik calisiyorsa, onceden hesaplayin</span>
+                        <p><strong>Bonus: Sik calisan raporlar icin Materialized View kullanin:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Rapor verilerini onceden hesaplayin</span>
 <span class="kw">CREATE MATERIALIZED VIEW</span> mv_monthly_sales <span class="kw">AS</span>
 <span class="kw">SELECT</span>
     c.name <span class="kw">AS</span> category,
@@ -1120,176 +1164,196 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
 
-<span class="co">-- Gunluk yenile</span>
+<span class="co">-- Gerektiginde yenileyin</span>
 <span class="kw">REFRESH MATERIALIZED VIEW</span> mv_monthly_sales;</code></pre>
 
                         <div class="concept-box">
-                            <strong>Beklenen Iyilestirme:</strong> Indekslerle 45 saniye -> 2-5 saniye, veya materialized view ile saniyenin altinda.
+                            <strong>Beklenen Iyilestirme:</strong> Indekslerle 45 saniye → 2-5 saniye, veya materialized view ile saniyenin altinda.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Zorluk 4.2: Sayfalama Performansi</h4>
-                    <p>Bu sayfalama sorgusu, kullanicilar sonraki sayfalara gittikce yavaslıyor:</p>
+                    <h4>Zorluk 4.2: Sayfalama Performansi (Rehberli)</h4>
+                    <p>Kullanicilar sonraki sayfalara gezinmenin cok yavas oldugunu soyluyorlar. Nedenini anlayalim!</p>
 
-                    <pre><code class="sourceCode sql"><span class="co">-- Buyuk offset'ler icin yavas (ornegin, sayfa 1000)</span>
-<span class="kw">SELECT</span> order_id, order_date, total_amount
-<span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+                    <pre><code class="sourceCode sql"><span class="co">-- Sayfa 1: Hizli! (0-20)</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
 <span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
-<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">19980</span>;  <span class="co">-- Sayfa 1000 x sayfa basina 20</span></code></pre>
+<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">0</span>;
 
-                    <p><strong>Gorev:</strong> Alternatif olarak keyset (cursor tabanli) sayfalama uygulayin.</p>
+<span class="co">-- Sayfa 1000: Cok Yavas! (19980-20000)</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">19980</span>;</code></pre>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol4_2')">Cozumu Goster</button>
-                    <div id="sol4_2" class="solution-content">
-                        <p><strong>OFFSET'in Sorunu:</strong></p>
+                    <h5>Adim 1: OFFSET Neden Yavas?</h5>
+                    <p><strong>Soru:</strong> OFFSET 19980 istedigimizde, veritabani kac satir taramak zorunda?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2_step1')">Cevabi Goster</button>
+                    <div id="sol4_2_step1" class="solution-content">
+                        <p><strong>Veritabani 20.000 satir taramak zorunda!</strong></p>
                         <ul>
-                            <li>Veritabani 20 dondurmeden once 19.980 satiri taramali ve atmalidir</li>
-                            <li>Performans sayfa numarasiyla dogrusal olarak duser</li>
+                            <li>Tum eslesen satirlari bulur</li>
+                            <li>order_date DESC'e gore siralar</li>
+                            <li>Ilk 19.980 satiri atlar</li>
+                            <li>Sadece 20 satir dondurur</li>
                         </ul>
+                        <p>Tum bu is sadece 19.980 satiri atmak icin!</p>
+                    </div>
 
-                        <p><strong>Cozum: Keyset Sayfalama</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Ilk sayfa</span>
-<span class="kw">SELECT</span> order_id, order_date, total_amount
+                    <h5>Adim 2: Daha Iyi Bir Yaklasim</h5>
+                    <p><strong>Soru:</strong> OFFSET kullanmak yerine, nerede kaldigimizi hatirlasak? Sayfa 999'daki son sipariste <code>order_date='2024-03-15'</code> varsa, sayfa 1000'i nasil alabiliriz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2_step2')">Cevabi Goster</button>
+                    <div id="sol4_2_step2" class="solution-content">
+                        <p><strong>Son satiri "cursor" olarak kullanin:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- OFFSET yerine, atlamak icin WHERE kullanin</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
-<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>
+  <span class="kw">AND</span> order_date < <span class="st">'2024-03-15'</span>  <span class="co">-- Kaldigimiz yerden devam edin</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span>;</code></pre>
+                        <p>Bu, hangi sayfada olursak olalim sadece ~20 satir tarar!</p>
+                    </div>
+
+                    <h5>Adim 3: Tam Cozum</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2')">Tam Cozumu Goster</button>
+                    <div id="sol4_2" class="solution-content">
+                        <p><strong>Keyset (Cursor Tabanli) Sayfalama:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Ilk sayfa (henuz cursor yok)</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, id <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">20</span>;
 
-<span class="co">-- Sonraki sayfalar: son satirin degerlerini cursor olarak kullanin</span>
-<span class="co">-- Son satir: order_date='2024-03-15', order_id=98765 ise</span>
-<span class="kw">SELECT</span> order_id, order_date, total_amount
+<span class="co">-- Sonraki sayfa: son satirin degerlerini kullanin</span>
+<span class="co">-- Son satir: order_date='2024-03-15', id=98765 ise</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
-  <span class="kw">AND</span> (order_date, order_id) < (<span class="st">'2024-03-15'</span>, <span class="dv">98765</span>)
-<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>
+  <span class="kw">AND</span> (order_date, id) < (<span class="st">'2024-03-15'</span>, <span class="dv">98765</span>)
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, id <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">20</span>;</code></pre>
 
                         <p><strong>Destekleyici Indeks:</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer_date_id
-<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>);</code></pre>
+<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, id <span class="kw">DESC</span>);</code></pre>
 
                         <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Metrik</th>
-                                    <th>OFFSET (Sayfa 1000)</th>
-                                    <th>Keyset</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Yontem</th><th>Taranan Satirlar (Sayfa 1000)</th><th>Hiz</th></tr></thead>
                             <tbody>
-                                <tr>
-                                    <td>Taranan satirlar</td>
-                                    <td>~20.000</td>
-                                    <td>~20</td>
-                                </tr>
-                                <tr>
-                                    <td>Yurutme suresi</td>
-                                    <td>~500ms</td>
-                                    <td>~1ms</td>
-                                </tr>
-                                <tr>
-                                    <td>Tutarlilik</td>
-                                    <td>Veri degisirse kacirma/coklatma olabilir</td>
-                                    <td>Stabil cursor konumu</td>
-                                </tr>
+                                <tr><td>OFFSET</td><td>~20.000</td><td>Yavas (~500ms)</td></tr>
+                                <tr><td>Keyset</td><td>~20</td><td>Hizli (~1ms)</td></tr>
                             </tbody>
                         </table>
 
                         <div class="warning-box">
-                            <strong>Takas:</strong> Keyset sayfalama dogrudan "sayfa N'ye git"i desteklemez. Sonsuz kaydirma veya "daha fazla yukle" kaliplari icin en iyisidir.
+                            <strong>Not:</strong> Keyset sayfalama "Daha Fazla Yukle" butonlari ve sonsuz kaydirma icin harikalar. "Sayfa 500'e Git"i kolayca desteklemez - bunun icin hala OFFSET gerekli.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Zorluk 4.3: Sorgu Plani Analizi</h4>
-                    <p>Bu EXPLAIN ANALYZE ciktisini analiz edin ve tum sorunlari tanimlayin:</p>
+                    <h4>Zorluk 4.3: EXPLAIN Ciktisini Okuma (Rehberli)</h4>
+                    <p>Bu EXPLAIN ciktisini adim adim okumayı ogrenelim. Panik yapmayin - parcalara ayiracagiz!</p>
 
                     <div class="plan-output plan-bad">
-<pre>EXPLAIN ANALYZE
-SELECT c.email, COUNT(o.order_id) as order_count, SUM(o.total_amount) as total_spent
-FROM customers c
-LEFT JOIN orders o ON c.customer_id = o.customer_id
-WHERE LOWER(c.email) LIKE '%gmail.com'
-  AND o.order_date >= '2024-01-01'
-GROUP BY c.email
-HAVING SUM(o.total_amount) > 1000;
-
-HashAggregate  (cost=125678.00..125789.00 rows=1000 width=48) (actual time=8234.567..8236.789 rows=156 loops=1)
+<pre>HashAggregate  (rows=1000) (actual rows=156)
   Group Key: c.email
   Filter: (sum(o.total_amount) > 1000)
   Rows Removed by Filter: 12456
-  ->  Hash Join  (cost=15234.00..98765.00 rows=250000 width=48) (actual time=1234.567..7890.123 rows=456789 loops=1)
+  ->  Hash Join  (actual rows=456789)
         Hash Cond: (o.customer_id = c.customer_id)
-        ->  Seq Scan on orders o  (cost=0.00..45123.00 rows=500000 width=20) (actual time=0.012..2345.678 rows=485632 loops=1)
+        ->  Seq Scan on orders o  (actual rows=485632)
               Filter: (order_date >= '2024-01-01')
               Rows Removed by Filter: 1514368
-        ->  Hash  (cost=12456.00..12456.00 rows=50000 width=36) (actual time=1234.123..1234.123 rows=48765 loops=1)
-              ->  Seq Scan on customers c  (cost=0.00..12456.00 rows=50000 width=36) (actual time=0.023..1123.456 rows=48765 loops=1)
-                    Filter: (lower((email)::text) ~~ '%gmail.com'::text)
+        ->  Hash
+              ->  Seq Scan on customers c  (actual rows=48765)
+                    Filter: (lower(email) LIKE '%gmail.com')
                     Rows Removed by Filter: 451235
 
-Planning Time: 0.456 ms
-Execution Time: 8237.890 ms</pre>
+Execution Time: 8237.890 ms  <span class="co">-- Bu 8+ saniye!</span></pre>
                     </div>
 
-                    <p><strong>Gorev:</strong> Tum performans sorunlarini listeleyin ve cozumler sunun.</p>
-
-                    <button class="solution-toggle" onclick="toggleSolution('sol4_3')">Cozumu Goster</button>
-                    <div id="sol4_3" class="solution-content">
-                        <p><strong>Tanimlanan Sorunlar:</strong></p>
-
+                    <h5>Adim 1: Seq Scan'leri Bulun</h5>
+                    <p><strong>Soru:</strong> "Seq Scan" (Sequential Scan / Sirasal Tarama) tum tabloyu okumak demektir. Kac Seq Scan goruyorsunuz? Hangi tablolarda?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3_step1')">Cevabi Goster</button>
+                    <div id="sol4_3_step1" class="solution-content">
+                        <p><strong>Iki Seq Scan:</strong></p>
                         <ol>
-                            <li>
-                                <strong>E-postada basta joker karakter LIKE</strong>
-                                <br><code>LOWER(c.email) LIKE '%gmail.com'</code>
-                                <br>Basta % ve fonksiyon nedeniyle indeks kullanilamaz
-                                <br><em>Cozum:</em> Domain ariyorsaniz, veriyi yeniden yapilandirin veya tam metin aramasi kullanin
-                                <pre><code class="sourceCode sql"><span class="co">-- Domain sutunu ekleyin veya pg_trgm kullanin</span>
-<span class="kw">CREATE EXTENSION</span> pg_trgm;
-<span class="kw">CREATE INDEX</span> idx_customers_email_trgm
-<span class="kw">ON</span> customers <span class="kw">USING</span> gin (email gin_trgm_ops);</code></pre>
-                            </li>
-
-                            <li>
-                                <strong>orders uzerinde sequential scan</strong>
-                                <br>2M satir taranip 485K'ya filtreleniyor
-                                <br><em>Cozum:</em> order_date uzerinde indeks
-                                <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
-                            </li>
-
-                            <li>
-                                <strong>Join icin eksik indeks</strong>
-                                <br>Hash join makul ama indeks yardimci olabilir
-                                <br><em>Cozum:</em> customer_id uzerinde indeks
-                                <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer <span class="kw">ON</span> orders (customer_id);</code></pre>
-                            </li>
-
-                            <li>
-                                <strong>HAVING ile gec filtreleme</strong>
-                                <br>456K satir isler, 12K'ya gruplar, sonra 156'ya filtreler
-                                <br><em>Cozum:</em> Dogrudan duzeltme yok, ancak yuksek degerli musterileri onceden toplamak yardimci olabilir
-                            </li>
-
-                            <li>
-                                <strong>Sag tabloda WHERE ile LEFT JOIN</strong>
-                                <br><code>LEFT JOIN ... WHERE o.order_date >= ...</code> INNER JOIN'e donusur
-                                <br><em>Cozum:</em> Acik olun - INNER JOIN kullanin veya filtreyi ON clause'a tasiyin
-                            </li>
+                            <li><code>Seq Scan on orders</code> - Tum siparis satirlarini okuyor</li>
+                            <li><code>Seq Scan on customers</code> - Tum musteri satirlarini okuyor</li>
                         </ol>
+                        <p>Buyuk tablolarda Seq Scan genellikle performans problemidir!</p>
+                    </div>
 
-                        <p><strong>Optimize Edilmis Sorgu:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Gerekli indeksler olusturulduktan sonra</span>
-<span class="kw">SELECT</span> c.email, <span class="fu">COUNT</span>(o.order_id), <span class="fu">SUM</span>(o.total_amount)
-<span class="kw">FROM</span> customers c
-<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
-<span class="kw">WHERE</span> c.email <span class="kw">LIKE</span> <span class="st">'%@gmail.com'</span>  <span class="co">-- veya trigram indeksi kullanin</span>
-  <span class="kw">AND</span> o.order_date >= <span class="st">'2024-01-01'</span>
-<span class="kw">GROUP BY</span> c.email
-<span class="kw">HAVING</span> <span class="fu">SUM</span>(o.total_amount) > <span class="dv">1000</span>;</code></pre>
+                    <h5>Adim 2: Filtrelere Bakin</h5>
+                    <p><strong>Soru:</strong> Her Seq Scan icin hangi filtre uygulaniyor? Kac satir cıkarıldi?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3_step2')">Cevabi Goster</button>
+                    <div id="sol4_3_step2" class="solution-content">
+                        <p><strong>Orders tablosu:</strong></p>
+                        <ul>
+                            <li>Filtre: <code>order_date >= '2024-01-01'</code></li>
+                            <li>Cikarilan satirlar: 1.514.368 (485.632 kaldi)</li>
+                            <li><strong>Problem:</strong> order_date uzerinde indeks yok!</li>
+                        </ul>
+                        <p><strong>Customers tablosu:</strong></p>
+                        <ul>
+                            <li>Filtre: <code>lower(email) LIKE '%gmail.com'</code></li>
+                            <li>Cikarilan satirlar: 451.235 (48.765 kaldi)</li>
+                            <li><strong>Problem:</strong> Basta % ve LOWER() indeks kullanimini engelliyor!</li>
+                        </ul>
+                    </div>
+
+                    <h5>Adim 3: Duzeltmeler Onerin</h5>
+                    <p><strong>Soru:</strong> orders tablosuna hangi indeks yardimci olur?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3_step3')">Cevabi Goster</button>
+                    <div id="sol4_3_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Tarih filtresi icin indeks</span>
+<span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
+                    </div>
+
+                    <h5>Adim 4: Tam Analiz</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3')">Tum Sorunlari ve Cozumleri Goster</button>
+                    <div id="sol4_3" class="solution-content">
+                        <p><strong>Bulunan Tum Sorunlar:</strong></p>
+                        <table class="table table-bordered">
+                            <thead><tr><th>#</th><th>Sorun</th><th>Cozum</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>orders uzerinde Seq Scan (1.5M satir tarandi)</td>
+                                    <td><code>CREATE INDEX idx_orders_date ON orders (order_date);</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>customers uzerinde Seq Scan (500K satir tarandi)</td>
+                                    <td>Basta % ile <code>LIKE '%gmail.com'</code> indekslemesi zor. <code>pg_trgm</code> uzantisini kullanmayi veya e-posta domain'ini ayri saklamayi dusunun.</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>JOIN icin indeks yok (customer_id)</td>
+                                    <td><code>CREATE INDEX idx_orders_customer ON orders (customer_id);</code></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>HAVING gec filtreliyor (toplasindan sonra 12.456 satir cikarildi)</td>
+                                    <td>Bu HAVING icin normal - GROUP BY'dan sonra calisir</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="concept-box">
+                            <strong>Ana Cikaris:</strong> EXPLAIN ciktisi okurken sunlara bakin:
+                            <ul class="mb-0">
+                                <li>Buyuk tablolarda "Seq Scan" = muhtemelen indeks gerekli</li>
+                                <li>"Rows Removed by Filter" = filtre ne kadar secici?</li>
+                                <li>Tahmini ve gercek satirlar arasinda buyuk farklar = eski istatistikler</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>

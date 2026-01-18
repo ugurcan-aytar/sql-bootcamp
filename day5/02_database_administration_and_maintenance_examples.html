@@ -245,12 +245,76 @@ INSERT INTO order_lines (order_id, product_id, quantity, unit_price) VALUES
         <h3 id="part1">Part 1: Backup and Recovery</h3>
         <p>Practice creating and restoring database backups using PostgreSQL tools.</p>
 
+        <div class="hint-box mb-4">
+          <strong>💡 What is a Backup?</strong> Think of it like taking a photo of your database at a specific moment.
+          If something goes wrong later, you can use that "photo" to restore everything back to how it was!
+        </div>
+
+        <!-- WARM-UP: Understanding Backup Basics -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 1.0: Your First Backup Command</h4>
+          <p>Before diving into complex backup strategies, let's understand the simplest backup command.</p>
+
+          <p><strong>Goal:</strong> Create a basic backup of our database to a file.</p>
+
+          <div class="concept-box">
+            <strong>Key Concept:</strong> <code>pg_dump</code> is like a camera for your database - it captures everything and saves it to a file.
+          </div>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol1_0')">Show Solution</button>
+          <div id="sol1_0" class="solution-box">
+            <pre><code class="language-bash"># The simplest backup command
+# This creates a plain SQL text file of your entire database
+pg_dump mydb > backup.sql
+
+# What does this do?
+# 1. pg_dump - the backup program
+# 2. mydb - name of your database
+# 3. > backup.sql - saves output to a file called backup.sql
+
+# To see what's in the backup file:
+head -50 backup.sql  # Shows first 50 lines
+
+# The backup file contains SQL commands like:
+# CREATE TABLE customers (...)
+# INSERT INTO customers VALUES (...)
+# etc.</code></pre>
+            <p class="mt-2"><strong>🎉 Congratulations!</strong> You've just created your first database backup!</p>
+          </div>
+        </div>
+
+        <!-- WARM-UP: Understanding Restore -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 1.0b: Your First Restore Command</h4>
+          <p>Now let's learn how to restore from a backup - like developing a photo back to reality!</p>
+
+          <p><strong>Goal:</strong> Restore a database from a backup file.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol1_0b')">Show Solution</button>
+          <div id="sol1_0b" class="solution-box">
+            <pre><code class="language-bash"># The simplest restore command
+# First, create an empty database to restore into:
+createdb mydb_restored
+
+# Then restore the backup:
+psql mydb_restored < backup.sql
+
+# What does this do?
+# 1. psql - the PostgreSQL command line tool
+# 2. mydb_restored - the database to restore into
+# 3. < backup.sql - read from the backup file
+
+# That's it! Your database is restored!</code></pre>
+            <p class="mt-2"><strong>📸 Key Insight:</strong> Backup = save to file, Restore = load from file!</p>
+          </div>
+        </div>
+
         <div class="exercise-box">
           <h4>Exercise 1.1: Logical Backup Commands</h4>
           <p><strong>Scenario:</strong> You need to create various backup scripts for your production database.
             Write the appropriate pg_dump commands for each scenario.</p>
 
-          <p><strong>Tasks:</strong></p>
+          <p><strong>Tasks:</strong> Now that you understand basic backups, let's learn professional options!</p>
           <ol>
             <li>Create a backup command for the entire database in custom format with compression</li>
             <li>Create a backup command for only the <code>customers</code> and <code>orders</code> tables</li>
@@ -259,7 +323,14 @@ INSERT INTO order_lines (order_id, product_id, quantity, unit_price) VALUES
           </ol>
 
           <div class="hint-box">
-            <strong>Hint:</strong> pg_dump supports formats: plain (-Fp), custom (-Fc), directory (-Fd), tar (-Ft)
+            <strong>🔧 Backup Format Cheat Sheet:</strong>
+            <ul class="mb-0">
+              <li><code>-Fp</code> = Plain SQL text (human-readable, like our warm-up)</li>
+              <li><code>-Fc</code> = Custom format (compressed, faster restore, recommended!)</li>
+              <li><code>-Fd</code> = Directory format (splits into multiple files)</li>
+              <li><code>-Ft</code> = Tar archive (single compressed archive)</li>
+              <li><code>-Z9</code> = Maximum compression (1-9, where 9 is highest)</li>
+            </ul>
           </div>
 
           <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
@@ -334,14 +405,30 @@ pg_restore --list backup_full.dump > /dev/null && echo "Backup is valid"</code><
           <h4>Exercise 1.3: Backup Validation Script</h4>
           <p><strong>Scenario:</strong> Create a backup validation procedure that tests if a backup is restorable.</p>
 
-          <p><strong>Write a shell script that:</strong></p>
+          <div class="warning-box mb-3">
+            <strong>⚠️ This is an Advanced Exercise!</strong> Don't worry if it looks complex - we'll break it down step by step.
+            The key insight: <em>A backup is only useful if you can restore it!</em>
+          </div>
+
+          <p><strong>The Big Picture:</strong> We want to automatically test if our backup file is valid by:</p>
           <ol>
-            <li>Creates a test database</li>
-            <li>Restores the backup to the test database</li>
+            <li>Creating a test database</li>
+            <li>Restoring the backup to the test database</li>
             <li>Runs validation queries to check data integrity</li>
             <li>Drops the test database</li>
             <li>Reports success or failure</li>
           </ol>
+
+          <div class="concept-box mb-3">
+            <strong>🧩 Step-by-Step Breakdown:</strong>
+            <p class="mb-1"><strong>Part A:</strong> First, let's understand each piece:</p>
+            <ul class="mb-0">
+              <li><code>pg_restore --list backup.dump</code> - Check what's inside a backup (like peeking in a box)</li>
+              <li><code>createdb test_db</code> - Create a new empty database for testing</li>
+              <li><code>pg_restore -d test_db backup.dump</code> - Restore into the test database</li>
+              <li><code>dropdb test_db</code> - Clean up the test database when done</li>
+            </ul>
+          </div>
 
           <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
           <div id="sol1_3" class="solution-box">
@@ -415,6 +502,46 @@ exit 0</code></pre>
       <section>
         <h3 id="part2">Part 2: Point-in-Time Recovery (PITR)</h3>
         <p>Learn to configure and perform Point-in-Time Recovery.</p>
+
+        <div class="hint-box mb-4">
+          <strong>💡 What is PITR?</strong> Imagine you have a video camera recording your database 24/7.
+          PITR lets you "rewind" to any moment in time - like if someone accidentally deleted important data at 3:00 PM,
+          you can restore to 2:59 PM before the mistake happened!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>🎬 How PITR Works (The Movie Analogy):</strong>
+          <ol class="mb-0">
+            <li><strong>Base Backup</strong> = Taking a full photo (snapshot) of your database</li>
+            <li><strong>WAL Files</strong> = Recording every change that happens after (like a video recording)</li>
+            <li><strong>Recovery</strong> = Start from the photo, then replay the video up to the moment you want</li>
+          </ol>
+        </div>
+
+        <!-- WARM-UP: Understanding WAL -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 2.0: Understanding WAL Files</h4>
+          <p>Before configuring PITR, let's understand what WAL (Write-Ahead Log) files are.</p>
+
+          <p><strong>Goal:</strong> Check the current WAL position in your database.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol2_0')">Show Solution</button>
+          <div id="sol2_0" class="solution-box">
+            <pre><code class="language-sql">-- See your current WAL position (like checking the video timestamp)
+SELECT pg_current_wal_lsn() AS current_position;
+
+-- See which WAL file is currently being written
+SELECT pg_walfile_name(pg_current_wal_lsn()) AS current_wal_file;
+
+-- Check if WAL archiving is enabled
+SELECT name, setting
+FROM pg_settings
+WHERE name = 'archive_mode';
+
+-- Result: 'on' means archiving is enabled, 'off' means it's not</code></pre>
+            <p class="mt-2"><strong>📝 Key Insight:</strong> WAL files are like diary entries - PostgreSQL writes every change here before actually making it!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Exercise 2.1: WAL Archiving Configuration</h4>
@@ -599,6 +726,75 @@ psql -c "SELECT pg_is_in_recovery();"
       <section>
         <h3 id="part3">Part 3: Database Maintenance and Monitoring</h3>
         <p>Practice essential database maintenance tasks.</p>
+
+        <div class="hint-box mb-4">
+          <strong>💡 Why Maintenance?</strong> Think of your database like a house - it needs regular cleaning!
+          When you delete or update rows, PostgreSQL doesn't immediately remove the old data. Over time, this "dust"
+          accumulates and slows things down. Maintenance keeps your database fast and healthy!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>🏠 The House Cleaning Analogy:</strong>
+          <ul class="mb-0">
+            <li><strong>VACUUM</strong> = Vacuuming the house (removes "dead" rows, frees up space)</li>
+            <li><strong>ANALYZE</strong> = Organizing your closet (updates statistics so queries run faster)</li>
+            <li><strong>REINDEX</strong> = Reorganizing your bookshelf (rebuilds indexes for faster searches)</li>
+          </ul>
+        </div>
+
+        <!-- WARM-UP: Check Database Health -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 3.0: Check Your Database Health</h4>
+          <p>Before doing maintenance, let's see how healthy our database is!</p>
+
+          <p><strong>Goal:</strong> Find out how much "dust" (dead rows) has accumulated.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol3_0')">Show Solution</button>
+          <div id="sol3_0" class="solution-box">
+            <pre><code class="language-sql">-- See the health of all your tables
+SELECT
+    relname AS table_name,
+    n_live_tup AS live_rows,      -- Active rows (good!)
+    n_dead_tup AS dead_rows,      -- Dead rows (need cleaning)
+    last_vacuum,                   -- When was it last vacuumed?
+    last_analyze                   -- When were stats last updated?
+FROM pg_stat_user_tables
+ORDER BY n_dead_tup DESC;
+
+-- What to look for:
+-- ✅ dead_rows close to 0 = clean table
+-- ⚠️ dead_rows > 10% of live_rows = needs VACUUM
+-- ❌ last_vacuum is NULL or very old = overdue for cleaning!</code></pre>
+            <p class="mt-2"><strong>🎯 Quick Win:</strong> If you see tables with many dead rows, run <code>VACUUM table_name;</code></p>
+          </div>
+        </div>
+
+        <!-- WARM-UP: Simple VACUUM -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 3.0b: Run Your First VACUUM</h4>
+          <p>Let's clean a table manually!</p>
+
+          <p><strong>Goal:</strong> Run VACUUM on the orders table.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol3_0b')">Show Solution</button>
+          <div id="sol3_0b" class="solution-box">
+            <pre><code class="language-sql">-- Simple VACUUM (cleans up dead rows)
+VACUUM orders;
+
+-- VACUUM with ANALYZE (clean + update statistics)
+VACUUM ANALYZE orders;
+
+-- VACUUM with verbose output (see what it's doing)
+VACUUM (VERBOSE) orders;
+
+-- After running, check the table again:
+SELECT relname, n_dead_tup, last_vacuum
+FROM pg_stat_user_tables
+WHERE relname = 'orders';</code></pre>
+            <p class="mt-2"><strong>💡 Good News:</strong> PostgreSQL runs <code>autovacuum</code> automatically in the background,
+            but sometimes manual VACUUM is needed for busy tables!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Exercise 3.1: VACUUM and ANALYZE Operations</h4>
@@ -924,6 +1120,83 @@ ORDER BY n_dead_tup DESC;</code></pre>
       <section>
         <h3 id="part4">Part 4: Security Best Practices</h3>
         <p>Implement robust security measures for your PostgreSQL database.</p>
+
+        <div class="hint-box mb-4">
+          <strong>🔐 Why Security Matters?</strong> Your database contains valuable data - customer info, orders, financial records.
+          Security ensures only the right people can access the right data. It's like having different keys for different rooms in a building!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>🏢 The Office Building Analogy:</strong>
+          <ul class="mb-0">
+            <li><strong>ROLE</strong> = A job title (like "Manager" or "Intern")</li>
+            <li><strong>USER</strong> = A person with a login (each employee has their own key card)</li>
+            <li><strong>PRIVILEGES</strong> = What doors you can open (SELECT = read, INSERT = add, UPDATE = modify, DELETE = remove)</li>
+            <li><strong>GRANT</strong> = Giving someone a key</li>
+            <li><strong>REVOKE</strong> = Taking a key away</li>
+          </ul>
+        </div>
+
+        <!-- WARM-UP: See Current Users -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 4.0: Explore Users and Roles</h4>
+          <p>Let's see what users and roles exist in your database.</p>
+
+          <p><strong>Goal:</strong> List all users/roles and their permissions.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol4_0')">Show Solution</button>
+          <div id="sol4_0" class="solution-box">
+            <pre><code class="language-sql">-- See all roles (users) in the database
+SELECT
+    rolname AS role_name,
+    rolcanlogin AS can_login,    -- true = it's a user that can connect
+    rolsuper AS is_superuser     -- true = has all powers (like root/admin)
+FROM pg_roles
+WHERE rolname NOT LIKE 'pg_%'   -- Hide system roles
+ORDER BY rolname;
+
+-- See who you are logged in as
+SELECT current_user, session_user;
+
+-- See what tables you have access to
+SELECT
+    table_name,
+    privilege_type
+FROM information_schema.table_privileges
+WHERE grantee = current_user;</code></pre>
+            <p class="mt-2"><strong>💡 Key Insight:</strong> A ROLE with <code>LOGIN</code> permission is like a user - they can connect to the database!</p>
+          </div>
+        </div>
+
+        <!-- WARM-UP: Create a Simple User -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 4.0b: Create Your First User</h4>
+          <p>Let's create a simple read-only user for viewing data.</p>
+
+          <p><strong>Goal:</strong> Create a user who can only SELECT (view) from the customers table.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol4_0b')">Show Solution</button>
+          <div id="sol4_0b" class="solution-box">
+            <pre><code class="language-sql">-- Step 1: Create a new user with a password
+CREATE USER viewer_user WITH PASSWORD 'secure_password_123';
+
+-- Step 2: Grant permission to connect to the database
+GRANT CONNECT ON DATABASE bootcamp_db TO viewer_user;
+
+-- Step 3: Grant permission to use the public schema
+GRANT USAGE ON SCHEMA public TO viewer_user;
+
+-- Step 4: Grant SELECT (read-only) on the customers table
+GRANT SELECT ON customers TO viewer_user;
+
+-- That's it! This user can now:
+-- ✅ Connect to the database
+-- ✅ Read from the customers table
+-- ❌ Cannot INSERT, UPDATE, or DELETE
+-- ❌ Cannot access other tables</code></pre>
+            <p class="mt-2"><strong>🔑 Remember:</strong> Start with minimal permissions (read-only), then add more only if needed!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Exercise 4.1: Role and Privilege Management</h4>
@@ -1322,6 +1595,52 @@ ORDER BY changed_at;</code></pre>
         <h3 id="part5">Part 5: High Availability and Replication</h3>
         <p>Configure and monitor PostgreSQL replication.</p>
 
+        <div class="hint-box mb-4">
+          <strong>🔄 What is Replication?</strong> Imagine having a twin copy of your database that stays synchronized.
+          If your main database has a problem, the twin can take over immediately - no data lost, no downtime!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>👥 The Twin Siblings Analogy:</strong>
+          <ul class="mb-0">
+            <li><strong>Primary (Master)</strong> = The main database where all writes happen</li>
+            <li><strong>Replica (Standby)</strong> = The copy that stays synchronized with the primary</li>
+            <li><strong>Streaming Replication</strong> = Real-time copying of changes (like live video streaming)</li>
+            <li><strong>Failover</strong> = When the replica becomes the new primary (the twin takes over)</li>
+          </ul>
+        </div>
+
+        <!-- WARM-UP: Check If You're on Primary or Replica -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 5.0: Am I on Primary or Replica?</h4>
+          <p>The first thing to know: which database are you connected to?</p>
+
+          <p><strong>Goal:</strong> Determine if you're on the primary or a replica.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol5_0')">Show Solution</button>
+          <div id="sol5_0" class="solution-box">
+            <pre><code class="language-sql">-- Check if this database is in recovery mode (replica) or not (primary)
+SELECT pg_is_in_recovery() AS is_replica;
+
+-- Results:
+-- false = This is the PRIMARY (you can write here)
+-- true = This is a REPLICA (read-only, syncing from primary)
+
+-- If on PRIMARY, see connected replicas:
+SELECT
+    client_addr AS replica_ip,
+    state AS replication_state,
+    sync_state AS sync_type
+FROM pg_stat_replication;
+
+-- If on REPLICA, see how far behind you are:
+SELECT
+    pg_last_wal_receive_lsn() AS last_received,
+    pg_last_xact_replay_timestamp() AS last_applied_time;</code></pre>
+            <p class="mt-2"><strong>💡 Key Insight:</strong> Always know where you are! Writing to a replica will fail - replicas are read-only.</p>
+          </div>
+        </div>
+
         <div class="exercise-box">
           <h4>Exercise 5.1: Replication Monitoring Queries</h4>
           <p><strong>Scenario:</strong> Monitor streaming replication health and lag.</p>
@@ -1647,6 +1966,85 @@ FROM pools;</code></pre>
       <section>
         <h3 id="part6">Part 6: Scaling PostgreSQL</h3>
         <p>Implement scaling strategies for growing databases.</p>
+
+        <div class="hint-box mb-4">
+          <strong>📈 Why Scaling Matters?</strong> When your database grows from thousands to millions of rows,
+          queries slow down. Scaling techniques help your database handle more data while staying fast!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>📚 The Library Analogy:</strong>
+          <ul class="mb-0">
+            <li><strong>Partitioning</strong> = Organizing books into separate rooms by category (History Room, Science Room, etc.)</li>
+            <li><strong>Materialized Views</strong> = Pre-printed summary reports that you update periodically instead of calculating each time</li>
+            <li><strong>Connection Pooling</strong> = Having a waiting room so visitors don't crowd the library entrance</li>
+          </ul>
+        </div>
+
+        <!-- WARM-UP: Check Table Sizes -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 6.0: Discover Your Largest Tables</h4>
+          <p>Before scaling, let's find which tables might need it!</p>
+
+          <p><strong>Goal:</strong> Find the biggest tables in your database.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol6_0')">Show Solution</button>
+          <div id="sol6_0" class="solution-box">
+            <pre><code class="language-sql">-- Find your largest tables
+SELECT
+    relname AS table_name,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    pg_size_pretty(pg_relation_size(relid)) AS data_size,
+    n_live_tup AS row_count
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC
+LIMIT 10;
+
+-- Check total database size
+SELECT pg_size_pretty(pg_database_size(current_database())) AS database_size;
+
+-- Scaling candidates:
+-- 🎯 Tables over 1GB with millions of rows
+-- 🎯 Tables that grow continuously (like orders, logs)
+-- 🎯 Tables where queries filter by date</code></pre>
+            <p class="mt-2"><strong>💡 Key Insight:</strong> Tables with millions of rows and date columns are perfect candidates for partitioning!</p>
+          </div>
+        </div>
+
+        <!-- WARM-UP: Simple Materialized View -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Warm-Up 6.0b: Your First Materialized View</h4>
+          <p>Materialized views are like cached query results. Let's create a simple one!</p>
+
+          <p><strong>Goal:</strong> Create a materialized view that counts orders per customer.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol6_0b')">Show Solution</button>
+          <div id="sol6_0b" class="solution-box">
+            <pre><code class="language-sql">-- Create a materialized view (stores the result physically)
+CREATE MATERIALIZED VIEW mv_customer_order_count AS
+SELECT
+    c.id AS customer_id,
+    c.name AS customer_name,
+    COUNT(o.id) AS order_count,
+    SUM(o.total_amount) AS total_spent
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id
+GROUP BY c.id, c.name;
+
+-- Query it just like a regular table (but it's FAST!)
+SELECT * FROM mv_customer_order_count
+ORDER BY total_spent DESC
+LIMIT 5;
+
+-- The data is stored, so it doesn't recalculate each time
+-- But it can become stale! Refresh it when needed:
+REFRESH MATERIALIZED VIEW mv_customer_order_count;
+
+-- Check when it was last refreshed (PostgreSQL doesn't track this automatically)
+-- You need to implement your own tracking if needed</code></pre>
+            <p class="mt-2"><strong>⚡ Performance Tip:</strong> Use materialized views for slow aggregation queries that don't need real-time data!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Exercise 6.1: Table Partitioning</h4>
@@ -1985,6 +2383,21 @@ ORDER BY name;</code></pre>
       <!-- Challenge Section -->
       <section>
         <h3 id="challenge">Challenge Exercise: Complete DBA Scenario</h3>
+
+        <div class="concept-box mb-4">
+          <strong>🎓 Congratulations!</strong> You've learned individual DBA skills. Now let's put them all together
+          in a realistic scenario. Don't worry - you'll use the same commands you've practiced in the warm-ups above!
+        </div>
+
+        <div class="hint-box mb-4">
+          <strong>💡 Approach This Challenge Step-by-Step:</strong>
+          <ol class="mb-0">
+            <li>Read the entire scenario first to understand the big picture</li>
+            <li>Work on one task at a time - don't try to do everything at once</li>
+            <li>Refer back to the warm-up exercises when you get stuck</li>
+            <li>It's okay to look at the solution for individual parts!</li>
+          </ol>
+        </div>
 
         <div class="exercise-box">
           <h4>Comprehensive DBA Task</h4>

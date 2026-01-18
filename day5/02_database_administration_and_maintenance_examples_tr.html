@@ -246,12 +246,76 @@ INSERT INTO order_lines (order_id, product_id, quantity, unit_price) VALUES
         <h3 id="part1">Bolum 1: Yedekleme ve Kurtarma</h3>
         <p>PostgreSQL araclariyla veritabani yedeklemeleri olusturma ve geri yukleme pratigi yapin.</p>
 
+        <div class="hint-box mb-4">
+          <strong>💡 Yedekleme Nedir?</strong> Veritabaninizin belirli bir andaki fotografini cekmek gibi dusunun.
+          Daha sonra bir sorun olursa, o "fotografi" kullanarak her seyi oldugu gibi geri yukleyebilirsiniz!
+        </div>
+
+        <!-- ISINMA: Yedekleme Temelleri -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 1.0: Ilk Yedekleme Komutunuz</h4>
+          <p>Karmasik yedekleme stratejilerine dalmadan once, en basit yedekleme komutunu anlayalim.</p>
+
+          <p><strong>Hedef:</strong> Veritabanimizin basit bir yedegini bir dosyaya olusturun.</p>
+
+          <div class="concept-box">
+            <strong>Temel Kavram:</strong> <code>pg_dump</code> veritabaniniz icin bir kamera gibidir - her seyi yakalayip bir dosyaya kaydeder.
+          </div>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol1_0')">Cozumu Goster</button>
+          <div id="sol1_0" class="solution-box">
+            <pre><code class="language-bash"># En basit yedekleme komutu
+# Bu, tum veritabaninizin duz SQL metin dosyasini olusturur
+pg_dump mydb > backup.sql
+
+# Bu ne yapar?
+# 1. pg_dump - yedekleme programi
+# 2. mydb - veritabaninizin adi
+# 3. > backup.sql - ciktiyi backup.sql adli dosyaya kaydeder
+
+# Yedekleme dosyasinda ne oldugunu gormek icin:
+head -50 backup.sql  # Ilk 50 satiri gosterir
+
+# Yedekleme dosyasi su SQL komutlarini icerir:
+# CREATE TABLE customers (...)
+# INSERT INTO customers VALUES (...)
+# vb.</code></pre>
+            <p class="mt-2"><strong>🎉 Tebrikler!</strong> Ilk veritabani yedeginizi olusturdunuz!</p>
+          </div>
+        </div>
+
+        <!-- ISINMA: Geri Yukleme Anlama -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 1.0b: Ilk Geri Yukleme Komutunuz</h4>
+          <p>Simdi bir yedekten nasil geri yukleme yapilacagini ogrenelim - fotografi gerceklige geri donusturmek gibi!</p>
+
+          <p><strong>Hedef:</strong> Bir yedekleme dosyasindan veritabanini geri yukleyin.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol1_0b')">Cozumu Goster</button>
+          <div id="sol1_0b" class="solution-box">
+            <pre><code class="language-bash"># En basit geri yukleme komutu
+# Oncelikle, geri yuklenecek bos bir veritabani olusturun:
+createdb mydb_restored
+
+# Sonra yedegi geri yukleyin:
+psql mydb_restored < backup.sql
+
+# Bu ne yapar?
+# 1. psql - PostgreSQL komut satiri araci
+# 2. mydb_restored - geri yuklenecek veritabani
+# 3. < backup.sql - yedekleme dosyasindan oku
+
+# Bu kadar! Veritabaniniz geri yuklendi!</code></pre>
+            <p class="mt-2"><strong>📸 Onemli Bilgi:</strong> Yedekleme = dosyaya kaydet, Geri Yukleme = dosyadan yukle!</p>
+          </div>
+        </div>
+
         <div class="exercise-box">
           <h4>Alistirma 1.1: Mantiksal Yedekleme Komutlari</h4>
           <p><strong>Senaryo:</strong> Uretim veritabaniniz icin cesitli yedekleme betikleri olusturmaniz gerekiyor.
             Her senaryo icin uygun pg_dump komutlarini yazin.</p>
 
-          <p><strong>Gorevler:</strong></p>
+          <p><strong>Gorevler:</strong> Temel yedeklemeyi anladiginiza gore, simdi profesyonel secenekleri ogrenelim!</p>
           <ol>
             <li>Sikistirma ile ozel formatta tum veritabani icin bir yedekleme komutu olusturun</li>
             <li>Yalnizca <code>customers</code> ve <code>orders</code> tablolari icin bir yedekleme komutu olusturun</li>
@@ -260,7 +324,14 @@ INSERT INTO order_lines (order_id, product_id, quantity, unit_price) VALUES
           </ol>
 
           <div class="hint-box">
-            <strong>Ipucu:</strong> pg_dump su formatlari destekler: duz (-Fp), ozel (-Fc), dizin (-Fd), tar (-Ft)
+            <strong>🔧 Yedekleme Format Rehberi:</strong>
+            <ul class="mb-0">
+              <li><code>-Fp</code> = Duz SQL metni (insan okunabilir, isinma ornegimiz gibi)</li>
+              <li><code>-Fc</code> = Ozel format (sikistirilmis, hizli geri yukleme, onerilir!)</li>
+              <li><code>-Fd</code> = Dizin formati (birden fazla dosyaya boler)</li>
+              <li><code>-Ft</code> = Tar arsivi (tek sikistirilmis arsiv)</li>
+              <li><code>-Z9</code> = Maksimum sikistirma (1-9, 9 en yuksek)</li>
+            </ul>
           </div>
 
           <button class="btn btn-primary btn-solution" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
@@ -416,6 +487,46 @@ exit 0</code></pre>
       <section>
         <h3 id="part2">Bolum 2: Zamanda Nokta Kurtarma (PITR)</h3>
         <p>Zamanda Nokta Kurtarma yapilandirmayi ve gerceklestirmeyi ogrenin.</p>
+
+        <div class="hint-box mb-4">
+          <strong>💡 PITR Nedir?</strong> Veritabaninizi 7/24 kaydeden bir video kamera dusunun.
+          PITR, zamanin herhangi bir anina "geri sarmanizi" saglar - ornegin birisi saat 15:00'te yanlislikla onemli verileri sildiyse,
+          hata olmadan onceki 14:59'a geri yukleyebilirsiniz!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>🎬 PITR Nasil Calisir (Film Analojisi):</strong>
+          <ol class="mb-0">
+            <li><strong>Temel Yedek</strong> = Veritabaninizin tam bir fotografini cekmek (anlik goruntusu)</li>
+            <li><strong>WAL Dosyalari</strong> = Sonra olan her degisikligi kaydetmek (canli video kaydi gibi)</li>
+            <li><strong>Kurtarma</strong> = Fotograftan basla, sonra istediginiz ana kadar videoyu oynat</li>
+          </ol>
+        </div>
+
+        <!-- ISINMA: WAL'i Anlama -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 2.0: WAL Dosyalarini Anlama</h4>
+          <p>PITR'i yapilandirmadan once, WAL (Write-Ahead Log - Onceden Yazma Gunlugu) dosyalarinin ne oldugunu anlayalim.</p>
+
+          <p><strong>Hedef:</strong> Veritabaninizdaki mevcut WAL konumunu kontrol edin.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol2_0')">Cozumu Goster</button>
+          <div id="sol2_0" class="solution-box">
+            <pre><code class="language-sql">-- Mevcut WAL konumunuzu gorun (video zaman damgasini kontrol etmek gibi)
+SELECT pg_current_wal_lsn() AS current_position;
+
+-- Hangi WAL dosyasina yazildigini gorun
+SELECT pg_walfile_name(pg_current_wal_lsn()) AS current_wal_file;
+
+-- WAL arsivlemenin etkin olup olmadigini kontrol edin
+SELECT name, setting
+FROM pg_settings
+WHERE name = 'archive_mode';
+
+-- Sonuc: 'on' arsivlemenin etkin oldugu, 'off' etkin olmadigi anlamina gelir</code></pre>
+            <p class="mt-2"><strong>📝 Onemli Bilgi:</strong> WAL dosyalari gunluk girislerine benzer - PostgreSQL her degisikligi gercekten yapmadan once buraya yazar!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Alistirma 2.1: WAL Arsivleme Yapilandirmasi</h4>
@@ -600,6 +711,75 @@ psql -c "SELECT pg_is_in_recovery();"
       <section>
         <h3 id="part3">Bolum 3: Veritabani Bakimi ve Izleme</h3>
         <p>Temel veritabani bakim gorevlerini pratik yapin.</p>
+
+        <div class="hint-box mb-4">
+          <strong>💡 Neden Bakim?</strong> Veritabaninizi bir ev gibi dusunun - duzenli temizlik gerektirir!
+          Satirlari sildiginizde veya guncellediginizde, PostgreSQL eski verileri hemen kaldirmaz. Zamanla bu "toz"
+          birikir ve isleri yavastir. Bakim, veritabaninizi hizli ve saglikli tutar!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>🏠 Ev Temizligi Analojisi:</strong>
+          <ul class="mb-0">
+            <li><strong>VACUUM</strong> = Evi supurmek ("olu" satirlari kaldirir, yer acar)</li>
+            <li><strong>ANALYZE</strong> = Dolabinizi duzenlemek (sorgularin daha hizli calismaisi icin istatistikleri gunceller)</li>
+            <li><strong>REINDEX</strong> = Kitapliginizi yeniden duzenlemek (daha hizli aramalar icin indeksleri yeniden olusturur)</li>
+          </ul>
+        </div>
+
+        <!-- ISINMA: Veritabani Sagligini Kontrol Et -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 3.0: Veritabani Sagliginizi Kontrol Edin</h4>
+          <p>Bakim yapmadan once, veritabanimizin ne kadar saglikli oldugunu gorelim!</p>
+
+          <p><strong>Hedef:</strong> Ne kadar "toz" (olu satirlar) biriktgini ogrelin.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol3_0')">Cozumu Goster</button>
+          <div id="sol3_0" class="solution-box">
+            <pre><code class="language-sql">-- Tum tablolarinizin sagligini gorun
+SELECT
+    relname AS tablo_adi,
+    n_live_tup AS canli_satirlar,      -- Aktif satirlar (iyi!)
+    n_dead_tup AS olu_satirlar,        -- Olu satirlar (temizlik gerekli)
+    last_vacuum,                        -- En son ne zaman vacuum yapildi?
+    last_analyze                        -- Istatistikler en son ne zaman guncellendi?
+FROM pg_stat_user_tables
+ORDER BY n_dead_tup DESC;
+
+-- Nelere bakmali:
+-- ✅ olu_satirlar 0'a yakin = temiz tablo
+-- ⚠️ olu_satirlar > canli_satirlarin %10'u = VACUUM gerekli
+-- ❌ last_vacuum NULL veya cok eski = temizlik zamani gecmis!</code></pre>
+            <p class="mt-2"><strong>🎯 Hizli Kazanc:</strong> Cok fazla olu satiri olan tablolar gorurseniz, <code>VACUUM tablo_adi;</code> calistirin</p>
+          </div>
+        </div>
+
+        <!-- ISINMA: Basit VACUUM -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 3.0b: Ilk VACUUM'unuzu Calistirin</h4>
+          <p>Bir tabloyu manuel olarak temizleyelim!</p>
+
+          <p><strong>Hedef:</strong> orders tablosunda VACUUM calistirin.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol3_0b')">Cozumu Goster</button>
+          <div id="sol3_0b" class="solution-box">
+            <pre><code class="language-sql">-- Basit VACUUM (olu satirlari temizler)
+VACUUM orders;
+
+-- ANALYZE ile VACUUM (temizle + istatistikleri guncelle)
+VACUUM ANALYZE orders;
+
+-- Ayrintili cikti ile VACUUM (ne yaptigini gorun)
+VACUUM (VERBOSE) orders;
+
+-- Calistirdiktan sonra tabloyu tekrar kontrol edin:
+SELECT relname, n_dead_tup, last_vacuum
+FROM pg_stat_user_tables
+WHERE relname = 'orders';</code></pre>
+            <p class="mt-2"><strong>💡 Iyi Haber:</strong> PostgreSQL arka planda otomatik olarak <code>autovacuum</code> calistirir,
+            ama bazen yogun tablolar icin manuel VACUUM gereklidir!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Alistirma 3.1: VACUUM ve ANALYZE Islemleri</h4>
@@ -925,6 +1105,83 @@ ORDER BY n_dead_tup DESC;</code></pre>
       <section>
         <h3 id="part4">Bolum 4: Guvenlik En Iyi Uygulamalari</h3>
         <p>PostgreSQL veritabaniniz icin saglam guvenlik onlemleri uygulayin.</p>
+
+        <div class="hint-box mb-4">
+          <strong>🔐 Neden Guvenlik Onemli?</strong> Veritabaniniz degerli veriler icerir - musteri bilgileri, siparisler, finansal kayitlar.
+          Guvenlik, yalnizca dogru kisilerin dogru verilere erisebilmesini saglar. Bir binadaki farkli odalar icin farkli anahtarlara sahip olmak gibi!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>🏢 Ofis Binasi Analojisi:</strong>
+          <ul class="mb-0">
+            <li><strong>ROL</strong> = Bir is unvani ("Mudur" veya "Stajyer" gibi)</li>
+            <li><strong>KULLANICI</strong> = Giris yapan bir kisi (her calisanin kendi kart anahtari var)</li>
+            <li><strong>YETKILER</strong> = Hangi kapilari acabilirsiniz (SELECT = oku, INSERT = ekle, UPDATE = degistir, DELETE = sil)</li>
+            <li><strong>GRANT</strong> = Birine anahtar vermek</li>
+            <li><strong>REVOKE</strong> = Anahtari geri almak</li>
+          </ul>
+        </div>
+
+        <!-- ISINMA: Mevcut Kullanicilari Gor -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 4.0: Kullanicilari ve Rolleri Kesfet</h4>
+          <p>Veritabaninizdaki mevcut kullanicilari ve rolleri gorelim.</p>
+
+          <p><strong>Hedef:</strong> Tum kullanicilari/rolleri ve yetkilerini listeleyin.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol4_0')">Cozumu Goster</button>
+          <div id="sol4_0" class="solution-box">
+            <pre><code class="language-sql">-- Veritabanindaki tum rolleri (kullanicilari) gorun
+SELECT
+    rolname AS rol_adi,
+    rolcanlogin AS giris_yapabilir,    -- true = baglanti yapabilen kullanici
+    rolsuper AS super_kullanici        -- true = tum yetkilere sahip (root/admin gibi)
+FROM pg_roles
+WHERE rolname NOT LIKE 'pg_%'   -- Sistem rollerini gizle
+ORDER BY rolname;
+
+-- Kim olarak giris yaptiginizi gorun
+SELECT current_user, session_user;
+
+-- Hangi tablolara erisiniz oldugunu gorun
+SELECT
+    table_name,
+    privilege_type
+FROM information_schema.table_privileges
+WHERE grantee = current_user;</code></pre>
+            <p class="mt-2"><strong>💡 Onemli Bilgi:</strong> <code>LOGIN</code> yetkisine sahip bir ROL kullanici gibidir - veritabanina baglanabilir!</p>
+          </div>
+        </div>
+
+        <!-- ISINMA: Basit Kullanici Olustur -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 4.0b: Ilk Kullaninizi Olusturun</h4>
+          <p>Veri goruntulemek icin basit bir salt okunur kullanici olusturalim.</p>
+
+          <p><strong>Hedef:</strong> customers tablosundan yalnizca SELECT (goruntuleyebilen) yapabilen bir kullanici olusturun.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol4_0b')">Cozumu Goster</button>
+          <div id="sol4_0b" class="solution-box">
+            <pre><code class="language-sql">-- Adim 1: Sifre ile yeni kullanici olusturun
+CREATE USER viewer_user WITH PASSWORD 'guvenli_sifre_123';
+
+-- Adim 2: Veritabanina baglanma yetkisi verin
+GRANT CONNECT ON DATABASE bootcamp_db TO viewer_user;
+
+-- Adim 3: Public semayi kullanma yetkisi verin
+GRANT USAGE ON SCHEMA public TO viewer_user;
+
+-- Adim 4: customers tablosunda SELECT (salt okunur) yetkisi verin
+GRANT SELECT ON customers TO viewer_user;
+
+-- Bu kadar! Bu kullanici artik:
+-- ✅ Veritabanina baglanabilir
+-- ✅ customers tablosundan okuyabilir
+-- ❌ INSERT, UPDATE veya DELETE yapamaz
+-- ❌ Diger tablolara erisemez</code></pre>
+            <p class="mt-2"><strong>🔑 Unutmayin:</strong> Minimum yetkilerle baslayin (salt okunur), sonra yalnizca gerekirse daha fazlasini ekleyin!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Alistirma 4.1: Rol ve Yetki Yonetimi</h4>
@@ -1323,6 +1580,52 @@ ORDER BY changed_at;</code></pre>
         <h3 id="part5">Bolum 5: Yuksek Kullanilabilirlik ve Replikasyon</h3>
         <p>PostgreSQL replikasyonunu yapilandirin ve izleyin.</p>
 
+        <div class="hint-box mb-4">
+          <strong>🔄 Replikasyon Nedir?</strong> Veritabaninizin senkronize kalan bir ikiz kopyasina sahip olmak gibi dusunun.
+          Ana veritabaninizda bir sorun olursa, ikiz hemen devreye girebilir - veri kaybi yok, kesinti yok!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>👥 Ikiz Kardesler Analojisi:</strong>
+          <ul class="mb-0">
+            <li><strong>Primary (Birincil)</strong> = Tum yazmalarin yapildigi ana veritabani</li>
+            <li><strong>Replica (Kopya)</strong> = Birincil ile senkronize kalan kopya</li>
+            <li><strong>Streaming Replikasyon</strong> = Degisikliklerin gercek zamanli kopyalanmasi (canli yayin gibi)</li>
+            <li><strong>Failover</strong> = Replikanin yeni birincil haline gelmesi (ikiz devraliyor)</li>
+          </ul>
+        </div>
+
+        <!-- ISINMA: Primary mi Replica mi Kontrol Et -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 5.0: Primary'de miyim Replica'da mi?</h4>
+          <p>Bilinmesi gereken ilk sey: hangi veritabanina baglisiniz?</p>
+
+          <p><strong>Hedef:</strong> Primary'de mi yoksa replica'da mi oldugunuzu belirleyin.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol5_0')">Cozumu Goster</button>
+          <div id="sol5_0" class="solution-box">
+            <pre><code class="language-sql">-- Bu veritabaninin recovery modunda (replica) olup olmadigini kontrol edin
+SELECT pg_is_in_recovery() AS is_replica;
+
+-- Sonuclar:
+-- false = Bu PRIMARY (buraya yazabilirsiniz)
+-- true = Bu bir REPLICA (salt okunur, primary'den senkronize)
+
+-- PRIMARY'deyseniz, bagli replicalari gorun:
+SELECT
+    client_addr AS replica_ip,
+    state AS replikasyon_durumu,
+    sync_state AS senkron_tipi
+FROM pg_stat_replication;
+
+-- REPLICA'daysaniz, ne kadar geride oldugunuzu gorun:
+SELECT
+    pg_last_wal_receive_lsn() AS son_alinan,
+    pg_last_xact_replay_timestamp() AS son_uygulanan_zaman;</code></pre>
+            <p class="mt-2"><strong>💡 Onemli Bilgi:</strong> Her zaman nerede oldugunuzu bilin! Replica'ya yazma basarisiz olur - replica'lar salt okunurdur.</p>
+          </div>
+        </div>
+
         <div class="exercise-box">
           <h4>Alistirma 5.1: Replikasyon Izleme Sorgulari</h4>
           <p><strong>Senaryo:</strong> Akis replikasyonu sagligini ve gecikmesini izleyin.</p>
@@ -1648,6 +1951,85 @@ FROM pools;</code></pre>
       <section>
         <h3 id="part6">Bolum 6: PostgreSQL Olceklendirme</h3>
         <p>Buyuyen veritabanlari icin olceklendirme stratejileri uygulayin.</p>
+
+        <div class="hint-box mb-4">
+          <strong>📈 Neden Olceklendirme Onemli?</strong> Veritabaniniz binlerden milyonlarca satira buyudugunde,
+          sorgular yavaslar. Olceklendirme teknikleri, veritabaninizin hizli kalirken daha fazla veriyi yonetmesini saglar!
+        </div>
+
+        <div class="concept-box mb-4">
+          <strong>📚 Kutuphane Analojisi:</strong>
+          <ul class="mb-0">
+            <li><strong>Bolumleme (Partitioning)</strong> = Kitaplari kategoriye gore ayri odalara duzenlemek (Tarih Odasi, Bilim Odasi, vb.)</li>
+            <li><strong>Materialize Gorunumler</strong> = Her seferinde hesaplamak yerine periyodik olarak guncellediginiz onceden basilmis ozet raporlar</li>
+            <li><strong>Baglanti Havuzlama</strong> = Ziyaretcilerin kutuphane girisini kalabaliklastirmamasi icin bekleme odasi</li>
+          </ul>
+        </div>
+
+        <!-- ISINMA: Tablo Boyutlarini Kontrol Et -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 6.0: En Buyuk Tablolarinizi Kesfet</h4>
+          <p>Olceklendirmeden once, hangi tablolarin buna ihtiyaci olabilecegini bulalim!</p>
+
+          <p><strong>Hedef:</strong> Veritabaninizdaki en buyuk tablolari bulun.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol6_0')">Cozumu Goster</button>
+          <div id="sol6_0" class="solution-box">
+            <pre><code class="language-sql">-- En buyuk tablolarinizi bulun
+SELECT
+    relname AS tablo_adi,
+    pg_size_pretty(pg_total_relation_size(relid)) AS toplam_boyut,
+    pg_size_pretty(pg_relation_size(relid)) AS veri_boyutu,
+    n_live_tup AS satir_sayisi
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC
+LIMIT 10;
+
+-- Toplam veritabani boyutunu kontrol edin
+SELECT pg_size_pretty(pg_database_size(current_database())) AS veritabani_boyutu;
+
+-- Olceklendirme adaylari:
+-- 🎯 Milyonlarca satiri olan 1GB uzeri tablolar
+-- 🎯 Surekli buyuyen tablolar (siparisler, loglar gibi)
+-- 🎯 Sorgularin tarihe gore filtreledigi tablolar</code></pre>
+            <p class="mt-2"><strong>💡 Onemli Bilgi:</strong> Milyonlarca satiri ve tarih sutunlari olan tablolar bolumleme icin mukemmel adaylardir!</p>
+          </div>
+        </div>
+
+        <!-- ISINMA: Basit Materialize Gorunum -->
+        <div class="exercise-box" style="border-color: #28a745;">
+          <h4>🌱 Isinma 6.0b: Ilk Materialize Gorunumunuz</h4>
+          <p>Materialize gorunumler onbelleklenmis sorgu sonuclari gibidir. Basit bir tane olusturalim!</p>
+
+          <p><strong>Hedef:</strong> Musteri basina siparis sayisini gosteren bir materialize gorunum olusturun.</p>
+
+          <button class="btn btn-success btn-solution" onclick="toggleSolution('sol6_0b')">Cozumu Goster</button>
+          <div id="sol6_0b" class="solution-box">
+            <pre><code class="language-sql">-- Materialize gorunum olusturun (sonucu fiziksel olarak saklar)
+CREATE MATERIALIZED VIEW mv_musteri_siparis_sayisi AS
+SELECT
+    c.id AS musteri_id,
+    c.name AS musteri_adi,
+    COUNT(o.id) AS siparis_sayisi,
+    SUM(o.total_amount) AS toplam_harcama
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id
+GROUP BY c.id, c.name;
+
+-- Normal bir tablo gibi sorgulayın (ama cok HIZLI!)
+SELECT * FROM mv_musteri_siparis_sayisi
+ORDER BY toplam_harcama DESC
+LIMIT 5;
+
+-- Veriler saklandigi icin her seferinde yeniden hesaplamaz
+-- Ama guncelligini yitirebilir! Gerektiginde yenileyin:
+REFRESH MATERIALIZED VIEW mv_musteri_siparis_sayisi;
+
+-- En son ne zaman yenilendgini kontrol edin (PostgreSQL bunu otomatik izlemez)
+-- Gerekirse kendi izlemenizi uygulamaniz gerekir</code></pre>
+            <p class="mt-2"><strong>⚡ Performans Ipucu:</strong> Gercek zamanli veri gerektirmeyen yavas toplama sorgulari icin materialize gorunumleri kullanin!</p>
+          </div>
+        </div>
 
         <div class="exercise-box">
           <h4>Alistirma 6.1: Tablo Bolumleme</h4>
@@ -1986,6 +2368,21 @@ ORDER BY name;</code></pre>
       <!-- Meydan Okuma Bolumu -->
       <section>
         <h3 id="challenge">Meydan Okuma Alistirmasi: Kapsamli DBA Senaryosu</h3>
+
+        <div class="concept-box mb-4">
+          <strong>🎓 Tebrikler!</strong> Bireysel DBA becerilerini ogrendiniz. Simdi hepsini gercekci bir senaryoda bir araya getirelim.
+          Endiselenmeyin - yukardaki isinma egzersizlerinde pratik yaptiginiz ayni komutlari kullanacaksiniz!
+        </div>
+
+        <div class="hint-box mb-4">
+          <strong>💡 Bu Meydan Okumaya Adim Adim Yaklasin:</strong>
+          <ol class="mb-0">
+            <li>Buyuk resmi anlamak icin once tum senaryoyu okuyun</li>
+            <li>Bir seferde bir gorev uzerinde calisin - her seyi ayni anda yapmaya calismayin</li>
+            <li>Takildiginizda isinma egzersizlerine geri donun</li>
+            <li>Bireysel kisimlar icin cozume bakmak sorun degil!</li>
+          </ol>
+        </div>
 
         <div class="exercise-box">
           <h4>Kapsamli DBA Gorevi</h4>

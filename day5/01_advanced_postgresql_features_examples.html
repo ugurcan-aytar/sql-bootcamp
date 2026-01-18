@@ -369,19 +369,102 @@
             <!-- Part 1: Functions -->
             <section>
                 <h2>Part 1: Functions and Stored Procedures</h2>
-                <p>Create reusable database logic with PL/pgSQL.</p>
+                <p>Create reusable database logic with PL/pgSQL. We'll start simple and build up!</p>
+
+                <div class="hint-box mb-4">
+                    <strong>What is a Function?</strong> Think of it like a recipe - you give it ingredients (parameters), it follows steps, and returns a result. Instead of writing the same SQL over and over, you write it once as a function!
+                </div>
+
+                <!-- WARM-UP EXERCISE -->
+                <div class="exercise-box" style="border-color: #28a745;">
+                    <h4>🌱 Warm-Up 1.0: Your First Function (Hello World!)</h4>
+                    <p>Let's start with the simplest possible function - one that just returns a greeting!</p>
+
+                    <p><strong>Goal:</strong> Create a function that takes a name and returns "Hello, [name]!"</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_0')">Show Solution</button>
+                    <div id="sol1_0" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- Step 1: Create the function</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> say_hello(person_name <span class="dt">TEXT</span>)
+<span class="kw">RETURNS TEXT AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="kw">RETURN</span> <span class="st">'Hello, '</span> || person_name || <span class="st">'!'</span>;
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- Step 2: Try it out!</span>
+<span class="kw">SELECT</span> say_hello(<span class="st">'Student'</span>);
+<span class="co">-- Returns: Hello, Student!</span>
+
+<span class="kw">SELECT</span> say_hello(<span class="st">'SQL Master'</span>);
+<span class="co">-- Returns: Hello, SQL Master!</span></code></pre>
+
+                        <div class="concept-box">
+                            <strong>🎯 What we learned:</strong>
+                            <ul class="mb-0">
+                                <li><code>CREATE FUNCTION</code> - defines a new function</li>
+                                <li><code>RETURNS TEXT</code> - says what type the function gives back</li>
+                                <li><code>BEGIN...END</code> - where the magic happens</li>
+                                <li><code>||</code> - joins text together (concatenation)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WARM-UP 1.0b: Simple Math -->
+                <div class="exercise-box" style="border-color: #28a745;">
+                    <h4>🌱 Warm-Up 1.0b: Simple Math Function</h4>
+                    <p>Now let's make a function that does simple math - calculating a discount!</p>
+
+                    <p><strong>Goal:</strong> Create a function that takes a price and discount percentage, returns the discounted price.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_0b')">Show Solution</button>
+                    <div id="sol1_0b" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- Create a discount calculator</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> apply_discount(
+    original_price <span class="dt">NUMERIC</span>,
+    discount_percent <span class="dt">NUMERIC</span>
+)
+<span class="kw">RETURNS NUMERIC AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="kw">RETURN</span> original_price * (<span class="dv">1</span> - discount_percent / <span class="dv">100</span>);
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- Try it: $100 with 10% discount</span>
+<span class="kw">SELECT</span> apply_discount(<span class="dv">100</span>, <span class="dv">10</span>);
+<span class="co">-- Returns: 90</span>
+
+<span class="co">-- Try it: $50 with 25% discount</span>
+<span class="kw">SELECT</span> apply_discount(<span class="dv">50</span>, <span class="dv">25</span>);
+<span class="co">-- Returns: 37.50</span></code></pre>
+
+                        <div class="concept-box">
+                            <strong>🎯 Now you can:</strong> Accept multiple parameters and do calculations!
+                        </div>
+                    </div>
+                </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 1.1: Basic Scalar Function</h4>
-                    <p>Create a function that calculates the total order value for a customer, including a loyalty
-                        discount based on their customer type.</p>
+                    <h4>Exercise 1.1: Scalar Function with Variables</h4>
+                    <p>Now let's level up! We'll create a function that uses <strong>variables</strong> to store values while it works.</p>
 
-                    <p><strong>Requirements:</strong></p>
+                    <p><strong>The Challenge:</strong> Calculate an order total with a loyalty discount:</p>
                     <ul>
-                        <li>Premium customers get 10% discount</li>
-                        <li>Regular customers get 5% discount</li>
-                        <li>New customers get no discount</li>
+                        <li>VIP customers get 10% discount</li>
+                        <li>Business customers get 5% discount</li>
+                        <li>Individual customers get no discount</li>
                     </ul>
+
+                    <div class="hint-box">
+                        <strong>💡 Step-by-Step Approach:</strong>
+                        <ol>
+                            <li>First, get the order amount from the database</li>
+                            <li>Then, check what type of customer placed the order</li>
+                            <li>Apply the right discount based on customer type</li>
+                            <li>Return the final amount</li>
+                        </ol>
+                    </div>
 
                     <button class="btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
                     <div id="sol1_1" class="solution">
@@ -655,20 +738,93 @@ $$;
             <!-- Part 2: Triggers -->
             <section>
                 <h2>Part 2: Triggers and Event-Based Programming</h2>
-                <p>Automate database operations with triggers.</p>
+                <p>Automate database operations with triggers. Think of triggers as "watchers" that react when something happens!</p>
+
+                <div class="hint-box mb-4">
+                    <strong>🤔 What is a Trigger?</strong> Imagine a doorbell - when someone presses it (INSERT/UPDATE/DELETE), something happens automatically (a function runs). That's what triggers do for your database!
+                </div>
 
                 <div class="flow-diagram">
-                    <span class="flow-box event">Event (INSERT/UPDATE/DELETE)</span>
+                    <span class="flow-box event">🔔 Event (INSERT/UPDATE/DELETE)</span>
                     <span class="flow-arrow">&rarr;</span>
-                    <span class="flow-box trigger">Trigger Function</span>
+                    <span class="flow-box trigger">⚡ Trigger Fires</span>
                     <span class="flow-arrow">&rarr;</span>
-                    <span class="flow-box action">Automated Action</span>
+                    <span class="flow-box action">✅ Action Happens</span>
+                </div>
+
+                <!-- WARM-UP TRIGGER -->
+                <div class="exercise-box" style="border-color: #28a745;">
+                    <h4>🌱 Warm-Up 2.0: Understanding Triggers</h4>
+                    <p>Before we create triggers, let's understand the two parts:</p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="concept-box">
+                                <strong>Part 1: Trigger Function</strong>
+                                <p class="mb-0">A special function that:</p>
+                                <ul class="mb-0">
+                                    <li>Returns <code>TRIGGER</code></li>
+                                    <li>Can access <code>NEW</code> (new data)</li>
+                                    <li>Can access <code>OLD</code> (old data)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="concept-box">
+                                <strong>Part 2: The Trigger Itself</strong>
+                                <p class="mb-0">Connects the function to a table:</p>
+                                <ul class="mb-0">
+                                    <li>BEFORE or AFTER the event</li>
+                                    <li>On INSERT, UPDATE, or DELETE</li>
+                                    <li>FOR EACH ROW affected</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_0')">Show Simple Example</button>
+                    <div id="sol2_0" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- PART 1: Create the trigger function</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> my_first_trigger_function()
+<span class="kw">RETURNS TRIGGER AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="co">-- Just print a message (you'll see this in server logs)</span>
+    <span class="kw">RAISE NOTICE</span> <span class="st">'Something happened to the products table!'</span>;
+    <span class="kw">RETURN</span> NEW;  <span class="co">-- Always return NEW for INSERT/UPDATE</span>
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- PART 2: Create the trigger</span>
+<span class="kw">CREATE TRIGGER</span> my_first_trigger
+<span class="kw">AFTER INSERT ON</span> products      <span class="co">-- When: AFTER inserting</span>
+<span class="kw">FOR EACH ROW</span>                   <span class="co">-- For each row inserted</span>
+<span class="kw">EXECUTE FUNCTION</span> my_first_trigger_function();</code></pre>
+
+                        <div class="hint-box">
+                            <strong>🎯 Key Points:</strong>
+                            <ul class="mb-0">
+                                <li><code>NEW</code> = the new row being inserted/updated</li>
+                                <li><code>OLD</code> = the old row (only for UPDATE/DELETE)</li>
+                                <li>You MUST return NEW (or OLD for DELETE)</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 2.1: Auto-Update Timestamp Trigger</h4>
-                    <p>Create a trigger that automatically updates the <code>updated_at</code> column whenever a product
-                        is modified.</p>
+                    <p>A common use case: automatically set the <code>updated_at</code> column when a product is modified.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Why is this useful?</strong> Instead of remembering to update the timestamp in every UPDATE query, the trigger does it automatically!
+                    </div>
+
+                    <p><strong>Step-by-Step Goal:</strong></p>
+                    <ol>
+                        <li>Create a function that sets <code>NEW.updated_at</code> to current time</li>
+                        <li>Create a BEFORE UPDATE trigger on the products table</li>
+                        <li>Test it by updating a product</li>
+                    </ol>
 
                     <button class="btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
                     <div id="sol2_1" class="solution">
@@ -704,10 +860,93 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Exercise 2.2: Audit Trail Trigger</h4>
-                    <p>Create a comprehensive audit trigger that logs all changes to the orders table.</p>
+                    <h4>Exercise 2.2: Audit Trail Trigger (Step-by-Step)</h4>
+                    <p>Create an audit trigger that logs all changes to the orders table. This is a bit more complex, so we'll break it down!</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
+                    <div class="warning-box">
+                        <strong>⚠️ This is an advanced exercise!</strong> Don't worry if it feels complex - audit triggers are one of the more sophisticated things you can do with triggers.
+                    </div>
+
+                    <p><strong>🎯 What we want to achieve:</strong></p>
+                    <ul>
+                        <li>When an order is INSERT/UPDATE/DELETE'd, log it</li>
+                        <li>Store the old and new data as JSON</li>
+                        <li>Track who made the change and when</li>
+                    </ul>
+
+                    <div class="hint-box">
+                        <strong>💡 Breaking it down into 3 parts:</strong>
+                        <ol>
+                            <li><strong>Part A:</strong> Create the audit log table (where we store history)</li>
+                            <li><strong>Part B:</strong> Create the trigger function (what to log)</li>
+                            <li><strong>Part C:</strong> Create the trigger (connect it all)</li>
+                        </ol>
+                    </div>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2a')">Show Part A: Create Table</button>
+                    <div id="sol2_2a" class="solution mb-3">
+                        <pre><code class="sourceCode sql"><span class="co">-- Part A: Create a table to store the audit history</span>
+<span class="kw">CREATE TABLE</span> orders_audit (
+    audit_id <span class="dt">SERIAL PRIMARY KEY</span>,        <span class="co">-- Unique ID for each log entry</span>
+    order_id <span class="dt">INTEGER NOT NULL</span>,           <span class="co">-- Which order was changed</span>
+    operation <span class="dt">VARCHAR</span>(<span class="dv">10</span>) <span class="kw">NOT NULL</span>,    <span class="co">-- INSERT, UPDATE, or DELETE</span>
+    changed_by <span class="dt">TEXT DEFAULT</span> current_user, <span class="co">-- Who did it</span>
+    changed_at <span class="dt">TIMESTAMP DEFAULT</span> <span class="fu">NOW</span>(),  <span class="co">-- When</span>
+    old_data <span class="dt">JSONB</span>,                      <span class="co">-- Data before change</span>
+    new_data <span class="dt">JSONB</span>                       <span class="co">-- Data after change</span>
+);
+
+<span class="co">-- ✅ Now you have a place to store your audit logs!</span></code></pre>
+                    </div>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2b')">Show Part B: Simple Version</button>
+                    <div id="sol2_2b" class="solution mb-3">
+                        <pre><code class="sourceCode sql"><span class="co">-- Part B: Simple audit function (beginner-friendly version)</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> audit_orders_simple()
+<span class="kw">RETURNS TRIGGER AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="co">-- For INSERT: log the new data</span>
+    <span class="kw">IF</span> TG_OP = <span class="st">'INSERT'</span> <span class="kw">THEN</span>
+        <span class="kw">INSERT INTO</span> orders_audit (order_id, operation, new_data)
+        <span class="kw">VALUES</span> (NEW.id, <span class="st">'INSERT'</span>, to_jsonb(NEW));
+        <span class="kw">RETURN</span> NEW;
+    <span class="kw">END IF</span>;
+
+    <span class="co">-- For UPDATE: log both old and new</span>
+    <span class="kw">IF</span> TG_OP = <span class="st">'UPDATE'</span> <span class="kw">THEN</span>
+        <span class="kw">INSERT INTO</span> orders_audit (order_id, operation, old_data, new_data)
+        <span class="kw">VALUES</span> (NEW.id, <span class="st">'UPDATE'</span>, to_jsonb(OLD), to_jsonb(NEW));
+        <span class="kw">RETURN</span> NEW;
+    <span class="kw">END IF</span>;
+
+    <span class="co">-- For DELETE: log the old data</span>
+    <span class="kw">IF</span> TG_OP = <span class="st">'DELETE'</span> <span class="kw">THEN</span>
+        <span class="kw">INSERT INTO</span> orders_audit (order_id, operation, old_data)
+        <span class="kw">VALUES</span> (OLD.id, <span class="st">'DELETE'</span>, to_jsonb(OLD));
+        <span class="kw">RETURN</span> OLD;
+    <span class="kw">END IF</span>;
+
+    <span class="kw">RETURN NULL</span>;
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- Part C: Create the trigger</span>
+<span class="kw">CREATE TRIGGER</span> orders_audit_trigger
+<span class="kw">AFTER INSERT OR UPDATE OR DELETE ON</span> orders
+<span class="kw">FOR EACH ROW</span>
+<span class="kw">EXECUTE FUNCTION</span> audit_orders_simple();</code></pre>
+
+                        <div class="concept-box">
+                            <strong>🎯 What we learned:</strong>
+                            <ul class="mb-0">
+                                <li><code>TG_OP</code> tells us what operation triggered the function</li>
+                                <li><code>to_jsonb()</code> converts a row to JSON format</li>
+                                <li>Return NEW for INSERT/UPDATE, OLD for DELETE</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Full Advanced Version</button>
                     <div id="sol2_2" class="solution">
                         <pre><code class="sourceCode sql"><span class="co">-- Create audit log table</span>
 <span class="kw">CREATE TABLE</span> orders_audit (

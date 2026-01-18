@@ -370,18 +370,102 @@
             <!-- Part 1: Functions -->
             <section>
                 <h2>Bolum 1: Fonksiyonlar ve Sakli Yordamlar</h2>
-                <p>PL/pgSQL ile yeniden kullanilabilir veritabani mantigi olusturun.</p>
+                <p>PL/pgSQL ile yeniden kullanilabilir veritabani mantigi olusturun. Basit baslayin, adim adim ilerleyin!</p>
+
+                <div class="hint-box mb-4">
+                    <strong>Fonksiyon Nedir?</strong> Tarif gibi dusunun - malzeme verirsiniz (parametreler), adimlar izlenir ve sonuc alinir. Ayni SQL'i tekrar tekrar yazmak yerine, bir kere fonksiyon olarak yazarsiniz!
+                </div>
+
+                <!-- ISINMA ALISTIRMASI -->
+                <div class="exercise-box" style="border-color: #28a745;">
+                    <h4>🌱 Isinma 1.0: Ilk Fonksiyonunuz (Merhaba Dunya!)</h4>
+                    <p>En basit fonksiyonla baslayalim - sadece selamlama donduren bir fonksiyon!</p>
+
+                    <p><strong>Hedef:</strong> Isim alip "Merhaba, [isim]!" donduren bir fonksiyon olusturun.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_0')">Cozumu Goster</button>
+                    <div id="sol1_0" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- Adim 1: Fonksiyonu olustur</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> merhaba_de(kisi_adi <span class="dt">TEXT</span>)
+<span class="kw">RETURNS TEXT AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="kw">RETURN</span> <span class="st">'Merhaba, '</span> || kisi_adi || <span class="st">'!'</span>;
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- Adim 2: Deneyin!</span>
+<span class="kw">SELECT</span> merhaba_de(<span class="st">'Ogrenci'</span>);
+<span class="co">-- Sonuc: Merhaba, Ogrenci!</span>
+
+<span class="kw">SELECT</span> merhaba_de(<span class="st">'SQL Ustasi'</span>);
+<span class="co">-- Sonuc: Merhaba, SQL Ustasi!</span></code></pre>
+
+                        <div class="concept-box">
+                            <strong>🎯 Ogrendiklerimiz:</strong>
+                            <ul class="mb-0">
+                                <li><code>CREATE FUNCTION</code> - yeni fonksiyon tanimlar</li>
+                                <li><code>RETURNS TEXT</code> - fonksiyonun ne tip deger dondurecegini belirtir</li>
+                                <li><code>BEGIN...END</span> - isi yapilacak kisim</li>
+                                <li><code>||</code> - metinleri birlestirir (concatenation)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ISINMA 1.0b: Basit Matematik -->
+                <div class="exercise-box" style="border-color: #28a745;">
+                    <h4>🌱 Isinma 1.0b: Basit Matematik Fonksiyonu</h4>
+                    <p>Simdi basit matematik yapan bir fonksiyon yapalim - indirim hesaplama!</p>
+
+                    <p><strong>Hedef:</strong> Fiyat ve indirim yuzdesi alip, indirimli fiyati donduren fonksiyon olusturun.</p>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol1_0b')">Cozumu Goster</button>
+                    <div id="sol1_0b" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- Indirim hesaplayici olustur</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> indirim_uygula(
+    orijinal_fiyat <span class="dt">NUMERIC</span>,
+    indirim_yuzdesi <span class="dt">NUMERIC</span>
+)
+<span class="kw">RETURNS NUMERIC AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="kw">RETURN</span> orijinal_fiyat * (<span class="dv">1</span> - indirim_yuzdesi / <span class="dv">100</span>);
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- Deneyin: 100 TL, %10 indirim</span>
+<span class="kw">SELECT</span> indirim_uygula(<span class="dv">100</span>, <span class="dv">10</span>);
+<span class="co">-- Sonuc: 90</span>
+
+<span class="co">-- Deneyin: 50 TL, %25 indirim</span>
+<span class="kw">SELECT</span> indirim_uygula(<span class="dv">50</span>, <span class="dv">25</span>);
+<span class="co">-- Sonuc: 37.50</span></code></pre>
+
+                        <div class="concept-box">
+                            <strong>🎯 Artik yapabilirsiniz:</strong> Birden fazla parametre kabul etme ve hesaplama!
+                        </div>
+                    </div>
+                </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.1: Temel Skaler Fonksiyon</h4>
-                    <p>Bir musteri icin toplam siparis degerini hesaplayan ve musteri tipine gore sadakat indirimi uygulayan bir fonksiyon olusturun.</p>
+                    <h4>Alistirma 1.1: Degiskenli Skaler Fonksiyon</h4>
+                    <p>Simdi seviye atlayalim! Calisirken degerleri saklamak icin <strong>degiskenler</strong> kullanan bir fonksiyon olusturacagiz.</p>
 
-                    <p><strong>Gereksinimler:</strong></p>
+                    <p><strong>Zorluk:</strong> Sadakat indirimi ile siparis toplami hesaplayin:</p>
                     <ul>
-                        <li>Premium musteriler %10 indirim alir</li>
-                        <li>Normal musteriler %5 indirim alir</li>
-                        <li>Yeni musteriler indirim almaz</li>
+                        <li>VIP musteriler %10 indirim alir</li>
+                        <li>Kurumsal musteriler %5 indirim alir</li>
+                        <li>Bireysel musteriler indirim almaz</li>
                     </ul>
+
+                    <div class="hint-box">
+                        <strong>💡 Adim Adim Yaklasim:</strong>
+                        <ol>
+                            <li>Once veritabanindan siparis tutarini alin</li>
+                            <li>Sonra siparisi veren musterinin tipini kontrol edin</li>
+                            <li>Musteri tipine gore dogru indirimi uygulayin</li>
+                            <li>Son tutari dondur</li>
+                        </ol>
+                    </div>
 
                     <button class="btn-solution" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
                     <div id="sol1_1" class="solution">
@@ -652,19 +736,93 @@ $$;
             <!-- Part 2: Triggers -->
             <section>
                 <h2>Bolum 2: Tetikleyiciler ve Olay Tabanli Programlama</h2>
-                <p>Tetikleyiciler ile veritabani islemlerini otomatiklestirin.</p>
+                <p>Tetikleyiciler ile veritabani islemlerini otomatiklestirin. Tetikleyicileri bir sey oldugunda tepki veren "gozlemciler" gibi dusunun!</p>
+
+                <div class="hint-box mb-4">
+                    <strong>🤔 Tetikleyici Nedir?</strong> Kapi zilini dusunun - birisi bastiginda (INSERT/UPDATE/DELETE), otomatik olarak bir sey olur (fonksiyon calisir). Tetikleyiciler veritabaniniz icin ayni isi yapar!
+                </div>
 
                 <div class="flow-diagram">
-                    <span class="flow-box event">Olay (INSERT/UPDATE/DELETE)</span>
+                    <span class="flow-box event">🔔 Olay (INSERT/UPDATE/DELETE)</span>
                     <span class="flow-arrow">&rarr;</span>
-                    <span class="flow-box trigger">Tetikleyici Fonksiyonu</span>
+                    <span class="flow-box trigger">⚡ Tetikleyici Atesler</span>
                     <span class="flow-arrow">&rarr;</span>
-                    <span class="flow-box action">Otomatik Eylem</span>
+                    <span class="flow-box action">✅ Eylem Gerceklesir</span>
+                </div>
+
+                <!-- ISINMA TETIKLEYICI -->
+                <div class="exercise-box" style="border-color: #28a745;">
+                    <h4>🌱 Isinma 2.0: Tetikleyicileri Anlama</h4>
+                    <p>Tetikleyiciler olusturmadan once, iki parcayi anlayalim:</p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="concept-box">
+                                <strong>Parca 1: Tetikleyici Fonksiyonu</strong>
+                                <p class="mb-0">Ozel bir fonksiyon:</p>
+                                <ul class="mb-0">
+                                    <li><code>TRIGGER</code> dondurur</li>
+                                    <li><code>NEW</code> (yeni veri) erisebilir</li>
+                                    <li><code>OLD</code> (eski veri) erisebilir</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="concept-box">
+                                <strong>Parca 2: Tetikleyicinin Kendisi</strong>
+                                <p class="mb-0">Fonksiyonu tabloya baglar:</p>
+                                <ul class="mb-0">
+                                    <li>BEFORE veya AFTER olay</li>
+                                    <li>INSERT, UPDATE veya DELETE'te</li>
+                                    <li>FOR EACH ROW etkilenen</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-solution" onclick="toggleSolution('sol2_0')">Basit Ornek Goster</button>
+                    <div id="sol2_0" class="solution">
+                        <pre><code class="sourceCode sql"><span class="co">-- PARCA 1: Tetikleyici fonksiyonu olustur</span>
+<span class="kw">CREATE OR REPLACE FUNCTION</span> ilk_tetikleyici_fonksiyonum()
+<span class="kw">RETURNS TRIGGER AS</span> $$
+<span class="kw">BEGIN</span>
+    <span class="co">-- Sadece mesaj yazdir (sunucu loglarinda goreceksiniz)</span>
+    <span class="kw">RAISE NOTICE</span> <span class="st">'Urunler tablosunda bir sey oldu!'</span>;
+    <span class="kw">RETURN</span> NEW;  <span class="co">-- INSERT/UPDATE icin her zaman NEW dondur</span>
+<span class="kw">END</span>;
+$$ <span class="kw">LANGUAGE</span> plpgsql;
+
+<span class="co">-- PARCA 2: Tetikleyiciyi olustur</span>
+<span class="kw">CREATE TRIGGER</span> ilk_tetikleyicim
+<span class="kw">AFTER INSERT ON</span> products      <span class="co">-- Ne zaman: INSERT sonrasi</span>
+<span class="kw">FOR EACH ROW</span>                   <span class="co">-- Eklenen her satir icin</span>
+<span class="kw">EXECUTE FUNCTION</span> ilk_tetikleyici_fonksiyonum();</code></pre>
+
+                        <div class="hint-box">
+                            <strong>🎯 Onemli Noktalar:</strong>
+                            <ul class="mb-0">
+                                <li><code>NEW</code> = eklenen/guncellenen yeni satir</li>
+                                <li><code>OLD</code> = eski satir (sadece UPDATE/DELETE icin)</li>
+                                <li>NEW (DELETE icin OLD) dondurmelisiniz</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.1: Otomatik Zaman Damgasi Guncelleme Tetikleyicisi</h4>
-                    <p>Bir urun degistirildiginde otomatik olarak <code>updated_at</code> sutununu guncelleyen bir tetikleyici olusturun.</p>
+                    <p>Yaygin kullanim: Bir urun degistirildiginde otomatik olarak <code>updated_at</code> sutununu ayarlayin.</p>
+
+                    <div class="hint-box">
+                        <strong>💡 Neden faydali?</strong> Her UPDATE sorgusunda zaman damgasini guncellemeyi hatirlamak yerine, tetikleyici otomatik yapar!
+                    </div>
+
+                    <p><strong>Adim Adim Hedef:</strong></p>
+                    <ol>
+                        <li><code>NEW.updated_at</code>'i mevcut zamana ayarlayan fonksiyon olusturun</li>
+                        <li>Urunler tablosuna BEFORE UPDATE tetikleyicisi olusturun</li>
+                        <li>Bir urunu guncelleyerek test edin</li>
+                    </ol>
 
                     <button class="btn-solution" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
                     <div id="sol2_1" class="solution">

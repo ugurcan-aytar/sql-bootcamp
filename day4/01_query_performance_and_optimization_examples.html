@@ -1064,14 +1064,23 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
             <!-- Part 4: Challenge Exercises -->
             <section>
-                <h2>Part 4: Challenge Exercises</h2>
-                <p>Complex scenarios combining multiple optimization techniques.</p>
+                <h2>Part 4: Challenge Exercises (Step-by-Step)</h2>
+                <p>Work through these real-world scenarios with guided questions. Take your time!</p>
+
+                <div class="hint-box">
+                    <strong>How to approach these challenges:</strong>
+                    <ul class="mb-0">
+                        <li>Read each step carefully before moving to the next</li>
+                        <li>Try to answer each question before clicking "Show Answer"</li>
+                        <li>Don't worry if you don't get everything right - learning is the goal!</li>
+                    </ul>
+                </div>
 
                 <div class="exercise-box">
-                    <h4>Challenge 4.1: Optimize a Reporting Query</h4>
-                    <p>This monthly sales report runs for 45 seconds. Optimize it:</p>
+                    <h4>Challenge 4.1: Optimize a Reporting Query (Guided)</h4>
+                    <p>A monthly sales report is running slow (45 seconds). Let's optimize it step by step!</p>
 
-                    <pre><code class="sourceCode sql"><span class="co">-- Current slow query</span>
+                    <pre><code class="sourceCode sql"><span class="co">-- The slow query we need to optimize</span>
 <span class="kw">SELECT</span>
     c.name <span class="kw">AS</span> category,
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
@@ -1086,13 +1095,67 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
 <span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
 
-                    <p><strong>Task:</strong> Identify optimizations (indexes, query rewrites) to reduce execution
-                        time.</p>
+                    <h5>Step 1: Identify the Tables</h5>
+                    <p><strong>Question:</strong> How many tables are joined in this query? List them.</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step1')">Show Answer</button>
+                    <div id="sol4_1_step1" class="solution-content">
+                        <p><strong>4 tables are joined:</strong></p>
+                        <ol>
+                            <li><code>orders</code> (aliased as <code>o</code>)</li>
+                            <li><code>order_lines</code> (aliased as <code>ol</code>)</li>
+                            <li><code>products</code> (aliased as <code>p</code>)</li>
+                            <li><code>categories</code> (aliased as <code>c</code>)</li>
+                        </ol>
+                    </div>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol4_1')">Show Solution</button>
+                    <h5>Step 2: Find the WHERE Filters</h5>
+                    <p><strong>Question:</strong> What columns are being filtered in the WHERE clause?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step2')">Show Answer</button>
+                    <div id="sol4_1_step2" class="solution-content">
+                        <p><strong>Two columns are filtered:</strong></p>
+                        <ol>
+                            <li><code>o.order_date >= '2024-01-01'</code> - Date filter</li>
+                            <li><code>o.status IN ('delivered', 'shipped')</code> - Status filter</li>
+                        </ol>
+                        <p>Both filters are on the <code>orders</code> table!</p>
+                    </div>
+
+                    <h5>Step 3: Design an Index for the Filters</h5>
+                    <p><strong>Question:</strong> What index would help the WHERE clause? (Hint: put equality columns first, range columns second)</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step3')">Show Answer</button>
+                    <div id="sol4_1_step3" class="solution-content">
+                        <p><strong>A composite index on orders:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
+<span class="kw">ON</span> sales.orders (order_date, status);</code></pre>
+                        <p>Or even better, a partial index for just the statuses we need:</p>
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
+<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);</code></pre>
+                    </div>
+
+                    <h5>Step 4: Design Indexes for the JOINs</h5>
+                    <p><strong>Question:</strong> What columns are used in JOIN conditions? What indexes would help?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1_step4')">Show Answer</button>
+                    <div id="sol4_1_step4" class="solution-content">
+                        <p><strong>JOIN columns and indexes:</strong></p>
+                        <table class="table table-bordered">
+                            <tr><th>JOIN</th><th>Column</th><th>Index Needed</th></tr>
+                            <tr><td>orders → order_lines</td><td>o.id = ol.order_id</td><td>Index on order_lines(order_id)</td></tr>
+                            <tr><td>order_lines → products</td><td>ol.product_id = p.id</td><td>Primary key on products(id) already exists</td></tr>
+                            <tr><td>products → categories</td><td>p.category_id = c.id</td><td>Primary key on categories(id) already exists</td></tr>
+                        </table>
+                        <pre><code class="sourceCode sql"><span class="co">-- Index for order_lines join</span>
+<span class="kw">CREATE INDEX</span> idx_order_lines_order_id
+<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">INCLUDE</span> (product_id, line_total);</code></pre>
+                    </div>
+
+                    <h5>Step 5: Complete Solution</h5>
+                    <p><strong>Now let's see the full optimization with all indexes and optional improvements:</strong></p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1')">Show Complete Solution</button>
                     <div id="sol4_1" class="solution-content">
-                        <p><strong>Step 1: Create Supporting Indexes</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Index for orders filtering and joining</span>
+                        <p><strong>All recommended indexes:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Index for orders filtering</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date_status
 <span class="kw">ON</span> sales.orders (order_date, status)
 <span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);
@@ -1107,28 +1170,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">ON</span> sales.products (id)
 <span class="kw">INCLUDE</span> (category_id);</code></pre>
 
-                        <p><strong>Step 2: Query Optimization</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Optimized query using CTE for better plan</span>
-<span class="kw">WITH</span> filtered_orders <span class="kw">AS</span> (
-    <span class="kw">SELECT</span> id, order_date
-    <span class="kw">FROM</span> sales.orders
-    <span class="kw">WHERE</span> order_date >= <span class="st">'2024-01-01'</span>
-      <span class="kw">AND</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
-)
-<span class="kw">SELECT</span>
-    c.name <span class="kw">AS</span> category,
-    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date) <span class="kw">AS</span> month,
-    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> fo.id) <span class="kw">AS</span> order_count,
-    <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> filtered_orders fo
-<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> fo.id = ol.order_id
-<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
-<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
-<span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date)
-<span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
-
-                        <p><strong>Step 3: Consider Materialized View for Frequent Reports</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- If this report runs frequently, pre-compute it</span>
+                        <p><strong>Bonus: For reports that run frequently, use a Materialized View:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Pre-compute the report data</span>
 <span class="kw">CREATE MATERIALIZED VIEW</span> mv_monthly_sales <span class="kw">AS</span>
 <span class="kw">SELECT</span>
     c.name <span class="kw">AS</span> category,
@@ -1142,180 +1185,196 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
 
-<span class="co">-- Refresh daily</span>
+<span class="co">-- Refresh when needed</span>
 <span class="kw">REFRESH MATERIALIZED VIEW</span> mv_monthly_sales;</code></pre>
 
                         <div class="concept-box">
-                            <strong>Expected Improvement:</strong> 45 seconds → 2-5 seconds with indexes, or
-                            sub-second with materialized view.
+                            <strong>Expected Improvement:</strong> 45 seconds → 2-5 seconds with indexes, or sub-second with materialized view.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Challenge 4.2: Pagination Performance</h4>
-                    <p>This pagination query gets slower as users go to later pages:</p>
+                    <h4>Challenge 4.2: Pagination Performance (Guided)</h4>
+                    <p>Users complain that browsing to later pages is very slow. Let's understand why!</p>
 
-                    <pre><code class="sourceCode sql"><span class="co">-- Slow for large offsets (e.g., page 1000)</span>
-<span class="kw">SELECT</span> order_id, order_date, total_amount
-<span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+                    <pre><code class="sourceCode sql"><span class="co">-- Page 1: Fast! (0-20)</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
 <span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
-<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">19980</span>;  <span class="co">-- Page 1000 × 20 per page</span></code></pre>
+<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">0</span>;
 
-                    <p><strong>Task:</strong> Implement keyset (cursor-based) pagination as an alternative.</p>
+<span class="co">-- Page 1000: Very Slow! (19980-20000)</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
+<span class="kw">FROM</span> orders <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span> <span class="kw">OFFSET</span> <span class="dv">19980</span>;</code></pre>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol4_2')">Show Solution</button>
-                    <div id="sol4_2" class="solution-content">
-                        <p><strong>Problem with OFFSET:</strong></p>
+                    <h5>Step 1: Why is OFFSET Slow?</h5>
+                    <p><strong>Question:</strong> If we ask for OFFSET 19980, how many rows does the database have to scan?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2_step1')">Show Answer</button>
+                    <div id="sol4_2_step1" class="solution-content">
+                        <p><strong>The database must scan 20,000 rows!</strong></p>
                         <ul>
-                            <li>Database must scan and discard 19,980 rows before returning 20</li>
-                            <li>Performance degrades linearly with page number</li>
+                            <li>It finds all matching rows</li>
+                            <li>Sorts them by order_date DESC</li>
+                            <li>Skips the first 19,980 rows</li>
+                            <li>Returns only 20 rows</li>
                         </ul>
+                        <p>All that work just to throw away 19,980 rows!</p>
+                    </div>
 
-                        <p><strong>Solution: Keyset Pagination</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- First page</span>
-<span class="kw">SELECT</span> order_id, order_date, total_amount
+                    <h5>Step 2: A Better Approach</h5>
+                    <p><strong>Question:</strong> Instead of using OFFSET, what if we remembered where we left off? If the last order on page 999 had <code>order_date='2024-03-15'</code>, how could we get page 1000?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2_step2')">Show Answer</button>
+                    <div id="sol4_2_step2" class="solution-content">
+                        <p><strong>Use the last row as a "cursor":</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Instead of OFFSET, use WHERE to skip</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
-<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>
+  <span class="kw">AND</span> order_date < <span class="st">'2024-03-15'</span>  <span class="co">-- Continue from where we left off</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="dv">20</span>;</code></pre>
+                        <p>This only scans ~20 rows regardless of which page we're on!</p>
+                    </div>
+
+                    <h5>Step 3: Complete Solution</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2')">Show Complete Solution</button>
+                    <div id="sol4_2" class="solution-content">
+                        <p><strong>Keyset (Cursor-Based) Pagination:</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- First page (no cursor yet)</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, id <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">20</span>;
 
-<span class="co">-- Subsequent pages: use the last row's values as cursor</span>
-<span class="co">-- If last row was: order_date='2024-03-15', order_id=98765</span>
-<span class="kw">SELECT</span> order_id, order_date, total_amount
+<span class="co">-- Next page: use the last row's values</span>
+<span class="co">-- If last row was: order_date='2024-03-15', id=98765</span>
+<span class="kw">SELECT</span> id, order_date, total_amount
 <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> customer_id = <span class="dv">12345</span>
-  <span class="kw">AND</span> (order_date, order_id) < (<span class="st">'2024-03-15'</span>, <span class="dv">98765</span>)
-<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>
+  <span class="kw">AND</span> (order_date, id) < (<span class="st">'2024-03-15'</span>, <span class="dv">98765</span>)
+<span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>, id <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">20</span>;</code></pre>
 
                         <p><strong>Supporting Index:</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer_date_id
-<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, order_id <span class="kw">DESC</span>);</code></pre>
+<span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, id <span class="kw">DESC</span>);</code></pre>
 
                         <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Metric</th>
-                                    <th>OFFSET (Page 1000)</th>
-                                    <th>Keyset</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Method</th><th>Rows Scanned (Page 1000)</th><th>Speed</th></tr></thead>
                             <tbody>
-                                <tr>
-                                    <td>Rows scanned</td>
-                                    <td>~20,000</td>
-                                    <td>~20</td>
-                                </tr>
-                                <tr>
-                                    <td>Execution time</td>
-                                    <td>~500ms</td>
-                                    <td>~1ms</td>
-                                </tr>
-                                <tr>
-                                    <td>Consistency</td>
-                                    <td>Can miss/duplicate if data changes</td>
-                                    <td>Stable cursor position</td>
-                                </tr>
+                                <tr><td>OFFSET</td><td>~20,000</td><td>Slow (~500ms)</td></tr>
+                                <tr><td>Keyset</td><td>~20</td><td>Fast (~1ms)</td></tr>
                             </tbody>
                         </table>
 
                         <div class="warning-box">
-                            <strong>Trade-off:</strong> Keyset pagination doesn't support "jump to page N" directly.
-                            It's best for infinite scroll or "load more" patterns.
+                            <strong>Note:</strong> Keyset pagination works great for "Load More" buttons and infinite scroll. It doesn't easily support "Jump to Page 500" - for that, OFFSET is still needed.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Challenge 4.3: Query Plan Analysis</h4>
-                    <p>Analyze this EXPLAIN ANALYZE output and identify all issues:</p>
+                    <h4>Challenge 4.3: Reading EXPLAIN Output (Guided)</h4>
+                    <p>Let's learn to read this EXPLAIN output step by step. Don't panic - we'll break it down!</p>
 
                     <div class="plan-output plan-bad">
-<pre>EXPLAIN ANALYZE
-SELECT c.email, COUNT(o.order_id) as order_count, SUM(o.total_amount) as total_spent
-FROM customers c
-LEFT JOIN orders o ON c.customer_id = o.customer_id
-WHERE LOWER(c.email) LIKE '%gmail.com'
-  AND o.order_date >= '2024-01-01'
-GROUP BY c.email
-HAVING SUM(o.total_amount) > 1000;
-
-HashAggregate  (cost=125678.00..125789.00 rows=1000 width=48) (actual time=8234.567..8236.789 rows=156 loops=1)
+<pre>HashAggregate  (rows=1000) (actual rows=156)
   Group Key: c.email
   Filter: (sum(o.total_amount) > 1000)
   Rows Removed by Filter: 12456
-  ->  Hash Join  (cost=15234.00..98765.00 rows=250000 width=48) (actual time=1234.567..7890.123 rows=456789 loops=1)
+  ->  Hash Join  (actual rows=456789)
         Hash Cond: (o.customer_id = c.customer_id)
-        ->  Seq Scan on orders o  (cost=0.00..45123.00 rows=500000 width=20) (actual time=0.012..2345.678 rows=485632 loops=1)
+        ->  Seq Scan on orders o  (actual rows=485632)
               Filter: (order_date >= '2024-01-01')
               Rows Removed by Filter: 1514368
-        ->  Hash  (cost=12456.00..12456.00 rows=50000 width=36) (actual time=1234.123..1234.123 rows=48765 loops=1)
-              ->  Seq Scan on customers c  (cost=0.00..12456.00 rows=50000 width=36) (actual time=0.023..1123.456 rows=48765 loops=1)
-                    Filter: (lower((email)::text) ~~ '%gmail.com'::text)
+        ->  Hash
+              ->  Seq Scan on customers c  (actual rows=48765)
+                    Filter: (lower(email) LIKE '%gmail.com')
                     Rows Removed by Filter: 451235
 
-Planning Time: 0.456 ms
-Execution Time: 8237.890 ms</pre>
+Execution Time: 8237.890 ms  <span class="co">-- That's 8+ seconds!</span></pre>
                     </div>
 
-                    <p><strong>Task:</strong> List all performance issues and provide solutions.</p>
-
-                    <button class="solution-toggle" onclick="toggleSolution('sol4_3')">Show Solution</button>
-                    <div id="sol4_3" class="solution-content">
-                        <p><strong>Issues Identified:</strong></p>
-
+                    <h5>Step 1: Find the Seq Scans</h5>
+                    <p><strong>Question:</strong> A "Seq Scan" (Sequential Scan) means reading the entire table. How many Seq Scans do you see? On which tables?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3_step1')">Show Answer</button>
+                    <div id="sol4_3_step1" class="solution-content">
+                        <p><strong>Two Seq Scans:</strong></p>
                         <ol>
-                            <li>
-                                <strong>Leading wildcard LIKE on email</strong>
-                                <br><code>LOWER(c.email) LIKE '%gmail.com'</code>
-                                <br>Cannot use index due to leading % and function
-                                <br><em>Solution:</em> If searching for domain, restructure data or use full-text
-                                search
-                                <pre><code class="sourceCode sql"><span class="co">-- Add domain column or use pg_trgm</span>
-<span class="kw">CREATE EXTENSION</span> pg_trgm;
-<span class="kw">CREATE INDEX</span> idx_customers_email_trgm
-<span class="kw">ON</span> customers <span class="kw">USING</span> gin (email gin_trgm_ops);</code></pre>
-                            </li>
-
-                            <li>
-                                <strong>Sequential scan on orders</strong>
-                                <br>Scanning 2M rows, filtering to 485K
-                                <br><em>Solution:</em> Index on order_date
-                                <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
-                            </li>
-
-                            <li>
-                                <strong>Missing index for join</strong>
-                                <br>Hash join is reasonable but index could help
-                                <br><em>Solution:</em> Index on customer_id
-                                <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_customer <span class="kw">ON</span> orders (customer_id);</code></pre>
-                            </li>
-
-                            <li>
-                                <strong>Late filtering with HAVING</strong>
-                                <br>Processes 456K rows, groups to 12K, then filters to 156
-                                <br><em>Solution:</em> No direct fix, but pre-aggregating high-value customers could
-                                help
-                            </li>
-
-                            <li>
-                                <strong>LEFT JOIN with WHERE on right table</strong>
-                                <br><code>LEFT JOIN ... WHERE o.order_date >= ...</code> converts to INNER JOIN
-                                <br><em>Solution:</em> Be explicit - use INNER JOIN or move filter to ON clause
-                            </li>
+                            <li><code>Seq Scan on orders</code> - Reading all order rows</li>
+                            <li><code>Seq Scan on customers</code> - Reading all customer rows</li>
                         </ol>
+                        <p>Seq Scans on large tables are usually a performance problem!</p>
+                    </div>
 
-                        <p><strong>Optimized Query:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- After creating necessary indexes</span>
-<span class="kw">SELECT</span> c.email, <span class="fu">COUNT</span>(o.order_id), <span class="fu">SUM</span>(o.total_amount)
-<span class="kw">FROM</span> customers c
-<span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
-<span class="kw">WHERE</span> c.email <span class="kw">LIKE</span> <span class="st">'%@gmail.com'</span>  <span class="co">-- or use trigram index</span>
-  <span class="kw">AND</span> o.order_date >= <span class="st">'2024-01-01'</span>
-<span class="kw">GROUP BY</span> c.email
-<span class="kw">HAVING</span> <span class="fu">SUM</span>(o.total_amount) > <span class="dv">1000</span>;</code></pre>
+                    <h5>Step 2: Look at the Filters</h5>
+                    <p><strong>Question:</strong> For each Seq Scan, what filter is being applied? How many rows were removed?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3_step2')">Show Answer</button>
+                    <div id="sol4_3_step2" class="solution-content">
+                        <p><strong>Orders table:</strong></p>
+                        <ul>
+                            <li>Filter: <code>order_date >= '2024-01-01'</code></li>
+                            <li>Rows removed: 1,514,368 (kept 485,632)</li>
+                            <li><strong>Problem:</strong> No index on order_date!</li>
+                        </ul>
+                        <p><strong>Customers table:</strong></p>
+                        <ul>
+                            <li>Filter: <code>lower(email) LIKE '%gmail.com'</code></li>
+                            <li>Rows removed: 451,235 (kept 48,765)</li>
+                            <li><strong>Problem:</strong> Leading % and LOWER() prevent index use!</li>
+                        </ul>
+                    </div>
+
+                    <h5>Step 3: Suggest Fixes</h5>
+                    <p><strong>Question:</strong> What index would help the orders table?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3_step3')">Show Answer</button>
+                    <div id="sol4_3_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Index for the date filter</span>
+<span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
+                    </div>
+
+                    <h5>Step 4: Complete Analysis</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3')">Show All Issues & Solutions</button>
+                    <div id="sol4_3" class="solution-content">
+                        <p><strong>All Issues Found:</strong></p>
+                        <table class="table table-bordered">
+                            <thead><tr><th>#</th><th>Issue</th><th>Solution</th></tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Seq Scan on orders (1.5M rows scanned)</td>
+                                    <td><code>CREATE INDEX idx_orders_date ON orders (order_date);</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Seq Scan on customers (500K rows scanned)</td>
+                                    <td>The <code>LIKE '%gmail.com'</code> with leading % is hard to index. Consider using <code>pg_trgm</code> extension or storing email domain separately.</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>No index for JOIN (customer_id)</td>
+                                    <td><code>CREATE INDEX idx_orders_customer ON orders (customer_id);</code></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>HAVING filters late (12,456 rows removed after aggregation)</td>
+                                    <td>This is normal for HAVING - it runs after GROUP BY</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="concept-box">
+                            <strong>Key Takeaway:</strong> When reading EXPLAIN output, look for:
+                            <ul class="mb-0">
+                                <li>"Seq Scan" on large tables = probably needs an index</li>
+                                <li>"Rows Removed by Filter" = how selective is the filter?</li>
+                                <li>Large differences between estimated and actual rows = stale statistics</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>
