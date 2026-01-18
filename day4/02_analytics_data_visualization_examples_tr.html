@@ -53,7 +53,7 @@
             margin-bottom: 15px;
         }
 
-        .solution {
+        .solution-content {
             background-color: #e7f3ff;
             border: 1px solid #b6d4fe;
             border-radius: 8px;
@@ -62,12 +62,12 @@
             display: none;
         }
 
-        .solution.show {
+        .solution-content.show {
             display: block;
         }
 
-        .btn-solution {
-            background-color: #0d6efd;
+        .solution-toggle {
+            background-color: #28a745;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -76,8 +76,8 @@
             margin-top: 10px;
         }
 
-        .btn-solution:hover {
-            background-color: #0b5ed7;
+        .solution-toggle:hover {
+            background-color: #218838;
         }
 
         .hint-box {
@@ -286,8 +286,12 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>order_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>order_number</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
                                 </tr>
                                 <tr>
                                     <td>customer_id</td>
@@ -298,14 +302,18 @@
                                     <td><span class="badge bg-warning text-dark">DATE</span></td>
                                 </tr>
                                 <tr>
-                                    <td>amount</td>
+                                    <td>status</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>total_amount</td>
                                     <td><span class="badge bg-info">DECIMAL</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-md-4">
-                        <h5>order_items</h5>
+                        <h5>order_lines</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -315,7 +323,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>item_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                 </tr>
                                 <tr>
@@ -331,7 +339,11 @@
                                     <td><span class="badge bg-info">INTEGER</span></td>
                                 </tr>
                                 <tr>
-                                    <td>price</td>
+                                    <td>unit_price</td>
+                                    <td><span class="badge bg-info">DECIMAL</span></td>
+                                </tr>
+                                <tr>
+                                    <td>line_total</td>
                                     <td><span class="badge bg-info">DECIMAL</span></td>
                                 </tr>
                             </tbody>
@@ -348,7 +360,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>product_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                 </tr>
                                 <tr>
@@ -380,12 +392,16 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>category_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                 </tr>
                                 <tr>
-                                    <td>category_name</td>
+                                    <td>name</td>
                                     <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>parent_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -401,7 +417,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>customer_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                 </tr>
                                 <tr>
@@ -409,7 +425,11 @@
                                     <td><span class="badge bg-secondary">VARCHAR</span></td>
                                 </tr>
                                 <tr>
-                                    <td>region_id</td>
+                                    <td>city</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>country_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
                                 </tr>
                             </tbody>
@@ -430,16 +450,32 @@
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                 </tr>
                                 <tr>
-                                    <td>name</td>
+                                    <td>first_name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>last_name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>department</td>
                                     <td><span class="badge bg-secondary">VARCHAR</span></td>
                                 </tr>
                                 <tr>
                                     <td>manager_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
                                 </tr>
+                                <tr>
+                                    <td>salary</td>
+                                    <td><span class="badge bg-info">DECIMAL</span></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+                <div class="hint-box mt-3">
+                    <strong>Not:</strong> <code>orders.status</code> sutunu su degerleri alabilir: <code>'draft'</code>, <code>'confirmed'</code>, <code>'processing'</code>, <code>'shipped'</code>, <code>'delivered'</code>, <code>'cancelled'</code>, <code>'returned'</code>
                 </div>
             </section>
 
@@ -486,8 +522,8 @@
                     <p><strong>Gorev:</strong> Her uc siralama fonksiyonunu da sales DESC'e gore siralayan bir sorgu yazin.
                     </p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
-                    <div id="sol1_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_1')">Cozumu Goster</button>
+                    <div id="sol1_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span> <span class="st">'2024-01'</span> <span class="kw">AS</span> month, <span class="dv">50000</span> <span class="kw">AS</span> sales <span class="kw">UNION ALL</span>
     <span class="kw">SELECT</span> <span class="st">'2024-02'</span>, <span class="dv">45000</span> <span class="kw">UNION ALL</span>
@@ -571,18 +607,18 @@
                     <p><strong>Gorev:</strong> ROW_NUMBER() ile PARTITION BY kullanarak urunleri her kategori icinde siralayin,
                         sonra en iyi 3'e filtreleyin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Cozumu Goster</button>
-                    <div id="sol1_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_2')">Cozumu Goster</button>
+                    <div id="sol1_2" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> product_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
-        p.product_id,
+        p.id <span class="kw">AS</span> product_id,
         p.name <span class="kw">AS</span> product_name,
-        c.category_name,
-        <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> total_sales
+        c.name <span class="kw">AS</span> category_name,
+        <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">AS</span> total_sales
     <span class="kw">FROM</span> products p
-    <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
-    <span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> p.product_id = oi.product_id
-    <span class="kw">GROUP BY</span> p.product_id, p.name, c.category_name
+    <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
+    <span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
+    <span class="kw">GROUP BY</span> p.id, p.name, c.name
 ),
 ranked_products <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
@@ -621,12 +657,12 @@ ranked_products <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Her ayin satislarini, onceki ayin satislarini ve yuzde degisimi gosterin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Cozumu Goster</button>
-                    <div id="sol1_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_3')">Cozumu Goster</button>
+                    <div id="sol1_3" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> monthly_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) <span class="kw">AS</span> month,
-        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> sales
+        <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> sales
     <span class="kw">FROM</span> orders
     <span class="kw">GROUP BY</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date)
 )
@@ -695,19 +731,19 @@ ranked_products <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Kumulatif toplam ve hareketli ortalama hesaplamak icin pencere cerceve ifadelerini kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_4')">Cozumu Goster</button>
-                    <div id="sol1_4" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_4')">Cozumu Goster</button>
+                    <div id="sol1_4" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     order_date,
-    amount <span class="kw">AS</span> daily_sales,
+    daily_total <span class="kw">AS</span> daily_sales,
     <span class="co">-- Kumulatif toplam: baslangictan mevcut satira kadar tum satirlar</span>
-    <span class="fu">SUM</span>(amount) <span class="kw">OVER</span> (
+    <span class="fu">SUM</span>(daily_total) <span class="kw">OVER</span> (
         <span class="kw">ORDER BY</span> order_date
         <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>
     ) <span class="kw">AS</span> running_total,
     <span class="co">-- 7 gunluk hareketli ortalama: onceki 6 + mevcut</span>
     <span class="fu">ROUND</span>(
-        <span class="fu">AVG</span>(amount) <span class="kw">OVER</span> (
+        <span class="fu">AVG</span>(daily_total) <span class="kw">OVER</span> (
             <span class="kw">ORDER BY</span> order_date
             <span class="kw">ROWS BETWEEN</span> <span class="dv">6</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
         ),
@@ -719,7 +755,7 @@ ranked_products <span class="kw">AS</span> (
         <span class="kw">ROWS BETWEEN</span> <span class="dv">6</span> <span class="kw">PRECEDING AND CURRENT ROW</span>
     ) <span class="kw">AS</span> days_in_window
 <span class="kw">FROM</span> (
-    <span class="kw">SELECT</span> order_date, <span class="fu">SUM</span>(amount) <span class="kw">AS</span> amount
+    <span class="kw">SELECT</span> order_date, <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> daily_total
     <span class="kw">FROM</span> orders
     <span class="kw">GROUP BY</span> order_date
 ) daily_totals
@@ -755,28 +791,28 @@ ranked_products <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Tum ozetleri tek bir sorguda uretmek icin GROUPING SETS kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
-                    <div id="sol2_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
+                    <div id="sol2_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
-    <span class="fu">COALESCE</span>(c.category_name, <span class="st">'Tum Kategoriler'</span>) <span class="kw">AS</span> category,
+    <span class="fu">COALESCE</span>(c.name, <span class="st">'Tum Kategoriler'</span>) <span class="kw">AS</span> category,
     <span class="fu">COALESCE</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>), <span class="st">'Tum Aylar'</span>) <span class="kw">AS</span> month,
-    <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> total_sales,
-    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">AS</span> total_sales,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
     <span class="co">-- Gruplama seviyesini belirle</span>
-    <span class="fu">GROUPING</span>(c.category_name) <span class="kw">AS</span> is_category_total,
+    <span class="fu">GROUPING</span>(c.name) <span class="kw">AS</span> is_category_total,
     <span class="fu">GROUPING</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)) <span class="kw">AS</span> is_month_total
 <span class="kw">FROM</span> orders o
-<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
-<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
-<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
 <span class="kw">GROUP BY</span> <span class="fu">GROUPING</span> <span class="kw">SETS</span> (
-    (c.category_name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),  <span class="co">-- Detay</span>
-    (c.category_name),                                      <span class="co">-- Kategori alt toplami</span>
-    (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),                    <span class="co">-- Ay alt toplami</span>
-    ()                                                      <span class="co">-- Genel toplam</span>
+    (c.name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),  <span class="co">-- Detay</span>
+    (c.name),                                      <span class="co">-- Kategori alt toplami</span>
+    (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),            <span class="co">-- Ay alt toplami</span>
+    ()                                             <span class="co">-- Genel toplam</span>
 )
 <span class="kw">ORDER BY</span>
-    <span class="fu">GROUPING</span>(c.category_name),
+    <span class="fu">GROUPING</span>(c.name),
     <span class="fu">GROUPING</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">'YYYY-MM'</span>)),
     category,
     month;</code></pre>
@@ -793,13 +829,13 @@ ranked_products <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Alt toplamlari otomatik olusturmak icin ROLLUP kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Cozumu Goster</button>
-                    <div id="sol2_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_2')">Cozumu Goster</button>
+                    <div id="sol2_2" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> year,
     <span class="fu">EXTRACT</span>(<span class="kw">QUARTER</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> quarter,
     <span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> month,
-    <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_sales,
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_sales,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
     <span class="cf">CASE</span>
         <span class="cf">WHEN</span> <span class="fu">GROUPING</span>(<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> order_date)) = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Genel Toplam'</span>
@@ -827,30 +863,30 @@ ranked_products <span class="kw">AS</span> (
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.3: FILTER ile Kosullu Toplama (Conditional Aggregation)</h4>
-                    <p>Her ay icin toplam siparisler, tamamlanan siparisler ve iptal edilen siparisleri gosteren bir rapor olusturun.</p>
+                    <p>Her ay icin toplam siparisler, teslim edilen siparisler ve iptal edilen siparisleri gosteren bir rapor olusturun.</p>
 
                     <p><strong>Gorev:</strong> Kosullu sayim icin FILTER ifadesini kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Cozumu Goster</button>
-                    <div id="sol2_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_3')">Cozumu Goster</button>
+                    <div id="sol2_3" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) <span class="kw">AS</span> month,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders,
-    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'completed'</span>) <span class="kw">AS</span> completed,
+    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'delivered'</span>) <span class="kw">AS</span> delivered,
     <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'cancelled'</span>) <span class="kw">AS</span> cancelled,
-    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'pending'</span>) <span class="kw">AS</span> pending,
+    <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'processing'</span>) <span class="kw">AS</span> processing,
     <span class="fu">ROUND</span>(
-        <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'completed'</span>) * <span class="fl">100.0</span> / <span class="fu">COUNT</span>(*),
+        <span class="fu">COUNT</span>(*) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'delivered'</span>) * <span class="fl">100.0</span> / <span class="fu">COUNT</span>(*),
         <span class="dv">2</span>
-    ) <span class="kw">AS</span> completion_rate,
-    <span class="fu">SUM</span>(amount) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'completed'</span>) <span class="kw">AS</span> completed_revenue
+    ) <span class="kw">AS</span> delivery_rate,
+    <span class="fu">SUM</span>(total_amount) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> status = <span class="st">'delivered'</span>) <span class="kw">AS</span> delivered_revenue
 <span class="kw">FROM</span> orders
 <span class="kw">GROUP BY</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date)
 <span class="kw">ORDER BY</span> month;</code></pre>
 
                         <div class="hint-box">
                             <strong>Alternatif (FILTER olmadan):</strong>
-                            <pre><code class="sourceCode sql"><span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> status = <span class="st">'completed'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> completed</code></pre>
+                            <pre><code class="sourceCode sql"><span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> status = <span class="st">'delivered'</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> delivered</code></pre>
                             FILTER daha temizdir ve PostgreSQL'e ozgudur.
                         </div>
                     </div>
@@ -862,10 +898,10 @@ ranked_products <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Ortalama, medyan, standart sapma hesaplayin ve aykiri degerleri belirleyin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Cozumu Goster</button>
-                    <div id="sol2_4" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_4')">Cozumu Goster</button>
+                    <div id="sol2_4" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
-    c.category_name,
+    c.name <span class="kw">AS</span> category_name,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> product_count,
     <span class="fu">ROUND</span>(<span class="fu">AVG</span>(p.price), <span class="dv">2</span>) <span class="kw">AS</span> avg_price,
     <span class="fu">ROUND</span>(
@@ -884,21 +920,21 @@ ranked_products <span class="kw">AS</span> (
         <span class="dv">2</span>
     ) <span class="kw">AS</span> q3
 <span class="kw">FROM</span> products p
-<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
-<span class="kw">GROUP BY</span> c.category_name
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">GROUP BY</span> c.name
 <span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>;</code></pre>
 
                         <p><strong>Aykiri Degerleri Bulma (Z-Skoru > 2):</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span> category_stats <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
-        p.product_id,
+        p.id <span class="kw">AS</span> product_id,
         p.name,
         p.price,
-        c.category_name,
-        <span class="fu">AVG</span>(p.price) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.category_id) <span class="kw">AS</span> avg_price,
-        <span class="fu">STDDEV</span>(p.price) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.category_id) <span class="kw">AS</span> stddev_price
+        c.name <span class="kw">AS</span> category_name,
+        <span class="fu">AVG</span>(p.price) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.id) <span class="kw">AS</span> avg_price,
+        <span class="fu">STDDEV</span>(p.price) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> c.id) <span class="kw">AS</span> stddev_price
     <span class="kw">FROM</span> products p
-    <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
+    <span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
 )
 <span class="kw">SELECT</span>
     name,
@@ -922,8 +958,8 @@ ranked_products <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Her kohorttan musterilerin yuzde kacinin sonraki aylarda alisveris yaptigini hesaplayin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
-                    <div id="sol3_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
+                    <div id="sol3_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 <span class="co">-- Adim 1: Her musterinin kohortunu belirle (ilk satin alma ayi)</span>
 customer_cohort <span class="kw">AS</span> (
@@ -1014,15 +1050,15 @@ retention_data <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Toplam harcama, siklik, yakinlik hesaplayin ve gelecek degeri tahmin edin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
-                    <div id="sol3_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
+                    <div id="sol3_2" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 customer_metrics <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         customer_id,
         <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders,
-        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_spent,
-        <span class="fu">AVG</span>(amount) <span class="kw">AS</span> avg_order_value,
+        <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_spent,
+        <span class="fu">AVG</span>(total_amount) <span class="kw">AS</span> avg_order_value,
         <span class="fu">MIN</span>(order_date) <span class="kw">AS</span> first_order,
         <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> last_order,
         <span class="fu">CURRENT_DATE</span> - <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> days_since_last,
@@ -1074,16 +1110,16 @@ customer_segments <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Calisan-yonetici iliskisini dolasmak icin recursive CTE kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Cozumu Goster</button>
-                    <div id="sol3_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3')">Cozumu Goster</button>
+                    <div id="sol3_3" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH RECURSIVE</span> org_hierarchy <span class="kw">AS</span> (
     <span class="co">-- Temel durum: ust duzey calisanlar (yoneticisi yok)</span>
     <span class="kw">SELECT</span>
         id,
-        name,
+        first_name || <span class="st">' '</span> || last_name <span class="kw">AS</span> full_name,
         manager_id,
         <span class="dv">1</span> <span class="kw">AS</span> level,
-        name <span class="kw">AS</span> path,
+        first_name || <span class="st">' '</span> || last_name <span class="kw">AS</span> path,
         <span class="kw">ARRAY</span>[id] <span class="kw">AS</span> path_ids
     <span class="kw">FROM</span> employees
     <span class="kw">WHERE</span> manager_id <span class="kw">IS NULL</span>
@@ -1093,16 +1129,16 @@ customer_segments <span class="kw">AS</span> (
     <span class="co">-- Recursive durum: yoneticisi olan calisanlar</span>
     <span class="kw">SELECT</span>
         e.id,
-        e.name,
+        e.first_name || <span class="st">' '</span> || e.last_name,
         e.manager_id,
         oh.level + <span class="dv">1</span>,
-        oh.path || <span class="st">' > '</span> || e.name,
+        oh.path || <span class="st">' > '</span> || e.first_name || <span class="st">' '</span> || e.last_name,
         oh.path_ids || e.id
     <span class="kw">FROM</span> employees e
     <span class="kw">JOIN</span> org_hierarchy oh <span class="kw">ON</span> e.manager_id = oh.id
 )
 <span class="kw">SELECT</span>
-    <span class="fu">REPEAT</span>(<span class="st">'  '</span>, level - <span class="dv">1</span>) || name <span class="kw">AS</span> employee_tree,
+    <span class="fu">REPEAT</span>(<span class="st">'  '</span>, level - <span class="dv">1</span>) || full_name <span class="kw">AS</span> employee_tree,
     level,
     path,
     <span class="fu">ARRAY_LENGTH</span>(path_ids, <span class="dv">1</span>) <span class="kw">AS</span> depth
@@ -1140,8 +1176,8 @@ Ali (CEO)             | 1     | Ali (CEO)
 
                     <p><strong>Gorev:</strong> Tum tarihlerin bir serisini olusturun ve gercek satislarla birlestirin (bosluklar icin 0 koyun).</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Cozumu Goster</button>
-                    <div id="sol4_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1')">Cozumu Goster</button>
+                    <div id="sol4_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 date_range <span class="kw">AS</span> (
     <span class="kw">SELECT</span> <span class="fu">generate_series</span>(
@@ -1153,7 +1189,7 @@ date_range <span class="kw">AS</span> (
 daily_sales <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         order_date,
-        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> sales,
+        <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> sales,
         <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count
     <span class="kw">FROM</span> orders
     <span class="kw">GROUP BY</span> order_date
@@ -1209,9 +1245,10 @@ daily_sales <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Gorsellestirme icin gun/saat bazinda toplama yapin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_2')">Cozumu Goster</button>
-                    <div id="sol4_2" class="solution">
-                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2')">Cozumu Goster</button>
+                    <div id="sol4_2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Temel haftanin gunu analizi (order_date'te zaman bileseni yok)</span>
+<span class="kw">SELECT</span>
     <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) <span class="kw">AS</span> day_of_week,
     <span class="cf">CASE</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date)
         <span class="cf">WHEN</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">'Pazar'</span>
@@ -1222,26 +1259,24 @@ daily_sales <span class="kw">AS</span> (
         <span class="cf">WHEN</span> <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Cuma'</span>
         <span class="cf">WHEN</span> <span class="dv">6</span> <span class="cf">THEN</span> <span class="st">'Cumartesi'</span>
     <span class="cf">END</span> <span class="kw">AS</span> day_name,
-    <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time) <span class="kw">AS</span> hour_of_day,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> order_count,
-    <span class="fu">SUM</span>(amount) <span class="kw">AS</span> total_sales,
-    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(amount), <span class="dv">2</span>) <span class="kw">AS</span> avg_order_value
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_sales,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_amount), <span class="dv">2</span>) <span class="kw">AS</span> avg_order_value
 <span class="kw">FROM</span> orders
 <span class="kw">GROUP BY</span>
-    <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date),
-    <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time)
-<span class="kw">ORDER BY</span> day_of_week, hour_of_day;</code></pre>
+    <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date)
+<span class="kw">ORDER BY</span> day_of_week;</code></pre>
 
-                        <p><strong>Gorsellestirme araclari icin pivot format:</strong></p>
+                        <p><strong>Hafta hafta karsilastirma icin pivot format:</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
-    <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time) <span class="kw">AS</span> hour,
-    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">0</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> pazar,
-    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">1</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> pazartesi,
-    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">2</span> <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> sali,
-    <span class="co">-- ... vb</span>
+    <span class="fu">EXTRACT</span>(<span class="kw">WEEK</span> <span class="kw">FROM</span> order_date) <span class="kw">AS</span> week_num,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">0</span> <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> pazar,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">1</span> <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> pazartesi,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> order_date) = <span class="dv">2</span> <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> sali,
+    <span class="co">-- ... diger gunler icin</span>
 <span class="kw">FROM</span> orders
-<span class="kw">GROUP BY</span> <span class="fu">EXTRACT</span>(<span class="kw">HOUR</span> <span class="kw">FROM</span> order_time)
-<span class="kw">ORDER BY</span> hour;</code></pre>
+<span class="kw">GROUP BY</span> <span class="fu">EXTRACT</span>(<span class="kw">WEEK</span> <span class="kw">FROM</span> order_date)
+<span class="kw">ORDER BY</span> week_num;</code></pre>
                     </div>
                 </div>
 
@@ -1251,8 +1286,8 @@ daily_sales <span class="kw">AS</span> (
 
                     <p><strong>Gorev:</strong> Yapilandirilmis cikti olusturmak icin JSON toplama fonksiyonlarini kullanin.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_3')">Cozumu Goster</button>
-                    <div id="sol4_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3')">Cozumu Goster</button>
+                    <div id="sol4_3" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="co">-- Ic ice urunlerle kategori satislari</span>
 <span class="kw">SELECT</span>
     <span class="fu">JSON_BUILD_OBJECT</span>(
@@ -1262,31 +1297,31 @@ daily_sales <span class="kw">AS</span> (
             <span class="kw">FROM</span> (
                 <span class="kw">SELECT</span>
                     <span class="fu">JSON_BUILD_OBJECT</span>(
-                        <span class="st">'name'</span>, c.category_name,
-                        <span class="st">'total_sales'</span>, <span class="fu">SUM</span>(oi.quantity * oi.price),
-                        <span class="st">'order_count'</span>, <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id),
+                        <span class="st">'name'</span>, c.name,
+                        <span class="st">'total_sales'</span>, <span class="fu">SUM</span>(ol.quantity * ol.unit_price),
+                        <span class="st">'order_count'</span>, <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id),
                         <span class="st">'top_products'</span>, (
                             <span class="kw">SELECT</span> <span class="fu">JSON_AGG</span>(prod)
                             <span class="kw">FROM</span> (
                                 <span class="kw">SELECT</span>
                                     <span class="fu">JSON_BUILD_OBJECT</span>(
                                         <span class="st">'name'</span>, p2.name,
-                                        <span class="st">'sales'</span>, <span class="fu">SUM</span>(oi2.quantity * oi2.price)
+                                        <span class="st">'sales'</span>, <span class="fu">SUM</span>(ol2.quantity * ol2.unit_price)
                                     ) <span class="kw">AS</span> prod
                                 <span class="kw">FROM</span> products p2
-                                <span class="kw">JOIN</span> order_items oi2 <span class="kw">ON</span> p2.product_id = oi2.product_id
-                                <span class="kw">WHERE</span> p2.category_id = c.category_id
-                                <span class="kw">GROUP BY</span> p2.product_id, p2.name
-                                <span class="kw">ORDER BY</span> <span class="fu">SUM</span>(oi2.quantity * oi2.price) <span class="kw">DESC</span>
+                                <span class="kw">JOIN</span> order_lines ol2 <span class="kw">ON</span> p2.id = ol2.product_id
+                                <span class="kw">WHERE</span> p2.category_id = c.id
+                                <span class="kw">GROUP BY</span> p2.id, p2.name
+                                <span class="kw">ORDER BY</span> <span class="fu">SUM</span>(ol2.quantity * ol2.unit_price) <span class="kw">DESC</span>
                                 <span class="kw">LIMIT</span> <span class="dv">3</span>
                             ) top_prods
                         )
                     ) <span class="kw">AS</span> category_data
                 <span class="kw">FROM</span> categories c
-                <span class="kw">JOIN</span> products p <span class="kw">ON</span> c.category_id = p.category_id
-                <span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> p.product_id = oi.product_id
-                <span class="kw">JOIN</span> orders o <span class="kw">ON</span> oi.order_id = o.order_id
-                <span class="kw">GROUP BY</span> c.category_id, c.category_name
+                <span class="kw">JOIN</span> products p <span class="kw">ON</span> c.id = p.category_id
+                <span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
+                <span class="kw">JOIN</span> orders o <span class="kw">ON</span> ol.order_id = o.id
+                <span class="kw">GROUP BY</span> c.id, c.name
             ) cats
         )
     ) <span class="kw">AS</span> dashboard_data;</code></pre>
@@ -1326,29 +1361,29 @@ daily_sales <span class="kw">AS</span> (
                         <li>Hareketli ortalamali (Moving Average) gunluk satis trendi (Daily Sales Trend)</li>
                     </ul>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol5_1')">Cozumu Goster</button>
-                    <div id="sol5_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1')">Cozumu Goster</button>
+                    <div id="sol5_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 <span class="co">-- Aylik karsilastirma</span>
 monthly_comparison <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
-            <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> current_month,
+            <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> current_month,
         <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span> - <span class="kw">INTERVAL</span> <span class="st">'1 month'</span>)
-            <span class="cf">THEN</span> amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> previous_month
+            <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> previous_month
     <span class="kw">FROM</span> orders
 ),
 <span class="co">-- En iyi urunler</span>
 top_products <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         p.name,
-        <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> revenue,
-        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">DESC</span>) <span class="kw">AS</span> rank
+        <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">AS</span> revenue,
+        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">DESC</span>) <span class="kw">AS</span> rank
     <span class="kw">FROM</span> products p
-    <span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> p.product_id = oi.product_id
-    <span class="kw">JOIN</span> orders o <span class="kw">ON</span> oi.order_id = o.order_id
+    <span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
+    <span class="kw">JOIN</span> orders o <span class="kw">ON</span> ol.order_id = o.id
     <span class="kw">WHERE</span> o.order_date >= <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
-    <span class="kw">GROUP BY</span> p.product_id, p.name
+    <span class="kw">GROUP BY</span> p.id, p.name
 ),
 <span class="co">-- Musteri segmentleri</span>
 customer_segments <span class="kw">AS</span> (
@@ -1370,8 +1405,8 @@ customer_segments <span class="kw">AS</span> (
 daily_trend <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         order_date,
-        <span class="fu">SUM</span>(amount) <span class="kw">AS</span> daily_sales,
-        <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="fu">SUM</span>(amount)) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date <span class="kw">ROWS</span> <span class="dv">6</span> <span class="kw">PRECEDING</span>), <span class="dv">2</span>) <span class="kw">AS</span> ma_7d
+        <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> daily_sales,
+        <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="fu">SUM</span>(total_amount)) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> order_date <span class="kw">ROWS</span> <span class="dv">6</span> <span class="kw">PRECEDING</span>), <span class="dv">2</span>) <span class="kw">AS</span> ma_7d
     <span class="kw">FROM</span> orders
     <span class="kw">WHERE</span> order_date >= <span class="fu">CURRENT_DATE</span> - <span class="dv">30</span>
     <span class="kw">GROUP BY</span> order_date

@@ -53,21 +53,21 @@
             margin-bottom: 15px;
         }
 
-        .solution {
-            background-color: #e7f3ff;
-            border: 1px solid #b6d4fe;
+        .solution-content {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
             border-radius: 8px;
             padding: 15px;
             margin-top: 15px;
             display: none;
         }
 
-        .solution.show {
+        .solution-content.show {
             display: block;
         }
 
-        .btn-solution {
-            background-color: #0d6efd;
+        .solution-toggle {
+            background-color: #28a745;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -76,8 +76,8 @@
             margin-top: 10px;
         }
 
-        .btn-solution:hover {
-            background-color: #0b5ed7;
+        .solution-toggle:hover {
+            background-color: #218838;
         }
 
         .hint-box {
@@ -268,7 +268,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>customers</h5>
+                        <h5>customers (sales schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -279,7 +279,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>customer_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                     <td>Primary Key</td>
                                 </tr>
@@ -299,9 +299,9 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>country</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
-                                    <td>~50 distinct values</td>
+                                    <td>country_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                    <td>FK to countries</td>
                                 </tr>
                                 <tr>
                                     <td>is_active</td>
@@ -315,10 +315,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>~500,000 rows</strong></p>
+                        <p><strong>Large table for examples</strong></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>orders</h5>
+                        <h5>orders (sales schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -329,44 +329,39 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>order_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                     <td>Primary Key</td>
                                 </tr>
                                 <tr>
                                     <td>customer_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
-                                    <td>Foreign Key</td>
+                                    <td>FK to customers.id</td>
                                 </tr>
                                 <tr>
                                     <td>order_date</td>
                                     <td><span class="badge bg-warning text-dark">DATE</span></td>
-                                    <td>2020-2024</td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>status</td>
                                     <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
-                                    <td>5 values</td>
+                                    <td>draft, confirmed, processing, shipped, delivered, cancelled, returned</td>
                                 </tr>
                                 <tr>
                                     <td>total_amount</td>
                                     <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
                                     <td></td>
                                 </tr>
-                                <tr>
-                                    <td>shipping_country</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
-                                    <td></td>
-                                </tr>
                             </tbody>
                         </table>
-                        <p><strong>~2,000,000 rows</strong></p>
+                        <p><strong>Large table for examples</strong></p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>order_items</h5>
+                        <h5>order_lines (sales schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -377,19 +372,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>item_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                     <td>Primary Key</td>
                                 </tr>
                                 <tr>
                                     <td>order_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
-                                    <td>Foreign Key</td>
+                                    <td>FK to orders.id</td>
                                 </tr>
                                 <tr>
                                     <td>product_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
-                                    <td>Foreign Key</td>
+                                    <td>FK to products.id</td>
                                 </tr>
                                 <tr>
                                     <td>quantity</td>
@@ -401,12 +396,17 @@
                                     <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td>line_total</td>
+                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
+                                    <td>quantity * unit_price</td>
+                                </tr>
                             </tbody>
                         </table>
-                        <p><strong>~6,000,000 rows</strong></p>
+                        <p><strong>Large table for examples</strong></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>products</h5>
+                        <h5>products (sales schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -417,7 +417,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>product_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                     <td>Primary Key</td>
                                 </tr>
@@ -427,9 +427,9 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>category</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
-                                    <td>~20 categories</td>
+                                    <td>category_id</td>
+                                    <td><span class="badge bg-success">INTEGER FK</span></td>
+                                    <td>FK to categories.id</td>
                                 </tr>
                                 <tr>
                                     <td>price</td>
@@ -437,13 +437,13 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>is_available</td>
+                                    <td>is_active</td>
                                     <td><span class="badge bg-info">BOOLEAN</span></td>
                                     <td>95% TRUE</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>~10,000 rows</strong></p>
+                        <p><strong>Smaller reference table</strong></p>
                     </div>
                 </div>
 
@@ -464,10 +464,10 @@
                         performance characteristics:</p>
 
                     <div class="plan-output plan-bad">
-<pre>EXPLAIN SELECT * FROM orders WHERE status = 'pending';
+<pre>EXPLAIN SELECT * FROM sales.orders WHERE status = 'processing';
 
 Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
-  Filter: ((status)::text = 'pending'::text)
+  Filter: ((status)::text = 'processing'::text)
 </pre>
                     </div>
 
@@ -478,8 +478,8 @@ Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
                         <li>What does the cost estimate (0.00..45123.00) represent?</li>
                     </ol>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_1')">Show Solution</button>
-                    <div id="sol1_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_1')">Show Solution</button>
+                    <div id="sol1_1" class="solution-content">
                         <p><strong>Answers:</strong></p>
                         <ol>
                             <li><span class="badge badge-operation badge-scan">Seq Scan</span> - A <strong>Sequential
@@ -508,7 +508,7 @@ Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
                             <div class="plan-output plan-bad">
 <pre>Seq Scan on orders
   (cost=0.00..45123.00 rows=150000)
-  Filter: status = 'pending'
+  Filter: status = 'processing'
 
 Actual Time: 892.45ms
 Rows Returned: 148,532</pre>
@@ -519,7 +519,7 @@ Rows Returned: 148,532</pre>
                             <div class="plan-output plan-good">
 <pre>Bitmap Heap Scan on orders
   (cost=1523.00..28456.00 rows=150000)
-  Recheck Cond: status = 'pending'
+  Recheck Cond: status = 'processing'
   -> Bitmap Index Scan on idx_orders_status
        (cost=0.00..1485.00 rows=150000)
 
@@ -536,8 +536,8 @@ Rows Returned: 148,532</pre>
                         <li>Why does PostgreSQL use a Bitmap scan instead of a simple Index Scan?</li>
                     </ol>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_2')">Show Solution</button>
-                    <div id="sol1_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_2')">Show Solution</button>
+                    <div id="sol1_2" class="solution-content">
                         <p><strong>Answers:</strong></p>
                         <ol>
                             <li>
@@ -588,8 +588,8 @@ Rows Returned: 148,532</pre>
                         <li>What indexes would you create to optimize this query?</li>
                     </ol>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol1_3')">Show Solution</button>
-                    <div id="sol1_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol1_3')">Show Solution</button>
+                    <div id="sol1_3" class="solution-content">
                         <p><strong>Answers:</strong></p>
                         <ol>
                             <li><span class="badge badge-operation badge-join">Hash Join</span> - Builds a hash table
@@ -644,8 +644,8 @@ Rows Returned: 148,532</pre>
                         should come before range predicates.
                     </div>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_1')">Show Solution</button>
-                    <div id="sol2_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_1')">Show Solution</button>
+                    <div id="sol2_1" class="solution-content">
                         <p><strong>Optimal Solution:</strong> Create ONE composite index:</p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_status_date <span class="kw">ON</span> orders (status, order_date);</code></pre>
 
@@ -677,23 +677,23 @@ Rows Returned: 148,532</pre>
                     <h4>Exercise 2.2: Partial Index Design</h4>
                     <p>Your application frequently runs this query:</p>
 
-                    <pre><code class="sourceCode sql"><span class="co">-- Find pending orders for follow-up</span>
-<span class="kw">SELECT</span> order_id, customer_id, order_date, total_amount
-<span class="kw">FROM</span> orders
-<span class="kw">WHERE</span> status = <span class="st">'pending'</span>
+                    <pre><code class="sourceCode sql"><span class="co">-- Find processing orders for follow-up</span>
+<span class="kw">SELECT</span> id, customer_id, order_date, total_amount
+<span class="kw">FROM</span> sales.orders
+<span class="kw">WHERE</span> status = <span class="st">'processing'</span>
 <span class="kw">ORDER BY</span> order_date;</code></pre>
 
-                    <p>Data distribution: Only 2% of orders have status = 'pending' (40,000 out of 2,000,000).</p>
+                    <p>Data distribution: Only 2% of orders have status = 'processing' (orders awaiting fulfillment).</p>
 
                     <p><strong>Task:</strong> Design the most efficient index for this query.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_2')">Show Solution</button>
-                    <div id="sol2_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_2')">Show Solution</button>
+                    <div id="sol2_2" class="solution-content">
                         <p><strong>Optimal Solution:</strong> Create a partial index:</p>
                         <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL partial index</span>
-<span class="kw">CREATE INDEX</span> idx_orders_pending_date
-<span class="kw">ON</span> orders (order_date)
-<span class="kw">WHERE</span> status = <span class="st">'pending'</span>;</code></pre>
+<span class="kw">CREATE INDEX</span> idx_orders_processing_date
+<span class="kw">ON</span> sales.orders (order_date)
+<span class="kw">WHERE</span> status = <span class="st">'processing'</span>;</code></pre>
 
                         <p><strong>Benefits:</strong></p>
                         <table class="table table-bordered">
@@ -704,25 +704,25 @@ Rows Returned: 148,532</pre>
                             </tr>
                             <tr>
                                 <td>Rows indexed</td>
-                                <td>2,000,000</td>
-                                <td>40,000 (2%)</td>
+                                <td>All orders</td>
+                                <td>Only processing (small %)</td>
                             </tr>
                             <tr>
-                                <td>Index size (approx)</td>
-                                <td>~60 MB</td>
-                                <td>~1.2 MB</td>
+                                <td>Index size</td>
+                                <td>Large</td>
+                                <td>Much smaller</td>
                             </tr>
                             <tr>
                                 <td>Insert overhead</td>
                                 <td>Every insert</td>
-                                <td>Only pending orders</td>
+                                <td>Only processing orders</td>
                             </tr>
                         </table>
 
                         <p><strong>SQL Server equivalent (Filtered Index):</strong></p>
-                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_pending_date
+                        <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_processing_date
 <span class="kw">ON</span> orders (order_date)
-<span class="kw">WHERE</span> status = <span class="st">'pending'</span>;</code></pre>
+<span class="kw">WHERE</span> status = <span class="st">'processing'</span>;</code></pre>
                     </div>
                 </div>
 
@@ -739,8 +739,8 @@ Rows Returned: 148,532</pre>
                     <p><strong>Task:</strong> Design an index that allows this query to be answered entirely from the
                         index (Index-Only Scan).</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_3')">Show Solution</button>
-                    <div id="sol2_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_3')">Show Solution</button>
+                    <div id="sol2_3" class="solution-content">
                         <p><strong>Solution - Covering Index:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL (include non-key columns)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_customer_covering
@@ -786,8 +786,8 @@ Rows Returned: 148,532</pre>
 
                     <p><strong>Task:</strong> Create an index that supports this case-insensitive search.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol2_4')">Show Solution</button>
-                    <div id="sol2_4" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol2_4')">Show Solution</button>
+                    <div id="sol2_4" class="solution-content">
                         <p><strong>Solution - Expression Index:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL expression index</span>
 <span class="kw">CREATE INDEX</span> idx_customers_email_lower
@@ -830,8 +830,8 @@ Rows Returned: 148,532</pre>
 
                     <p><strong>Task:</strong> Rewrite the query to use the index on <code>order_date</code>.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_1')">Show Solution</button>
-                    <div id="sol3_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1')">Show Solution</button>
+                    <div id="sol3_1" class="solution-content">
                         <p><strong>Optimized Query:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Use range condition instead of function</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> orders
@@ -895,8 +895,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <p><strong>Task:</strong> Rewrite using a JOIN for better performance.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_2')">Show Solution</button>
-                    <div id="sol3_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2')">Show Solution</button>
+                    <div id="sol3_2" class="solution-content">
                         <p><strong>Optimized Query using JOIN:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Fast: Single aggregation with JOIN</span>
 <span class="kw">SELECT</span>
@@ -958,8 +958,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <p><strong>Task:</strong> Analyze which approach is best and when.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_3')">Show Solution</button>
-                    <div id="sol3_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3')">Show Solution</button>
+                    <div id="sol3_3" class="solution-content">
                         <p><strong>Analysis:</strong></p>
 
                         <table class="table table-bordered">
@@ -1021,8 +1021,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <p><strong>Task:</strong> Optimize this query knowing that the same customer can be both active
                         AND VIP (and you want to see both rows in that case).</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol3_4')">Show Solution</button>
-                    <div id="sol3_4" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_4')">Show Solution</button>
+                    <div id="sol3_4" class="solution-content">
                         <p><strong>Optimized Query:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Use UNION ALL since duplicates are intentional</span>
 <span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
@@ -1073,71 +1073,74 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Current slow query</span>
 <span class="kw">SELECT</span>
-    p.category,
+    c.name <span class="kw">AS</span> category,
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
-    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
-    <span class="fu">SUM</span>(oi.quantity * oi.unit_price) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> orders o
-<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
-<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> sales.orders o
+<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
 <span class="kw">WHERE</span> o.order_date >= <span class="st">'2024-01-01'</span>
-  <span class="kw">AND</span> o.status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>)
-<span class="kw">GROUP BY</span> p.category, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
+  <span class="kw">AND</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
+<span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
 <span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
 
                     <p><strong>Task:</strong> Identify optimizations (indexes, query rewrites) to reduce execution
                         time.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_1')">Show Solution</button>
-                    <div id="sol4_1" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_1')">Show Solution</button>
+                    <div id="sol4_1" class="solution-content">
                         <p><strong>Step 1: Create Supporting Indexes</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Index for orders filtering and joining</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> orders (order_date, status)
-<span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>);
+<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);
 
-<span class="co">-- Index for order_items join</span>
-<span class="kw">CREATE INDEX</span> idx_order_items_order_id
-<span class="kw">ON</span> order_items (order_id)
-<span class="kw">INCLUDE</span> (product_id, quantity, unit_price);
+<span class="co">-- Index for order_lines join</span>
+<span class="kw">CREATE INDEX</span> idx_order_lines_order_id
+<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">INCLUDE</span> (product_id, line_total);
 
 <span class="co">-- Index for products join</span>
 <span class="kw">CREATE INDEX</span> idx_products_id_category
-<span class="kw">ON</span> products (product_id)
-<span class="kw">INCLUDE</span> (category);</code></pre>
+<span class="kw">ON</span> sales.products (id)
+<span class="kw">INCLUDE</span> (category_id);</code></pre>
 
                         <p><strong>Step 2: Query Optimization</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Optimized query using CTE for better plan</span>
 <span class="kw">WITH</span> filtered_orders <span class="kw">AS</span> (
-    <span class="kw">SELECT</span> order_id, order_date
-    <span class="kw">FROM</span> orders
+    <span class="kw">SELECT</span> id, order_date
+    <span class="kw">FROM</span> sales.orders
     <span class="kw">WHERE</span> order_date >= <span class="st">'2024-01-01'</span>
-      <span class="kw">AND</span> status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>)
+      <span class="kw">AND</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 )
 <span class="kw">SELECT</span>
-    p.category,
+    c.name <span class="kw">AS</span> category,
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date) <span class="kw">AS</span> month,
-    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> fo.order_id) <span class="kw">AS</span> order_count,
-    <span class="fu">SUM</span>(oi.quantity * oi.unit_price) <span class="kw">AS</span> revenue
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> fo.id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
 <span class="kw">FROM</span> filtered_orders fo
-<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> fo.order_id = oi.order_id
-<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
-<span class="kw">GROUP BY</span> p.category, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date)
+<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> fo.id = ol.order_id
+<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, fo.order_date)
 <span class="kw">ORDER BY</span> month, revenue <span class="kw">DESC</span>;</code></pre>
 
                         <p><strong>Step 3: Consider Materialized View for Frequent Reports</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- If this report runs frequently, pre-compute it</span>
 <span class="kw">CREATE MATERIALIZED VIEW</span> mv_monthly_sales <span class="kw">AS</span>
 <span class="kw">SELECT</span>
-    p.category,
+    c.name <span class="kw">AS</span> category,
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
-    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,
-    <span class="fu">SUM</span>(oi.quantity * oi.unit_price) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> orders o
-<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.order_id = oi.order_id
-<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
-<span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'completed'</span>, <span class="st">'shipped'</span>)
-<span class="kw">GROUP BY</span> p.category, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
+    <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> sales.orders o
+<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
+<span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
 
 <span class="co">-- Refresh daily</span>
 <span class="kw">REFRESH MATERIALIZED VIEW</span> mv_monthly_sales;</code></pre>
@@ -1162,8 +1165,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <p><strong>Task:</strong> Implement keyset (cursor-based) pagination as an alternative.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_2')">Show Solution</button>
-                    <div id="sol4_2" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_2')">Show Solution</button>
+                    <div id="sol4_2" class="solution-content">
                         <p><strong>Problem with OFFSET:</strong></p>
                         <ul>
                             <li>Database must scan and discard 19,980 rows before returning 20</li>
@@ -1259,8 +1262,8 @@ Execution Time: 8237.890 ms</pre>
 
                     <p><strong>Task:</strong> List all performance issues and provide solutions.</p>
 
-                    <button class="btn-solution" onclick="toggleSolution('sol4_3')">Show Solution</button>
-                    <div id="sol4_3" class="solution">
+                    <button class="solution-toggle" onclick="toggleSolution('sol4_3')">Show Solution</button>
+                    <div id="sol4_3" class="solution-content">
                         <p><strong>Issues Identified:</strong></p>
 
                         <ol>
