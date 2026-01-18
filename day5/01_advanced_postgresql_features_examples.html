@@ -253,7 +253,11 @@
             <!-- Sample Dataset -->
             <section>
                 <h3>Sample Database Schema</h3>
-                <p>We'll use an e-commerce database for these exercises:</p>
+                <p>We'll use the bootcamp e-commerce database for these exercises. The following tables are from the <code>public</code> schema:</p>
+
+                <div class="hint-box mb-3">
+                    <strong>Note:</strong> These tables match the <code>bootcamp_db.sql</code> schema. The <code>customer_type</code> values are: 'individual', 'business', 'vip'. Order <code>status</code> values are: 'draft', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'.
+                </div>
 
                 <div class="row">
                     <div class="col-md-4">
@@ -272,15 +276,19 @@
                                 </tr>
                                 <tr>
                                     <td>name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                 </tr>
                                 <tr>
                                     <td>email</td>
-                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                 </tr>
                                 <tr>
                                     <td>customer_type</td>
-                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
+                                </tr>
+                                <tr>
+                                    <td>credit_limit</td>
+                                    <td><span class="badge bg-info">DECIMAL(12,2)</span></td>
                                 </tr>
                                 <tr>
                                     <td>deleted_at</td>
@@ -312,12 +320,12 @@
                                     <td><span class="badge bg-warning text-dark">DATE</span></td>
                                 </tr>
                                 <tr>
-                                    <td>amount</td>
-                                    <td><span class="badge bg-info">NUMERIC</span></td>
+                                    <td>total_amount</td>
+                                    <td><span class="badge bg-info">DECIMAL(12,2)</span></td>
                                 </tr>
                                 <tr>
                                     <td>status</td>
-                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -333,19 +341,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>product_id</td>
+                                    <td>id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
                                 </tr>
                                 <tr>
                                     <td>name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                 </tr>
                                 <tr>
                                     <td>price</td>
-                                    <td><span class="badge bg-info">NUMERIC</span></td>
+                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
                                 </tr>
                                 <tr>
-                                    <td>stock_level</td>
+                                    <td>stock_quantity</td>
                                     <td><span class="badge bg-info">INTEGER</span></td>
                                 </tr>
                                 <tr>
@@ -387,8 +395,8 @@
     discount_rate <span class="dt">NUMERIC</span>;
     final_amount <span class="dt">NUMERIC</span>;
 <span class="kw">BEGIN</span>
-    <span class="co">-- Get order amount and customer type</span>
-    <span class="kw">SELECT</span> o.amount, c.customer_type
+    <span class="co">-- Get order total_amount and customer type</span>
+    <span class="kw">SELECT</span> o.total_amount, c.customer_type
     <span class="kw">INTO</span> base_amount, customer_type_val
     <span class="kw">FROM</span> orders o
     <span class="kw">JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id
@@ -399,11 +407,11 @@
         <span class="kw">RAISE EXCEPTION</span> <span class="st">'Order % not found'</span>, order_id_param;
     <span class="kw">END IF</span>;
 
-    <span class="co">-- Determine discount rate based on customer type</span>
+    <span class="co">-- Determine discount rate based on customer type (bootcamp_db values)</span>
     <span class="kw">CASE</span> customer_type_val
-        <span class="kw">WHEN</span> <span class="st">'premium'</span> <span class="kw">THEN</span> discount_rate := <span class="fl">0.10</span>;
-        <span class="kw">WHEN</span> <span class="st">'regular'</span> <span class="kw">THEN</span> discount_rate := <span class="fl">0.05</span>;
-        <span class="kw">ELSE</span> discount_rate := <span class="fl">0.00</span>;
+        <span class="kw">WHEN</span> <span class="st">'vip'</span> <span class="kw">THEN</span> discount_rate := <span class="fl">0.10</span>;
+        <span class="kw">WHEN</span> <span class="st">'business'</span> <span class="kw">THEN</span> discount_rate := <span class="fl">0.05</span>;
+        <span class="kw">ELSE</span> discount_rate := <span class="fl">0.00</span>;  <span class="co">-- individual customers</span>
     <span class="kw">END CASE</span>;
 
     <span class="co">-- Calculate final amount</span>
@@ -452,13 +460,13 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
         c.id,
         c.name::text,
         <span class="fu">COUNT</span>(o.id),
-        <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.amount), <span class="dv">0</span>),
-        <span class="fu">COALESCE</span>(<span class="fu">ROUND</span>(<span class="fu">AVG</span>(o.amount), <span class="dv">2</span>), <span class="dv">0</span>)
+        <span class="fu">COALESCE</span>(<span class="fu">SUM</span>(o.total_amount), <span class="dv">0</span>),
+        <span class="fu">COALESCE</span>(<span class="fu">ROUND</span>(<span class="fu">AVG</span>(o.total_amount), <span class="dv">2</span>), <span class="dv">0</span>)
     <span class="kw">FROM</span> customers c
     <span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
     <span class="kw">WHERE</span> c.deleted_at <span class="kw">IS NULL</span>
     <span class="kw">GROUP BY</span> c.id, c.name
-    <span class="kw">ORDER BY</span> <span class="fu">SUM</span>(o.amount) <span class="kw">DESC NULLS LAST</span>
+    <span class="kw">ORDER BY</span> <span class="fu">SUM</span>(o.total_amount) <span class="kw">DESC NULLS LAST</span>
     <span class="kw">LIMIT</span> n;
 <span class="kw">END</span>;
 $$ <span class="kw">LANGUAGE</span> plpgsql;
@@ -514,11 +522,11 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
         <span class="kw">RAISE EXCEPTION</span> <span class="st">'Quantity must be positive'</span>;
     <span class="kw">END IF</span>;
 
-    <span class="co">-- Check source warehouse stock</span>
+    <span class="co">-- Check source warehouse stock (warehouse_inventory.product_id → products.id)</span>
     <span class="kw">SELECT</span> stock_quantity, p.name
     <span class="kw">INTO</span> v_source_stock, v_product_name
     <span class="kw">FROM</span> warehouse_inventory wi
-    <span class="kw">JOIN</span> products p <span class="kw">ON</span> wi.product_id = p.product_id
+    <span class="kw">JOIN</span> products p <span class="kw">ON</span> wi.product_id = p.id
     <span class="kw">WHERE</span> wi.product_id = p_product_id
       <span class="kw">AND</span> wi.warehouse_id = p_source_warehouse
     <span class="kw">FOR UPDATE</span>;
@@ -681,8 +689,8 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">EXECUTE FUNCTION</span> update_modified_timestamp();
 
 <span class="co">-- Test it</span>
-<span class="kw">UPDATE</span> products <span class="kw">SET</span> price = price * <span class="fl">1.1</span> <span class="kw">WHERE</span> product_id = <span class="dv">1</span>;
-<span class="kw">SELECT</span> product_id, name, updated_at <span class="kw">FROM</span> products <span class="kw">WHERE</span> product_id = <span class="dv">1</span>;</code></pre>
+<span class="kw">UPDATE</span> products <span class="kw">SET</span> price = price * <span class="fl">1.1</span> <span class="kw">WHERE</span> id = <span class="dv">1</span>;
+<span class="kw">SELECT</span> id, name, updated_at <span class="kw">FROM</span> products <span class="kw">WHERE</span> id = <span class="dv">1</span>;</code></pre>
 
                         <div class="concept-box">
                             <strong>Trigger Timing:</strong>
@@ -824,7 +832,7 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">EXECUTE FUNCTION</span> validate_product_price();
 
 <span class="co">-- Test: This should fail</span>
-<span class="kw">UPDATE</span> products <span class="kw">SET</span> price = -<span class="dv">10</span> <span class="kw">WHERE</span> product_id = <span class="dv">1</span>;
+<span class="kw">UPDATE</span> products <span class="kw">SET</span> price = -<span class="dv">10</span> <span class="kw">WHERE</span> id = <span class="dv">1</span>;
 <span class="co">-- ERROR: Product price cannot be negative (got: -10)</span></code></pre>
 
                         <div class="warning-box">
@@ -1045,24 +1053,24 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 
                     <button class="btn-solution" onclick="toggleSolution('sol3_4')">Show Solution</button>
                     <div id="sol3_4" class="solution">
-                        <pre><code class="sourceCode sql"><span class="co">-- Create materialized view</span>
+                        <pre><code class="sourceCode sql"><span class="co">-- Create materialized view (using order_lines table from bootcamp_db)</span>
 <span class="kw">CREATE MATERIALIZED VIEW</span> mv_daily_sales_summary <span class="kw">AS</span>
 <span class="kw">SELECT</span>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'day'</span>, o.order_date) <span class="kw">AS</span> sale_date,
-    c.category_name,
+    c.name <span class="kw">AS</span> category_name,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.customer_id) <span class="kw">AS</span> unique_customers,
-    <span class="fu">SUM</span>(oi.quantity) <span class="kw">AS</span> units_sold,
-    <span class="fu">SUM</span>(oi.quantity * oi.price) <span class="kw">AS</span> revenue,
-    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oi.quantity * oi.price), <span class="dv">2</span>) <span class="kw">AS</span> avg_order_value
+    <span class="fu">SUM</span>(ol.quantity) <span class="kw">AS</span> units_sold,
+    <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">AS</span> revenue,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(ol.quantity * ol.unit_price), <span class="dv">2</span>) <span class="kw">AS</span> avg_order_value
 <span class="kw">FROM</span> orders o
-<span class="kw">JOIN</span> order_items oi <span class="kw">ON</span> o.id = oi.order_id
-<span class="kw">JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.product_id
-<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.category_id
-<span class="kw">WHERE</span> o.status = <span class="st">'completed'</span>
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">WHERE</span> o.status = <span class="st">'delivered'</span>
 <span class="kw">GROUP BY</span>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'day'</span>, o.order_date),
-    c.category_name
+    c.name
 <span class="kw">WITH DATA</span>;
 
 <span class="co">-- Create indexes on the materialized view</span>
@@ -1130,16 +1138,16 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
     avg_order_value <span class="dt">NUMERIC</span>
 );
 
-<span class="co">-- 2. Stock validation trigger</span>
+<span class="co">-- 2. Stock validation trigger (uses order_lines.product_id FK to products.id)</span>
 <span class="kw">CREATE OR REPLACE FUNCTION</span> check_stock_before_order_item()
 <span class="kw">RETURNS TRIGGER AS</span> $$
 <span class="kw">DECLARE</span>
     v_stock <span class="dt">INTEGER</span>;
     v_product_name <span class="dt">TEXT</span>;
 <span class="kw">BEGIN</span>
-    <span class="kw">SELECT</span> stock_level, name <span class="kw">INTO</span> v_stock, v_product_name
+    <span class="kw">SELECT</span> stock_quantity, name <span class="kw">INTO</span> v_stock, v_product_name
     <span class="kw">FROM</span> products
-    <span class="kw">WHERE</span> product_id = NEW.product_id
+    <span class="kw">WHERE</span> id = NEW.product_id
     <span class="kw">FOR UPDATE</span>;
 
     <span class="kw">IF</span> v_stock < NEW.quantity <span class="kw">THEN</span>
@@ -1150,8 +1158,8 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 
     <span class="co">-- Reduce stock</span>
     <span class="kw">UPDATE</span> products
-    <span class="kw">SET</span> stock_level = stock_level - NEW.quantity
-    <span class="kw">WHERE</span> product_id = NEW.product_id;
+    <span class="kw">SET</span> stock_quantity = stock_quantity - NEW.quantity
+    <span class="kw">WHERE</span> id = NEW.product_id;
 
     <span class="kw">RETURN</span> NEW;
 <span class="kw">END</span>;
@@ -1162,18 +1170,18 @@ $$ <span class="kw">LANGUAGE</span> plpgsql;
 <span class="kw">FOR EACH ROW</span>
 <span class="kw">EXECUTE FUNCTION</span> check_stock_before_order_item();
 
-<span class="co">-- 3. Order summary update trigger</span>
+<span class="co">-- 3. Order summary update trigger (uses total_amount from orders table)</span>
 <span class="kw">CREATE OR REPLACE FUNCTION</span> update_order_summary()
 <span class="kw">RETURNS TRIGGER AS</span> $$
 <span class="kw">BEGIN</span>
     <span class="kw">INSERT INTO</span> order_summary (customer_id, total_orders, total_spent, last_order_date, avg_order_value)
-    <span class="kw">VALUES</span> (NEW.customer_id, <span class="dv">1</span>, NEW.amount, NEW.order_date, NEW.amount)
+    <span class="kw">VALUES</span> (NEW.customer_id, <span class="dv">1</span>, NEW.total_amount, NEW.order_date, NEW.total_amount)
     <span class="kw">ON CONFLICT</span> (customer_id)
     <span class="kw">DO UPDATE SET</span>
         total_orders = order_summary.total_orders + <span class="dv">1</span>,
-        total_spent = order_summary.total_spent + NEW.amount,
+        total_spent = order_summary.total_spent + NEW.total_amount,
         last_order_date = <span class="fu">GREATEST</span>(order_summary.last_order_date, NEW.order_date),
-        avg_order_value = (order_summary.total_spent + NEW.amount) / (order_summary.total_orders + <span class="dv">1</span>);
+        avg_order_value = (order_summary.total_spent + NEW.total_amount) / (order_summary.total_orders + <span class="dv">1</span>);
 
     <span class="kw">RETURN</span> NEW;
 <span class="kw">END</span>;
