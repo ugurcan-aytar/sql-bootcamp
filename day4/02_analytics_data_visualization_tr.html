@@ -15,7 +15,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Gun 4: Analitik ve Veri Gorsellestirme</title>
+  <title>Gun 4: Analitik (Analytics) ve Veri Gorsellestirme (Data Visualization)</title>
   <style>
     code {
       white-space: pre-wrap;
@@ -338,13 +338,13 @@
   <div class="content-container">
     <div class="container">
       <section>
-        <h1 id="day-4-analytics-and-data-visualization">Gun 4: Analitik ve Veri Gorsellestirme</h1>
-        <h2 id="session-2-analytics-and-data-visualization-2.5-hours">Analitik ve Veri Gorsellestirme</h2>
-        <h3 id="introduction-to-analytics-with-postgresql">PostgreSQL ile Analitige Giris</h3>
-        <p>PostgreSQL, dogrudan veritabani icinde veri analitigi icin guclu yetenekler sunar. Genellikle "veritabani-ici analitik" olarak adlandirilan bu yaklasim, veri hareketini azaltarak ve PostgreSQL'in optimizasyon yeteneklerinden yararlanarak onemli performans avantajlari saglayabilir.</p>
+        <h1 id="day-4-analytics-and-data-visualization">Gun 4: Analitik (Analytics) ve Veri Gorsellestirme (Data Visualization)</h1>
+        <h2 id="session-2-analytics-and-data-visualization-2.5-hours">Analitik (Analytics) ve Veri Gorsellestirme (Data Visualization)</h2>
+        <h3 id="introduction-to-analytics-with-postgresql">PostgreSQL ile Analitige (Analytics) Giris</h3>
+        <p>PostgreSQL, dogrudan veritabani icinde veri analitigi (data analytics) icin guclu yetenekler sunar. Genellikle "veritabani-ici analitik (in-database analytics)" olarak adlandirilan bu yaklasim, veri hareketini azaltarak ve PostgreSQL'in optimizasyon yeteneklerinden yararlanarak onemli performans avantajlari saglayabilir.</p>
       </section>
       <section>
-        <p><strong>Veritabani-Ici Analitigin Faydalari</strong>:</p>
+        <p><strong>Veritabani-Ici Analitigin (In-Database Analytics) Faydalari</strong>:</p>
         <ol type="1">
           <li><strong>Azaltilmis veri hareketi</strong>: Veriyi bulundugu yerde analiz edin</li>
           <li><strong>Gelistirilmis performans</strong>: Veritabani optimizasyonlarindan yararlanin</li>
@@ -354,19 +354,19 @@
         </ol>
       </section>
       <section>
-        <p><strong>Analitik icin Temel PostgreSQL Ozellikleri</strong>:</p>
+        <p><strong>Analitik (Analytics) icin Temel PostgreSQL Ozellikleri</strong>:</p>
         <ol type="1">
-          <li><strong>Pencere fonksiyonlari</strong>: Mevcut satirla iliskili satirlar uzerinde hesaplamalar yapin</li>
-          <li><strong>Ortak Tablo Ifadeleri (CTE'ler)</strong>: Okunabilir, moduler sorgular yazin</li>
-          <li><strong>Materyalize gorunumler</strong>: Daha hizli erisim icin karmasik sorgu sonuclarini onbellekleyin</li>
-          <li><strong>Istatistiksel fonksiyonlar</strong>: Istatistiksel analiz icin yerlesik fonksiyonlar</li>
-          <li><strong>Ileri toplamalar</strong>: Basit SUM ve COUNT'un otesinde</li>
+          <li><strong>Pencere fonksiyonlari (Window Functions)</strong>: Mevcut satirla iliskili satirlar uzerinde hesaplamalar yapin</li>
+          <li><strong>Ortak Tablo Ifadeleri (Common Table Expressions - CTE'ler)</strong>: Okunabilir, moduler sorgular yazin</li>
+          <li><strong>Materyalize gorunumler (Materialized Views)</strong>: Daha hizli erisim icin karmasik sorgu sonuclarini onbellekleyin</li>
+          <li><strong>Istatistiksel fonksiyonlar (Statistical Functions)</strong>: Istatistiksel analiz icin yerlesik fonksiyonlar</li>
+          <li><strong>Ileri toplamalar (Advanced Aggregations)</strong>: Basit SUM ve COUNT'un otesinde</li>
           <li><strong>JSON/JSONB destegi</strong>: Yari yapilandirilmis verileri analiz edin</li>
-          <li><strong>Yabanci veri sarmalayicilari</strong>: Harici veri kaynaklarina erisin</li>
+          <li><strong>Yabanci veri sarmalayicilari (Foreign Data Wrappers)</strong>: Harici veri kaynaklarina erisin</li>
         </ol>
       </section>
       <section>
-        <p><strong>Analitik Ortami Olusturma</strong>:</p>
+        <p><strong>Analitik (Analytics) Ortami Olusturma</strong>:</p>
         <div class="sourceCode" id="cb1">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Create a schema for analytics</span></span>
@@ -385,9 +385,9 @@
         </div>
       </section>
       <section>
-        <h3 id="window-functions-for-analytics">Analitik icin Pencere Fonksiyonlari</h3>
-        <p>Pencere fonksiyonlari, mevcut satirla iliskili bir dizi tablo satiri uzerinde hesaplamalar yapar; toplama fonksiyonlarina benzer ancak satirlari tek bir cikti satirinda gruplamaz.</p>
-        <p><strong>Temel Pencere Fonksiyonu Sozdizimi</strong>:</p>
+        <h3 id="window-functions-for-analytics">Analitik (Analytics) icin Pencere Fonksiyonlari (Window Functions)</h3>
+        <p>Pencere fonksiyonlari (Window Functions), mevcut satirla iliskili bir dizi tablo satiri uzerinde hesaplamalar yapar; toplama fonksiyonlarina (aggregate functions) benzer ancak satirlari tek bir cikti satirinda gruplamaz.</p>
+        <p><strong>Temel Pencere Fonksiyonu (Window Function) Sozdizimi</strong>:</p>
         <div class="sourceCode" id="cb2">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    column1,</span>
@@ -402,9 +402,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Yaygin Pencere Fonksiyonlari</strong>:</p>
+        <p><strong>Yaygin Pencere Fonksiyonlari (Common Window Functions)</strong>:</p>
         <ol type="1">
-          <li><strong>Siralama Fonksiyonlari</strong>:</li>
+          <li><strong>Siralama Fonksiyonlari (Ranking Functions)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb3">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- ROW_NUMBER(): Unique sequential number</span></span>
@@ -445,9 +445,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Yaygin Pencere Fonksiyonlari</strong>:</p>
+        <p><strong>Yaygin Pencere Fonksiyonlari (Common Window Functions)</strong>:</p>
         <ol start="2" type="1">
-          <li><strong>Toplam Pencere Fonksiyonlari</strong>:</li>
+          <li><strong>Toplam Pencere Fonksiyonlari (Aggregate Window Functions)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb4">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">-- SUM() as a window function</span></span>
@@ -480,9 +480,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Yaygin Pencere Fonksiyonlari</strong>:</p>
+        <p><strong>Yaygin Pencere Fonksiyonlari (Common Window Functions)</strong>:</p>
         <ol start="3" type="1">
-          <li><strong>Deger Pencere Fonksiyonlari</strong>:</li>
+          <li><strong>Deger Pencere Fonksiyonlari (Value Window Functions)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb5">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- FIRST_VALUE(): First value in the window</span></span>
@@ -540,8 +540,8 @@
         </div>
       </section>
       <section>
-        <p><strong>Pencere Cerceve Ifadeleri</strong>:</p>
-        <p>Cerceve ifadesi, pencere fonksiyonu hesaplamasinda mevcut satira gore hangi satirlarin dahil edilecegini tanimlar.</p>
+        <p><strong>Pencere Cerceve Ifadeleri (Window Frame Clauses)</strong>:</p>
+        <p>Cerceve ifadesi (frame clause), pencere fonksiyonu hesaplamasinda mevcut satira gore hangi satirlarin dahil edilecegini tanimlar.</p>
         <div class="sourceCode" id="cb6">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- Default frame (depends on presence of ORDER BY)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -586,9 +586,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Pencere Fonksiyonlari ile Pratik Analitik Ornekleri</strong>:</p>
+        <p><strong>Pencere Fonksiyonlari (Window Functions) ile Pratik Analitik Ornekleri</strong>:</p>
         <ol type="1">
-          <li><strong>Aylik Buyume</strong>:</li>
+          <li><strong>Aylik Buyume (Month-over-Month Growth)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb7">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -607,7 +607,7 @@
       </section>
       <section>
         <ol start="2" type="1">
-          <li><strong>Kumulatif Toplamlar ve Hareketli Ortalamalar</strong>:</li>
+          <li><strong>Kumulatif Toplamlar (Running Totals) ve Hareketli Ortalamalar (Moving Averages)</strong>:</li>
           <div class="sourceCode" id="cb8">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    order_date,</span>
@@ -624,7 +624,7 @@
       </section>
       <section>
         <ol start="3" type="1">
-          <li><strong>Yuzdelikler ve Dagilim Analizi</strong>:</li>
+          <li><strong>Yuzdelikler (Percentiles) ve Dagilim Analizi (Distribution Analysis)</strong>:</li>
           <div class="sourceCode" id="cb9">
             <pre
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -645,7 +645,7 @@
       </section>
       <section>
         <ol start="4" type="1">
-          <li><strong>Musteri Satin Alma Kaliplari</strong>:</li>
+          <li><strong>Musteri Satin Alma Kaliplari (Customer Purchase Patterns)</strong>:</li>
           <div class="sourceCode" id="cb10">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>    customer_id,</span>
@@ -665,7 +665,7 @@
       </section>
       <section>
         <ol start="5" type="1">
-          <li><strong>Aykiri Degerleri Belirleme</strong>:</li>
+          <li><strong>Aykiri Degerleri Belirleme (Outlier Detection)</strong>:</li>
 
           <div class="sourceCode" id="cb11">
             <pre
@@ -697,9 +697,9 @@
         </ol>
       </section>
       <section>
-        <h3 id="advanced-aggregation-techniques">Ileri Toplama Teknikleri</h3>
-        <p>PostgreSQL, SUM, COUNT ve AVG gibi temel fonksiyonlarin otesinde ileri toplama yetenekleri sunar.</p>
-        <p><strong>Istatistiksel Toplamalar</strong>:</p>
+        <h3 id="advanced-aggregation-techniques">Ileri Toplama Teknikleri (Advanced Aggregation Techniques)</h3>
+        <p>PostgreSQL, SUM, COUNT ve AVG gibi temel fonksiyonlarin otesinde ileri toplama (advanced aggregation) yetenekleri sunar.</p>
+        <p><strong>Istatistiksel Toplamalar (Statistical Aggregations)</strong>:</p>
         <div class="sourceCode" id="cb12">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">-- Basic statistics</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -731,7 +731,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Kosullu Toplamalar</strong>:</p>
+        <p><strong>Kosullu Toplamalar (Conditional Aggregations)</strong>:</p>
         <div class="sourceCode" id="cb13">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co">-- FILTER clause</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -768,7 +768,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Dizi Toplamalari</strong>:</p>
+        <p><strong>Dizi Toplamalari (Array Aggregations)</strong>:</p>
         <div class="sourceCode" id="cb14">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co">-- ARRAY_AGG: Collect values into an array</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -793,7 +793,7 @@
         </div>
       </section>
       <section>
-        <p><strong>JSON Toplamalari</strong>:</p>
+        <p><strong>JSON Toplamalari (JSON Aggregations)</strong>:</p>
         <div class="sourceCode" id="cb15">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">-- JSON_AGG: Aggregate rows as JSON arrays</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -830,7 +830,7 @@
         </div>
       </section>
       <section>
-        <p><strong>GROUPING SETS, ROLLUP ve CUBE ile Ozel Toplamalar</strong>:</p>
+        <p><strong>GROUPING SETS, ROLLUP ve CUBE ile Ozel Toplamalar (Custom Aggregations)</strong>:</p>
         <div class="sourceCode" id="cb16">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">-- GROUPING SETS: Multiple grouping sets in one query</span></span>
@@ -893,9 +893,9 @@
         </div>
       </section>
       <section>
-        <p><strong>Ileri Toplamalar ile Pratik Analitik Ornekleri</strong>:</p>
+        <p><strong>Ileri Toplamalar (Advanced Aggregations) ile Pratik Analitik Ornekleri</strong>:</p>
         <ol type="1">
-          <li><strong>Birden Fazla Boyuta Gore Satis Analizi</strong>:</li>
+          <li><strong>Birden Fazla Boyuta Gore Satis Analizi (Multi-Dimensional Sales Analysis)</strong>:</li>
           <div class="sourceCode" id="cb17">
             <pre
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -1014,10 +1014,10 @@
         </div>
       </section>
       <section>
-        <h3 id="common-table-expressions-ctes-for-complex-analytics">Karmasik Analitik icin Ortak Tablo Ifadeleri (CTE'ler)
+        <h3 id="common-table-expressions-ctes-for-complex-analytics">Karmasik Analitik (Analytics) icin Ortak Tablo Ifadeleri (Common Table Expressions - CTE'ler)
         </h3>
-        <p>Ortak Tablo Ifadeleri (CTE'ler), daha buyuk bir sorguda kullanilmak uzere yardimci ifadeler yazmanin bir yolunu saglar ve karmasik analitik sorgularini daha okunabilir ve bakimi kolay hale getirir.</p>
-        <p><strong>Temel CTE Sozdizimi</strong>:</p>
+        <p>Ortak Tablo Ifadeleri (Common Table Expressions - CTE'ler), daha buyuk bir sorguda kullanilmak uzere yardimci ifadeler yazmanin bir yolunu saglar ve karmasik analitik sorgularini daha okunabilir ve bakimi kolay hale getirir.</p>
+        <p><strong>Temel CTE Sozdizimi (Basic CTE Syntax)</strong>:</p>
         <div class="sourceCode" id="cb20">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">WITH</span> cte_name <span class="kw">AS</span> (</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>    <span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
@@ -1027,7 +1027,7 @@
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a><span class="kw">FROM</span> cte_name;</span></code></pre>
         </div>
-        <p><strong>Birden Fazla CTE Kullanma</strong>:</p>
+        <p><strong>Birden Fazla CTE Kullanma (Using Multiple CTEs)</strong>:</p>
         <div class="sourceCode" id="cb21">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="kw">WITH</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>customer_orders <span class="kw">AS</span> (</span>
@@ -1061,8 +1061,8 @@
         </div>
       </section>
       <section>
-        <p><strong>Recursive (Ozyinelemeli) CTE'ler</strong>:</p>
-        <p>Recursive CTE'ler ozellikle hiyerarsik veya graf yapili veriler icin kullanislidir.</p>
+        <p><strong>Recursive (Ozyinelemeli) CTE'ler (Recursive Common Table Expressions)</strong>:</p>
+        <p>Recursive CTE'ler (Ozyinelemeli Ortak Tablo Ifadeleri) ozellikle hiyerarsik veya graf yapili veriler icin kullanislidir.</p>
         <div class="sourceCode" id="cb22">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="co">-- Employee hierarchy example</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a><span class="kw">WITH</span> RECURSIVE employee_hierarchy <span class="kw">AS</span> (</span>
@@ -1105,9 +1105,9 @@
         </div>
       </section>
       <section>
-        <p><strong>CTE'ler ile Pratik Analitik Ornekleri</strong>:</p>
+        <p><strong>CTE'ler ile Pratik Analitik (Analytics) Ornekleri</strong>:</p>
         <ol type="1">
-          <li><strong>Musteri Yasam Boyu Degeri Analizi</strong>:</li>
+          <li><strong>Musteri Yasam Boyu Degeri Analizi (Customer Lifetime Value Analysis)</strong>:</li>
           <div class="sourceCode" id="cb23">
             <pre
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="kw">WITH</span> </span>
@@ -1170,7 +1170,7 @@
       </section>
       <section>
         <ol start="2" type="1">
-          <li><strong>Kohort Analizi</strong>:</li>
+          <li><strong>Kohort Analizi (Cohort Analysis)</strong>:</li>
 
           <div class="sourceCode" id="cb24">
             <pre
@@ -1306,11 +1306,11 @@
         </ol>
       </section>
       <section>
-        <h3 id="data-visualization-with-postgresql">PostgreSQL ile Veri Gorsellestirme</h3>
-        <p>PostgreSQL'in kendisi gorsellestirme yetenekleri saglamasa da, gorsellestirme araclari icin veri hazirlayabilir veya SQL sonuclarini kullanarak temel gorsellestirmeler olusturabilirsiniz. Burada, gorsellestirme icin veri hazirlama ve PostgreSQL'e gorsellestirme araclari baglama seceneklerini inceleyecegiz.</p>
-        <p><strong>Gorsellestirme icin Veri Hazirlama</strong>:</p>
+        <h3 id="data-visualization-with-postgresql">PostgreSQL ile Veri Gorsellestirme (Data Visualization)</h3>
+        <p>PostgreSQL'in kendisi gorsellestirme (visualization) yetenekleri saglamasa da, gorsellestirme araclari icin veri hazirlayabilir veya SQL sonuclarini kullanarak temel gorsellestirmeler olusturabilirsiniz. Burada, gorsellestirme icin veri hazirlama ve PostgreSQL'e gorsellestirme araclari baglama seceneklerini inceleyecegiz.</p>
+        <p><strong>Gorsellestirme (Visualization) icin Veri Hazirlama</strong>:</p>
         <ol type="1">
-          <li><strong>Dogru Seviyede Veri Toplama</strong>:</li>
+          <li><strong>Dogru Seviyede Veri Toplama (Aggregation)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb26">
           <pre
@@ -1393,7 +1393,7 @@
       </section>
       <section>
         <ol start="3" type="1">
-          <li><strong>Isi Haritalari icin Veri Hazirlama</strong>:</li>
+          <li><strong>Isi Haritalari (Heatmaps) icin Veri Hazirlama</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb28">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true"></a><span class="co">-- Sales heatmap by day of week and hour</span></span>
@@ -1489,9 +1489,9 @@
         </div>
       </section>
       <section>
-        <p><strong>PostgreSQL icin Gorsellestirme Araclari</strong>:</p>
+        <p><strong>PostgreSQL icin Gorsellestirme (Visualization) Araclari</strong>:</p>
         <ol type="1">
-          <li><strong>Dogrudan Baglanti Araclari</strong>:
+          <li><strong>Dogrudan Baglanti Araclari (Direct Connection Tools)</strong>:
             <ul>
               <li>Tableau</li>
               <li>Power BI</li>
@@ -1502,7 +1502,7 @@
               <li>Apache Superset</li>
             </ul>
           </li>
-          <li><strong>Programlama Kutuphaneleri</strong>:
+          <li><strong>Programlama Kutuphaneleri (Programming Libraries)</strong>:
             <ul>
               <li>Python: Matplotlib, Seaborn, Plotly</li>
               <li>R: ggplot2, Shiny</li>
@@ -1518,11 +1518,11 @@
         </ol>
       </section>
       <section>
-        <p><strong>Ornek: Metabase ile Temel Bir Dashboard Olusturma</strong>:</p>
+        <p><strong>Ornek: Metabase ile Temel Bir Kontrol Paneli (Dashboard) Olusturma</strong>:</p>
         <ol type="1">
           <li>Metabase'i yukleyin</li>
           <li>PostgreSQL veritabanina baglanin</li>
-          <li>Temel metrikler icin kaydedilmis sorular olusturun:</li>
+          <li>Temel metrikler (metrics) icin kaydedilmis sorular olusturun:</li>
         </ol>
         <div class="sourceCode" id="cb32">
           <pre
@@ -1671,9 +1671,9 @@
         </div>
       </section>
       <section>
-        <h3 id="hands-on-workshop-analytics-with-postgresql">Uygulamali Calisma: PostgreSQL ile Analitik</h3>
+        <h3 id="hands-on-workshop-analytics-with-postgresql">Uygulamali Calisma: PostgreSQL ile Analitik (Hands-on Workshop: Analytics with PostgreSQL)</h3>
         <p>Bir ERP veritabani kullanarak ogrendiklerimizi uygulamali bir calismayla hayata gecirelim. Satis verilerini, musteri davranislarini ve urun performansini inceleyecegiz.</p>
-        <p><strong>Alistirma 1: Satis Performansi Dashboard'u</strong></p>
+        <p><strong>Alistirma 1: Satis Performansi Kontrol Paneli (Dashboard)</strong></p>
         <p>Bu alistirmada, bir satis performansi dashboard'u icin sorgular olusturacagiz.</p>
         <div class="sourceCode" id="cb34">
           <pre
@@ -1864,7 +1864,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Alistirma 2: Musteri Analitigi</strong></p>
+        <p><strong>Alistirma 2: Musteri Analitigi (Customer Analytics)</strong></p>
         <p>Bu alistirmada, musteri davranisi ve segmentasyonunu analiz edecegiz.</p>
         <div class="sourceCode" id="cb35">
           <pre
@@ -2042,7 +2042,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Alistirma 3: Urun Performansi Analitigi</strong></p>
+        <p><strong>Alistirma 3: Urun Performansi Analitigi (Product Performance Analytics)</strong></p>
         <p>Bu alistirmada, urun performansini analiz edecek ve firsatlari belirleyecegiz.</p>
         <div class="sourceCode" id="cb36">
           <pre
@@ -2234,7 +2234,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Alistirma 4: Basit Bir Dashboard Olusturma</strong></p>
+        <p><strong>Alistirma 4: Basit Bir Kontrol Paneli (Dashboard) Olusturma</strong></p>
         <p>Bu alistirmada, Metabase, Tableau veya Power BI gibi bir aracla gorsellestirilebilecek basit bir dashboard icin veri hazirlayacagiz.</p>
         <div class="sourceCode" id="cb37">
           <pre

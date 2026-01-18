@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Gun 4: Analitik ve Veri Gorsellestirme - Pratik Ornekler</title>
+    <title>Gun 4: Analitik (Analytics) ve Veri Gorsellestirme (Data Visualization) - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -255,16 +255,16 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Analitik ve Veri Gorsellestirme - Pratik Ornekler</h1>
-                <p class="lead">Uygulamali alistirmalar ile pencere fonksiyonlari, ileri toplamalar, CTE'ler ve gorsellestirme icin veri hazirlama konularinda uzmanlasin.</p>
+                <h1>Analitik (Analytics) ve Veri Gorsellestirme (Data Visualization) - Pratik Ornekler</h1>
+                <p class="lead">Uygulamali alistirmalar ile pencere fonksiyonlari (window functions), ileri toplamalar (advanced aggregations), CTE'ler (Common Table Expressions) ve gorsellestirme (visualization) icin veri hazirlama konularinda uzmanlasin.</p>
 
                 <div class="hint-box">
                     <strong>Ogrenme Hedefleri:</strong>
                     <ul class="mb-0">
-                        <li>Siralama, kumulatif toplamlar ve karsilastirmalar icin pencere fonksiyonlarini uygulayin</li>
-                        <li>Ileri toplamalari kullanin (GROUPING SETS, ROLLUP, CUBE)</li>
-                        <li>CTE'ler ile karmasik analitik olusturun</li>
-                        <li>Gorsellestirme araclari icin veri hazirlayin</li>
+                        <li>Siralama (ranking), kumulatif toplamlar (running totals) ve karsilastirmalar icin pencere fonksiyonlarini (window functions) uygulayin</li>
+                        <li>Ileri toplamalari (advanced aggregations) kullanin (GROUPING SETS, ROLLUP, CUBE)</li>
+                        <li>CTE'ler (Common Table Expressions) ile karmasik analitik olusturun</li>
+                        <li>Gorsellestirme (visualization) araclari icin veri hazirlayin</li>
                     </ul>
                 </div>
             </section>
@@ -443,13 +443,13 @@
                 </div>
             </section>
 
-            <!-- Bolum 1: Pencere Fonksiyonlari -->
+            <!-- Bolum 1: Pencere Fonksiyonlari (Window Functions) -->
             <section>
-                <h2>Bolum 1: Pencere Fonksiyonlari</h2>
+                <h2>Bolum 1: Pencere Fonksiyonlari (Window Functions)</h2>
                 <p>Siralama, toplama ve satirlar arasi karsilastirma pratigi yapin.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.1: Siralama Fonksiyonlari Karsilastirmasi</h4>
+                    <h4>Alistirma 1.1: Siralama Fonksiyonlari (Ranking Functions) Karsilastirmasi</h4>
                     <p>Aylik satis verileri verildiginde, ROW_NUMBER(), RANK() ve DENSE_RANK() arasindaki farki gosterin:</p>
 
                     <table class="table table-bordered result-table">
@@ -565,7 +565,7 @@
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.2: Grup Basina En Iyi N</h4>
+                    <h4>Alistirma 1.2: Grup Basina En Iyi N (Top N Per Group)</h4>
                     <p>Her kategorideki en cok satan 3 urunu bulun.</p>
 
                     <p><strong>Gorev:</strong> ROW_NUMBER() ile PARTITION BY kullanarak urunleri her kategori icinde siralayin,
@@ -616,7 +616,7 @@ ranked_products <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.3: Trend Analizi icin LAG ve LEAD</h4>
+                    <h4>Alistirma 1.3: Trend Analizi (Trend Analysis) icin LAG ve LEAD</h4>
                     <p>LAG() kullanarak aydan aya satis buyumesini hesaplayin.</p>
 
                     <p><strong>Gorev:</strong> Her ayin satislarini, onceki ayin satislarini ve yuzde degisimi gosterin.</p>
@@ -690,7 +690,7 @@ ranked_products <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.4: Kumulatif Toplamlar ve Hareketli Ortalamalar</h4>
+                    <h4>Alistirma 1.4: Kumulatif Toplamlar (Running Totals) ve Hareketli Ortalamalar (Moving Averages)</h4>
                     <p>Kumulatif satis ve 7 gunluk hareketli ortalama hesaplayin.</p>
 
                     <p><strong>Gorev:</strong> Kumulatif toplam ve hareketli ortalama hesaplamak icin pencere cerceve ifadelerini kullanin.</p>
@@ -737,13 +737,13 @@ ranked_products <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Bolum 2: Ileri Toplamalar -->
+            <!-- Bolum 2: Ileri Toplamalar (Advanced Aggregations) -->
             <section>
-                <h2>Bolum 2: Ileri Toplamalar</h2>
+                <h2>Bolum 2: Ileri Toplamalar (Advanced Aggregations)</h2>
                 <p>GROUPING SETS, ROLLUP, CUBE ve kosullu toplamalarda uzmanlasin.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.1: Coklu Ozetler icin GROUPING SETS</h4>
+                    <h4>Alistirma 2.1: Coklu Ozetler (Multiple Summaries) icin GROUPING SETS</h4>
                     <p>Asagidakilere gore satislari gosteren bir rapor olusturun:
                     <ul>
                         <li>Kategori + Ay</li>
@@ -788,7 +788,7 @@ ranked_products <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.2: Hiyerarsik Toplamlar icin ROLLUP</h4>
+                    <h4>Alistirma 2.2: Hiyerarsik Toplamlar (Hierarchical Totals) icin ROLLUP</h4>
                     <p>Hiyerarsik bir satis raporu olusturun: Yil > Ceyrek > Ay her seviyede alt toplamlarla.</p>
 
                     <p><strong>Gorev:</strong> Alt toplamlari otomatik olusturmak icin ROLLUP kullanin.</p>
@@ -826,7 +826,7 @@ ranked_products <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.3: FILTER ile Kosullu Toplama</h4>
+                    <h4>Alistirma 2.3: FILTER ile Kosullu Toplama (Conditional Aggregation)</h4>
                     <p>Her ay icin toplam siparisler, tamamlanan siparisler ve iptal edilen siparisleri gosteren bir rapor olusturun.</p>
 
                     <p><strong>Gorev:</strong> Kosullu sayim icin FILTER ifadesini kullanin.</p>
@@ -857,7 +857,7 @@ ranked_products <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.4: Istatistiksel Toplamalar</h4>
+                    <h4>Alistirma 2.4: Istatistiksel Toplamalar (Statistical Aggregations)</h4>
                     <p>Her kategori icinde urun fiyatlari icin istatistiksel metrikler hesaplayin.</p>
 
                     <p><strong>Gorev:</strong> Ortalama, medyan, standart sapma hesaplayin ve aykiri degerleri belirleyin.</p>
@@ -911,13 +911,13 @@ ranked_products <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Bolum 3: Karmasik Analitik icin CTE'ler -->
+            <!-- Bolum 3: Karmasik Analitik (Analytics) icin CTE'ler (Common Table Expressions) -->
             <section>
-                <h2>Bolum 3: Karmasik Analitik icin CTE'ler</h2>
+                <h2>Bolum 3: Karmasik Analitik (Analytics) icin CTE'ler (Common Table Expressions)</h2>
                 <p>Common Table Expression'lar ile cok adimli analitik sorgular olusturun.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.1: Kohort Tutma Analizi</h4>
+                    <h4>Alistirma 3.1: Kohort Tutma Analizi (Cohort Retention Analysis)</h4>
                     <p>Ilk satin alma aylarina gore musteri tutma oranini gosteren bir kohort analizi olusturun.</p>
 
                     <p><strong>Gorev:</strong> Her kohorttan musterilerin yuzde kacinin sonraki aylarda alisveris yaptigini hesaplayin.</p>
@@ -1009,7 +1009,7 @@ retention_data <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.2: Musteri Yasam Boyu Degeri (CLV)</h4>
+                    <h4>Alistirma 3.2: Musteri Yasam Boyu Degeri (Customer Lifetime Value - CLV)</h4>
                     <p>Musteri yasam boyu degeri metriklerini hesaplayin ve musterileri segmentleyin.</p>
 
                     <p><strong>Gorev:</strong> Toplam harcama, siklik, yakinlik hesaplayin ve gelecek degeri tahmin edin.</p>
@@ -1069,7 +1069,7 @@ customer_segments <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.3: Recursive CTE - Organizasyon Hiyerarsisi</h4>
+                    <h4>Alistirma 3.3: Recursive CTE - Organizasyon Hiyerarsisi (Organization Hierarchy)</h4>
                     <p>Raporlama zincirlerini gosteren eksiksiz bir organizasyon agaci olusturun.</p>
 
                     <p><strong>Gorev:</strong> Calisan-yonetici iliskisini dolasmak icin recursive CTE kullanin.</p>
@@ -1129,13 +1129,13 @@ Ali (CEO)             | 1     | Ali (CEO)
                 </div>
             </section>
 
-            <!-- Bolum 4: Veri Gorsellestirme Hazirligi -->
+            <!-- Bolum 4: Veri Gorsellestirme (Data Visualization) Hazirligi -->
             <section>
-                <h2>Bolum 4: Gorsellestirme icin Veri Hazirlama</h2>
+                <h2>Bolum 4: Gorsellestirme (Visualization) icin Veri Hazirlama</h2>
                 <p>Sorgu sonuclarini grafikler ve panolar icin bicimlendir.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.1: Cizgi Grafikleri icin Zaman Serileri</h4>
+                    <h4>Alistirma 4.1: Cizgi Grafikleri (Line Charts) icin Zaman Serileri (Time Series)</h4>
                     <p>Surekli cizgi grafikleri icin bosluklari doldurulmus gunluk satis verileri hazirlayin.</p>
 
                     <p><strong>Gorev:</strong> Tum tarihlerin bir serisini olusturun ve gercek satislarla birlestirin (bosluklar icin 0 koyun).</p>
@@ -1204,7 +1204,7 @@ daily_sales <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.2: Isi Haritalari icin Pivot Veri</h4>
+                    <h4>Alistirma 4.2: Isi Haritalari (Heatmaps) icin Pivot Veri</h4>
                     <p>Haftanin gunu ve saate gore satislari gosteren isi haritasi icin hazir veri seti olusturun.</p>
 
                     <p><strong>Gorev:</strong> Gorsellestirme icin gun/saat bazinda toplama yapin.</p>
@@ -1246,7 +1246,7 @@ daily_sales <span class="kw">AS</span> (
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 4.3: API'ler/Panolar icin JSON Olarak Disari Aktar</h4>
+                    <h4>Alistirma 4.3: API'ler/Panolar (Dashboards) icin JSON Olarak Disari Aktar</h4>
                     <p>Web panolari icin JSON formatli veri uretin.</p>
 
                     <p><strong>Gorev:</strong> Yapilandirilmis cikti olusturmak icin JSON toplama fonksiyonlarini kullanin.</p>
@@ -1310,20 +1310,20 @@ daily_sales <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Bolum 5: Zorluk -->
+            <!-- Bolum 5: Zorluk (Challenge) -->
             <section>
-                <h2>Bolum 5: Zorluk Alistirmasi</h2>
+                <h2>Bolum 5: Zorluk Alistirmasi (Challenge Exercise)</h2>
 
                 <div class="exercise-box">
-                    <h4>Zorluk: Yonetici Panosu Sorgusu</h4>
+                    <h4>Zorluk: Yonetici Panosu (Executive Dashboard) Sorgusu</h4>
                     <p>Birden fazla analitik teknigini birlestiren kapsamli bir pano sorgusu olusturun.</p>
 
                     <p><strong>Gereksinimler:</strong></p>
                     <ul>
-                        <li>Mevcut ay ile onceki ay satis karsilastirmasi</li>
-                        <li>Gelire gore en iyi 5 urun</li>
-                        <li>Musteri segment dagilimi</li>
-                        <li>Hareketli ortalamali gunluk satis trendi</li>
+                        <li>Mevcut ay ile onceki ay satis karsilastirmasi (Month-over-Month Comparison)</li>
+                        <li>Gelire gore en iyi 5 urun (Top 5 Products by Revenue)</li>
+                        <li>Musteri segment dagilimi (Customer Segment Distribution)</li>
+                        <li>Hareketli ortalamali (Moving Average) gunluk satis trendi (Daily Sales Trend)</li>
                     </ul>
 
                     <button class="btn-solution" onclick="toggleSolution('sol5_1')">Cozumu Goster</button>
@@ -1394,9 +1394,9 @@ daily_trend <span class="kw">AS</span> (
                 </div>
             </section>
 
-            <!-- Onemli Cikarimlar -->
+            <!-- Onemli Cikarimlar (Key Takeaways) -->
             <section>
-                <h3>Onemli Cikarimlar</h3>
+                <h3>Onemli Cikarimlar (Key Takeaways)</h3>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -1406,7 +1406,7 @@ daily_trend <span class="kw">AS</span> (
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Pencere Fonksiyonlari</strong></td>
+                            <td><strong>Pencere Fonksiyonlari (Window Functions)</strong></td>
                             <td>
                                 <ul class="mb-0">
                                     <li>Toplamadan grup olusturmak icin PARTITION BY kullanin</li>
@@ -1416,32 +1416,32 @@ daily_trend <span class="kw">AS</span> (
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Ileri Toplamalar</strong></td>
+                            <td><strong>Ileri Toplamalar (Advanced Aggregations)</strong></td>
                             <td>
                                 <ul class="mb-0">
                                     <li>Birden fazla ozet seviyesi icin GROUPING SETS</li>
-                                    <li>Hiyerarsik alt toplamlar icin ROLLUP</li>
-                                    <li>Kosullu toplama icin FILTER</li>
+                                    <li>Hiyerarsik alt toplamlar (hierarchical subtotals) icin ROLLUP</li>
+                                    <li>Kosullu toplama (conditional aggregation) icin FILTER</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>CTE'ler</strong></td>
+                            <td><strong>CTE'ler (Common Table Expressions)</strong></td>
                             <td>
                                 <ul class="mb-0">
                                     <li>Adim adim analitik icin CTE'leri zincirleyin</li>
-                                    <li>Hiyerarsik veriler icin recursive CTE'ler</li>
+                                    <li>Hiyerarsik veriler icin recursive CTE'ler (recursive CTEs)</li>
                                     <li>Karmasik sorgularin okunabilirligini artirin</li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Gorsellestirme Hazirligi</strong></td>
+                            <td><strong>Gorsellestirme Hazirligi (Visualization Preparation)</strong></td>
                             <td>
                                 <ul class="mb-0">
                                     <li>Tarih bosluklarini generate_series ile doldurun</li>
                                     <li>API'ye hazir cikti icin JSON fonksiyonlarini kullanin</li>
-                                    <li>Gorsellestirme seviyesinde on-toplama yapin</li>
+                                    <li>Gorsellestirme seviyesinde on-toplama (pre-aggregation) yapin</li>
                                 </ul>
                             </td>
                         </tr>

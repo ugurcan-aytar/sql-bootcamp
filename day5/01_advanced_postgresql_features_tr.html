@@ -318,18 +318,18 @@
       <section>
         <h1 id="day-5-advanced-postgresql-features">Gun 5: Gelismis PostgreSQL Ozellikleri</h1>
         <h2 id="session-1-advanced-postgresql-features-2-hours">Gelismis PostgreSQL Ozellikleri</h2>
-        <h3 id="stored-procedures-and-functions">Sakli Prosedurler ve Fonksiyonlar</h3>
+        <h3 id="stored-procedures-and-functions">Sakli Prosedurler ve Fonksiyonlar (Stored Procedures and Functions)</h3>
         <p>PostgreSQL, is mantigi dogrudan veritabaninda kapsulleyebilen sakli prosedurler ve fonksiyonlar olusturmak icin guclu yetenekler sunar. Bu yaklasim, gelistirilmis performans, kod yeniden kullanimi ve guvenlik dahil olmak uzere cesitli avantajlar saglar.</p>
-        <p><strong>Fonksiyonlar ve Prosedurler</strong>:</p>
+        <p><strong>Fonksiyonlar ve Prosedurler (Functions and Procedures)</strong>:</p>
         <p>PostgreSQL'de iki tur rutin vardir:</p>
         <ol type="1">
-          <li><strong>Fonksiyonlar</strong>: Bir deger dondurur ve SQL ifadelerinde kullanilabilir</li>
-          <li><strong>Prosedurler</strong>: Deger dondurmez ancak islem yapabilir (COMMIT/ROLLBACK)</li>
+          <li><strong>Fonksiyonlar (Functions)</strong>: Bir deger dondurur ve SQL ifadelerinde kullanilabilir</li>
+          <li><strong>Prosedurler (Procedures)</strong>: Deger dondurmez ancak islem (transaction) yapabilir (COMMIT/ROLLBACK)</li>
         </ol>
       </section>
       <section>
 
-        <p><strong>Temel Fonksiyonlar Olusturma</strong>:</p>
+        <p><strong>Temel Fonksiyonlar Olusturma (Creating Basic Functions)</strong>:</p>
         <div class="sourceCode" id="cb1">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">-- Skaler deger donduren basit fonksiyon</span></span>
@@ -356,7 +356,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Tablo Donduren Fonksiyonlar Olusturma</strong>:</p>
+        <p><strong>Tablo Donduren Fonksiyonlar Olusturma (Creating Table-Returning Functions)</strong>:</p>
         <div class="sourceCode" id="cb2">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">-- Tablo donduren fonksiyon</span></span>
@@ -391,7 +391,7 @@
         </div>
       </section>
       <section>
-        <p><strong>Sakli Prosedurler Olusturma</strong>:</p>
+        <p><strong>Sakli Prosedurler Olusturma (Creating Stored Procedures)</strong>:</p>
         <div class="sourceCode" id="cb3">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- Basit prosedur</span></span>
@@ -459,10 +459,10 @@
         </div>
       </section>
       <section>
-        <p><strong>PL/pgSQL Dil Ozellikleri</strong>:</p>
+        <p><strong>PL/pgSQL Dil Ozellikleri (PL/pgSQL Language Features)</strong>:</p>
         <p>PL/pgSQL, SQL'i kontrol yapilari ve daha karmasik islemlerle genisleten PostgreSQL'in prosedural dilidir.</p>
         <ol type="1">
-          <li><strong>Degiskenler ve Sabitler</strong>:</li>
+          <li><strong>Degiskenler ve Sabitler (Variables and Constants)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb4">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> calculate_order_total(order_id_param <span class="dt">integer</span>)</span>
@@ -501,7 +501,7 @@
       </section>
       <section>
         <ol start="2" type="1">
-          <li><strong>Kontrol Yapilari</strong>:</li>
+          <li><strong>Kontrol Yapilari (Control Structures)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb5">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">-- IF ifadesi</span></span>
@@ -606,7 +606,7 @@
       </section>
       <section>
         <ol start="3" type="1">
-          <li><strong>Hata Yonetimi</strong>:</li>
+          <li><strong>Hata Yonetimi (Error Handling)</strong>:</li>
         </ol>
         <div class="sourceCode" id="cb6">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">CREATE</span> <span class="kw">OR</span> <span class="kw">REPLACE</span> <span class="kw">FUNCTION</span> divide_safely(a <span class="dt">numeric</span>, b <span class="dt">numeric</span>)</span>
@@ -773,20 +773,20 @@
         </div>
       </section>
       <section>
-        <h3 id="triggers-and-event-based-programming">Tetikleyiciler ve Olay Tabanli Programlama</h3>
+        <h3 id="triggers-and-event-based-programming">Tetikleyiciler ve Olay Tabanli Programlama (Triggers and Event-Based Programming)</h3>
         <p>Tetikleyiciler, bir tabloda belirli olaylar meydana geldiginde otomatik olarak bir fonksiyon calistirmaniza olanak tanir. Is kurallari uygulamak, turetilmis verileri korumak ve denetim izleri olusturmak icin kullanislidirlar.</p>
-        <p><strong>Tetikleyici Turleri</strong>:</p>
+        <p><strong>Tetikleyici Turleri (Trigger Types)</strong>:</p>
         <ol type="1">
-          <li><strong>Satir duzeyi tetikleyiciler</strong>: Etkilenen her satir icin bir kez calisir</li>
-          <li><strong>Ifade duzeyi tetikleyiciler</strong>: SQL ifadesi basina bir kez calisir</li>
-          <li><strong>Oncesi tetikleyiciler</strong>: Islemden once calisir</li>
-          <li><strong>Sonrasi tetikleyiciler</strong>: Islemden sonra calisir</li>
-          <li><strong>Yerine tetikleyiciler</strong>: Islemi degistirir (gorunumler icin)</li>
+          <li><strong>Satir duzeyi tetikleyiciler (Row-level triggers)</strong>: Etkilenen her satir icin bir kez calisir</li>
+          <li><strong>Ifade duzeyi tetikleyiciler (Statement-level triggers)</strong>: SQL ifadesi basina bir kez calisir</li>
+          <li><strong>Oncesi tetikleyiciler (BEFORE triggers)</strong>: Islemden once calisir</li>
+          <li><strong>Sonrasi tetikleyiciler (AFTER triggers)</strong>: Islemden sonra calisir</li>
+          <li><strong>Yerine tetikleyiciler (INSTEAD OF triggers)</strong>: Islemi degistirir (gorunumler/views icin)</li>
         </ol>
       </section>
       <section>
 
-        <p><strong>Temel Tetikleyiciler Olusturma</strong>:</p>
+        <p><strong>Temel Tetikleyiciler Olusturma (Creating Basic Triggers)</strong>:</p>
         <div class="sourceCode" id="cb10">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">-- Tetikleyici fonksiyonu olustur</span></span>
@@ -807,7 +807,7 @@
       </section>
       <section>
 
-        <p><strong>Tetikleyici Zamanlama ve Olaylar</strong>:</p>
+        <p><strong>Tetikleyici Zamanlama ve Olaylar (Trigger Timing and Events)</strong>:</p>
         <div class="sourceCode" id="cb11">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co">-- INSERT oncesi tetikleyici</span></span>

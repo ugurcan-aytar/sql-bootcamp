@@ -66,24 +66,24 @@
         <div class="container">
             <section>
                 <h1>Gun 5: Gelismis Ozellikler & Yonetim</h1>
-                <p class="text-muted">Stored Procedure'lar, Trigger'lar, View'lar & Veritabani Yonetimi</p>
+                <p class="text-muted">Stored Procedure'lar (Sakli Yordamlar), Trigger'lar (Tetikleyiciler), View'lar (Gorunumler) & Veritabani Yonetimi (Database Administration)</p>
 
         <!-- Hizli Referans -->
         <div class="quick-ref mb-4">
-            <h5 class="text-center mb-3">Yedekleme Komutlari Hizli Referans</h5>
+            <h5 class="text-center mb-3">Yedekleme Komutlari Hizli Referans (Backup Commands Quick Reference)</h5>
             <div class="row text-center">
-                <div class="col-md-3"><code>pg_dump</code> Mantiksal yedek</div>
-                <div class="col-md-3"><code>pg_dumpall</code> Tum veritabanlari</div>
-                <div class="col-md-3"><code>pg_restore</code> Yedegi geri yukle</div>
-                <div class="col-md-3"><code>pg_basebackup</code> Fiziksel yedek</div>
+                <div class="col-md-3"><code>pg_dump</code> Mantiksal yedek (Logical backup)</div>
+                <div class="col-md-3"><code>pg_dumpall</code> Tum veritabanlari (All databases)</div>
+                <div class="col-md-3"><code>pg_restore</code> Yedegi geri yukle (Restore backup)</div>
+                <div class="col-md-3"><code>pg_basebackup</code> Fiziksel yedek (Physical backup)</div>
             </div>
         </div>
 
         <!-- Stored Procedure'lar -->
-        <h3 class="section-title">Stored Procedure'lar & Fonksiyonlar</h3>
+        <h3 class="section-title">Stored Procedure'lar & Fonksiyonlar (Stored Procedures & Functions)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Fonksiyon Olusturma</h5>
+            <h5>Fonksiyon Olusturma (Creating Functions)</h5>
             <pre><code><span class="comment">-- Skaler donduren basit fonksiyon</span>
 <span class="keyword">CREATE OR REPLACE FUNCTION</span> get_employee_count(dept_id INT)
 <span class="keyword">RETURNS</span> INTEGER <span class="keyword">AS</span> $$
@@ -137,7 +137,7 @@ $$;
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Kontrol Yapilari</h5>
+            <h5>Kontrol Yapilari (Control Structures)</h5>
             <pre><code><span class="comment">-- IF/ELSE</span>
 <span class="keyword">IF</span> amount > 1000 <span class="keyword">THEN</span>
     discount := 0.10;
@@ -167,10 +167,10 @@ result := <span class="keyword">CASE</span> status
         </div>
 
         <!-- Trigger'lar -->
-        <h3 class="section-title">Trigger'lar</h3>
+        <h3 class="section-title">Trigger'lar (Tetikleyiciler / Triggers)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Trigger Olusturma</h5>
+            <h5>Trigger Olusturma (Creating Triggers)</h5>
             <pre><code><span class="comment">-- Adim 1: Trigger fonksiyonu olustur</span>
 <span class="keyword">CREATE OR REPLACE FUNCTION</span> update_modified_timestamp()
 <span class="keyword">RETURNS TRIGGER AS</span> $$
@@ -190,7 +190,7 @@ $$ <span class="keyword">LANGUAGE</span> plpgsql;
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Trigger Zamanlama</h5>
+                    <h5>Trigger Zamanlama (Trigger Timing)</h5>
                     <table>
                         <tbody>
                             <tr><td><code>BEFORE</code></td><td>Islemden once, NEW'i degistirebilir</td></tr>
@@ -202,7 +202,7 @@ $$ <span class="keyword">LANGUAGE</span> plpgsql;
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Trigger Degiskenleri</h5>
+                    <h5>Trigger Degiskenleri (Trigger Variables)</h5>
                     <table>
                         <tbody>
                             <tr><td><code>NEW</code></td><td>Yeni satir (INSERT/UPDATE)</td></tr>
@@ -216,7 +216,7 @@ $$ <span class="keyword">LANGUAGE</span> plpgsql;
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Denetim Trigger'i Ornegi</h5>
+            <h5>Denetim Trigger'i Ornegi (Audit Trigger Example)</h5>
             <pre><code><span class="keyword">CREATE TABLE</span> audit_log (
     id SERIAL PRIMARY KEY,
     table_name TEXT,
@@ -247,12 +247,12 @@ $$ <span class="keyword">LANGUAGE</span> plpgsql;
         </div>
 
         <!-- View'lar -->
-        <h3 class="section-title">View'lar</h3>
+        <h3 class="section-title">View'lar (Gorunumler / Views)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Normal View'lar</h5>
+                    <h5>Normal View'lar (Regular Views)</h5>
                     <pre><code><span class="comment">-- View olustur</span>
 <span class="keyword">CREATE VIEW</span> active_employees <span class="keyword">AS</span>
 <span class="keyword">SELECT</span> e.id, e.name, d.name <span class="keyword">AS</span> dept
@@ -270,7 +270,7 @@ $$ <span class="keyword">LANGUAGE</span> plpgsql;
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Materialized View'lar</h5>
+                    <h5>Materialized View'lar (Somutlastirilmis Gorunumler)</h5>
                     <pre><code><span class="comment">-- Veriyi fiziksel olarak saklar</span>
 <span class="keyword">CREATE MATERIALIZED VIEW</span> mv_sales_summary
 <span class="keyword">AS</span>
@@ -290,7 +290,7 @@ mv_sales_summary;</code></pre>
         </div>
 
         <!-- Recursive CTE'ler -->
-        <h3 class="section-title">Recursive Sorgular</h3>
+        <h3 class="section-title">Recursive Sorgular (Ozyinelemeli Sorgular / Recursive Queries)</h3>
 
         <div class="cheatsheet-card p-3">
             <h5>Recursive CTE</h5>
@@ -312,7 +312,7 @@ mv_sales_summary;</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Yol Izleme Ornegi</h5>
+            <h5>Yol Izleme Ornegi (Path Tracking Example)</h5>
             <pre><code><span class="comment">-- Kategoriler icin tam yol olustur</span>
 <span class="keyword">WITH RECURSIVE</span> category_path <span class="keyword">AS</span> (
     <span class="keyword">SELECT</span> id, name, parent_id,
@@ -333,10 +333,10 @@ mv_sales_summary;</code></pre>
         </div>
 
         <!-- Yedekleme & Kurtarma -->
-        <h3 class="section-title">Yedekleme & Kurtarma</h3>
+        <h3 class="section-title">Yedekleme & Kurtarma (Backup & Recovery)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>pg_dump - Mantiksal Yedekleme</h5>
+            <h5>pg_dump - Mantiksal Yedekleme (Logical Backup)</h5>
             <pre><code><span class="comment"># Tek veritabani yedekle (SQL formati)</span>
 pg_dump -h localhost -U postgres mydb > backup.sql
 
@@ -360,7 +360,7 @@ pg_dump --exclude-table=logs mydb > backup.sql</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Geri Yukleme Komutlari</h5>
+            <h5>Geri Yukleme Komutlari (Restore Commands)</h5>
             <pre><code><span class="comment"># SQL formati geri yukle</span>
 psql -h localhost -U postgres mydb < backup.sql
 
@@ -381,7 +381,7 @@ pg_restore -t employees -d mydb backup.dump</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>pg_basebackup - Fiziksel Yedekleme</h5>
+            <h5>pg_basebackup - Fiziksel Yedekleme (Physical Backup)</h5>
             <pre><code><span class="comment"># Tam cluster yedegi</span>
 pg_basebackup -h localhost -U postgres -D /backup/base -Fp -Xs -P
 
@@ -397,10 +397,10 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <!-- Kullanici Yonetimi -->
-        <h3 class="section-title">Kullanici & Rol Yonetimi</h3>
+        <h3 class="section-title">Kullanici & Rol Yonetimi (User & Role Management)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Rol & Kullanici Olusturma</h5>
+            <h5>Rol & Kullanici Olusturma (Creating Roles & Users)</h5>
             <pre><code><span class="comment">-- Rol olustur</span>
 <span class="keyword">CREATE ROLE</span> analyst;
 
@@ -424,7 +424,7 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Yetki Verme</h5>
+            <h5>Yetki Verme (Granting Privileges)</h5>
             <pre><code><span class="comment">-- Tabloya yetki ver</span>
 <span class="keyword">GRANT SELECT</span> <span class="keyword">ON</span> employees <span class="keyword">TO</span> analyst;
 <span class="keyword">GRANT SELECT, INSERT, UPDATE ON</span> employees <span class="keyword">TO</span> app_user;
@@ -446,10 +446,10 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <!-- Izleme -->
-        <h3 class="section-title">Izleme & Tani</h3>
+        <h3 class="section-title">Izleme & Tani (Monitoring & Diagnostics)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Faydali Sistem View'lari</h5>
+            <h5>Faydali Sistem View'lari (Useful System Views)</h5>
             <pre><code><span class="comment">-- Aktif baglantılar</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> pg_stat_activity;
 
@@ -475,7 +475,7 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Kilit Yonetimi</h5>
+            <h5>Kilit Yonetimi (Lock Management)</h5>
             <pre><code><span class="comment">-- Kilitleri goruntule</span>
 <span class="keyword">SELECT</span> locktype, relation::regclass, mode, granted, pid
 <span class="keyword">FROM</span> pg_locks
@@ -498,10 +498,10 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <!-- Yapilandirma -->
-        <h3 class="section-title">Yapilandirma</h3>
+        <h3 class="section-title">Yapilandirma (Configuration)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Onemli Yapilandirma Parametreleri</h5>
+            <h5>Onemli Yapilandirma Parametreleri (Important Configuration Parameters)</h5>
             <pre><code><span class="comment">-- Mevcut ayarlari goruntule</span>
 <span class="keyword">SHOW</span> work_mem;
 <span class="keyword">SHOW</span> shared_buffers;
@@ -520,9 +520,9 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Onemli Ayarlar</h5>
+            <h5>Onemli Ayarlar (Important Settings)</h5>
             <table>
-                <thead><tr><th>Ayar</th><th>Amac</th><th>Tipik Deger</th></tr></thead>
+                <thead><tr><th>Ayar (Setting)</th><th>Amac (Purpose)</th><th>Tipik Deger (Typical Value)</th></tr></thead>
                 <tbody>
                     <tr><td><code>shared_buffers</code></td><td>Onbellekleme icin bellek</td><td>RAM'in %25'i</td></tr>
                     <tr><td><code>work_mem</code></td><td>Islem basi bellek</td><td>64MB-256MB</td></tr>
@@ -535,7 +535,7 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
         </div>
 
         <!-- En Iyi Uygulamalar -->
-        <h3 class="section-title">Yonetim En Iyi Uygulamalari</h3>
+        <h3 class="section-title">Yonetim En Iyi Uygulamalari (Administration Best Practices)</h3>
 
         <div class="row">
             <div class="col-md-6">

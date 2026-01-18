@@ -54,13 +54,13 @@
           Uygulamalar</h1>
         <h2 id="session-2-database-administration-and-maintenance-2.5-hours">Veritabani Yonetimi ve
           Bakim</h2>
-        <h3 id="backup-and-recovery-strategies">Yedekleme ve Kurtarma Stratejileri</h3>
+        <h3 id="backup-and-recovery-strategies">Yedekleme ve Kurtarma Stratejileri (Backup and Recovery Strategies)</h3>
         <p>Etkili yedekleme ve kurtarma stratejileri, verilerinizi korumak ve is surekliligi saglamak icin
           onemlidir. Bir urun sahibi olarak bu kavramlari anlamak, veri koruma politikalari hakkinda bilinçli kararlar
           vermenize yardimci olacaktir.</p>
-        <p><strong>PostgreSQL'de Yedekleme Turleri</strong>:</p>
+        <p><strong>PostgreSQL'de Yedekleme Turleri (Backup Types in PostgreSQL)</strong>:</p>
         <ol type="1">
-          <li><strong>Mantiksal Yedekler</strong>: Veritabanini yeniden olusturabilen SQL ifadeleri
+          <li><strong>Mantiksal Yedekler (Logical Backups)</strong>: Veritabanini yeniden olusturabilen SQL ifadeleri
             <ul>
               <li>Created with <code>pg_dump</code> and <code>pg_dumpall</code></li>
               <li>Insan tarafindan okunabilir ve duzenlenebilir</li>
@@ -184,7 +184,7 @@
         </div>
       </section>
       <section>
-        <h3 id="point-in-time-recovery-pitr">Zaman Noktasina Kurtarma (PITR)</h3>
+        <h3 id="point-in-time-recovery-pitr">Zaman Noktasina Kurtarma / PITR (Point-in-Time Recovery)</h3>
         <p>Point-in-Time Recovery allows you to restore a database to any specific point in time, rather than just to
           the
           time of the last backup. This is crucial for recovering from data corruption, accidental data deletion, or
@@ -365,7 +365,7 @@ recovery_target_lsn = &#39;16/B374D848&#39;</code></pre>
         </div>
       </section>
       <section>
-        <h3 id="database-maintenance-and-monitoring">Veritabani Bakimi ve Izleme</h3>
+        <h3 id="database-maintenance-and-monitoring">Veritabani Bakimi ve Izleme (Database Maintenance and Monitoring)</h3>
         <p>Regular maintenance is essential for keeping PostgreSQL databases performing optimally. As a product owner,
           understanding these maintenance tasks will help you plan for system downtime and resource allocation.</p>
         <p><strong>VACUUM ve ANALYZE</strong>:</p>
@@ -685,10 +685,10 @@ effective_io_concurrency = 200        # Higher for SSDs
 default_statistics_target = 100       # Increase for complex queries</code></pre>
       </section>
       <section>
-        <h3 id="security-best-practices">Guvenlik En Iyi Uygulamalari</h3>
+        <h3 id="security-best-practices">Guvenlik En Iyi Uygulamalari (Security Best Practices)</h3>
         <p>Database security is a critical concern for any organization. As a product owner, understanding security best
           practices will help you protect sensitive data and comply with regulations.</p>
-        <p><strong>Kimlik Dogrulama Yontemleri</strong>:</p>
+        <p><strong>Kimlik Dogrulama Yontemleri (Authentication Methods)</strong>:</p>
         <p>PostgreSQL supports several authentication methods, configured in <code>pg_hba.conf</code>:</p>
         <pre><code># TYPE  DATABASE        USER            ADDRESS                 METHOD
 local   all             postgres                                peer
@@ -967,11 +967,11 @@ log_min_duration_statement = 0  # Log all statements and their durations</code><
         </ol>
       </section>
       <section>
-        <h3 id="high-availability-and-replication">Yuksek Erisilebilirlik ve Replikasyon</h3>
+        <h3 id="high-availability-and-replication">Yuksek Erisilebilirlik ve Replikasyon (High Availability and Replication)</h3>
         <p>High availability ensures that your database remains accessible even in the face of hardware failures or
           maintenance operations. As a product owner, understanding these concepts will help you plan for system
           resilience and disaster recovery.</p>
-        <p><strong>PostgreSQL'de Replikasyon Yontemleri</strong>:</p>
+        <p><strong>PostgreSQL'de Replikasyon Yontemleri (Replication Methods in PostgreSQL)</strong>:</p>
         <ol type="1">
           <li><strong>Physical Replication</strong>:
             <ul>
@@ -1199,7 +1199,7 @@ max_wal_senders = 10</code></pre>
            └─────────Patroni/etcd───────────┘</code></pre>
       </section>
       <section>
-        <h3 id="scaling-postgresql">Scaling PostgreSQL</h3>
+        <h3 id="scaling-postgresql">PostgreSQL Olceklendirme (Scaling PostgreSQL)</h3>
         <p>As your application grows, you may need to scale your PostgreSQL database to handle increased load. As a
           product owner, understanding scaling options will help you plan for growth and performance needs.</p>
         <p><strong>Vertical Scaling (Scaling Up)</strong>:</p>

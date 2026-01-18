@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gun 4 Kopya Kagidi - Performans & Analitik</title>
+    <title>Gun 4 Kopya Kagidi - Performans (Performance) & Analitik (Analytics)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
@@ -70,12 +70,12 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Gun 4: Performans & Analitik</h1>
-                <p class="text-muted">Sorgu Optimizasyonu, Index'ler & Analitik Sorgular</p>
+                <h1>Gun 4: Performans (Performance) & Analitik (Analytics)</h1>
+                <p class="text-muted">Sorgu Optimizasyonu (Query Optimization), Index'ler (Indexes) & Analitik Sorgular (Analytical Queries)</p>
 
         <!-- Hizli Referans -->
         <div class="quick-ref mb-4">
-            <h5 class="text-center mb-3">Index Turleri Hizli Referans</h5>
+            <h5 class="text-center mb-3">Index Turleri (Index Types) Hizli Referans (Quick Reference)</h5>
             <div class="row text-center">
                 <div class="col"><span class="idx-badge idx-btree">B-tree</span> Varsayilan, karsilastirmalar</div>
                 <div class="col"><span class="idx-badge idx-hash">Hash</span> Sadece esitlik</div>
@@ -86,11 +86,11 @@
         </div>
 
         <!-- EXPLAIN -->
-        <h3 class="section-title">EXPLAIN ile Sorgu Analizi</h3>
+        <h3 class="section-title">EXPLAIN ile Sorgu Analizi (Query Analysis)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>EXPLAIN Komutlari</h5>
-            <pre><code><span class="comment">-- Temel explain (sadece plani gosterir)</span>
+            <h5>EXPLAIN Komutlari (Commands)</h5>
+            <pre><code><span class="comment">-- Temel explain (sadece yurutme planini / execution plan gosterir)</span>
 <span class="keyword">EXPLAIN</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> department_id = 5;
 
@@ -108,7 +108,7 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>EXPLAIN Ciktisini Anlama</h5>
+            <h5>EXPLAIN Ciktisini (Output) Anlama</h5>
             <pre><code>Seq Scan on employees  (cost=0.00..15.00 rows=500 width=64) (actual time=0.015..0.892 rows=523 loops=1)
   Filter: (salary > 50000)
   Rows Removed by Filter: 477
@@ -128,11 +128,11 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Yaygin Tarama Turleri</h5>
+            <h5>Yaygin Tarama Turleri (Common Scan Types)</h5>
             <table>
                 <thead><tr><th>Tarama Turu</th><th>Aciklama</th><th>Ne Zaman Kullanilir</th></tr></thead>
                 <tbody>
-                    <tr><td><code>Seq Scan</code></td><td>Tam tablo taramasi</td><td>Index yok, kucuk tablo, cogu satir gerekli</td></tr>
+                    <tr><td><code>Seq Scan</code></td><td>Tam tablo taramasi (Full Table Scan)</td><td>Index yok, kucuk tablo, cogu satir gerekli</td></tr>
                     <tr><td><code>Index Scan</code></td><td>Index kullan, tablodan getir</td><td>Az satir, indexli sutun</td></tr>
                     <tr><td><code>Index Only Scan</code></td><td>Tum veri index'ten</td><td>Sorgu sutunlari tamamen index'te</td></tr>
                     <tr><td><code>Bitmap Index Scan</code></td><td>Bitmap olustur, sonra getir</td><td>Orta secicilik</td></tr>
@@ -141,30 +141,30 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <!-- Index'ler -->
-        <h3 class="section-title">Index Olusturma</h3>
+        <h3 class="section-title">Index Olusturma (Creating Indexes)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Index Sozdizimi</h5>
+            <h5>Index Sozdizimi (Syntax)</h5>
             <pre><code><span class="comment">-- Temel B-tree index (varsayilan)</span>
 <span class="keyword">CREATE INDEX</span> idx_employees_dept <span class="keyword">ON</span> employees (department_id);
 
 <span class="comment">-- Unique index</span>
 <span class="keyword">CREATE UNIQUE INDEX</span> idx_users_email <span class="keyword">ON</span> users (email);
 
-<span class="comment">-- Coklu sutun index</span>
+<span class="comment">-- Coklu sutun index (Composite Index)</span>
 <span class="keyword">CREATE INDEX</span> idx_orders_customer_date
 <span class="keyword">ON</span> orders (customer_id, order_date <span class="keyword">DESC</span>);
 
-<span class="comment">-- Partial index (kosullu)</span>
+<span class="comment">-- Partial index / Kismi index (kosullu)</span>
 <span class="keyword">CREATE INDEX</span> idx_orders_pending
 <span class="keyword">ON</span> orders (created_at)
 <span class="keyword">WHERE</span> status = <span class="string">'pending'</span>;
 
-<span class="comment">-- Ifade index'i</span>
+<span class="comment">-- Ifade index'i (Expression Index)</span>
 <span class="keyword">CREATE INDEX</span> idx_users_email_lower
 <span class="keyword">ON</span> users (<span class="function">LOWER</span>(email));
 
-<span class="comment">-- Eszamanli index (kilit yok)</span>
+<span class="comment">-- Eszamanli index / Concurrent index (kilit yok)</span>
 <span class="keyword">CREATE INDEX CONCURRENTLY</span> idx_large_table
 <span class="keyword">ON</span> large_table (column);</code></pre>
         </div>
@@ -172,7 +172,7 @@ Execution Time: 0.987 ms</code></pre>
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Index Turleri</h5>
+                    <h5>Index Turleri (Index Types)</h5>
                     <pre><code><span class="comment">-- B-tree (varsayilan) - karsilastirmalar</span>
 <span class="keyword">CREATE INDEX</span> idx_btree
 <span class="keyword">ON</span> table <span class="keyword">USING BTREE</span> (column);
@@ -196,7 +196,7 @@ Execution Time: 0.987 ms</code></pre>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Her Index Ne Zaman Kullanilir</h5>
+                    <h5>Her Index Ne Zaman Kullanilir (When to Use Each Index)</h5>
                     <table>
                         <tbody>
                             <tr><td><span class="idx-badge idx-btree">B-tree</span></td><td>=, <, >, <=, >=, BETWEEN, IN, LIKE 'onek%'</td></tr>
@@ -211,31 +211,31 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Index'leri Yonetme</h5>
+            <h5>Index'leri Yonetme (Managing Indexes)</h5>
             <pre><code><span class="comment">-- Tablodaki index'leri listele</span>
 <span class="keyword">SELECT</span> indexname, indexdef
 <span class="keyword">FROM</span> pg_indexes
 <span class="keyword">WHERE</span> tablename = <span class="string">'employees'</span>;
 
-<span class="comment">-- Index sil</span>
+<span class="comment">-- Index sil (Drop Index)</span>
 <span class="keyword">DROP INDEX</span> idx_employees_dept;
 <span class="keyword">DROP INDEX CONCURRENTLY</span> idx_employees_dept;  <span class="comment">-- Kilit yok</span>
 
-<span class="comment">-- Index'i yeniden olustur</span>
+<span class="comment">-- Index'i yeniden olustur (Rebuild Index)</span>
 <span class="keyword">REINDEX INDEX</span> idx_employees_dept;
 <span class="keyword">REINDEX TABLE</span> employees;
 
-<span class="comment">-- Index boyutu</span>
+<span class="comment">-- Index boyutu (Index Size)</span>
 <span class="keyword">SELECT</span> pg_size_pretty(pg_relation_size(<span class="string">'idx_employees_dept'</span>));</code></pre>
         </div>
 
         <!-- Sorgu Optimizasyonu -->
-        <h3 class="section-title">Sorgu Optimizasyonu Ipuclari</h3>
+        <h3 class="section-title">Sorgu Optimizasyonu (Query Optimization) Ipuclari</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Bunu Yapin</h5>
+                    <h5>Bunu Yapin (Do This)</h5>
                     <pre><code><span class="comment">-- WHERE'de indexli sutunlari kullanin</span>
 <span class="keyword">WHERE</span> indexed_column = value
 
@@ -244,25 +244,25 @@ Execution Time: 0.987 ms</code></pre>
 <span class="keyword">ORDER BY</span> created_at <span class="keyword">DESC</span>
 <span class="keyword">LIMIT</span> 100;
 
-<span class="comment">-- Alt sorgular icin IN yerine EXISTS kullanin</span>
+<span class="comment">-- Alt sorgular (Subqueries) icin IN yerine EXISTS kullanin</span>
 <span class="keyword">WHERE EXISTS</span> (<span class="keyword">SELECT</span> 1 <span class="keyword">FROM</span> ... <span class="keyword">WHERE</span> ...)
 
 <span class="comment">-- Sadece gerekli sutunlari secin</span>
 <span class="keyword">SELECT</span> id, name <span class="keyword">FROM</span> users;
 
-<span class="comment">-- Kapsayici index'ler kullanin</span>
+<span class="comment">-- Kapsayici index'ler (Covering Indexes) kullanin</span>
 <span class="keyword">CREATE INDEX</span> idx_covering
 <span class="keyword">ON</span> orders (customer_id) <span class="keyword">INCLUDE</span> (total);</code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Bundan Kacinin</h5>
+                    <h5>Bundan Kacinin (Avoid This)</h5>
                     <pre><code><span class="comment">-- Indexli sutunlarda fonksiyonlar</span>
 <span class="keyword">WHERE</span> <span class="function">LOWER</span>(email) = <span class="string">'test@email.com'</span>
 <span class="comment">-- Bunun yerine ifade index'i kullanin</span>
 
-<span class="comment">-- Bastaki joker karakter</span>
+<span class="comment">-- Bastaki joker karakter (Leading Wildcard)</span>
 <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">'%john%'</span>
 <span class="comment">-- B-tree index kullanilamaz</span>
 
@@ -281,47 +281,47 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <!-- Istatistikler -->
-        <h3 class="section-title">Istatistikler & Bakim</h3>
+        <h3 class="section-title">Istatistikler (Statistics) & Bakim (Maintenance)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Istatistikleri Guncelleme</h5>
-            <pre><code><span class="comment">-- Sorgu planlayici icin istatistikleri guncelle</span>
+            <h5>Istatistikleri Guncelleme (Updating Statistics)</h5>
+            <pre><code><span class="comment">-- Sorgu planlayici (Query Planner) icin istatistikleri guncelle</span>
 <span class="keyword">ANALYZE</span> employees;
 
 <span class="comment">-- Tum tablolar icin istatistikleri guncelle</span>
 <span class="keyword">ANALYZE</span>;
 
-<span class="comment">-- VACUUM - olu tuple'lari geri kazan</span>
+<span class="comment">-- VACUUM - olu tuple'lari (Dead Tuples) geri kazan</span>
 <span class="keyword">VACUUM</span> employees;
 
 <span class="comment">-- VACUUM ANALYZE - her iki islem</span>
 <span class="keyword">VACUUM ANALYZE</span> employees;
 
-<span class="comment">-- Tablo istatistiklerini goruntule</span>
+<span class="comment">-- Tablo istatistiklerini goruntule (View Table Statistics)</span>
 <span class="keyword">SELECT</span> relname, n_live_tup, n_dead_tup, last_vacuum, last_analyze
 <span class="keyword">FROM</span> pg_stat_user_tables;</code></pre>
         </div>
 
         <!-- Analitik Sorgular -->
-        <h3 class="section-title">Analitik Sorgular</h3>
+        <h3 class="section-title">Analitik Sorgular (Analytical Queries)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Pencere Fonksiyonlari Ozeti</h5>
+            <h5>Pencere Fonksiyonlari (Window Functions) Ozeti</h5>
             <pre><code><span class="keyword">SELECT</span>
     employee_name,
     department,
     salary,
-    <span class="comment">-- Siralama</span>
+    <span class="comment">-- Siralama (Ranking)</span>
     <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> satir_no,
     <span class="function">RANK</span>() <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> siralama,
     <span class="function">DENSE_RANK</span>() <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> yogun_siralama,
     <span class="function">NTILE</span>(4) <span class="keyword">OVER</span> (w) <span class="keyword">AS</span> ceyrek,
 
-    <span class="comment">-- Toplamalar</span>
+    <span class="comment">-- Toplamalar (Aggregations)</span>
     <span class="function">SUM</span>(salary) <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> department) <span class="keyword">AS</span> dept_toplam,
     <span class="function">AVG</span>(salary) <span class="keyword">OVER</span> () <span class="keyword">AS</span> sirket_ort,
 
-    <span class="comment">-- Kumulatif toplamlar</span>
+    <span class="comment">-- Kumulatif toplamlar (Cumulative / Running Totals)</span>
     <span class="function">SUM</span>(salary) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> hire_date) <span class="keyword">AS</span> kumulatif_toplam
 
 <span class="keyword">FROM</span> employees
@@ -332,7 +332,7 @@ Execution Time: 0.987 ms</code></pre>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
                     <h5>LAG / LEAD</h5>
-                    <pre><code><span class="comment">-- Onceki/sonraki satirlarla karsilastir</span>
+                    <pre><code><span class="comment">-- Onceki/sonraki satirlarla karsilastir (Compare with Previous/Next Rows)</span>
 <span class="keyword">SELECT</span>
     order_date,
     amount,
@@ -367,20 +367,20 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Cerceve Cumleleri</h5>
-            <pre><code><span class="comment">-- Hareketli ortalama (son 3 satir)</span>
+            <h5>Cerceve Cumleleri (Frame Clauses)</h5>
+            <pre><code><span class="comment">-- Hareketli ortalama / Moving Average (son 3 satir)</span>
 <span class="function">AVG</span>(amount) <span class="keyword">OVER</span> (
     <span class="keyword">ORDER BY</span> date
     <span class="keyword">ROWS BETWEEN</span> 2 <span class="keyword">PRECEDING AND CURRENT ROW</span>
 )
 
-<span class="comment">-- Partisyondaki tum satirlar</span>
+<span class="comment">-- Partisyondaki tum satirlar (All Rows in Partition)</span>
 <span class="function">SUM</span>(amount) <span class="keyword">OVER</span> (
     <span class="keyword">PARTITION BY</span> category
     <span class="keyword">ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</span>
 )
 
-<span class="comment">-- Aralik tabanli (pozisyona degil degere gore)</span>
+<span class="comment">-- Aralik tabanli / Range-based (pozisyona degil degere gore)</span>
 <span class="function">SUM</span>(amount) <span class="keyword">OVER</span> (
     <span class="keyword">ORDER BY</span> date
     <span class="keyword">RANGE BETWEEN INTERVAL</span> <span class="string">'7 days'</span> <span class="keyword">PRECEDING AND CURRENT ROW</span>
@@ -388,7 +388,7 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <!-- GROUPING SETS -->
-        <h3 class="section-title">Gelismis Gruplama</h3>
+        <h3 class="section-title">Gelismis Gruplama (Advanced Grouping)</h3>
 
         <div class="cheatsheet-card p-3">
             <h5>GROUPING SETS, ROLLUP, CUBE</h5>
@@ -402,7 +402,7 @@ Execution Time: 0.987 ms</code></pre>
     ()                  <span class="comment">-- Genel toplam</span>
 );
 
-<span class="comment">-- ROLLUP: hiyerarsik ara toplamlar</span>
+<span class="comment">-- ROLLUP: hiyerarsik ara toplamlar (Hierarchical Subtotals)</span>
 <span class="keyword">SELECT</span> year, quarter, month, <span class="function">SUM</span>(sales)
 <span class="keyword">FROM</span> sales
 <span class="keyword">GROUP BY ROLLUP</span> (year, quarter, month);
@@ -416,35 +416,35 @@ Execution Time: 0.987 ms</code></pre>
         </div>
 
         <!-- Performans En Iyi Uygulamalari -->
-        <h3 class="section-title">Performans En Iyi Uygulamalari</h3>
+        <h3 class="section-title">Performans En Iyi Uygulamalari (Performance Best Practices)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="tip">
-                    <strong>Foreign key'leri indexleyin</strong> - JOIN'ler icin FK sutunlarini her zaman indexleyin
+                    <strong>Foreign key'leri (Yabanci Anahtarlar) indexleyin</strong> - JOIN'ler icin FK sutunlarini her zaman indexleyin
                 </div>
                 <div class="tip">
                     <strong>EXPLAIN ANALYZE kullanin</strong> - Tahmin etmeyin, olcun
                 </div>
                 <div class="tip">
-                    <strong>Yavas sorgulari izleyin</strong> - pg_stat_statements'i etkinlestirin
+                    <strong>Yavas sorgulari (Slow Queries) izleyin</strong> - pg_stat_statements'i etkinlestirin
                 </div>
                 <div class="tip">
-                    <strong>Buyuk islemleri parcalayin</strong> - Parcalar halinde isleyin
+                    <strong>Buyuk islemleri parcalayin (Batch Processing)</strong> - Parcalar halinde isleyin
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="warning">
-                    <strong>Asiri indexleme yapmayin</strong> - Her index yazmalari yavaslatir
+                    <strong>Asiri indexleme yapmayin (Over-indexing)</strong> - Her index yazmalari yavaslatir
                 </div>
                 <div class="warning">
                     <strong>Seq Scan'lere dikkat edin</strong> - Buyuk tablolarda = problem
                 </div>
                 <div class="warning">
-                    <strong>Sisme kontrolu yapin</strong> - VACUUM'u duzenly calistirin
+                    <strong>Sisme kontrolu yapin (Table Bloat)</strong> - VACUUM'u duzenly calistirin
                 </div>
                 <div class="warning">
-                    <strong>Tahmin vs gercek</strong> - Buyuk fark = guncel olmayan istatistikler
+                    <strong>Tahmin vs gercek (Estimated vs Actual)</strong> - Buyuk fark = guncel olmayan istatistikler
                 </div>
             </div>
         </div>

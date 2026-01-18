@@ -11,7 +11,7 @@
         rel="shortcut icon" type="image/x-icon">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Gun 4: Sorgu Performansi ve Optimizasyon - Pratik Ornekler</title>
+    <title>Gun 4: Sorgu Performansi (Query Performance) ve Optimizasyon (Optimization) - Pratik Ornekler</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -248,23 +248,23 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1>Sorgu Performansi ve Optimizasyon - Pratik Ornekler</h1>
-                <p class="lead">Uygulamali alistirmalarla yurutme planlarini, indeksleme stratejilerini ve sorgu optimizasyon tekniklerini ogrenmek.</p>
+                <h1>Sorgu Performansi (Query Performance) ve Optimizasyon (Optimization) - Pratik Ornekler</h1>
+                <p class="lead">Uygulamali alistirmalarla yurutme planlarini (Execution Plans), indeksleme stratejilerini (Indexing Strategies) ve sorgu optimizasyon tekniklerini (Query Optimization Techniques) ogrenmek.</p>
 
                 <div class="hint-box">
-                    <strong>Ogrenme Hedefleri:</strong>
+                    <strong>Ogrenme Hedefleri (Learning Objectives):</strong>
                     <ul class="mb-0">
                         <li>EXPLAIN ciktisini okumak ve yorumlamak</li>
-                        <li>Yurutme planlarindaki performans darbogazlarini tanimlamak</li>
-                        <li>Farkli sorgu kaliplari icin etkili indeksler tasarlamak</li>
-                        <li>Yavas sorgulari daha iyi performans icin yeniden yazmak</li>
+                        <li>Yurutme planlarindaki (Execution Plans) performans darbogazlarini (Bottlenecks) tanimlamak</li>
+                        <li>Farkli sorgu kaliplari (Query Patterns) icin etkili indeksler (Indexes) tasarlamak</li>
+                        <li>Yavas sorgulari daha iyi performans icin yeniden yazmak (Rewrite)</li>
                     </ul>
                 </div>
             </section>
 
             <!-- Ornek Veri Seti -->
             <section>
-                <h3>Ornek Veritabani Semasi</h3>
+                <h3>Ornek Veritabani Semasi (Sample Database Schema)</h3>
                 <p>Asagidaki tablolara sahip bir e-ticaret veritabani kullanacagiz:</p>
 
                 <div class="row">
@@ -282,7 +282,7 @@
                                 <tr>
                                     <td>customer_id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
-                                    <td>Birincil Anahtar</td>
+                                    <td>Birincil Anahtar (Primary Key)</td>
                                 </tr>
                                 <tr>
                                     <td>email</td>
@@ -332,12 +332,12 @@
                                 <tr>
                                     <td>order_id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
-                                    <td>Birincil Anahtar</td>
+                                    <td>Birincil Anahtar (Primary Key)</td>
                                 </tr>
                                 <tr>
                                     <td>customer_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
-                                    <td>Yabanci Anahtar</td>
+                                    <td>Yabanci Anahtar (Foreign Key)</td>
                                 </tr>
                                 <tr>
                                     <td>order_date</td>
@@ -380,17 +380,17 @@
                                 <tr>
                                     <td>item_id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
-                                    <td>Birincil Anahtar</td>
+                                    <td>Birincil Anahtar (Primary Key)</td>
                                 </tr>
                                 <tr>
                                     <td>order_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
-                                    <td>Yabanci Anahtar</td>
+                                    <td>Yabanci Anahtar (Foreign Key)</td>
                                 </tr>
                                 <tr>
                                     <td>product_id</td>
                                     <td><span class="badge bg-success">INTEGER FK</span></td>
-                                    <td>Yabanci Anahtar</td>
+                                    <td>Yabanci Anahtar (Foreign Key)</td>
                                 </tr>
                                 <tr>
                                     <td>quantity</td>
@@ -420,7 +420,7 @@
                                 <tr>
                                     <td>product_id</td>
                                     <td><span class="badge bg-primary">SERIAL PK</span></td>
-                                    <td>Birincil Anahtar</td>
+                                    <td>Birincil Anahtar (Primary Key)</td>
                                 </tr>
                                 <tr>
                                     <td>name</td>
@@ -449,18 +449,18 @@
                 </div>
 
                 <div class="concept-box">
-                    <strong>Baslangic Indeksleri (Yalnizca Birincil Anahtarlar):</strong><br>
-                    Veritabani yalnizca birincil anahtar indeksleriyle baslar. Yabanci anahtar sutunlarinda henuz indeks yoktur.
+                    <strong>Baslangic Indeksleri (Initial Indexes) (Yalnizca Birincil Anahtarlar (Primary Keys Only)):</strong><br>
+                    Veritabani yalnizca birincil anahtar indeksleriyle (Primary Key Indexes) baslar. Yabanci anahtar (Foreign Key) sutunlarinda henuz indeks yoktur.
                 </div>
             </section>
 
             <!-- Bolum 1: Yurutme Planlarini Okuma -->
             <section>
-                <h2>Bolum 1: Yurutme Planlarini Okuma</h2>
-                <p>EXPLAIN ciktisini yorumlamayi ve performans sorunlarini tanimlama yi ogrenin.</p>
+                <h2>Bolum 1: Yurutme Planlarini (Execution Plans) Okuma</h2>
+                <p>EXPLAIN ciktisini yorumlamayi ve performans sorunlarini (Performance Issues) tanımlamayi ogrenin.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.1: Temel Plan Islemlerini Anlama</h4>
+                    <h4>Alistirma 1.1: Temel Plan Islemlerini (Basic Plan Operations) Anlama</h4>
                     <p>Asagidaki PostgreSQL EXPLAIN ciktisina gore, islemleri tanimlayin ve performans ozelliklerini tahmin edin:</p>
 
                     <div class="plan-output plan-bad">
@@ -482,27 +482,27 @@ Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
                     <div id="sol1_1" class="solution">
                         <p><strong>Cevaplar:</strong></p>
                         <ol>
-                            <li><span class="badge badge-operation badge-scan">Seq Scan</span> - Bir <strong>Sequential Scan</strong> (tam tablo taramasi) tablodaki her satiri okur.</li>
-                            <li>Sorgu yalnizca ~150.000 satir (%7.5 / 2M) gerektiriyor, ancak TUM 2 milyon satiri okuyor. Bu, I/O ve CPU israfina neden olur.</li>
-                            <li>Maliyet iki sayiya sahiptir:
+                            <li><span class="badge badge-operation badge-scan">Seq Scan</span> - Bir <strong>Sequential Scan</strong> (Sirali Tarama / Tam Tablo Taramasi (Full Table Scan)) tablodaki her satiri okur.</li>
+                            <li>Sorgu yalnizca ~150.000 satir (%7.5 / 2M) gerektiriyor, ancak TUM 2 milyon satiri okuyor. Bu, I/O (Girdi/Cikti) ve CPU israfina neden olur.</li>
+                            <li>Maliyet (Cost) iki sayiya sahiptir:
                                 <ul>
-                                    <li><strong>0.00</strong> = baslangic maliyeti (ilk satir donmeden onceki is)</li>
-                                    <li><strong>45123.00</strong> = keyfi birimlerde toplam maliyet (yuksek = yavas)</li>
+                                    <li><strong>0.00</strong> = baslangic maliyeti (Startup Cost) (ilk satir donmeden onceki is)</li>
+                                    <li><strong>45123.00</strong> = keyfi birimlerde toplam maliyet (Total Cost) (yuksek = yavas)</li>
                                 </ul>
                             </li>
                         </ol>
-                        <p><strong>Optimizasyon:</strong> <code>status</code> sutununda bir indeks olusturun:</p>
+                        <p><strong>Optimizasyon (Optimization):</strong> <code>status</code> sutununda bir indeks (Index) olusturun:</p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_status <span class="kw">ON</span> orders (status);</code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.2: Plan Islemlerini Karsilastirma</h4>
-                    <p>Indeks eklendikten sonra ayni sorgu icin bu iki yurutme planini karsilastirin:</p>
+                    <h4>Alistirma 1.2: Plan Islemlerini (Plan Operations) Karsilastirma</h4>
+                    <p>Indeks (Index) eklendikten sonra ayni sorgu icin bu iki yurutme planini (Execution Plans) karsilastirin:</p>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <h6>Once (Indeks Yok):</h6>
+                            <h6>Once (Indeks (Index) Yok):</h6>
                             <div class="plan-output plan-bad">
 <pre>Seq Scan on orders
   (cost=0.00..45123.00 rows=150000)
@@ -513,7 +513,7 @@ Rows Returned: 148,532</pre>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h6>Sonra (Indeks Var):</h6>
+                            <h6>Sonra (Indeks (Index) Var):</h6>
                             <div class="plan-output plan-good">
 <pre>Bitmap Heap Scan on orders
   (cost=1523.00..28456.00 rows=150000)
@@ -539,16 +539,16 @@ Rows Returned: 148,532</pre>
                         <p><strong>Cevaplar:</strong></p>
                         <ol>
                             <li>
-                                <span class="badge badge-operation badge-index">Bitmap Index Scan</span> - Eslesen satirlarin bir bitmap'ini olusturmak icin indeksi tarar<br>
-                                <span class="badge badge-operation badge-scan">Bitmap Heap Scan</span> - Tablodan gercek satirlari almak icin bitmap'i kullanir
+                                <span class="badge badge-operation badge-index">Bitmap Index Scan</span> (Bitmap Indeks Taramasi) - Eslesen satirlarin bir bitmap'ini olusturmak icin indeksi tarar<br>
+                                <span class="badge badge-operation badge-scan">Bitmap Heap Scan</span> (Bitmap Yigin Taramasi) - Tablodan gercek satirlari almak icin bitmap'i kullanir
                             </li>
-                            <li>Performans iyilestirmesi: <strong>892.45ms -> 124.32ms = 7.2x daha hizli</strong><br>
-                                Maliyet azalmasi: 45123 -> 28456 = %37 daha dusuk tahmini maliyet</li>
-                            <li>PostgreSQL, cok sayida satir alirken (%7.5 tablo) Bitmap Scan kullanir. Buyuk sonuc kumeleri icin Index Scan'den daha verimlidir cunku:
+                            <li>Performans iyilestirmesi (Performance Improvement): <strong>892.45ms -> 124.32ms = 7.2x daha hizli</strong><br>
+                                Maliyet azalmasi (Cost Reduction): 45123 -> 28456 = %37 daha dusuk tahmini maliyet (Estimated Cost)</li>
+                            <li>PostgreSQL, cok sayida satir alirken (%7.5 tablo) Bitmap Scan kullanir. Buyuk sonuc kumeleri (Large Result Sets) icin Index Scan'den daha verimlidir cunku:
                                 <ul>
-                                    <li>Satir konumlarini siralayarak rastgele I/O'yu azaltir</li>
+                                    <li>Satir konumlarini siralayarak rastgele I/O'yu (Random I/O) azaltir</li>
                                     <li>Birden fazla indeks kosulunu verimli bir sekilde birlestirebilir</li>
-                                    <li>Basit bir Index Scan cok fazla rastgele disk aramasina neden olur</li>
+                                    <li>Basit bir Index Scan cok fazla rastgele disk aramasina (Random Disk Seeks) neden olur</li>
                                 </ul>
                             </li>
                         </ol>
@@ -556,8 +556,8 @@ Rows Returned: 148,532</pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 1.3: Join Islemlerini Tanimlama</h4>
-                    <p>Bir join sorgusu icin bu yurutme planini analiz edin:</p>
+                    <h4>Alistirma 1.3: Join (Birlestirme) Islemlerini Tanimlama</h4>
+                    <p>Bir join (birlestirme) sorgusu icin bu yurutme planini (Execution Plan) analiz edin:</p>
 
                     <pre><code class="sourceCode sql"><span class="kw">SELECT</span> c.email, o.order_date, o.total_amount
 <span class="kw">FROM</span> customers c
@@ -578,45 +578,45 @@ Rows Returned: 148,532</pre>
 
                     <p><strong>Sorular:</strong></p>
                     <ol>
-                        <li>Hangi join algoritmasi kullaniliyor?</li>
-                        <li>Tum sequential scan'leri tanimlayin - hangileri indekslerden fayda saglayabilir?</li>
-                        <li>Bu sorguyu optimize etmek icin hangi indeksleri olusturursunuz?</li>
+                        <li>Hangi join (birlestirme) algoritmasi kullaniliyor?</li>
+                        <li>Tum sequential scan'leri (Sirali Taramalar) tanimlayin - hangileri indekslerden (Indexes) fayda saglayabilir?</li>
+                        <li>Bu sorguyu optimize etmek icin hangi indeksleri (Indexes) olusturursunuz?</li>
                     </ol>
 
                     <button class="btn-solution" onclick="toggleSolution('sol1_3')">Cozumu Goster</button>
                     <div id="sol1_3" class="solution">
                         <p><strong>Cevaplar:</strong></p>
                         <ol>
-                            <li><span class="badge badge-operation badge-join">Hash Join</span> - Daha kucuk sonuctan (Almanya'daki musteriler) bir hash tablosu olusturur ve bunu daha buyuk sonucla (siparisler) sorgular.</li>
-                            <li>Iki sequential scan tanimlandi:
+                            <li><span class="badge badge-operation badge-join">Hash Join</span> (Hash Birlestirme) - Daha kucuk sonuctan (Almanya'daki musteriler) bir hash tablosu (Hash Table) olusturur ve bunu daha buyuk sonucla (siparisler) sorgular.</li>
+                            <li>Iki sequential scan (Sirali Tarama) tanimlandi:
                                 <ul>
-                                    <li><code>customers</code> - <code>country = 'Germany'</code> ile filtrelenmis - Indeksten faydalanir</li>
-                                    <li><code>orders</code> - <code>order_date >= '2024-01-01'</code> ile filtrelenmis - Indeksten faydalanir</li>
+                                    <li><code>customers</code> - <code>country = 'Germany'</code> ile filtrelenmis - Indeksten (Index) faydalanir</li>
+                                    <li><code>orders</code> - <code>order_date >= '2024-01-01'</code> ile filtrelenmis - Indeksten (Index) faydalanir</li>
                                 </ul>
                             </li>
-                            <li>Onerilen indeksler:
-                                <pre><code class="sourceCode sql"><span class="co">-- Musteri ulke filtresi icin indeks</span>
+                            <li>Onerilen indeksler (Recommended Indexes):
+                                <pre><code class="sourceCode sql"><span class="co">-- Musteri ulke filtresi icin indeks (Index for Customer Country Filter)</span>
 <span class="kw">CREATE INDEX</span> idx_customers_country <span class="kw">ON</span> customers (country);
 
-<span class="co">-- Siparis tarih araligi filtresi icin indeks</span>
+<span class="co">-- Siparis tarih araligi filtresi icin indeks (Index for Order Date Range Filter)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);
 
-<span class="co">-- Join kosulu icin indeks (kritik!)</span>
+<span class="co">-- Join kosulu icin indeks (Index for Join Condition) (kritik!)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_customer_id <span class="kw">ON</span> orders (customer_id);</code></pre>
                             </li>
                         </ol>
-                        <p>Indekslerden sonra, plan cok daha iyi performans icin Index Scan'lerle Nested Loop kullanabilir.</p>
+                        <p>Indekslerden sonra, plan cok daha iyi performans icin Index Scan'lerle (Indeks Taramasi) Nested Loop (Ic Ice Dongu) kullanabilir.</p>
                     </div>
                 </div>
             </section>
 
             <!-- Bolum 2: Indeks Tasarimi -->
             <section>
-                <h2>Bolum 2: Indeks Tasarimi Alistirmalari</h2>
-                <p>Farkli sorgu kaliplari icin optimal indeksler tasarlamayi pratik yapin.</p>
+                <h2>Bolum 2: Indeks Tasarimi (Index Design) Alistirmalari</h2>
+                <p>Farkli sorgu kaliplari (Query Patterns) icin optimal indeksler (Indexes) tasarlamayi pratik yapin.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.1: Tek Sutun vs Bilesik Indeks</h4>
+                    <h4>Alistirma 2.1: Tek Sutun (Single-Column) vs Bilesik (Composite) Indeks</h4>
                     <p>Sik calistirilan su iki sorgunuz var:</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Sorgu A: Duruma gore siparisleri bul</span>
@@ -627,41 +627,41 @@ Rows Returned: 148,532</pre>
 <span class="kw">WHERE</span> status = <span class="st">'shipped'</span>
   <span class="kw">AND</span> order_date <span class="kw">BETWEEN</span> <span class="st">'2024-01-01'</span> <span class="kw">AND</span> <span class="st">'2024-03-31'</span>;</code></pre>
 
-                    <p><strong>Gorev:</strong> Her iki sorguyu da verimli bir sekilde desteklemek icin optimal indeks(ler)i tasarlayin.</p>
+                    <p><strong>Gorev:</strong> Her iki sorguyu da verimli bir sekilde desteklemek icin optimal indeks(ler)i (Indexes) tasarlayin.</p>
 
                     <div class="hint-box">
-                        <strong>Ipucu:</strong> Bilesik indekslerdeki sutun sirasini dikkate alin. Esitlik kosullari aralik kosullarindan once gelmelidir.
+                        <strong>Ipucu (Hint):</strong> Bilesik indekslerdeki (Composite Indexes) sutun sirasini dikkate alin. Esitlik kosullari (Equality Conditions) aralik kosullarindan (Range Conditions) once gelmelidir.
                     </div>
 
                     <button class="btn-solution" onclick="toggleSolution('sol2_1')">Cozumu Goster</button>
                     <div id="sol2_1" class="solution">
-                        <p><strong>Optimal Cozum:</strong> BIR bilesik indeks olusturun:</p>
+                        <p><strong>Optimal Cozum (Optimal Solution):</strong> BIR bilesik indeks (Composite Index) olusturun:</p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_status_date <span class="kw">ON</span> orders (status, order_date);</code></pre>
 
-                        <p><strong>Neden calisiyor:</strong></p>
+                        <p><strong>Neden calisiyor (Why it works):</strong></p>
                         <ul>
-                            <li><strong>Sorgu A</strong>: En soldaki sutunu (status) kullanir - indeks kullanilir</li>
-                            <li><strong>Sorgu B</strong>: Her iki sutunu da kullanir - once status esitligi, sonra tarih araligi</li>
+                            <li><strong>Sorgu A (Query A)</strong>: En soldaki sutunu (Leftmost Column) (status) kullanir - indeks kullanilir</li>
+                            <li><strong>Sorgu B (Query B)</strong>: Her iki sutunu da kullanir - once status esitligi (Equality), sonra tarih araligi (Range)</li>
                         </ul>
 
-                        <p><strong>Neden ayri indeksler degil?</strong></p>
+                        <p><strong>Neden ayri indeksler degil? (Why not separate indexes?)</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Daha az optimal yaklasim:</span>
 <span class="kw">CREATE INDEX</span> idx_orders_status <span class="kw">ON</span> orders (status);
 <span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);</code></pre>
                         <ul>
                             <li>Sorgu B'nin iki indeksi birlestirmesi (Bitmap AND) veya yalnizca birini secmesi gerekir</li>
-                            <li>Daha fazla indeks = daha fazla depolama ve daha yavas yazmalar</li>
+                            <li>Daha fazla indeks = daha fazla depolama (Storage) ve daha yavas yazmalar (Slower Writes)</li>
                         </ul>
 
                         <div class="warning-box">
-                            <strong>Sutun Sirasi Onemlidir!</strong><br>
-                            <code>(order_date, status)</code> uzerindeki bir indeks, Sorgu A'yi verimli bir sekilde desteklemez cunku en soldaki sutun kullanilmaz.
+                            <strong>Sutun Sirasi Onemlidir! (Column Order Matters!)</strong><br>
+                            <code>(order_date, status)</code> uzerindeki bir indeks, Sorgu A'yi verimli bir sekilde desteklemez cunku en soldaki sutun (Leftmost Column) kullanilmaz.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.2: Kismi Indeks Tasarimi</h4>
+                    <h4>Alistirma 2.2: Kismi Indeks (Partial Index) Tasarimi</h4>
                     <p>Uygulamaniz sik sik su sorguyu calistiriyor:</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Takip icin bekleyen siparisleri bul</span>
@@ -670,43 +670,43 @@ Rows Returned: 148,532</pre>
 <span class="kw">WHERE</span> status = <span class="st">'pending'</span>
 <span class="kw">ORDER BY</span> order_date;</code></pre>
 
-                    <p>Veri dagilimi: Siparislerin yalnizca %2'si status = 'pending' durumunda (2.000.000'den 40.000).</p>
+                    <p>Veri dagilimi (Data Distribution): Siparislerin yalnizca %2'si status = 'pending' durumunda (2.000.000'den 40.000).</p>
 
-                    <p><strong>Gorev:</strong> Bu sorgu icin en verimli indeksi tasarlayin.</p>
+                    <p><strong>Gorev:</strong> Bu sorgu icin en verimli indeksi (Index) tasarlayin.</p>
 
                     <button class="btn-solution" onclick="toggleSolution('sol2_2')">Cozumu Goster</button>
                     <div id="sol2_2" class="solution">
-                        <p><strong>Optimal Cozum:</strong> Kismi indeks olusturun:</p>
-                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL kismi indeks</span>
+                        <p><strong>Optimal Cozum (Optimal Solution):</strong> Kismi indeks (Partial Index) olusturun:</p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL kismi indeks (Partial Index)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_pending_date
 <span class="kw">ON</span> orders (order_date)
 <span class="kw">WHERE</span> status = <span class="st">'pending'</span>;</code></pre>
 
-                        <p><strong>Faydalar:</strong></p>
+                        <p><strong>Faydalar (Benefits):</strong></p>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Metrik</th>
-                                <th>Tam Indeks</th>
-                                <th>Kismi Indeks</th>
+                                <th>Metrik (Metric)</th>
+                                <th>Tam Indeks (Full Index)</th>
+                                <th>Kismi Indeks (Partial Index)</th>
                             </tr>
                             <tr>
-                                <td>Indekslenen satirlar</td>
+                                <td>Indekslenen satirlar (Indexed Rows)</td>
                                 <td>2.000.000</td>
                                 <td>40.000 (%2)</td>
                             </tr>
                             <tr>
-                                <td>Indeks boyutu (yaklasik)</td>
+                                <td>Indeks boyutu (Index Size) (yaklasik)</td>
                                 <td>~60 MB</td>
                                 <td>~1.2 MB</td>
                             </tr>
                             <tr>
-                                <td>Insert yuku</td>
+                                <td>Insert yuku (Insert Overhead)</td>
                                 <td>Her insert</td>
                                 <td>Yalnizca bekleyen siparisler</td>
                             </tr>
                         </table>
 
-                        <p><strong>SQL Server esdegeri (Filtered Index):</strong></p>
+                        <p><strong>SQL Server esdegeri (Filtrelenmis Indeks / Filtered Index):</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_pending_date
 <span class="kw">ON</span> orders (order_date)
 <span class="kw">WHERE</span> status = <span class="st">'pending'</span>;</code></pre>
@@ -714,7 +714,7 @@ Rows Returned: 148,532</pre>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.3: Kapsayici Indeks Tasarimi</h4>
+                    <h4>Alistirma 2.3: Kapsayici Indeks (Covering Index) Tasarimi</h4>
                     <p>Bu sorgu kontrol panelinizde dakikada binlerce kez calistirilir:</p>
 
                     <pre><code class="sourceCode sql"><span class="kw">SELECT</span> order_date, total_amount
@@ -723,57 +723,57 @@ Rows Returned: 148,532</pre>
 <span class="kw">ORDER BY</span> order_date <span class="kw">DESC</span>
 <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre>
 
-                    <p><strong>Gorev:</strong> Bu sorgunun tamamen indeksten yanit alinmasini saglayan bir indeks tasarlayin (Index-Only Scan).</p>
+                    <p><strong>Gorev:</strong> Bu sorgunun tamamen indeksten yanit alinmasini saglayan bir indeks (Index) tasarlayin (Yalnizca Indeks Taramasi / Index-Only Scan).</p>
 
                     <button class="btn-solution" onclick="toggleSolution('sol2_3')">Cozumu Goster</button>
                     <div id="sol2_3" class="solution">
-                        <p><strong>Cozum - Kapsayici Indeks:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL (anahtar olmayan sutunlari dahil et)</span>
+                        <p><strong>Cozum - Kapsayici Indeks (Covering Index):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL (anahtar olmayan sutunlari dahil et / Include Non-Key Columns)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_customer_covering
 <span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>)
 <span class="kw">INCLUDE</span> (total_amount);
 
-<span class="co">-- Alternatif: Tum sutunlar indeks anahtarinda</span>
+<span class="co">-- Alternatif: Tum sutunlar indeks anahtarinda (All Columns in Index Key)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_customer_covering_alt
 <span class="kw">ON</span> orders (customer_id, order_date <span class="kw">DESC</span>, total_amount);</code></pre>
 
-                        <p><strong>Neden calisiyor:</strong></p>
+                        <p><strong>Neden calisiyor (Why it works):</strong></p>
                         <ul>
-                            <li><code>customer_id</code> - Esitlik filtresi icin ilk anahtar</li>
-                            <li><code>order_date DESC</code> - Siralama icin ikinci anahtar (zaten sirada!)</li>
-                            <li><code>total_amount</code> - Tablo erisimi gerekmemesi icin dahil edilmis</li>
+                            <li><code>customer_id</code> - Esitlik filtresi (Equality Filter) icin ilk anahtar</li>
+                            <li><code>order_date DESC</code> - Siralama (Sorting) icin ikinci anahtar (zaten sirada!)</li>
+                            <li><code>total_amount</code> - Tablo erisimi (Table Access) gerekmemesi icin dahil edilmis (Included)</li>
                         </ul>
 
                         <div class="plan-output plan-good">
 <pre>Index Only Scan using idx_orders_customer_covering
   (cost=0.43..12.56 rows=10 width=16)
   Index Cond: (customer_id = 12345)
-  Heap Fetches: 0  <-- Tablo erisimi yok!</pre>
+  Heap Fetches: 0  <-- Tablo erisimi yok! (No Table Access!)</pre>
                         </div>
 
                         <div class="concept-box">
-                            <strong>INCLUDE vs Anahtar Sutunlar:</strong><br>
-                            Yalnizca SELECT'te gereken sutunlar icin <code>INCLUDE</code> kullanin (WHERE/ORDER BY'da kullanilmayan). Bu, indeks agacini daha kucuk ve hizli tutar.
+                            <strong>INCLUDE vs Anahtar Sutunlar (INCLUDE vs Key Columns):</strong><br>
+                            Yalnizca SELECT'te gereken sutunlar icin <code>INCLUDE</code> kullanin (WHERE/ORDER BY'da kullanilmayan). Bu, indeks agacini (Index Tree) daha kucuk ve hizli tutar.
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 2.4: Ifade Indeksi</h4>
-                    <p>Kullanicilar e-posta ile musteri arar, ancak arama buyuk/kucuk harf duyarsizdir:</p>
+                    <h4>Alistirma 2.4: Ifade Indeksi (Expression Index)</h4>
+                    <p>Kullanicilar e-posta ile musteri arar, ancak arama buyuk/kucuk harf duyarsizdir (Case-Insensitive):</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Mevcut yavas sorgu</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
 <span class="kw">WHERE</span> <span class="fu">LOWER</span>(email) = <span class="st">'john.doe@example.com'</span>;</code></pre>
 
-                    <p><code>email</code> uzerindeki normal bir indeks, <code>LOWER()</code> fonksiyonu nedeniyle yardimci olmaz.</p>
+                    <p><code>email</code> uzerindeki normal bir indeks (Index), <code>LOWER()</code> fonksiyonu nedeniyle yardimci olmaz.</p>
 
-                    <p><strong>Gorev:</strong> Bu buyuk/kucuk harf duyarsiz aramayi destekleyen bir indeks olusturun.</p>
+                    <p><strong>Gorev:</strong> Bu buyuk/kucuk harf duyarsiz (Case-Insensitive) aramayi destekleyen bir indeks olusturun.</p>
 
                     <button class="btn-solution" onclick="toggleSolution('sol2_4')">Cozumu Goster</button>
                     <div id="sol2_4" class="solution">
-                        <p><strong>Cozum - Ifade Indeksi:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL ifade indeksi</span>
+                        <p><strong>Cozum - Ifade Indeksi (Expression Index):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL ifade indeksi (Expression Index)</span>
 <span class="kw">CREATE INDEX</span> idx_customers_email_lower
 <span class="kw">ON</span> customers (<span class="fu">LOWER</span>(email));
 
@@ -781,18 +781,18 @@ Rows Returned: 148,532</pre>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
 <span class="kw">WHERE</span> <span class="fu">LOWER</span>(email) = <span class="fu">LOWER</span>(<span class="st">'John.Doe@Example.com'</span>);</code></pre>
 
-                        <p><strong>Alternatif yaklasimlar:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL: Buyuk/kucuk harf duyarsiz metin icin citext uzantisi kullanin</span>
+                        <p><strong>Alternatif yaklasimlar (Alternative Approaches):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL: Buyuk/kucuk harf duyarsiz metin icin citext uzantisi kullanin (Use citext extension)</span>
 <span class="kw">CREATE EXTENSION IF NOT EXISTS</span> citext;
 <span class="kw">ALTER TABLE</span> customers <span class="kw">ALTER COLUMN</span> email <span class="kw">TYPE</span> citext;
 <span class="co">-- Simdi normal indeks calisiyor: WHERE email = 'John.Doe@Example.com'</span>
 
-<span class="co">-- SQL Server: Buyuk/kucuk harf duyarsiz collation kullanin</span>
+<span class="co">-- SQL Server: Buyuk/kucuk harf duyarsiz collation kullanin (Use Case-Insensitive Collation)</span>
 <span class="kw">CREATE INDEX</span> idx_customers_email <span class="kw">ON</span> customers (email);
-<span class="co">-- Varsayilan collation genellikle buyuk/kucuk harf duyarsizdir</span></code></pre>
+<span class="co">-- Varsayilan collation genellikle buyuk/kucuk harf duyarsizdir (Default collation is usually case-insensitive)</span></code></pre>
 
                         <div class="warning-box">
-                            <strong>Onemli:</strong> Sorgu, indeksle TAMAMEN ayni ifadeyi kullanmalidir.
+                            <strong>Onemli (Important):</strong> Sorgu, indeksle TAMAMEN ayni ifadeyi (Expression) kullanmalidir.
                             <code>WHERE UPPER(email) = ...</code> bu indeksi KULLANMAZ!
                         </div>
                     </div>
@@ -801,23 +801,23 @@ Rows Returned: 148,532</pre>
 
             <!-- Bolum 3: Sorgu Yeniden Yazma -->
             <section>
-                <h2>Bolum 3: Performans Icin Sorgu Yeniden Yazma</h2>
-                <p>Yavas sorgulari optimize edilmis versiyonlara donusturun.</p>
+                <h2>Bolum 3: Performans Icin Sorgu Yeniden Yazma (Query Rewriting for Performance)</h2>
+                <p>Yavas sorgulari optimize edilmis versiyonlara (Optimized Versions) donusturun.</p>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.1: Indeksli Sutunlarda Fonksiyonlardan Kacinma</h4>
-                    <p>Bu sorgu, <code>order_date</code> uzerinde indeks olmasina ragmen yavas calisiyor:</p>
+                    <h4>Alistirma 3.1: Indeksli Sutunlarda Fonksiyonlardan Kacinma (Avoiding Functions on Indexed Columns)</h4>
+                    <p>Bu sorgu, <code>order_date</code> uzerinde indeks (Index) olmasina ragmen yavas calisiyor:</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Yavas sorgu (indeks kullanilamaz)</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> <span class="fu">YEAR</span>(order_date) = <span class="dv">2024</span>;</code></pre>
 
-                    <p><strong>Gorev:</strong> <code>order_date</code> uzerindeki indeksi kullanmak icin sorguyu yeniden yazin.</p>
+                    <p><strong>Gorev:</strong> <code>order_date</code> uzerindeki indeksi (Index) kullanmak icin sorguyu yeniden yazin (Rewrite).</p>
 
                     <button class="btn-solution" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
                     <div id="sol3_1" class="solution">
-                        <p><strong>Optimize Edilmis Sorgu:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Fonksiyon yerine aralik kosulu kullanin</span>
+                        <p><strong>Optimize Edilmis Sorgu (Optimized Query):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Fonksiyon yerine aralik kosulu kullanin (Use Range Condition Instead of Function)</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> order_date >= <span class="st">'2024-01-01'</span>
   <span class="kw">AND</span> order_date < <span class="st">'2025-01-01'</span>;</code></pre>
@@ -825,7 +825,7 @@ Rows Returned: 148,532</pre>
                         <table class="comparison-table">
                             <tr>
                                 <td class="slow" style="width: 50%;">
-                                    <strong>Once (Yavas):</strong>
+                                    <strong>Once (Yavas / Before - Slow):</strong>
                                     <div class="plan-output plan-bad">
 <pre>Seq Scan on orders
 cost=0.00..55123.00
@@ -833,7 +833,7 @@ Filter: YEAR(order_date) = 2024</pre>
                                     </div>
                                 </td>
                                 <td class="fast" style="width: 50%;">
-                                    <strong>Sonra (Hizli):</strong>
+                                    <strong>Sonra (Hizli / After - Fast):</strong>
                                     <div class="plan-output plan-good">
 <pre>Index Scan using idx_orders_date
 cost=0.43..8456.00
@@ -843,29 +843,29 @@ Index Cond: (order_date >= ... AND ...)</pre>
                             </tr>
                         </table>
 
-                        <p><strong>Daha fazla ornek:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Kotu: Sutunda fonksiyon</span>
+                        <p><strong>Daha fazla ornek (More Examples):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Kotu (Bad): Sutunda fonksiyon (Function on Column)</span>
 <span class="kw">WHERE</span> <span class="fu">DATE</span>(created_at) = <span class="st">'2024-06-15'</span>
-<span class="co">-- Iyi: Aralik kosulu</span>
+<span class="co">-- Iyi (Good): Aralik kosulu (Range Condition)</span>
 <span class="kw">WHERE</span> created_at >= <span class="st">'2024-06-15'</span> <span class="kw">AND</span> created_at < <span class="st">'2024-06-16'</span>
 
-<span class="co">-- Kotu: Sutunda hesaplama</span>
+<span class="co">-- Kotu (Bad): Sutunda hesaplama (Calculation on Column)</span>
 <span class="kw">WHERE</span> total_amount * <span class="fl">1.1</span> > <span class="dv">100</span>
-<span class="co">-- Iyi: Hesaplamayi sabite tasiyin</span>
+<span class="co">-- Iyi (Good): Hesaplamayi sabite tasiyin (Move Calculation to Constant)</span>
 <span class="kw">WHERE</span> total_amount > <span class="dv">100</span> / <span class="fl">1.1</span>
 
-<span class="co">-- Kotu: String fonksiyonu</span>
+<span class="co">-- Kotu (Bad): String fonksiyonu (String Function)</span>
 <span class="kw">WHERE</span> <span class="fu">SUBSTRING</span>(code, <span class="dv">1</span>, <span class="dv">3</span>) = <span class="st">'ABC'</span>
-<span class="co">-- Iyi: Onek ile LIKE kullanin</span>
+<span class="co">-- Iyi (Good): Onek ile LIKE kullanin (Use LIKE with Prefix)</span>
 <span class="kw">WHERE</span> code <span class="kw">LIKE</span> <span class="st">'ABC%'</span></code></pre>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.2: Iliskili Alt Sorguyu JOIN ile Degistirme</h4>
+                    <h4>Alistirma 3.2: Iliskili Alt Sorguyu (Correlated Subquery) JOIN ile Degistirme</h4>
                     <p>Bu sorgu, musterilerin en son siparislerini bulur, ancak cok yavas calisiyor:</p>
 
-                    <pre><code class="sourceCode sql"><span class="co">-- Yavas: Iliskili alt sorgu (her musteri icin bir kez calisir)</span>
+                    <pre><code class="sourceCode sql"><span class="co">-- Yavas: Iliskili alt sorgu (Correlated Subquery) (her musteri icin bir kez calisir)</span>
 <span class="kw">SELECT</span>
     c.customer_id,
     c.email,
@@ -877,12 +877,12 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">FROM</span> customers c
 <span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
 
-                    <p><strong>Gorev:</strong> Daha iyi performans icin JOIN kullanarak yeniden yazin.</p>
+                    <p><strong>Gorev:</strong> Daha iyi performans icin JOIN kullanarak yeniden yazin (Rewrite Using JOIN).</p>
 
                     <button class="btn-solution" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
                     <div id="sol3_2" class="solution">
-                        <p><strong>JOIN Kullanilarak Optimize Edilmis Sorgu:</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Hizli: JOIN ile tek toplama</span>
+                        <p><strong>JOIN Kullanilarak Optimize Edilmis Sorgu (Optimized Query Using JOIN):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Hizli: JOIN ile tek toplama (Single Aggregation with JOIN)</span>
 <span class="kw">SELECT</span>
     c.customer_id,
     c.email,
@@ -892,8 +892,8 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>
 <span class="kw">GROUP BY</span> c.customer_id, c.email;</code></pre>
 
-                        <p><strong>Window Function Kullanan Alternatif (tam siparis detaylarini alin):</strong></p>
-                        <pre><code class="sourceCode sql"><span class="co">-- Gercek en son siparisi alin, sadece tarihi degil</span>
+                        <p><strong>Window Function (Pencere Fonksiyonu) Kullanan Alternatif (tam siparis detaylarini alin):</strong></p>
+                        <pre><code class="sourceCode sql"><span class="co">-- Gercek en son siparisi alin, sadece tarihi degil (Get Actual Latest Order)</span>
 <span class="kw">WITH</span> ranked_orders <span class="kw">AS</span> (
     <span class="kw">SELECT</span>
         o.*,
@@ -914,17 +914,17 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
 
                         <div class="concept-box">
-                            <strong>Performans Karsilastirmasi:</strong><br>
+                            <strong>Performans Karsilastirmasi (Performance Comparison):</strong><br>
                             <ul class="mb-0">
-                                <li>Iliskili alt sorgu: O(musteriler x siparisler) - HER musteri icin alt sorgu calistirir</li>
-                                <li>JOIN yaklasimi: O(musteriler + siparisler) - her tablodan tek gecis</li>
+                                <li>Iliskili alt sorgu (Correlated Subquery): O(musteriler x siparisler) - HER musteri icin alt sorgu calistirir</li>
+                                <li>JOIN yaklasimi (JOIN Approach): O(musteriler + siparisler) - her tablodan tek gecis (Single Pass)</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="exercise-box">
-                    <h4>Alistirma 3.3: EXISTS vs IN vs JOIN</h4>
+                    <h4>Alistirma 3.3: EXISTS vs IN vs JOIN Karsilastirmasi</h4>
                     <p>En az bir siparis vermis tum musterileri bulun. Uc yaklasimi karsilastirin:</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Yaklasim 1: IN alt sorgusu</span>

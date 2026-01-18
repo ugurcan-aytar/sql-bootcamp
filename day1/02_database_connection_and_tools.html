@@ -76,7 +76,7 @@
         <p>For the hands-on exercises in this training, we will primarily use a PostgreSQL database environment. This
           specific setup includes:</p>
         <p><strong>Database Configuration</strong>: - PostgreSQL version: Latest stable release - Extensions enabled:
-          Various extensions for enhanced functionality - Sample data: Odoo example database with multiple schemas -
+          Various extensions for enhanced functionality - Sample data: ERP example database with multiple schemas -
           Data
           types: Standard types plus specialized types including JSON columns</p>
         <p><strong>User Roles</strong>: - Admin role: Full privileges for database management and manipulation -
@@ -115,6 +115,656 @@
           <strong>Note:</strong> Neon provides a browser-based SQL editor, so you don't need to install any database tools on your local machine. Simply log in and start writing queries!
         </div>
       </section>
+
+      <!-- ============================================== -->
+      <!-- UNDERSTANDING OUR TRAINING DATABASE SECTION -->
+      <!-- ============================================== -->
+      <section>
+        <h3 id="understanding-bootcamp-database">Understanding Our Training Database</h3>
+        <p>Before we start writing queries, let's take a tour of the database we'll be using throughout this bootcamp. Think of this database as a <strong>small business ecosystem</strong> that includes everything a real company might need.</p>
+
+        <div class="alert alert-success">
+          <strong>Why This Matters:</strong> Understanding the data structure helps you write better queries. You'll know where to find information and how different pieces connect to each other.
+        </div>
+
+        <h4>🏢 The Big Picture: Our Business World</h4>
+        <p>Imagine a company that sells various products (electronics, clothing, books, etc.) to customers around the world. This company needs to track:</p>
+        <ul>
+          <li>Who are our <strong>customers</strong>?</li>
+          <li>What <strong>products</strong> do we sell?</li>
+          <li>Who <strong>supplies</strong> these products?</li>
+          <li>What <strong>orders</strong> have been placed?</li>
+          <li>Who <strong>works</strong> for us?</li>
+          <li>How is our <strong>inventory</strong> managed?</li>
+        </ul>
+
+        <p>Our database organizes this information into <strong>tables</strong> (like spreadsheets) that are connected to each other. Let's explore them one by one.</p>
+      </section>
+
+      <section>
+        <h4>📊 Core Tables: The Foundation</h4>
+        <p>These are the main tables you'll work with most often:</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-primary text-white">
+                <strong>🌍 Countries</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Reference data for world countries</em></p>
+                <p>Contains 30 countries with their codes (TR, US, DE...) and regions (Europe, Asia...). Other tables point here to say "this customer is from Turkey" or "this supplier is in Germany".</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Example row:
+┌────┬──────┬─────────┬────────┐
+│ id │ code │  name   │ region │
+├────┼──────┼─────────┼────────┤
+│  1 │ TR   │ Turkey  │ Europe │
+│  2 │ DE   │ Germany │ Europe │
+│  3 │ US   │ United..│ N.Amer │
+└────┴──────┴─────────┴────────┘</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-success text-white">
+                <strong>👥 Customers</strong>
+              </div>
+              <div class="card-body">
+                <p><em>People and companies who buy from us</em></p>
+                <p>50 customers with names, emails, addresses, and types (individual, business, VIP). Some have credit limits, some are active, some inactive.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Example row:
+┌────┬──────────────────┬──────────┐
+│ id │      name        │   type   │
+├────┼──────────────────┼──────────┤
+│  1 │ Acme Corporation │ business │
+│  2 │ John Doe         │ individual│
+│  6 │ Global Trade Ltd │ vip      │
+└────┴──────────────────┴──────────┘</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-info text-white">
+                <strong>📦 Products</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Items we sell</em></p>
+                <p>Laptops, phones, clothing, books... Each product has a price, cost, stock quantity, and belongs to a category. Special feature: <code>attributes</code> column stores extra details in JSON format!</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Example row:
+┌────┬───────────────────┬─────────┐
+│ id │       name        │  price  │
+├────┼───────────────────┼─────────┤
+│  1 │ ProBook Laptop 15"│ 1299.99 │
+│  5 │ SmartPhone Pro Max│ 1199.99 │
+└────┴───────────────────┴─────────┘</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-warning">
+                <strong>📂 Categories</strong>
+              </div>
+              <div class="card-body">
+                <p><em>How products are organized</em></p>
+                <p>Categories form a <strong>tree structure</strong>. "Electronics" is a parent, "Computers" and "Smartphones" are its children. This helps organize products logically.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Category Tree:
+Electronics (id=1)
+  ├── Computers (id=2)
+  ├── Smartphones (id=3)
+  └── Audio (id=4)
+Clothing (id=5)
+  ├── Men's (id=6)
+  ├── Women's (id=7)
+  └── Kids' (id=8)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-secondary text-white">
+                <strong>🏭 Suppliers</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Companies that provide our products</em></p>
+                <p>15 suppliers from different countries. We track their contact info, payment terms (how many days to pay), and rating (quality score from 0-5).</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Example row:
+┌────┬─────────────────────┬────────┐
+│ id │    company_name     │ rating │
+├────┼─────────────────────┼────────┤
+│  1 │ TechWorld Supplies  │  4.5   │
+│ 13 │ Japan Quality Inc   │  4.9   │
+└────┴─────────────────────┴────────┘</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-danger text-white">
+                <strong>🧾 Orders & Order Lines</strong>
+              </div>
+              <div class="card-body">
+                <p><em>What customers have purchased</em></p>
+                <p><strong>Orders</strong>: The "header" - who ordered, when, total amount, status (draft, shipped, delivered...).<br>
+                <strong>Order Lines</strong>: The "details" - which products, quantities, prices in that order.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+One Order → Many Lines:
+Order #ORD-2024-0001
+  ├── Line 1: Laptop × 2
+  ├── Line 2: Mouse × 1
+  └── Line 3: Keyboard × 1</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>🔗 How Tables Connect: Relationships</h4>
+        <p>Tables don't exist in isolation. They <strong>reference</strong> each other. This is what makes a <em>relational</em> database powerful.</p>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; font-size: 0.9em;">
+┌─────────────┐         ┌─────────────┐         ┌─────────────┐
+│  COUNTRIES  │◄────────│  CUSTOMERS  │────────►│   ORDERS    │
+│             │         │             │         │             │
+│ id ●────────┼─────────│ country_id  │         │ customer_id │
+│ code        │         │ name        │         │ order_date  │
+│ name        │         │ email       │         │ status      │
+│ region      │         │ type        │         │ total       │
+└─────────────┘         └─────────────┘         └──────┬──────┘
+                                                       │
+       ┌─────────────┐         ┌─────────────┐         │
+       │  SUPPLIERS  │◄────────│  PRODUCTS   │         │
+       │             │         │             │         │
+       │ id ●────────┼─────────│ supplier_id │         │
+       │ company_name│         │ category_id─┼────►┌───┴───────┐
+       │ rating      │         │ name        │     │ORDER_LINES│
+       └─────────────┘         │ price ●─────┼─────│           │
+                               │ stock       │     │ order_id  │
+                               └─────────────┘     │ product_id│
+                                      ▲            │ quantity  │
+                               ┌──────┴──────┐     │ unit_price│
+                               │ CATEGORIES  │     └───────────┘
+                               │             │
+                               │ id          │
+                               │ name        │
+                               │ parent_id ──┼──► (self-reference for hierarchy)
+                               └─────────────┘
+
+● = Primary Key (unique identifier)
+────► = Foreign Key (reference to another table)
+</pre>
+          </div>
+        </div>
+
+        <p><strong>Reading the diagram:</strong></p>
+        <ul>
+          <li>A <strong>Customer</strong> belongs to a <strong>Country</strong> (via <code>country_id</code>)</li>
+          <li>An <strong>Order</strong> belongs to a <strong>Customer</strong> (via <code>customer_id</code>)</li>
+          <li>An <strong>Order Line</strong> belongs to both an <strong>Order</strong> and a <strong>Product</strong></li>
+          <li>A <strong>Product</strong> belongs to a <strong>Category</strong> and a <strong>Supplier</strong></li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>👔 Employees: A Special Table</h4>
+        <p>The <code>employees</code> table has an interesting feature: it references <strong>itself</strong>! This is called a <em>self-referencing</em> relationship.</p>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <pre style="background: #f8f9fa; color: #212529; padding: 15px; border-radius: 5px;">
+Employee Hierarchy (manager_id points to another employee):
+
+                    ┌─────────────────┐
+                    │   CEO (id=1)    │
+                    │  manager_id=NULL│
+                    └────────┬────────┘
+                             │
+            ┌────────────────┼────────────────┐
+            ▼                ▼                ▼
+    ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+    │ Sales Dir (2) │ │ Tech Dir (3)  │ │ HR Dir (4)    │
+    │ manager_id=1  │ │ manager_id=1  │ │ manager_id=1  │
+    └───────┬───────┘ └───────┬───────┘ └───────────────┘
+            │                 │
+    ┌───────┴───────┐ ┌───────┴───────┐
+    ▼               ▼ ▼               ▼
+┌─────────┐   ┌─────────┐   ┌─────────┐
+│ Rep (5) │   │ Dev (6) │   │ Dev (7) │
+│ mgr=2   │   │ mgr=3   │   │ mgr=3   │
+└─────────┘   └─────────┘   └─────────┘</pre>
+            <p class="mt-2">This allows us to answer questions like "Who reports to whom?" and "Show me all employees under a specific manager."</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>🏛️ Schemas: Organizing Tables into Groups</h4>
+        <p>Our database uses <strong>schemas</strong> to organize tables into logical groups. Think of schemas as folders in a file system.</p>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>public</strong> (default)
+              </div>
+              <div class="card-body">
+                <p><em>Core business tables</em></p>
+                <ul class="small">
+                  <li>countries</li>
+                  <li>customers</li>
+                  <li>products</li>
+                  <li>categories</li>
+                  <li>suppliers</li>
+                  <li>orders</li>
+                  <li>order_lines</li>
+                  <li>employees</li>
+                  <li>accounts</li>
+                  <li>account_transactions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>library</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Library management system</em></p>
+                <ul class="small">
+                  <li>authors</li>
+                  <li>books</li>
+                  <li>book_authors</li>
+                  <li>book_copies</li>
+                  <li>members</li>
+                  <li>loans</li>
+                  <li>reservations</li>
+                </ul>
+                <p class="text-muted small">Used for normalization examples on Day 3</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>hr</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Human Resources</em></p>
+                <ul class="small">
+                  <li>departments</li>
+                  <li>positions</li>
+                  <li>employee_records</li>
+                  <li>salary_history</li>
+                  <li>performance_reviews</li>
+                </ul>
+                <p class="text-muted small">Advanced exercises with joins</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>sales</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Sales team management</em></p>
+                <ul class="small">
+                  <li>regions</li>
+                  <li>representatives</li>
+                  <li>targets</li>
+                  <li>quotes</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>inventory</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Stock & warehouse management</em></p>
+                <ul class="small">
+                  <li>warehouses</li>
+                  <li>warehouse_stock</li>
+                  <li>purchase_orders</li>
+                  <li>purchase_order_lines</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>analytics</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Business intelligence</em></p>
+                <ul class="small">
+                  <li>daily_sales</li>
+                  <li>customer_segments</li>
+                  <li>product_metrics</li>
+                </ul>
+                <p class="text-muted small">Window functions & CTEs</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>Accessing schema tables:</strong> Use <code>schema_name.table_name</code> syntax. For example: <code>SELECT * FROM library.books;</code> or <code>SELECT * FROM hr.departments;</code>
+        </div>
+      </section>
+
+      <section>
+        <h4>🏭 ERP Tables: Real-World Business System</h4>
+        <p>Our database also includes tables that mirror <strong>ERP</strong> (a popular open-source business management system). These tables follow ERP's naming conventions and show how enterprise software organizes data.</p>
+
+        <div class="alert alert-secondary">
+          <strong>Why include ERP tables?</strong> Many companies use ERP systems like Odoo, SAP, or Oracle. Learning these patterns prepares you for real-world database work.
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>👤 res_partner</strong>
+              </div>
+              <div class="card-body">
+                <p><em>The "Universal Contact" table</em></p>
+                <p>In ERP, <strong>one table stores ALL contacts</strong>: customers, suppliers, employees, and contact persons. The type is determined by fields like <code>customer_rank</code> and <code>supplier_rank</code>.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Key fields:
+• is_company: true/false (company vs person)
+• customer_rank: >0 means customer
+• supplier_rank: >0 means supplier
+• parent_id: links contact to company</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>📦 product_template & product_product</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Two-level product structure</em></p>
+                <p><strong>product_template</strong>: The "master" product (e.g., "T-Shirt")<br>
+                <strong>product_product</strong>: Variants (e.g., "T-Shirt - Red - Large")</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+product_template (id=1, name="T-Shirt")
+  └── product_product (id=1, color=Red, size=S)
+  └── product_product (id=2, color=Red, size=M)
+  └── product_product (id=3, color=Blue, size=S)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>🛒 sale_order & sale_order_line</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Sales Order management</em></p>
+                <p>Similar to our orders/order_lines but with ERP-specific fields like <code>state</code> (draft, sent, sale, done, cancel) and workflow tracking.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+ERP order states:
+draft → sent → sale → done
+              ↘ cancel</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>📋 purchase_order & purchase_order_line</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Purchasing from suppliers</em></p>
+                <p>The "buying" side - when your company orders from suppliers. Mirrors sales but tracks incoming goods and supplier invoices.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Purchase states:
+draft → sent → purchase → done
+         (to supplier)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>🏪 stock_warehouse & stock_location</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Where products are stored</em></p>
+                <p><strong>Warehouse</strong>: Physical building (Main Warehouse, East Coast...)<br>
+                <strong>Location</strong>: Specific spots inside (Shelf A, Row 3, Bin 5)</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Main Warehouse (WH)
+  ├── WH/Stock (physical storage)
+  ├── WH/Input (receiving area)
+  └── WH/Output (shipping area)</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>📊 stock_quant & stock_move</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Inventory tracking</em></p>
+                <p><strong>stock_quant</strong>: Current inventory levels (how many of product X are at location Y)<br>
+                <strong>stock_move</strong>: Movement history (transfers, receipts, deliveries)</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+stock_quant: "What's here now?"
+stock_move:  "How did it get here?"</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>🚚 stock_picking</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Delivery/Receipt documents</em></p>
+                <p>Groups multiple stock moves into a single operation. When you ship an order, a "picking" document is created with all the items being sent.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Picking types:
+• Receipts (incoming goods)
+• Deliveries (outgoing goods)
+• Internal transfers</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>💰 account_move & account_move_line</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Accounting entries (Invoices, Bills, Journal Entries)</em></p>
+                <p>In ERP, invoices are stored as accounting moves. <code>move_type</code> tells you if it's a customer invoice, vendor bill, or journal entry.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+move_type values:
+• out_invoice (customer invoice)
+• in_invoice (vendor bill)
+• entry (journal entry)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5>📐 ERP Tables Relationship Diagram</h5>
+        <div class="card mb-3">
+          <div class="card-body">
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; font-size: 0.85em;">
+                              ┌────────────────┐
+                              │  res_partner   │  ← All contacts in ONE table
+                              │  (customers,   │
+                              │   suppliers,   │
+                              │   contacts)    │
+                              └───────┬────────┘
+                    ┌─────────────────┼─────────────────┐
+                    ▼                 ▼                 ▼
+            ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+            │  sale_order   │ │purchase_order │ │ account_move  │
+            │  (selling)    │ │  (buying)     │ │  (invoices)   │
+            └───────┬───────┘ └───────┬───────┘ └───────────────┘
+                    │                 │
+                    ▼                 ▼
+            ┌───────────────┐ ┌───────────────┐
+            │sale_order_line│ │purch_ord_line │
+            └───────┬───────┘ └───────┬───────┘
+                    │                 │
+                    └────────┬────────┘
+                             ▼
+                    ┌───────────────┐     ┌───────────────┐
+                    │ stock_picking │────►│  stock_move   │
+                    │  (shipments)  │     │ (movements)   │
+                    └───────────────┘     └───────┬───────┘
+                                                  ▼
+┌─────────────────┐      ┌─────────────────┐     ┌───────────────┐
+│product_template │─────►│ product_product │────►│  stock_quant  │
+│ (master record) │      │   (variants)    │     │ (inventory)   │
+└─────────────────┘      └─────────────────┘     └───────────────┘
+</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>✨ Special Features in Our Data</h4>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>📋 JSON Data</strong>
+              </div>
+              <div class="card-body">
+                <p>The <code>products.attributes</code> column stores structured data in JSON format:</p>
+                <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+{
+  "brand": "TechPro",
+  "processor": "Intel i7",
+  "ram": "16GB DDR5",
+  "warranty_months": 24
+}</pre>
+                <p class="small text-muted">Perfect for learning PostgreSQL's JSON features!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>🏷️ Array Data</strong>
+              </div>
+              <div class="card-body">
+                <p>The <code>products.tags</code> column stores multiple values in an array:</p>
+                <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+tags = ['laptop', 'business', 'portable']
+
+-- Or for a phone:
+tags = ['smartphone', 'flagship', '5g']</pre>
+                <p class="small text-muted">Great for learning array operations!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>📅 Date Range Data</strong>
+              </div>
+              <div class="card-body">
+                <p>Orders span from <strong>2021 to 2024</strong>, allowing you to practice:</p>
+                <ul class="small">
+                  <li>Date filtering and comparisons</li>
+                  <li>Monthly/yearly aggregations</li>
+                  <li>Trend analysis over time</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>⚠️ Real-World Scenarios</strong>
+              </div>
+              <div class="card-body">
+                <p>The data includes intentional "imperfections" like real data has:</p>
+                <ul class="small">
+                  <li>NULL values (missing emails, phones)</li>
+                  <li>Inactive/suspended customers</li>
+                  <li>Customers with no orders</li>
+                  <li>Various order statuses</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>🎯 Quick Reference: Table Counts</h4>
+        <table class="table table-bordered table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Table</th>
+              <th>Approximate Records</th>
+              <th>Primary Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>countries</td><td>30</td><td>Reference data</td></tr>
+            <tr><td>customers</td><td>50</td><td>Customer management</td></tr>
+            <tr><td>categories</td><td>22</td><td>Product organization</td></tr>
+            <tr><td>suppliers</td><td>15</td><td>Vendor management</td></tr>
+            <tr><td>products</td><td>50+</td><td>Product catalog</td></tr>
+            <tr><td>orders</td><td>200+</td><td>Sales transactions</td></tr>
+            <tr><td>order_lines</td><td>500+</td><td>Order details</td></tr>
+            <tr><td>employees</td><td>30+</td><td>HR & hierarchy</td></tr>
+          </tbody>
+        </table>
+
+        <div class="alert alert-warning">
+          <strong>Ready to explore?</strong> In the next sessions, you'll write SQL queries to extract insights from this data. Start with simple SELECTs and gradually build up to complex JOINs and analytics!
+        </div>
+      </section>
+      <!-- END OF DATABASE OVERVIEW SECTION -->
+
       <section>
         <h3 id="general-connection-concepts">General Connection Concepts</h3>
         <p>Regardless of the specific RDBMS, connecting to a database requires providing several key pieces of

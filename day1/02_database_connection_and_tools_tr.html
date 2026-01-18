@@ -77,7 +77,7 @@
         <p>Bu egitimdeki uygulamali calismalarda oncelikli olarak PostgreSQL veritabani ortami kullanacagiz. Bu
           ozel kurulum sunlari icerir:</p>
         <p><strong>Veritabani (Database) Yapilandirmasi (Configuration)</strong>: - PostgreSQL surumu: En son kararli surum - Etkinlestirilen
-          uzantilar (extensions): Gelismis islevsellik icin cesitli uzantilar - Ornek veri: Birden fazla semaya (schema) sahip Odoo
+          uzantilar (extensions): Gelismis islevsellik icin cesitli uzantilar - Ornek veri: Birden fazla semaya (schema) sahip ERP
           ornek veritabani - Veri tipleri (data types): JSON sutunlari (columns) dahil standart tipler artis ozel tipler</p>
         <p><strong>Kullanici (User) Rolleri (Roles)</strong>: - Yonetici (Admin) rolu: Veritabani yonetimi ve manipulasyonu icin tam
           yetkiler - Salt okunur (Read-only) rol: Guvenli veri kesfetme icin yalnizca SELECT yetkileri</p>
@@ -117,6 +117,656 @@
           herhangi bir veritabani araci yuklemenize gerek yoktur. Sadece giris yapin ve sorgu (query) yazmaya baslayin!
         </div>
       </section>
+
+      <!-- ============================================== -->
+      <!-- EGITIM VERITABANINI ANLAMA BOLUMU -->
+      <!-- ============================================== -->
+      <section>
+        <h3 id="understanding-bootcamp-database">Egitim Veritabanimizi Anlama</h3>
+        <p>Sorgu yazmaya baslamadan once, bu bootcamp boyunca kullanacagimiz veritabanini taniyalim. Bu veritabanini gercek bir sirketin ihtiyac duyabilecegi her seyi iceren bir <strong>kucuk isletme ekosistemi</strong> olarak dusunebilirsiniz.</p>
+
+        <div class="alert alert-success">
+          <strong>Neden Onemli:</strong> Veri yapisini anlamak daha iyi sorgular yazmaniza yardimci olur. Bilgileri nerede bulacaginizi ve farkli parcalarin birbirine nasil baglandigini bilirsiniz.
+        </div>
+
+        <h4>🏢 Buyuk Resim: Is Dunyamiz</h4>
+        <p>Dunya genelinde musterilere cesitli urunler (elektronik, giyim, kitap vb.) satan bir sirket hayal edin. Bu sirketin izlemesi gerekenler:</p>
+        <ul>
+          <li><strong>Musterilerimiz</strong> kimler?</li>
+          <li>Hangi <strong>urunleri</strong> satiyoruz?</li>
+          <li>Bu urunleri kim <strong>tedarik</strong> ediyor?</li>
+          <li>Hangi <strong>siparisler</strong> verildi?</li>
+          <li>Bizim icin kim <strong>calisiyor</strong>?</li>
+          <li><strong>Envanter</strong> nasil yonetiliyor?</li>
+        </ul>
+
+        <p>Veritabanimiz bu bilgileri birbirine bagli <strong>tablolara</strong> (elektronik tablolar gibi) duzenler. Bunlari tek tek kesfedelim.</p>
+      </section>
+
+      <section>
+        <h4>📊 Temel Tablolar: Temel Yapi</h4>
+        <p>En sik calisacaginiz ana tablolar bunlardir:</p>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-primary text-white">
+                <strong>🌍 Countries (Ulkeler)</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Dunya ulkeleri icin referans verisi</em></p>
+                <p>Kodlari (TR, US, DE...) ve bolgeleri (Avrupa, Asya...) ile 30 ulke icerir. Diger tablolar "bu musteri Turkiye'den" veya "bu tedarikci Almanya'da" demek icin buraya isaret eder.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Ornek satir:
+┌────┬──────┬─────────┬────────┐
+│ id │ code │  name   │ region │
+├────┼──────┼─────────┼────────┤
+│  1 │ TR   │ Turkey  │ Europe │
+│  2 │ DE   │ Germany │ Europe │
+│  3 │ US   │ United..│ N.Amer │
+└────┴──────┴─────────┴────────┘</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-success text-white">
+                <strong>👥 Customers (Musteriler)</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Bizden alisveris yapan kisiler ve sirketler</em></p>
+                <p>Isimleri, e-postalari, adresleri ve turleri (bireysel, kurumsal, VIP) ile 50 musteri. Bazilarin kredi limiti var, bazilari aktif, bazilari inaktif.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Ornek satir:
+┌────┬──────────────────┬──────────┐
+│ id │      name        │   type   │
+├────┼──────────────────┼──────────┤
+│  1 │ Acme Corporation │ business │
+│  2 │ John Doe         │ individual│
+│  6 │ Global Trade Ltd │ vip      │
+└────┴──────────────────┴──────────┘</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-info text-white">
+                <strong>📦 Products (Urunler)</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Sattigimiz urunler</em></p>
+                <p>Dizustu bilgisayarlar, telefonlar, giysiler, kitaplar... Her urunun fiyati, maliyeti, stok miktari vardir ve bir kategoriye aittir. Ozel ozellik: <code>attributes</code> sutunu ekstra ayrintilari JSON formatinda saklar!</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Ornek satir:
+┌────┬───────────────────┬─────────┐
+│ id │       name        │  price  │
+├────┼───────────────────┼─────────┤
+│  1 │ ProBook Laptop 15"│ 1299.99 │
+│  5 │ SmartPhone Pro Max│ 1199.99 │
+└────┴───────────────────┴─────────┘</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-warning">
+                <strong>📂 Categories (Kategoriler)</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Urunler nasil duzenleniyor</em></p>
+                <p>Kategoriler bir <strong>agac yapisi</strong> olusturur. "Elektronik" ust kategori, "Bilgisayarlar" ve "Telefonlar" onun alt kategorileridir. Bu, urunleri mantiksal olarak duzenlemeye yardimci olur.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Kategori Agaci:
+Electronics (id=1)
+  ├── Computers (id=2)
+  ├── Smartphones (id=3)
+  └── Audio (id=4)
+Clothing (id=5)
+  ├── Men's (id=6)
+  ├── Women's (id=7)
+  └── Kids' (id=8)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-secondary text-white">
+                <strong>🏭 Suppliers (Tedarikciler)</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Urunlerimizi saglayan sirketler</em></p>
+                <p>Farkli ulkelerden 15 tedarikci. Iletisim bilgilerini, odeme kosullarini (kac gun icinde odeme) ve derecelendirmeyi (0-5 arasi kalite puani) takip ediyoruz.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Ornek satir:
+┌────┬─────────────────────┬────────┐
+│ id │    company_name     │ rating │
+├────┼─────────────────────┼────────┤
+│  1 │ TechWorld Supplies  │  4.5   │
+│ 13 │ Japan Quality Inc   │  4.9   │
+└────┴─────────────────────┴────────┘</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-danger text-white">
+                <strong>🧾 Orders & Order Lines (Siparisler ve Siparis Satirlari)</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Musterilerin satin aldiklari</em></p>
+                <p><strong>Orders (Siparisler)</strong>: "Baslik" - kim siparis verdi, ne zaman, toplam tutar, durum (taslak, kargoda, teslim edildi...).<br>
+                <strong>Order Lines (Siparis Satirlari)</strong>: "Detaylar" - o siparisteki hangi urunler, miktarlar, fiyatlar.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Bir Siparis → Birden Fazla Satir:
+Siparis #ORD-2024-0001
+  ├── Satir 1: Laptop × 2
+  ├── Satir 2: Mouse × 1
+  └── Satir 3: Klavye × 1</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>🔗 Tablolar Nasil Baglaniyor: Iliskiler</h4>
+        <p>Tablolar izole olarak var olmaz. Birbirlerine <strong>referans</strong> verirler. <em>Iliskisel</em> veritabanini guclu kilan budur.</p>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; font-size: 0.9em;">
+┌─────────────┐         ┌─────────────┐         ┌─────────────┐
+│  COUNTRIES  │◄────────│  CUSTOMERS  │────────►│   ORDERS    │
+│  (Ulkeler)  │         │ (Musteriler)│         │ (Siparisler)│
+│ id ●────────┼─────────│ country_id  │         │ customer_id │
+│ code        │         │ name        │         │ order_date  │
+│ name        │         │ email       │         │ status      │
+│ region      │         │ type        │         │ total       │
+└─────────────┘         └─────────────┘         └──────┬──────┘
+                                                       │
+       ┌─────────────┐         ┌─────────────┐         │
+       │  SUPPLIERS  │◄────────│  PRODUCTS   │         │
+       │(Tedarikciler)│         │  (Urunler)  │         │
+       │ id ●────────┼─────────│ supplier_id │         │
+       │ company_name│         │ category_id─┼────►┌───┴───────┐
+       │ rating      │         │ name        │     │ORDER_LINES│
+       └─────────────┘         │ price ●─────┼─────│(Sip.Satir)│
+                               │ stock       │     │ order_id  │
+                               └─────────────┘     │ product_id│
+                                      ▲            │ quantity  │
+                               ┌──────┴──────┐     │ unit_price│
+                               │ CATEGORIES  │     └───────────┘
+                               │(Kategoriler)│
+                               │ id          │
+                               │ name        │
+                               │ parent_id ──┼──► (hiyerarsi icin kendi kendine referans)
+                               └─────────────┘
+
+● = Birincil Anahtar (Primary Key - benzersiz tanimlayici)
+────► = Yabanci Anahtar (Foreign Key - baska tabloya referans)
+</pre>
+          </div>
+        </div>
+
+        <p><strong>Diyagrami okuma:</strong></p>
+        <ul>
+          <li>Bir <strong>Musteri (Customer)</strong> bir <strong>Ulkeye (Country)</strong> aittir (<code>country_id</code> ile)</li>
+          <li>Bir <strong>Siparis (Order)</strong> bir <strong>Musteriye (Customer)</strong> aittir (<code>customer_id</code> ile)</li>
+          <li>Bir <strong>Siparis Satiri (Order Line)</strong> hem bir <strong>Siparise (Order)</strong> hem de bir <strong>Urune (Product)</strong> aittir</li>
+          <li>Bir <strong>Urun (Product)</strong> bir <strong>Kategoriye (Category)</strong> ve bir <strong>Tedarikciye (Supplier)</strong> aittir</li>
+        </ul>
+      </section>
+
+      <section>
+        <h4>👔 Employees (Calisanlar): Ozel Bir Tablo</h4>
+        <p><code>employees</code> tablosu ilginc bir ozelligi var: <strong>kendisine</strong> referans verir! Buna <em>kendi kendine referans</em> iliskisi denir.</p>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <pre style="background: #f8f9fa; color: #212529; padding: 15px; border-radius: 5px;">
+Calisan Hiyerarsisi (manager_id baska bir calisana isaret eder):
+
+                    ┌─────────────────┐
+                    │   CEO (id=1)    │
+                    │  manager_id=NULL│
+                    └────────┬────────┘
+                             │
+            ┌────────────────┼────────────────┐
+            ▼                ▼                ▼
+    ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+    │ Satis Dir (2) │ │ Teknik Dir(3) │ │ IK Dir (4)    │
+    │ manager_id=1  │ │ manager_id=1  │ │ manager_id=1  │
+    └───────┬───────┘ └───────┬───────┘ └───────────────┘
+            │                 │
+    ┌───────┴───────┐ ┌───────┴───────┐
+    ▼               ▼ ▼               ▼
+┌─────────┐   ┌─────────┐   ┌─────────┐
+│ Sat.(5) │   │ Gel.(6) │   │ Gel.(7) │
+│ mgr=2   │   │ mgr=3   │   │ mgr=3   │
+└─────────┘   └─────────┘   └─────────┘</pre>
+            <p class="mt-2">Bu, "Kim kime rapor veriyor?" ve "Belirli bir yoneticinin altindaki tum calisanlari goster" gibi sorulari cevaplamamizi saglar.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>🏛️ Schemas (Semalar): Tablolari Gruplara Ayirma</h4>
+        <p>Veritabanimiz tablolari mantiksal gruplara ayirmak icin <strong>semalar (schemas)</strong> kullanir. Semalari bir dosya sistemindeki klasorler gibi dusunun.</p>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>public</strong> (varsayilan)
+              </div>
+              <div class="card-body">
+                <p><em>Temel is tablolari</em></p>
+                <ul class="small">
+                  <li>countries (ulkeler)</li>
+                  <li>customers (musteriler)</li>
+                  <li>products (urunler)</li>
+                  <li>categories (kategoriler)</li>
+                  <li>suppliers (tedarikciler)</li>
+                  <li>orders (siparisler)</li>
+                  <li>order_lines (siparis satirlari)</li>
+                  <li>employees (calisanlar)</li>
+                  <li>accounts (hesaplar)</li>
+                  <li>account_transactions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>library</strong> (kutuphane)
+              </div>
+              <div class="card-body">
+                <p><em>Kutuphane yonetim sistemi</em></p>
+                <ul class="small">
+                  <li>authors (yazarlar)</li>
+                  <li>books (kitaplar)</li>
+                  <li>book_authors (kitap-yazar)</li>
+                  <li>book_copies (kitap kopyalari)</li>
+                  <li>members (uyeler)</li>
+                  <li>loans (odunc almalar)</li>
+                  <li>reservations (rezervasyonlar)</li>
+                </ul>
+                <p class="text-muted small">Gun 3'te normalizasyon ornekleri icin kullanilir</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>hr</strong> (insan kaynaklari)
+              </div>
+              <div class="card-body">
+                <p><em>Insan Kaynaklari</em></p>
+                <ul class="small">
+                  <li>departments (departmanlar)</li>
+                  <li>positions (pozisyonlar)</li>
+                  <li>employee_records</li>
+                  <li>salary_history (maas gecmisi)</li>
+                  <li>performance_reviews</li>
+                </ul>
+                <p class="text-muted small">Join'lerle ileri seviye alistirmalar</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>sales</strong> (satis)
+              </div>
+              <div class="card-body">
+                <p><em>Satis ekibi yonetimi</em></p>
+                <ul class="small">
+                  <li>regions (bolgeler)</li>
+                  <li>representatives (temsilciler)</li>
+                  <li>targets (hedefler)</li>
+                  <li>quotes (teklifler)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>inventory</strong> (envanter)
+              </div>
+              <div class="card-body">
+                <p><em>Stok ve depo yonetimi</em></p>
+                <ul class="small">
+                  <li>warehouses (depolar)</li>
+                  <li>warehouse_stock (depo stoku)</li>
+                  <li>purchase_orders (satin alma)</li>
+                  <li>purchase_order_lines</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3 h-100">
+              <div class="card-header bg-dark text-white">
+                <strong>analytics</strong> (analitik)
+              </div>
+              <div class="card-body">
+                <p><em>Is zekasi</em></p>
+                <ul class="small">
+                  <li>daily_sales (gunluk satis)</li>
+                  <li>customer_segments</li>
+                  <li>product_metrics</li>
+                </ul>
+                <p class="text-muted small">Pencere fonksiyonlari ve CTE'ler</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>Sema tablolarina erisim:</strong> <code>sema_adi.tablo_adi</code> sozdizimini kullanin. Ornegin: <code>SELECT * FROM library.books;</code> veya <code>SELECT * FROM hr.departments;</code>
+        </div>
+      </section>
+
+      <section>
+        <h4>🏭 ERP Tablolari: Gercek Dunya Is Sistemi</h4>
+        <p>Veritabanimiz ayrica <strong> ERP</strong>'yi (populer acik kaynakli is yonetim sistemi) yansitan tablolar da icerir. Bu tablolar ERP'nin adlandirma kurallarina uyar ve kurumsal yazilimlarin verileri nasil duzenledigini gosterir.</p>
+
+        <div class="alert alert-secondary">
+          <strong>Neden ERP tablolari dahil edildi?</strong> Bircok sirket ERP, SAP veya Oracle gibi ERP sistemleri kullanir. Bu kaliplari ogrenmek sizi gercek dunya veritabani calismalarina hazirlar.
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>👤 res_partner</strong>
+              </div>
+              <div class="card-body">
+                <p><em>"Evrensel Iletisim" tablosu</em></p>
+                <p>ERP'de <strong>tek bir tablo TUM iletisimleri saklar</strong>: musteriler, tedarikciler, calisanlar ve irtibat kisileri. Tur, <code>customer_rank</code> ve <code>supplier_rank</code> gibi alanlarla belirlenir.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Temel alanlar:
+• is_company: true/false (sirket vs kisi)
+• customer_rank: >0 ise musteri
+• supplier_rank: >0 ise tedarikci
+• parent_id: irtibati sirkete baglar</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>📦 product_template & product_product</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Iki seviyeli urun yapisi</em></p>
+                <p><strong>product_template</strong>: "Ana" urun (ornegin, "Tisort")<br>
+                <strong>product_product</strong>: Varyantlar (ornegin, "Tisort - Kirmizi - Large")</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+product_template (id=1, name="Tisort")
+  └── product_product (id=1, renk=Kirmizi, beden=S)
+  └── product_product (id=2, renk=Kirmizi, beden=M)
+  └── product_product (id=3, renk=Mavi, beden=S)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>🛒 sale_order & sale_order_line</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Satis Siparisi yonetimi</em></p>
+                <p>orders/order_lines'a benzer ancak <code>state</code> (taslak, gonderildi, satis, tamamlandi, iptal) gibi ERP'ye ozgu alanlar ve is akisi takibi icerir.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+ERP siparis durumlari:
+draft → sent → sale → done
+              ↘ cancel</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>📋 purchase_order & purchase_order_line</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Tedarikcilerden satin alma</em></p>
+                <p>"Satin alma" tarafi - sirketiniz tedarikcilerden siparis verdiginde. Satisi yansitir ancak gelen mallari ve tedarikci faturalarini takip eder.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Satin alma durumlari:
+draft → sent → purchase → done
+         (tedarikciye)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>🏪 stock_warehouse & stock_location</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Urunlerin depolandigi yer</em></p>
+                <p><strong>Warehouse (Depo)</strong>: Fiziksel bina (Ana Depo, Dogu Kiyisi...)<br>
+                <strong>Location (Konum)</strong>: Icindeki belirli noktalar (Raf A, Sira 3, Kutu 5)</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Ana Depo (WH)
+  ├── WH/Stock (fiziksel depolama)
+  ├── WH/Input (kabul alani)
+  └── WH/Output (sevkiyat alani)</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>📊 stock_quant & stock_move</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Envanter takibi</em></p>
+                <p><strong>stock_quant</strong>: Mevcut envanter seviyeleri (Y konumunda X urununden kac tane var)<br>
+                <strong>stock_move</strong>: Hareket gecmisi (transferler, alimlar, teslimatlar)</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+stock_quant: "Simdi burada ne var?"
+stock_move:  "Buraya nasil geldi?"</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>🚚 stock_picking</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Teslimat/Alim belgeleri</em></p>
+                <p>Birden fazla stok hareketini tek bir islemde gruplar. Bir siparis gonderdiginizde, gonderilen tum ogeleri iceren bir "picking" belgesi olusturulur.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+Picking turleri:
+• Receipts (gelen mallar)
+• Deliveries (giden mallar)
+• Internal transfers (ic transferler)</pre>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header bg-purple text-white" style="background-color: #6f42c1 !important;">
+                <strong>💰 account_move & account_move_line</strong>
+              </div>
+              <div class="card-body">
+                <p><em>Muhasebe kayitlari (Faturalar, Gider Pusulalari, Yevmiye Kayitlari)</em></p>
+                <p>ERP'de faturalar muhasebe hareketleri olarak saklanir. <code>move_type</code> bunun musteri faturasi mi, tedarikci faturasi mi yoksa yevmiye kaydi mi oldugunu soyler.</p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+move_type degerleri:
+• out_invoice (musteri faturasi)
+• in_invoice (tedarikci faturasi)
+• entry (yevmiye kaydi)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5>📐 ERP Tablolari Iliski Diyagrami</h5>
+        <div class="card mb-3">
+          <div class="card-body">
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; font-size: 0.85em;">
+                              ┌────────────────┐
+                              │  res_partner   │  ← Tum iletisimler TEK tabloda
+                              │  (musteriler,  │
+                              │   tedarikciler,│
+                              │   kisiler)     │
+                              └───────┬────────┘
+                    ┌─────────────────┼─────────────────┐
+                    ▼                 ▼                 ▼
+            ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+            │  sale_order   │ │purchase_order │ │ account_move  │
+            │  (satislar)   │ │ (satin alma)  │ │  (faturalar)  │
+            └───────┬───────┘ └───────┬───────┘ └───────────────┘
+                    │                 │
+                    ▼                 ▼
+            ┌───────────────┐ ┌───────────────┐
+            │sale_order_line│ │purch_ord_line │
+            └───────┬───────┘ └───────┬───────┘
+                    │                 │
+                    └────────┬────────┘
+                             ▼
+                    ┌───────────────┐     ┌───────────────┐
+                    │ stock_picking │────►│  stock_move   │
+                    │ (sevkiyatlar) │     │  (hareketler) │
+                    └───────────────┘     └───────┬───────┘
+                                                  ▼
+┌─────────────────┐      ┌─────────────────┐     ┌───────────────┐
+│product_template │─────►│ product_product │────►│  stock_quant  │
+│  (ana kayit)    │      │   (varyantlar)  │     │  (envanter)   │
+└─────────────────┘      └─────────────────┘     └───────────────┘
+</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>✨ Verimizdeki Ozel Ozellikler</h4>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>📋 JSON Verisi</strong>
+              </div>
+              <div class="card-body">
+                <p><code>products.attributes</code> sutunu yapilandirilmis veriyi JSON formatinda saklar:</p>
+                <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+{
+  "brand": "TechPro",
+  "processor": "Intel i7",
+  "ram": "16GB DDR5",
+  "warranty_months": 24
+}</pre>
+                <p class="small text-muted">PostgreSQL'in JSON ozelliklerini ogrenmek icin mukemmel!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>🏷️ Dizi (Array) Verisi</strong>
+              </div>
+              <div class="card-body">
+                <p><code>products.tags</code> sutunu birden fazla degeri bir dizide saklar:</p>
+                <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em;">
+tags = ['laptop', 'business', 'portable']
+
+-- Veya bir telefon icin:
+tags = ['smartphone', 'flagship', '5g']</pre>
+                <p class="small text-muted">Dizi islemlerini ogrenmek icin harika!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>📅 Tarih Araligi Verisi</strong>
+              </div>
+              <div class="card-body">
+                <p>Siparisler <strong>2021'den 2024'e</strong> kadar uzanir, su pratikleri yapmanizi saglar:</p>
+                <ul class="small">
+                  <li>Tarih filtreleme ve karsilastirmalar</li>
+                  <li>Aylik/yillik toplamalar (aggregations)</li>
+                  <li>Zaman icinde trend analizi</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <strong>⚠️ Gercek Dunya Senaryolari</strong>
+              </div>
+              <div class="card-body">
+                <p>Veri, gercek verilerde oldugu gibi kasitli "kusurlar" icerir:</p>
+                <ul class="small">
+                  <li>NULL degerler (eksik e-postalar, telefonlar)</li>
+                  <li>Inaktif/askiya alinmis musteriler</li>
+                  <li>Siparisi olmayan musteriler</li>
+                  <li>Cesitli siparis durumlari</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h4>🎯 Hizli Referans: Tablo Sayilari</h4>
+        <table class="table table-bordered table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Tablo</th>
+              <th>Yaklasik Kayit Sayisi</th>
+              <th>Birincil Kullanim</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>countries (ulkeler)</td><td>30</td><td>Referans verisi</td></tr>
+            <tr><td>customers (musteriler)</td><td>50</td><td>Musteri yonetimi</td></tr>
+            <tr><td>categories (kategoriler)</td><td>22</td><td>Urun organizasyonu</td></tr>
+            <tr><td>suppliers (tedarikciler)</td><td>15</td><td>Tedarikci yonetimi</td></tr>
+            <tr><td>products (urunler)</td><td>50+</td><td>Urun katalogu</td></tr>
+            <tr><td>orders (siparisler)</td><td>200+</td><td>Satis islemleri</td></tr>
+            <tr><td>order_lines (siparis satirlari)</td><td>500+</td><td>Siparis detaylari</td></tr>
+            <tr><td>employees (calisanlar)</td><td>30+</td><td>IK ve hiyerarsi</td></tr>
+          </tbody>
+        </table>
+
+        <div class="alert alert-warning">
+          <strong>Kesfetmeye hazir misiniz?</strong> Sonraki oturumlarda, bu veriden icgoruler cikarmak icin SQL sorgulari yazacaksiniz. Basit SELECT'lerle baslayin ve karmasik JOIN'lere ve analitiklere dogru ilerlein!
+        </div>
+      </section>
+      <!-- VERITABANI GENEL BAKIS BOLUMU SONU -->
+
       <section>
         <h3 id="general-connection-concepts">Genel Baglanti (Connection) Kavramlari</h3>
         <p>Belirli RDBMS'den bagimsiz olarak, bir veritabanina baglanmak genellikle baglanti parametreleri (connection parameters) veya
