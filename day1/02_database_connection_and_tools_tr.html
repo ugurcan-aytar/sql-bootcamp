@@ -1102,8 +1102,170 @@ SELECT COUNT(*) FROM customers;
             </table>
           </div>
         </div>
+      </section>
+
+      <!-- pgAdmin ile Baglanti -->
+      <section>
+        <h4>pgAdmin 4 ile Veritabanina Baglanma</h4>
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>Adim Adim pgAdmin Baglantisi</strong>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>1. pgAdmin 4'u Baslatin</strong></p>
+                <ul>
+                  <li>Windows: Baslat Menusu → pgAdmin 4</li>
+                  <li>macOS: Applications → pgAdmin 4</li>
+                  <li>Ilk acilista bir <strong>master password</strong> belirlemeniz istenecek (bu pgAdmin icin, PostgreSQL icin degil)</li>
+                </ul>
+
+                <p><strong>2. Sunucuya Baglanin</strong></p>
+                <ul>
+                  <li>Sol panelde <strong>"Servers"</strong> goruyorsaniz, yanindaki oka tiklayin</li>
+                  <li><strong>"PostgreSQL 16"</strong> (veya kurdugunuz surum) uzerine tiklayin</li>
+                  <li>PostgreSQL sifrenizi girin (kurulumda belirlediginiz)</li>
+                </ul>
+
+                <p><strong>3. Veritabanini Bulun</strong></p>
+                <ul>
+                  <li>Servers → PostgreSQL 16 → <strong>Databases</strong> genisletin</li>
+                  <li><strong>bootcamp_db</strong> veritabanini goreceksiniz</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <p><strong>4. Sorgu Araci (Query Tool) Acin</strong></p>
+                <ul>
+                  <li><code>bootcamp_db</code> uzerine <strong>sag tiklayin</strong></li>
+                  <li><strong>"Query Tool"</strong> secin</li>
+                  <li>Yeni bir sekme acilacak - buraya SQL yazabilirsiniz</li>
+                </ul>
+
+                <p><strong>5. Ilk Sorgunuzu Calistirin</strong></p>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT * FROM customers LIMIT 5;</pre>
+                <ul>
+                  <li>Yukaridaki sorguyu yazin</li>
+                  <li><strong>F5</strong> tusuna basin veya <strong>▶ Execute</strong> butonuna tiklayin</li>
+                  <li>Sonuclar asagidaki <strong>"Data Output"</strong> panelinde gorunecek</li>
+                </ul>
+
+                <div class="alert alert-info mt-3">
+                  <strong>Ipucu:</strong> Bir tabloyu hizlica gormek icin: Tables → customers → sag tik → <strong>View/Edit Data → First 100 Rows</strong>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+            <p><strong>Yeni Sunucu Ekleme (Opsiyonel)</strong></p>
+            <p>Eger sunucu listede yoksa veya farkli bir sunucu eklemek istiyorsaniz:</p>
+            <ol>
+              <li>"Servers" uzerine sag tiklayin → <strong>Register → Server...</strong></li>
+              <li><strong>General</strong> sekmesinde:
+                <ul><li>Name: <code>Local PostgreSQL</code> (istediginiz bir isim)</li></ul>
+              </li>
+              <li><strong>Connection</strong> sekmesinde:
+                <ul>
+                  <li>Host name/address: <code>localhost</code></li>
+                  <li>Port: <code>5432</code></li>
+                  <li>Maintenance database: <code>postgres</code></li>
+                  <li>Username: <code>postgres</code></li>
+                  <li>Password: <em>(sifreniz)</em></li>
+                  <li>Save password: <strong>isaretleyin</strong> (her seferinde sormamasi icin)</li>
+                </ul>
+              </li>
+              <li><strong>Save</strong> butonuna tiklayin</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- DBeaver ile Baglanti -->
+      <section>
+        <h4>DBeaver ile Veritabanina Baglanma</h4>
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <strong>Adim Adim DBeaver Baglantisi</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>DBeaver Nedir?</strong> Ucretsiz, acik kaynakli ve birden fazla veritabani sistemini destekleyen evrensel bir veritabani yonetim aracidir.</p>
+
+            <p><strong>1. DBeaver'i Indirin ve Kurun</strong></p>
+            <ul>
+              <li><a href="https://dbeaver.io/download/" target="_blank">dbeaver.io/download</a> adresinden indirin</li>
+              <li>Windows: <code>.exe</code> yukleyiciyi calistirin</li>
+              <li>macOS: <code>.dmg</code> dosyasini acin ve Applications'a surukleyin</li>
+              <li>Linux: <code>.deb</code> veya <code>.rpm</code> paketini kurun</li>
+            </ul>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>2. Yeni Baglanti Olusturun</strong></p>
+                <ul>
+                  <li>DBeaver'i acin</li>
+                  <li>Sol ust kosedeki <strong>yeni baglanti</strong> ikonuna tiklayin (fis simgesi) veya <strong>Ctrl+Shift+N</strong></li>
+                  <li>Acilan pencerede <strong>"PostgreSQL"</strong> secin</li>
+                  <li><strong>"Next"</strong> butonuna tiklayin</li>
+                </ul>
+
+                <p><strong>3. Baglanti Bilgilerini Girin</strong></p>
+                <table class="table table-sm table-bordered">
+                  <tbody>
+                    <tr><td><strong>Host</strong></td><td><code>localhost</code></td></tr>
+                    <tr><td><strong>Port</strong></td><td><code>5432</code></td></tr>
+                    <tr><td><strong>Database</strong></td><td><code>bootcamp_db</code></td></tr>
+                    <tr><td><strong>Username</strong></td><td><code>postgres</code></td></tr>
+                    <tr><td><strong>Password</strong></td><td><em>(sifreniz)</em></td></tr>
+                  </tbody>
+                </table>
+                <p><strong>"Save password locally"</strong> kutusunu isaretleyin.</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>4. Baglanti Testi Yapin</strong></p>
+                <ul>
+                  <li>Sol alttaki <strong>"Test Connection"</strong> butonuna tiklayin</li>
+                  <li>Ilk seferde PostgreSQL JDBC surucusunu indirmeniz istenebilir - <strong>"Download"</strong> tiklayin</li>
+                  <li>"Connected" mesaji gorurseniz basarili!</li>
+                  <li><strong>"Finish"</strong> butonuna tiklayin</li>
+                </ul>
+
+                <p><strong>5. Veritabanini Kesfin</strong></p>
+                <ul>
+                  <li>Sol panelde <strong>bootcamp_db</strong> goreceksiniz</li>
+                  <li>Genisletin: Schemas → public → Tables</li>
+                  <li>Herhangi bir tabloya cift tiklayin → verileri gorun</li>
+                </ul>
+
+                <p><strong>6. SQL Sorgusu Calistirin</strong></p>
+                <ul>
+                  <li><code>bootcamp_db</code> uzerine sag tiklayin → <strong>"SQL Editor" → "New SQL Script"</strong></li>
+                  <li>Sorgunuzu yazin:</li>
+                </ul>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT * FROM products LIMIT 10;</pre>
+                <ul>
+                  <li><strong>Ctrl+Enter</strong> veya <strong>▶ Execute</strong> ile calistirin</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alert alert-success mt-3">
+              <strong>DBeaver Avantajlari:</strong>
+              <ul class="mb-0">
+                <li>Birden fazla veritabani turunu destekler (PostgreSQL, MySQL, Oracle, SQLite...)</li>
+                <li>ER diyagrami olusturma (Tablolara sag tik → View Diagram)</li>
+                <li>Veri export/import (CSV, Excel, JSON...)</li>
+                <li>SQL otomatik tamamlama ve sozdizimi vurgulama</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <div class="alert alert-success">
-          <strong>Hazirsiniz!</strong> Artik yerel makinenizde PostgreSQL veritabaniniz var. SQL sorgulari yazmaya baslayabilirsiniz!
+          <strong>Hazirsiniz!</strong> Artik yerel makinenizde PostgreSQL veritabaniniz var ve pgAdmin veya DBeaver ile baglanabilirsiniz. SQL sorgulari yazmaya baslayabilirsiniz!
         </div>
       </section>
       <section>

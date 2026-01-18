@@ -1306,9 +1306,170 @@ Servers
             <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">postgresql://postgres:yourpassword@localhost:5432/bootcamp_db</pre>
           </div>
         </div>
+      </section>
 
+      <!-- Connecting with pgAdmin -->
+      <section>
+        <h4>Connecting with pgAdmin 4</h4>
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>Step-by-Step pgAdmin Connection</strong>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>1. Launch pgAdmin 4</strong></p>
+                <ul>
+                  <li>Windows: Start Menu → pgAdmin 4</li>
+                  <li>macOS: Applications → pgAdmin 4</li>
+                  <li>On first launch, you'll be asked to set a <strong>master password</strong> (this is for pgAdmin, not PostgreSQL)</li>
+                </ul>
+
+                <p><strong>2. Connect to Server</strong></p>
+                <ul>
+                  <li>In the left panel, you'll see <strong>"Servers"</strong> - click the arrow to expand</li>
+                  <li>Click on <strong>"PostgreSQL 16"</strong> (or your installed version)</li>
+                  <li>Enter your PostgreSQL password (the one you set during installation)</li>
+                </ul>
+
+                <p><strong>3. Find the Database</strong></p>
+                <ul>
+                  <li>Expand: Servers → PostgreSQL 16 → <strong>Databases</strong></li>
+                  <li>You'll see <strong>bootcamp_db</strong> database</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <p><strong>4. Open Query Tool</strong></p>
+                <ul>
+                  <li><strong>Right-click</strong> on <code>bootcamp_db</code></li>
+                  <li>Select <strong>"Query Tool"</strong></li>
+                  <li>A new tab will open - this is where you write SQL</li>
+                </ul>
+
+                <p><strong>5. Run Your First Query</strong></p>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT * FROM customers LIMIT 5;</pre>
+                <ul>
+                  <li>Type the query above</li>
+                  <li>Press <strong>F5</strong> or click the <strong>▶ Execute</strong> button</li>
+                  <li>Results will appear in the <strong>"Data Output"</strong> panel below</li>
+                </ul>
+
+                <div class="alert alert-info mt-3">
+                  <strong>Tip:</strong> To quickly view a table: Tables → customers → right-click → <strong>View/Edit Data → First 100 Rows</strong>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+            <p><strong>Adding a New Server (Optional)</strong></p>
+            <p>If the server isn't listed or you want to add a different server:</p>
+            <ol>
+              <li>Right-click on "Servers" → <strong>Register → Server...</strong></li>
+              <li><strong>General</strong> tab:
+                <ul><li>Name: <code>Local PostgreSQL</code> (any name you like)</li></ul>
+              </li>
+              <li><strong>Connection</strong> tab:
+                <ul>
+                  <li>Host name/address: <code>localhost</code></li>
+                  <li>Port: <code>5432</code></li>
+                  <li>Maintenance database: <code>postgres</code></li>
+                  <li>Username: <code>postgres</code></li>
+                  <li>Password: <em>(your password)</em></li>
+                  <li>Save password: <strong>check this</strong> (so it doesn't ask every time)</li>
+                </ul>
+              </li>
+              <li>Click <strong>Save</strong></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Connecting with DBeaver -->
+      <section>
+        <h4>Connecting with DBeaver</h4>
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <strong>Step-by-Step DBeaver Connection</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>What is DBeaver?</strong> A free, open-source universal database management tool that supports multiple database systems.</p>
+
+            <p><strong>1. Download and Install DBeaver</strong></p>
+            <ul>
+              <li>Download from <a href="https://dbeaver.io/download/" target="_blank">dbeaver.io/download</a></li>
+              <li>Windows: Run the <code>.exe</code> installer</li>
+              <li>macOS: Open the <code>.dmg</code> file and drag to Applications</li>
+              <li>Linux: Install the <code>.deb</code> or <code>.rpm</code> package</li>
+            </ul>
+
+            <hr>
+
+            <div class="row">
+              <div class="col-md-6">
+                <p><strong>2. Create a New Connection</strong></p>
+                <ul>
+                  <li>Open DBeaver</li>
+                  <li>Click the <strong>new connection</strong> icon in the top-left (plug icon) or press <strong>Ctrl+Shift+N</strong></li>
+                  <li>Select <strong>"PostgreSQL"</strong> from the list</li>
+                  <li>Click <strong>"Next"</strong></li>
+                </ul>
+
+                <p><strong>3. Enter Connection Details</strong></p>
+                <table class="table table-sm table-bordered">
+                  <tbody>
+                    <tr><td><strong>Host</strong></td><td><code>localhost</code></td></tr>
+                    <tr><td><strong>Port</strong></td><td><code>5432</code></td></tr>
+                    <tr><td><strong>Database</strong></td><td><code>bootcamp_db</code></td></tr>
+                    <tr><td><strong>Username</strong></td><td><code>postgres</code></td></tr>
+                    <tr><td><strong>Password</strong></td><td><em>(your password)</em></td></tr>
+                  </tbody>
+                </table>
+                <p>Check <strong>"Save password locally"</strong>.</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>4. Test the Connection</strong></p>
+                <ul>
+                  <li>Click <strong>"Test Connection"</strong> in the bottom-left</li>
+                  <li>First time, you may be asked to download the PostgreSQL JDBC driver - click <strong>"Download"</strong></li>
+                  <li>If you see "Connected" message, success!</li>
+                  <li>Click <strong>"Finish"</strong></li>
+                </ul>
+
+                <p><strong>5. Explore the Database</strong></p>
+                <ul>
+                  <li>You'll see <strong>bootcamp_db</strong> in the left panel</li>
+                  <li>Expand: Schemas → public → Tables</li>
+                  <li>Double-click any table → view the data</li>
+                </ul>
+
+                <p><strong>6. Run a SQL Query</strong></p>
+                <ul>
+                  <li>Right-click on <code>bootcamp_db</code> → <strong>"SQL Editor" → "New SQL Script"</strong></li>
+                  <li>Write your query:</li>
+                </ul>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT * FROM products LIMIT 10;</pre>
+                <ul>
+                  <li>Press <strong>Ctrl+Enter</strong> or click <strong>▶ Execute</strong></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alert alert-success mt-3">
+              <strong>DBeaver Advantages:</strong>
+              <ul class="mb-0">
+                <li>Supports multiple database types (PostgreSQL, MySQL, Oracle, SQLite...)</li>
+                <li>ER diagram generation (Right-click tables → View Diagram)</li>
+                <li>Data export/import (CSV, Excel, JSON...)</li>
+                <li>SQL auto-completion and syntax highlighting</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <div class="alert alert-success">
-          <strong>You're all set!</strong> You now have a fully functional PostgreSQL database on your local machine with all the training data. Continue to the next session to start writing SQL queries!
+          <strong>You're all set!</strong> You now have a fully functional PostgreSQL database on your local machine and can connect using pgAdmin or DBeaver. Continue to the next session to start writing SQL queries!
         </div>
       </section>
 
