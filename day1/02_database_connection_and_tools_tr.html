@@ -807,95 +807,304 @@ tags = ['smartphone', 'flagship', '5g']</pre>
           <code>mysql-connector-python</code> (MySQL icin Python), <code>node-postgres</code> (PostgreSQL icin
           Node.js), SQLAlchemy (Python), Hibernate (Java), Sequelize (Node.js) gibi ORM'ler.</p>
       </section>
+      <!-- ============================================== -->
+      <!-- YENI BASLAYANLAR ICIN REHBER: YEREL POSTGRESQL KURULUMU -->
+      <!-- ============================================== -->
       <section>
         <h3 id="focus-using-postgresql-tools-psql-and-pgadmin">Odak: PostgreSQL Araclarini Kullanma (psql ve pgAdmin)</h3>
-        <p>Uygulamali ortamimiz PostgreSQL kullandigindan, birincil araclarina odaklanacagiz: <code>psql</code>
-          (CLI) ve <code>pgAdmin</code> (GUI).</p>
-        <p><strong>psql Komut Satiri Araci (Command Line Tool)</strong>:</p>
-        <p><code>psql</code>, PostgreSQL'in yerel etkilesimli (interactive) terminalidir.</p>
-        <p><strong>Baglanti Ornegi</strong>:</p>
-        <div class="sourceCode" id="cb1">
-          <pre
-            class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># localhost'ta 'odoo_db' veritabanina 'readonly_user' olarak baglan</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">psql</span> -h localhost -p 5432 -d odoo_db -U readonly_user</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co"># Sifre sorulacaktir.</span></span></code></pre>
+        <p>Bu adim adim rehber, PostgreSQL'i yerel bilgisayariniza kurmaniza ve egitim veritabanini iceri aktarmaniza yardimci olacaktir. Adimlari sirasiyla takip edin.</p>
+
+        <div class="alert alert-info">
+          <strong>Neler basaracaksiniz:</strong> Bu rehberin sonunda PostgreSQL kurulmus, egitim veritabani iceri aktarilmis ve kendi bilgisayarinizda SQL sorgulari calistirmaya hazir olacaksiniz.
         </div>
-        <p><strong>Yaygin psql Meta-Komutlari (Meta-Commands)</strong> (<code>\</code> ile baslayan komutlar): - <code>\?</code>:
-          psql komutlari icin yardim goster. - <code>\l</code>: Tum veritabanlarini listele.
-          - <code>\c [db_adi]</code>: Farkli bir veritabanina baglan. - <code>\dn</code>: Mevcut veritabanindaki
-          semalari (schemas) listele. - <code>\dt [sema.]</code>: Tablolari (tables) listele (istege bagli olarak belirli bir semada).
-          - <code>\dv [sema.]</code>: Gorunumleri (views) listele. - <code>\df [sema.]</code>: Fonksiyonlari (functions) listele.
-          - <code>\d [tablo_adi]</code>: Bir tablo, gorunum, indeks (index) veya sekans (sequence) acikla. - <code>\du</code>: Rolleri
-          (kullanicilar ve gruplar) listele. - <code>\timing</code>: Sorgu (query) yurutme suresinin goruntulenmesini
-          degistir. - <code>\i [dosyaadi.sql]</code>: Dosyadan komutlari calistir. - <code>\q</code>: psql'den cik.</p>
-        <p><strong>SQL Calistirma</strong>: SQL komutlarini dogrudan yazin, noktalı virgul (<code>;</code>) ile
-          bitirin ve Enter'a basin.</p>
       </section>
+
+      <!-- ADIM 1: Veritabani Dosyasini Indir -->
       <section>
-        <p><strong>DBeaver (GUI)</strong>:</p>
-        <p>DBeaver, PostgreSQL, MySQL, Oracle ve daha fazlasi dahil olmak uzere birden fazla veritabani sistemini
-          destekleyen guclu, acik kaynakli evrensel bir veritabani aracidir.</p>
-        <p><strong>Temel Kullanim Adimlari</strong>:
-        <div class="row">
-          <div class="col-md-6">
-            <ol type="1">
-              <li><strong>DBeaver'i Baslat</strong> ve Veritabani Gezgini gorunumunu ac.</li>
-              <li><strong>Yeni Baglanti Olustur</strong>
+        <h4>Adim 1: Egitim Veritabani Dosyasini Indirin</h4>
+        <p>Oncelikle tum egitim verilerini iceren veritabani yedek dosyasini indirin.</p>
+
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <strong>1.1 bootcamp_db.sql Dosyasini Indirin</strong>
+          </div>
+          <div class="card-body">
+            <p>Veritabani dosyasini indirmek icin asagidaki dugmeye tiklayin:</p>
+            <p class="text-center">
+              <a href="../bootcamp_db.sql" class="btn btn-lg btn-success" download>
+                <i class="fas fa-download"></i> bootcamp_db.sql Indir
+              </a>
+            </p>
+            <hr>
+            <p><strong>Bu dosya nedir?</strong></p>
+            <ul>
+              <li>Tablolari olusturmak ve veri eklemek icin SQL komutlari iceren bir <code>.sql</code> dosyasi</li>
+              <li>Dosya boyutu: yaklasik 500KB</li>
+              <li>Bootcamp icin tum semalari, tablolari ve ornek verileri icerir</li>
+            </ul>
+            <p><strong>Nereye kaydedilmeli?</strong></p>
+            <ul>
+              <li><strong>Windows:</strong> <code>C:\Users\KullaniciAdiniz\Downloads\</code> veya Masaustune kaydedin</li>
+              <li><strong>macOS:</strong> <code>~/Downloads/</code> veya Masaustune kaydedin</li>
+              <li><strong>Linux:</strong> <code>~/Downloads/</code> veya ana dizininize kaydedin</li>
+            </ul>
+            <div class="alert alert-warning mt-3">
+              <strong>Konumu unutmayin!</strong> Adim 4'te bu dosyanin tam yoluna ihtiyaciniz olacak.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADIM 2: PostgreSQL Kurulumu -->
+      <section>
+        <h4>Adim 2: PostgreSQL'i Kurun</h4>
+        <p>PostgreSQL bilgisayariniza kurulmalidir. Asagidan isletim sisteminizi secin:</p>
+
+        <!-- Windows Kurulumu -->
+        <div class="card mb-4">
+          <div class="card-header bg-info text-white">
+            <strong>2A. Windows Kurulumu</strong>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li>
+                <strong>Yukleme dosyasini indirin:</strong>
                 <ul>
-                  <li>"Yeni Veritabani Baglantisi" dugmesine tikla (veya Ctrl+N'ye bas)</li>
-                  <li>Veritabani turleri listesinden PostgreSQL'i sec</li>
-                  <li>Baglanti ayrintilarine gir:
+                  <li><a href="https://www.postgresql.org/download/windows/" target="_blank">postgresql.org/download/windows</a> adresine gidin</li>
+                  <li>"Download the installer" (EnterpriseDB) tiklayin</li>
+                  <li>En son surumu secin (ornegin, PostgreSQL 16 veya 17)</li>
+                  <li>"Windows x86-64" secin</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Yukleyiciyi calistirin:</strong>
+                <ul>
+                  <li>Indirilen <code>.exe</code> dosyasina cift tiklayin</li>
+                  <li>Windows izin isterse "Evet"e tiklayin</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Kurulum sihirbazi adimlari:</strong>
+                <ul>
+                  <li><strong>Kurulum Dizini:</strong> Varsayilani koruyun (genellikle <code>C:\Program Files\PostgreSQL\16</code>)</li>
+                  <li><strong>Bilesenleri Secin:</strong> TUM kutucuklari isaretleyin:
                     <ul>
-                      <li>Host: Sunucu adresi</li>
-                      <li>Port: PostgreSQL icin genellikle 5432</li>
-                      <li>Veritabani: Veritabani adi</li>
-                      <li>Kullanici adi ve sifre</li>
+                      <li>PostgreSQL Server</li>
+                      <li>pgAdmin 4</li>
+                      <li>Stack Builder</li>
+                      <li>Command Line Tools</li>
                     </ul>
                   </li>
-                  <li>Baglantivi test et ve kaydet</li>
+                  <li><strong>Veri Dizini:</strong> Varsayilani koruyun</li>
+                  <li><strong>Sifre:</strong> "postgres" super kullanicisi icin bir sifre belirleyin
+                    <div class="alert alert-danger mt-2">
+                      <strong>ONEMLI:</strong> Bu sifreyi unutmayin! Baglanmak icin ihtiyaciniz olacak. Oneri: egitim amacli <code>postgres</code> kullanin.
+                    </div>
+                  </li>
+                  <li><strong>Port:</strong> Varsayilan <code>5432</code>'yi koruyun</li>
+                  <li><strong>Yerel Ayar:</strong> Varsayilani koruyun</li>
                 </ul>
+              </li>
+              <li><strong>"Next"e tiklayin</strong> kalan ekranlarda ve kurulumun tamamlanmasini bekleyin.</li>
+              <li>Sonunda <strong>"Launch Stack Builder"in isaretini kaldirin</strong> ve "Finish"e tiklayin.</li>
+            </ol>
+
+            <div class="alert alert-success mt-3">
+              <strong>Dogrulama:</strong> Kurulumdan sonra asagidakilere sahip olmalisiniz:
+              <ul class="mb-0">
+                <li>Baslat Menunuzde pgAdmin 4</li>
+                <li>Baslat Menunuzde PostgreSQL klasoru altinda SQL Shell (psql)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- macOS Kurulumu -->
+        <div class="card mb-4">
+          <div class="card-header bg-secondary text-white">
+            <strong>2B. macOS Kurulumu</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Secenek A: Homebrew Kullanarak (Onerilen)</strong></p>
+            <ol>
+              <li>
+                <strong>Homebrew'u kurun</strong> (zaten kurulu degilse):
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+              </li>
+              <li>
+                <strong>PostgreSQL'i kurun:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">brew install postgresql@16</pre>
+              </li>
+              <li>
+                <strong>PostgreSQL servisini baslatin:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">brew services start postgresql@16</pre>
+              </li>
+              <li>
+                <strong>pgAdmin'i kurun:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">brew install --cask pgadmin4</pre>
               </li>
             </ol>
+
+            <p class="mt-4"><strong>Secenek B: Postgres.app Kullanarak (En Kolay)</strong></p>
+            <ol>
+              <li><a href="https://postgresapp.com/" target="_blank">postgresapp.com</a> adresine gidin</li>
+              <li>Indirin ve Uygulamalar klasorune tasiyin</li>
+              <li>Uygulamayi acin ve sunucu olusturmak icin "Initialize"a tiklayin</li>
+              <li>pgAdmin'i ayri olarak <a href="https://www.pgadmin.org/download/pgadmin-4-macos/" target="_blank">pgadmin.org</a>'dan indirin</li>
+            </ol>
+
+            <div class="alert alert-info mt-3">
+              <strong>Not:</strong> Homebrew ile macOS'ta varsayilan postgres kullanicisinin sifresi yoktur.
+            </div>
           </div>
-          <div class="col-md-6">
-            <ol type="1" start="3">
-              <li><strong>Veritabani Gezinmesi (Database Navigation)</strong>:
-                <ul>
-                  <li>Veritabani Gezgininde baglantiyi genislet</li>
-                  <li>Semalar (schemas), tablolar (tables), gorunumler (views) ve diger veritabani nesnelerine (database objects) goz at</li>
-                  <li>Secilen nesneler hakkinda ayrintili bilgi gormek icin Ozellikler (Properties) gorunumunu kullan</li>
-                </ul>
+        </div>
+
+        <!-- Linux Kurulumu -->
+        <div class="card mb-4">
+          <div class="card-header bg-dark text-white">
+            <strong>2C. Linux Kurulumu (Ubuntu/Debian)</strong>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li>
+                <strong>Paket listesini guncelleyin:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo apt update</pre>
               </li>
-              <li><strong>SQL Duzenleyicisi (SQL Editor)</strong>:
-                <ul>
-                  <li>Bir veritabani veya tabloya sag tikla ve "SQL Duzenleyicisi"ni sec</li>
-                  <li>SQL sorgulari (queries) yaz ve calistir</li>
-                  <li>Sorgulari calistirmak icin Calistir (Execute) dugmesini (veya Ctrl+Enter) kullan</li>
-                  <li>Sonuclari Veri (Data) sekmesinde gor</li>
-                </ul>
+              <li>
+                <strong>PostgreSQL'i kurun:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo apt install postgresql postgresql-contrib</pre>
               </li>
-              <li><strong>Veri (Data) Goruntuleme ve Duzenleme</strong>:
-                <ul>
-                  <li>Verilerini gormek icin bir tabloya cift tikla</li>
-                  <li>Verilere goz atmak, filtrelemek ve duzenlemek icin Veri sekmesini kullan</li>
-                  <li>Tablo tanimini (table definition) gormek icin Yapi (Structure) sekmesini kullan</li>
-                </ul>
+              <li>
+                <strong>Servisi baslatin:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo systemctl start postgresql
+sudo systemctl enable postgresql</pre>
+              </li>
+              <li>
+                <strong>postgres kullanicisi icin sifre belirleyin:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"</pre>
               </li>
             </ol>
           </div>
         </div>
+      </section>
 
+      <!-- ADIM 3: Kurulumu Dogrulayin -->
+      <section>
+        <h4>Adim 3: PostgreSQL Kurulumunu Dogrulayin</h4>
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>3.1 psql ile Baglanti Testi Yapin</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Windows:</strong> Baslat Menusu → PostgreSQL → SQL Shell (psql) acin, Enter'lara basin, sifrenizi girin.</p>
+            <p><strong>macOS/Linux:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">psql -U postgres</pre>
+            <p class="mt-3"><strong>Test komutu:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT version();</pre>
+            <p>Cikmak icin <code>\q</code> yazin.</p>
+          </div>
+        </div>
+      </section>
 
-        <p>DBeaver, farkli veritabani sistemlerinde tutarli bir arayuz (interface) saglar ve birden fazla veritabani turuyle
-          calismayi kolaylastirir. Ayrica su ozellikleri icerir:
-          - SQL sozdizimi vurgulama (syntax highlighting) ve otomatik tamamlama (auto-completion)
-          - ER diyagramlari (Entity-Relationship diagrams)
-          - Veri disari/iceri aktarma (Export/Import)
-          - Sorgu (Query) yurutme gecmisi (history)
-          - Veritabani nesne arama (object search)
-        </p>
+      <!-- ADIM 4: Veritabani Olusturun ve Veriyi Iceri Aktarin -->
+      <section>
+        <h4>Adim 4: Veritabani Olusturun ve Veriyi Iceri Aktarin</h4>
+        <div class="card mb-4">
+          <div class="card-header bg-warning">
+            <strong>4.1 Veritabanini Olusturun</strong>
+          </div>
+          <div class="card-body">
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">psql -U postgres
+CREATE DATABASE bootcamp_db;
+\q</pre>
+          </div>
+        </div>
 
-        </p>
+        <div class="card mb-4">
+          <div class="card-header bg-warning">
+            <strong>4.2 Veriyi Iceri Aktarin</strong>
+          </div>
+          <div class="card-body">
+            <p><em>Windows:</em></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">cd "C:\Program Files\PostgreSQL\16\bin"
+psql -U postgres -d bootcamp_db -f "C:\Users\KullaniciAdiniz\Downloads\bootcamp_db.sql"</pre>
+            <p class="mt-3"><em>macOS/Linux:</em></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">psql -U postgres -d bootcamp_db -f ~/Downloads/bootcamp_db.sql</pre>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header bg-warning">
+            <strong>4.3 Iceri Aktarimi Dogrulayin</strong>
+          </div>
+          <div class="card-body">
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">psql -U postgres -d bootcamp_db
+\dt
+SELECT COUNT(*) FROM customers;
+\q</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADIM 5: Araclari Kullanma -->
+      <section>
+        <h4>Adim 5: PostgreSQL Araclarini Kullanmaya Baslayin</h4>
+
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <strong>5A. psql Kullanma (Komut Satiri)</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Baglanin:</strong> <code>psql -U postgres -d bootcamp_db</code></p>
+            <table class="table table-bordered table-sm">
+              <thead class="table-light">
+                <tr><th>Komut</th><th>Aciklama</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>\l</code></td><td>Veritabanlarini listele</td></tr>
+                <tr><td><code>\dt</code></td><td>Tablolari listele</td></tr>
+                <tr><td><code>\d tablo_adi</code></td><td>Tablo yapisini goster</td></tr>
+                <tr><td><code>\dn</code></td><td>Semalari listele</td></tr>
+                <tr><td><code>\q</code></td><td>Cikis</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>5B. pgAdmin 4 Kullanma (Grafik Arayuz)</strong>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li>pgAdmin 4'u acin, master sifre belirleyin</li>
+              <li>Servers → PostgreSQL → bootcamp_db genisletin</li>
+              <li>bootcamp_db'ye sag tiklayin → Query Tool</li>
+              <li>SQL yazin ve F5 ile calistirin</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hizli Referans -->
+      <section>
+        <h4>Hizli Referans: Baglanti Bilgileri</h4>
+        <div class="card mb-4">
+          <div class="card-body">
+            <table class="table table-bordered">
+              <tbody>
+                <tr><th>Host</th><td><code>localhost</code></td></tr>
+                <tr><th>Port</th><td><code>5432</code></td></tr>
+                <tr><th>Database</th><td><code>bootcamp_db</code></td></tr>
+                <tr><th>Username</th><td><code>postgres</code></td></tr>
+                <tr><th>Password</th><td><em>(kurulumda belirlediginiz)</em></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="alert alert-success">
+          <strong>Hazirsiniz!</strong> Artik yerel makinenizde PostgreSQL veritabaniniz var. SQL sorgulari yazmaya baslayabilirsiniz!
+        </div>
       </section>
       <section>
         <h3 id="understanding-database-roles-and-permissions-general-concept">Veritabani Rollerini (Roles) ve Izinleri (Permissions)

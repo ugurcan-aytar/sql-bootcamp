@@ -808,98 +808,581 @@ tags = ['smartphone', 'flagship', '5g']</pre>
           ORMs like SQLAlchemy (Python), Hibernate (Java), Sequelize (Node.js).
         </p>
       </section>
+      <!-- ============================================== -->
+      <!-- BEGINNER'S GUIDE: LOCAL POSTGRESQL SETUP -->
+      <!-- ============================================== -->
       <section>
         <h3 id="focus-using-postgresql-tools-psql-and-pgadmin">Focus: Using PostgreSQL Tools (psql and pgAdmin)</h3>
-        <p>Since our hands-on environment uses PostgreSQL, we will focus on its primary tools: <code>psql</code> (CLI)
-          and
-          <code>pgAdmin</code> (GUI).
-        </p>
-        <p><strong>psql Command Line Tool</strong>:</p>
-        <p><code>psql</code> is PostgreSQL's native interactive terminal.</p>
-        <p><strong>Connection Example</strong>:</p>
-        <div class="sourceCode" id="cb1">
-          <pre
-            class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># Connect to database 'odoo_db' on localhost as user 'readonly_user'</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">psql</span> -h localhost -p 5432 -d odoo_db -U readonly_user</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co"># You will be prompted for the password.</span></span></code></pre>
+        <p>This step-by-step guide will help you set up PostgreSQL on your local computer and import the training database. Follow these steps in order.</p>
+
+        <div class="alert alert-info">
+          <strong>What you'll achieve:</strong> By the end of this guide, you'll have PostgreSQL installed, the training database imported, and be ready to run SQL queries on your own computer.
         </div>
-        <p><strong>Common psql Meta-Commands</strong> (commands starting with <code>\</code>): - <code>\?</code>: Show
-          help for psql commands. - <code>\l</code>: List all databases. - <code>\c [db_name]</code>: Connect to a
-          different database. - <code>\dn</code>: List schemas in the current database. - <code>\dt [schema.]</code>:
-          List
-          tables (optionally in a specific schema). - <code>\dv [schema.]</code>: List views. -
-          <code>\df [schema.]</code>: List functions. - <code>\d [table_name]</code>: Describe a table, view, index, or
-          sequence. - <code>\du</code>: List roles (users and groups). - <code>\timing</code>: Toggle display of query
-          execution time. - <code>\i [filename.sql]</code>: Execute commands from a file. - <code>\q</code>: Quit psql.
-        </p>
-        <p><strong>Executing SQL</strong>: Type SQL commands directly, end with a semicolon (<code>;</code>), and press
-          Enter.</p>
       </section>
+
+      <!-- STEP 1: Download Database -->
       <section>
-        <p><strong>DBeaver (GUI)</strong>:</p>
-        <p>DBeaver is a powerful, open-source universal database tool that supports multiple database systems including
-          PostgreSQL, MySQL, Oracle, and more.</p>
-        <p><strong>Basic Usage Steps</strong>:
-        <div class="row">
-          <div class="col-md-6">
-            <ol type="1">
-              <li><strong>Launch DBeaver</strong> and open the Database Navigator view.</li>
-              <li><strong>Create New Connection</strong>
+        <h4>Step 1: Download the Training Database File</h4>
+        <p>First, download the database backup file that contains all the training data.</p>
+
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <strong>1.1 Download bootcamp_db.sql</strong>
+          </div>
+          <div class="card-body">
+            <p>Click the button below to download the database file:</p>
+            <p class="text-center">
+              <a href="../bootcamp_db.sql" class="btn btn-lg btn-success" download>
+                <i class="fas fa-download"></i> Download bootcamp_db.sql
+              </a>
+            </p>
+            <hr>
+            <p><strong>What is this file?</strong></p>
+            <ul>
+              <li>A <code>.sql</code> file containing SQL commands to create tables and insert data</li>
+              <li>File size: approximately 500KB</li>
+              <li>Contains all schemas, tables, and sample data for the bootcamp</li>
+            </ul>
+            <p><strong>Where to save it?</strong></p>
+            <ul>
+              <li><strong>Windows:</strong> Save to <code>C:\Users\YourName\Downloads\</code> or Desktop</li>
+              <li><strong>macOS:</strong> Save to <code>~/Downloads/</code> or Desktop</li>
+              <li><strong>Linux:</strong> Save to <code>~/Downloads/</code> or your home directory</li>
+            </ul>
+            <div class="alert alert-warning mt-3">
+              <strong>Remember the location!</strong> You'll need the full path to this file in Step 4.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Install PostgreSQL -->
+      <section>
+        <h4>Step 2: Install PostgreSQL</h4>
+        <p>PostgreSQL needs to be installed on your computer. Choose your operating system below:</p>
+
+        <!-- Windows Installation -->
+        <div class="card mb-4">
+          <div class="card-header bg-info text-white">
+            <strong>2A. Windows Installation</strong>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li>
+                <strong>Download the installer:</strong>
                 <ul>
-                  <li>Click the "New Database Connection" button (or press Ctrl+N)</li>
-                  <li>Select PostgreSQL from the list of database types</li>
-                  <li>Enter connection details:
+                  <li>Go to <a href="https://www.postgresql.org/download/windows/" target="_blank">postgresql.org/download/windows</a></li>
+                  <li>Click "Download the installer" (EnterpriseDB)</li>
+                  <li>Choose the latest version (e.g., PostgreSQL 16 or 17)</li>
+                  <li>Select "Windows x86-64"</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Run the installer:</strong>
+                <ul>
+                  <li>Double-click the downloaded <code>.exe</code> file</li>
+                  <li>Click "Yes" if Windows asks for permission</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Installation wizard steps:</strong>
+                <ul>
+                  <li><strong>Installation Directory:</strong> Keep the default (usually <code>C:\Program Files\PostgreSQL\16</code>)</li>
+                  <li><strong>Select Components:</strong> Check ALL boxes:
                     <ul>
-                      <li>Host: The server address</li>
-                      <li>Port: Usually 5432 for PostgreSQL</li>
-                      <li>Database: The database name</li>
-                      <li>Username and password</li>
+                      <li>PostgreSQL Server</li>
+                      <li>pgAdmin 4</li>
+                      <li>Stack Builder</li>
+                      <li>Command Line Tools</li>
                     </ul>
                   </li>
-                  <li>Test the connection and save</li>
+                  <li><strong>Data Directory:</strong> Keep the default</li>
+                  <li><strong>Password:</strong> Set a password for the "postgres" superuser
+                    <div class="alert alert-danger mt-2">
+                      <strong>IMPORTANT:</strong> Remember this password! You'll need it to connect. Suggestion: use <code>postgres</code> for training purposes.
+                    </div>
+                  </li>
+                  <li><strong>Port:</strong> Keep the default <code>5432</code></li>
+                  <li><strong>Locale:</strong> Keep the default</li>
                 </ul>
+              </li>
+              <li><strong>Click "Next"</strong> through the remaining screens and wait for installation to complete.</li>
+              <li><strong>Uncheck "Launch Stack Builder"</strong> at the end and click "Finish".</li>
+            </ol>
+
+            <div class="alert alert-success mt-3">
+              <strong>Verification:</strong> After installation, you should have:
+              <ul class="mb-0">
+                <li>pgAdmin 4 in your Start Menu</li>
+                <li>SQL Shell (psql) in your Start Menu under PostgreSQL folder</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- macOS Installation -->
+        <div class="card mb-4">
+          <div class="card-header bg-secondary text-white">
+            <strong>2B. macOS Installation</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Option A: Using Homebrew (Recommended)</strong></p>
+            <ol>
+              <li>
+                <strong>Install Homebrew</strong> (if not already installed):
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+              </li>
+              <li>
+                <strong>Install PostgreSQL:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">brew install postgresql@16</pre>
+              </li>
+              <li>
+                <strong>Start PostgreSQL service:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">brew services start postgresql@16</pre>
+              </li>
+              <li>
+                <strong>Install pgAdmin:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">brew install --cask pgadmin4</pre>
               </li>
             </ol>
+
+            <p class="mt-4"><strong>Option B: Using Postgres.app (Easiest)</strong></p>
+            <ol>
+              <li>Go to <a href="https://postgresapp.com/" target="_blank">postgresapp.com</a></li>
+              <li>Download and move to Applications folder</li>
+              <li>Open the app and click "Initialize" to create a server</li>
+              <li>Download pgAdmin separately from <a href="https://www.pgadmin.org/download/pgadmin-4-macos/" target="_blank">pgadmin.org</a></li>
+            </ol>
+
+            <div class="alert alert-info mt-3">
+              <strong>Note:</strong> On macOS with Homebrew, the default postgres user has no password. You can connect without one initially.
+            </div>
           </div>
-          <div class="col-md-6">
-            <ol type="1" start="3">
-              <li><strong>Database Navigation</strong>:
-                <ul>
-                  <li>Expand the connection in the Database Navigator</li>
-                  <li>Browse schemas, tables, views, and other database objects</li>
-                  <li>Use the Properties view to see detailed information about selected objects</li>
-                </ul>
+        </div>
+
+        <!-- Linux Installation -->
+        <div class="card mb-4">
+          <div class="card-header bg-dark text-white">
+            <strong>2C. Linux Installation (Ubuntu/Debian)</strong>
+          </div>
+          <div class="card-body">
+            <ol>
+              <li>
+                <strong>Update package list:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo apt update</pre>
               </li>
-              <li><strong>SQL Editor</strong>:
-                <ul>
-                  <li>Right-click a database or table and select "SQL Editor"</li>
-                  <li>Write and execute SQL queries</li>
-                  <li>Use the Execute button (or Ctrl+Enter) to run queries</li>
-                  <li>View results in the Data tab</li>
-                </ul>
+              <li>
+                <strong>Install PostgreSQL:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo apt install postgresql postgresql-contrib</pre>
               </li>
-              <li><strong>Data Viewing and Editing</strong>:
-                <ul>
-                  <li>Double-click a table to view its data</li>
-                  <li>Use the Data tab to browse, filter, and edit data</li>
-                  <li>Use the Structure tab to view table definition</li>
-                </ul>
+              <li>
+                <strong>Start the service:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo systemctl start postgresql
+sudo systemctl enable postgresql</pre>
+              </li>
+              <li>
+                <strong>Set password for postgres user:</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"</pre>
+              </li>
+              <li>
+                <strong>Install pgAdmin (via apt):</strong>
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Add repository
+curl -fsS https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /usr/share/keyrings/packages-pgadmin-org.gpg
+
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list'
+
+sudo apt update
+sudo apt install pgadmin4-desktop</pre>
               </li>
             </ol>
           </div>
         </div>
+      </section>
 
+      <!-- STEP 3: Verify Installation -->
+      <section>
+        <h4>Step 3: Verify PostgreSQL Installation</h4>
+        <p>Before importing data, let's make sure PostgreSQL is running correctly.</p>
 
-        <p>DBeaver provides a consistent interface across different database systems, making it easier to work with
-          multiple database types. It also includes features like:
-          - SQL syntax highlighting and auto-completion
-          - ER diagrams
-          - Data export/import
-          - Query execution history
-          - Database object search
-        </p>
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>3.1 Check PostgreSQL is Running</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Windows:</strong></p>
+            <ol>
+              <li>Open Start Menu and search for "Services"</li>
+              <li>Find "postgresql-x64-16" (or your version)</li>
+              <li>Status should show "Running"</li>
+            </ol>
 
-        </p>
+            <p><strong>macOS/Linux:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Check if PostgreSQL is running
+pg_isready
+
+# Should output: "localhost:5432 - accepting connections"</pre>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>3.2 Test Connection with psql</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Windows:</strong></p>
+            <ol>
+              <li>Open Start Menu → PostgreSQL → SQL Shell (psql)</li>
+              <li>Press Enter to accept defaults for Server, Database, Port, Username</li>
+              <li>Enter your password when prompted</li>
+              <li>You should see: <code>postgres=#</code></li>
+            </ol>
+
+            <p><strong>macOS/Linux:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Connect to PostgreSQL
+psql -U postgres
+
+# Or if that doesn't work on macOS:
+psql postgres</pre>
+
+            <p class="mt-3"><strong>Test it works - type this command:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT version();</pre>
+            <p>You should see the PostgreSQL version number. Type <code>\q</code> to exit.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4: Create Database and Import Data -->
+      <section>
+        <h4>Step 4: Create Database and Import Data</h4>
+        <p>Now we'll create a new database and import the training data from <code>bootcamp_db.sql</code>.</p>
+
+        <div class="card mb-4">
+          <div class="card-header bg-warning">
+            <strong>4.1 Create the Database</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Using psql (Command Line):</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Connect to PostgreSQL
+psql -U postgres
+
+# Create the database
+CREATE DATABASE bootcamp_db;
+
+# Verify it was created
+\l
+
+# Exit psql
+\q</pre>
+
+            <p class="mt-3"><strong>Using pgAdmin (GUI):</strong></p>
+            <ol>
+              <li>Open pgAdmin 4</li>
+              <li>In the left panel, expand "Servers"</li>
+              <li>Right-click on "PostgreSQL 16" → Connect (enter password if prompted)</li>
+              <li>Right-click on "Databases" → Create → Database...</li>
+              <li>Enter name: <code>bootcamp_db</code></li>
+              <li>Click "Save"</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header bg-warning">
+            <strong>4.2 Import the Data</strong>
+          </div>
+          <div class="card-body">
+            <p><strong>Method A: Using psql (Recommended)</strong></p>
+            <p>Open your terminal/command prompt and run:</p>
+
+            <p><em>Windows (Command Prompt):</em></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Navigate to PostgreSQL bin folder (adjust version number if needed)
+cd "C:\Program Files\PostgreSQL\16\bin"
+
+# Import the database file
+psql -U postgres -d bootcamp_db -f "C:\Users\YourName\Downloads\bootcamp_db.sql"</pre>
+
+            <p class="mt-3"><em>macOS/Linux:</em></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Import the database file (adjust path to where you saved it)
+psql -U postgres -d bootcamp_db -f ~/Downloads/bootcamp_db.sql</pre>
+
+            <div class="alert alert-info mt-3">
+              <strong>What's happening?</strong>
+              <ul class="mb-0">
+                <li><code>-U postgres</code> = connect as user "postgres"</li>
+                <li><code>-d bootcamp_db</code> = connect to database "bootcamp_db"</li>
+                <li><code>-f filename.sql</code> = execute commands from this file</li>
+              </ul>
+            </div>
+
+            <hr>
+
+            <p><strong>Method B: Using pgAdmin</strong></p>
+            <ol>
+              <li>Open pgAdmin 4</li>
+              <li>Expand Servers → PostgreSQL → Databases</li>
+              <li>Right-click on <code>bootcamp_db</code> → Query Tool</li>
+              <li>Click the folder icon (Open File) in the toolbar</li>
+              <li>Navigate to and select <code>bootcamp_db.sql</code></li>
+              <li>Click the Execute/Run button (▶ or F5)</li>
+              <li>Wait for the script to complete (may show many "Query returned successfully" messages)</li>
+            </ol>
+
+            <div class="alert alert-success mt-3">
+              <strong>Success indicators:</strong>
+              <ul class="mb-0">
+                <li>No error messages (warnings are OK)</li>
+                <li>Messages like "CREATE TABLE", "INSERT 0 50", etc.</li>
+                <li>Process completes without stopping</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header bg-warning">
+            <strong>4.3 Verify the Import</strong>
+          </div>
+          <div class="card-body">
+            <p>Let's make sure the data was imported correctly:</p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;"># Connect to the database
+psql -U postgres -d bootcamp_db
+
+# List all tables
+\dt
+
+# Count customers (should return 50)
+SELECT COUNT(*) FROM customers;
+
+# Count products (should return 50+)
+SELECT COUNT(*) FROM products;
+
+# List schemas
+\dn
+
+# Exit
+\q</pre>
+
+            <p class="mt-3">If you see tables and data counts, congratulations - your database is ready!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 5: Using the Tools -->
+      <section>
+        <h4>Step 5: Start Using PostgreSQL Tools</h4>
+        <p>Now that your database is set up, here's how to use the two main tools.</p>
+
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <strong>5A. Using psql (Command Line Tool)</strong>
+          </div>
+          <div class="card-body">
+            <p><code>psql</code> is PostgreSQL's native interactive terminal - fast and powerful for quick queries.</p>
+
+            <p><strong>Connect to your database:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">psql -U postgres -d bootcamp_db</pre>
+
+            <p><strong>Essential psql Commands:</strong></p>
+            <table class="table table-bordered table-sm">
+              <thead class="table-light">
+                <tr><th>Command</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>\l</code></td><td>List all databases</td></tr>
+                <tr><td><code>\c database_name</code></td><td>Connect to a different database</td></tr>
+                <tr><td><code>\dt</code></td><td>List tables in current database</td></tr>
+                <tr><td><code>\dt schema.*</code></td><td>List tables in a specific schema (e.g., <code>\dt library.*</code>)</td></tr>
+                <tr><td><code>\d table_name</code></td><td>Describe a table's structure</td></tr>
+                <tr><td><code>\dn</code></td><td>List all schemas</td></tr>
+                <tr><td><code>\du</code></td><td>List all users/roles</td></tr>
+                <tr><td><code>\timing</code></td><td>Toggle query execution time display</td></tr>
+                <tr><td><code>\i filename.sql</code></td><td>Execute commands from a file</td></tr>
+                <tr><td><code>\?</code></td><td>Help for psql commands</td></tr>
+                <tr><td><code>\h SELECT</code></td><td>Help for SQL commands</td></tr>
+                <tr><td><code>\q</code></td><td>Quit psql</td></tr>
+              </tbody>
+            </table>
+
+            <p><strong>Running SQL queries:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">-- Type your query and end with semicolon
+SELECT * FROM customers LIMIT 5;
+
+-- Multi-line queries work too
+SELECT
+    name,
+    email,
+    customer_type
+FROM customers
+WHERE customer_type = 'vip';
+
+-- Press Enter after the semicolon to execute</pre>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <strong>5B. Using pgAdmin 4 (Graphical Interface)</strong>
+          </div>
+          <div class="card-body">
+            <p>pgAdmin is a visual tool - great for beginners and complex database exploration.</p>
+
+            <p><strong>First-time Setup:</strong></p>
+            <ol>
+              <li>Open pgAdmin 4 from your applications</li>
+              <li>Set a master password (this is for pgAdmin itself, not PostgreSQL)</li>
+              <li>In the left panel, expand "Servers"</li>
+              <li>Click on "PostgreSQL 16" - enter your postgres password when prompted</li>
+            </ol>
+
+            <p><strong>Navigating the Interface:</strong></p>
+            <div class="row">
+              <div class="col-md-6">
+                <ul>
+                  <li><strong>Browser Panel (left):</strong> Shows your server, databases, schemas, and tables in a tree structure</li>
+                  <li><strong>Properties Panel:</strong> Shows details about selected objects</li>
+                  <li><strong>Query Tool:</strong> Where you write and run SQL</li>
+                  <li><strong>Data Output:</strong> Shows query results</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <p><strong>To explore the database:</strong></p>
+                <pre style="background: #f8f9fa; color: #212529; padding: 10px; border-radius: 5px; font-size: 0.85em;">
+Servers
+└── PostgreSQL 16
+    └── Databases
+        └── bootcamp_db
+            └── Schemas
+                ├── public
+                │   └── Tables
+                │       ├── customers
+                │       ├── products
+                │       └── orders...
+                ├── library
+                ├── hr
+                └── sales...</pre>
+              </div>
+            </div>
+
+            <p class="mt-3"><strong>Running Your First Query in pgAdmin:</strong></p>
+            <ol>
+              <li>Expand: Servers → PostgreSQL → Databases → bootcamp_db</li>
+              <li>Right-click on <code>bootcamp_db</code> → Query Tool</li>
+              <li>Type a query in the editor:
+                <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">SELECT * FROM customers LIMIT 10;</pre>
+              </li>
+              <li>Click the <strong>Execute</strong> button (▶) or press <strong>F5</strong></li>
+              <li>View results in the "Data Output" panel below</li>
+            </ol>
+
+            <p class="mt-3"><strong>Useful pgAdmin Features:</strong></p>
+            <ul>
+              <li><strong>View Table Data:</strong> Right-click any table → View/Edit Data → First 100 Rows</li>
+              <li><strong>See Table Structure:</strong> Click on a table, then Properties tab</li>
+              <li><strong>Export Data:</strong> After running a query, click the download button to export results</li>
+              <li><strong>Query History:</strong> Access previous queries from the Query History tab</li>
+              <li><strong>ERD Diagram:</strong> Right-click database → Generate ERD to visualize relationships</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Reference Card -->
+      <section>
+        <h4>Quick Reference: Connection Details</h4>
+        <div class="card mb-4">
+          <div class="card-body">
+            <p>Use these settings to connect from any tool:</p>
+            <table class="table table-bordered">
+              <tbody>
+                <tr><th width="30%">Host</th><td><code>localhost</code></td></tr>
+                <tr><th>Port</th><td><code>5432</code></td></tr>
+                <tr><th>Database</th><td><code>bootcamp_db</code></td></tr>
+                <tr><th>Username</th><td><code>postgres</code></td></tr>
+                <tr><th>Password</th><td><em>(the password you set during installation)</em></td></tr>
+              </tbody>
+            </table>
+
+            <p><strong>Connection String Format:</strong></p>
+            <pre style="background: #2d2d2d; color: #f8f8f2; padding: 10px; border-radius: 5px;">postgresql://postgres:yourpassword@localhost:5432/bootcamp_db</pre>
+          </div>
+        </div>
+
+        <div class="alert alert-success">
+          <strong>You're all set!</strong> You now have a fully functional PostgreSQL database on your local machine with all the training data. Continue to the next session to start writing SQL queries!
+        </div>
+      </section>
+
+      <!-- Troubleshooting Section -->
+      <section>
+        <h4>Troubleshooting Common Issues</h4>
+        <div class="accordion" id="troubleshootingAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue1">
+                "psql: command not found" error
+              </button>
+            </h2>
+            <div id="issue1" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+              <div class="accordion-body">
+                <p><strong>Windows:</strong> The PostgreSQL bin folder isn't in your PATH. Either:</p>
+                <ul>
+                  <li>Use the full path: <code>"C:\Program Files\PostgreSQL\16\bin\psql"</code></li>
+                  <li>Or add the bin folder to your system PATH environment variable</li>
+                </ul>
+                <p><strong>macOS with Homebrew:</strong> Run: <code>echo 'export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"' >> ~/.zshrc</code> then restart terminal</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue2">
+                "password authentication failed" error
+              </button>
+            </h2>
+            <div id="issue2" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+              <div class="accordion-body">
+                <ul>
+                  <li>Double-check you're using the correct password you set during installation</li>
+                  <li>If you forgot, you may need to reset it by editing pg_hba.conf (advanced)</li>
+                  <li>On macOS with Homebrew, try connecting without -U flag: <code>psql postgres</code></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue3">
+                "connection refused" error
+              </button>
+            </h2>
+            <div id="issue3" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+              <div class="accordion-body">
+                <p>PostgreSQL service isn't running:</p>
+                <ul>
+                  <li><strong>Windows:</strong> Open Services app, find postgresql service, click "Start"</li>
+                  <li><strong>macOS:</strong> Run <code>brew services start postgresql@16</code></li>
+                  <li><strong>Linux:</strong> Run <code>sudo systemctl start postgresql</code></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#issue4">
+                Import shows errors about existing objects
+              </button>
+            </h2>
+            <div id="issue4" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+              <div class="accordion-body">
+                <p>The database already has some objects. You can:</p>
+                <ul>
+                  <li>Drop and recreate the database: <code>DROP DATABASE bootcamp_db; CREATE DATABASE bootcamp_db;</code></li>
+                  <li>Or ignore the errors if they're just "already exists" warnings</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section>
         <h3 id="understanding-database-roles-and-permissions-general-concept">Understanding Database Roles and
