@@ -956,9 +956,65 @@ ranked_products <span class="kw">AS</span> (
                     <h4>Alistirma 3.1: Kohort Tutma Analizi (Cohort Retention Analysis)</h4>
                     <p>Ilk satin alma aylarina gore musteri tutma oranini gosteren bir kohort analizi olusturun.</p>
 
+                    <div class="info-box">
+                        <strong>Kohort Analizi Nedir?</strong><br>
+                        Kohort, ortak bir ozellige sahip musteri grubudur - bu ornekte, ilk satin alma ayi.
+                        Kohort tutma analizi, her gruptan kac musterinin sonraki aylarda geri gelip alisveris yaptigini takip eder.
+                    </div>
+
                     <p><strong>Gorev:</strong> Her kohorttan musterilerin yuzde kacinin sonraki aylarda alisveris yaptigini hesaplayin.</p>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol3_1')">Cozumu Goster</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Adim Adim Yaklasim:</strong> Bu karmasik analiz 4 CTE'den olusur. Tam cozumu gormeden once her adimi anlayalim.
+                    </div>
+
+                    <h5>Adim 1: Musteri Kohortlarini Belirle</h5>
+                    <p><strong>Soru:</strong> Her musterinin "kohort ayi" (ilk satin alma ayi) nasil bulunur?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step1')">Cevabi Goster</button>
+                    <div id="sol3_1_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Her musterinin ilk satin alma ayini bul (kohortlari)</span>
+<span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">MIN</span>(order_date)) <span class="kw">AS</span> cohort_month
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> customer_id;</code></pre>
+                        <p><strong>Aciklama:</strong> <code>MIN(order_date)</code> ilk siparis tarihini bulur, <code>DATE_TRUNC('month', ...)</code> bunu ayin ilk gunune yuvarlar.</p>
+                    </div>
+
+                    <h5>Adim 2: Kohorttan Bu Yana Gecen Aylari Hesapla</h5>
+                    <p><strong>Soru:</strong> Her siparis icin, musterinin kohort ayindan bu yana kac ay gectigini nasil hesaplariz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step2')">Cevabi Goster</button>
+                    <div id="sol3_1_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Kohort ile her aktivite arasindaki aylari hesapla</span>
+(<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> activity_month) - <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> cohort_month)) * <span class="dv">12</span> +
+(<span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> activity_month) - <span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> cohort_month)) <span class="kw">AS</span> months_since_cohort</code></pre>
+                        <p><strong>Aciklama:</strong> Toplam ay farkini hesaplamak icin yillari ve aylari ayri ayri cikariyoruz. Ay 0 = ilk satin alma ayi, Ay 1 = sonraki ay, vb.</p>
+                    </div>
+
+                    <h5>Adim 3: Kohort Buyukluklerini Say</h5>
+                    <p><strong>Soru:</strong> Her kohortta kac musteri oldugunu nasil sayariz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step3')">Cevabi Goster</button>
+                    <div id="sol3_1_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Her kohorttaki benzersiz musteri sayisi</span>
+<span class="kw">SELECT</span>
+    cohort_month,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> cohort_customers
+<span class="kw">FROM</span> customer_cohort
+<span class="kw">GROUP BY</span> cohort_month;</code></pre>
+                        <p><strong>Aciklama:</strong> Bu bize her kohort icin "%100" temel cizgisini verir.</p>
+                    </div>
+
+                    <h5>Adim 4: Tutma Oranini Hesapla</h5>
+                    <p><strong>Soru:</strong> Geri donen musterilerin yuzdesini nasil hesaplariz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step4')">Cevabi Goster</button>
+                    <div id="sol3_1_step4" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Tutma yuzdesi formulu</span>
+<span class="fu">ROUND</span>(active_customers * <span class="fl">100.0</span> / cohort_customers, <span class="dv">1</span>) <span class="kw">AS</span> retention_pct</code></pre>
+                        <p><strong>Aciklama:</strong> Aktif musterileri toplam kohort musterilerine bol, yuzde icin 100 ile carp.</p>
+                    </div>
+
+                    <h5>Tam Cozum</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1')">Tam Cozumu Goster</button>
                     <div id="sol3_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 <span class="co">-- Adim 1: Her musterinin kohortunu belirle (ilk satin alma ayi)</span>
@@ -1048,9 +1104,69 @@ retention_data <span class="kw">AS</span> (
                     <h4>Alistirma 3.2: Musteri Yasam Boyu Degeri (Customer Lifetime Value - CLV)</h4>
                     <p>Musteri yasam boyu degeri metriklerini hesaplayin ve musterileri segmentleyin.</p>
 
+                    <div class="info-box">
+                        <strong>Musteri Yasam Boyu Degeri Nedir?</strong><br>
+                        CLV, bir isletmenin tek bir musteriden tum iliski boyunca bekleyebilecegi toplam geliri tahmin eder.
+                        Hangi musterilerin en degerli oldugunu ve nasil segmentlenecegini belirlemeye yardimci olur.
+                    </div>
+
                     <p><strong>Gorev:</strong> Toplam harcama, siklik, yakinlik hesaplayin ve gelecek degeri tahmin edin.</p>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol3_2')">Cozumu Goster</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Adim Adim Yaklasim:</strong> Bunu 3 parcada olusturacagiz: temel metrikleri hesapla, kartil siralama ekle, sonra musterileri segmentle.
+                    </div>
+
+                    <h5>Adim 1: Temel Musteri Metriklerini Hesapla</h5>
+                    <p><strong>Soru:</strong> Her musteri icin hangi metrikleri hesaplamamiz gerekiyor? (Ipucu: harcama, siklik ve yakinlik dusunun)</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2_step1')">Cevabi Goster</button>
+                    <div id="sol3_2_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders,           <span class="co">-- Siklik: Ne siklikta aliyorlar</span>
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_spent,   <span class="co">-- Parasal: Ne kadar harciyorlar</span>
+    <span class="fu">AVG</span>(total_amount) <span class="kw">AS</span> avg_order_value,
+    <span class="fu">MIN</span>(order_date) <span class="kw">AS</span> first_order,     <span class="co">-- Ne zaman basladilar</span>
+    <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> last_order,      <span class="co">-- En son siparis</span>
+    <span class="fu">CURRENT_DATE</span> - <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> days_since_last  <span class="co">-- Yakinlik</span>
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> customer_id;</code></pre>
+                        <p><strong>Aciklama:</strong> Bunlar musteri analizinde yaygin olarak kullanilan RFM (Recency/Yakinlik, Frequency/Siklik, Monetary/Parasal) metrikleridir.</p>
+                    </div>
+
+                    <h5>Adim 2: Kartil Siralama icin NTILE'i Anla</h5>
+                    <p><strong>Soru:</strong> <code>NTILE(4)</code> ne yapar ve segmentasyon icin neden faydalidir?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2_step2')">Cevabi Goster</button>
+                    <div id="sol3_2_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- NTILE(4) musterileri 4 esit gruba (kartil) boler</span>
+<span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>) <span class="kw">AS</span> spending_quartile
+<span class="co">-- Kartil 1 = En cok harcayan %25</span>
+<span class="co">-- Kartil 4 = En az harcayan %25</span></code></pre>
+                        <p><strong>Aciklama:</strong> NTILE satirlari N esit gruba boler. Kartil 1 = en iyi performans, Kartil 4 = dikkat gerektiren.</p>
+                    </div>
+
+                    <h5>Adim 3: Musteri Segmentleri Olustur</h5>
+                    <p><strong>Soru:</strong> Kartil siralamalarini "Sampiyonlar" veya "Risk Altinda" gibi anlamli musteri segmentleri olusturmak icin nasil birlestirebiliriz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2_step3')">Cevabi Goster</button>
+                    <div id="sol3_2_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Kartil kombinasyonlarina gore segmentle</span>
+<span class="cf">CASE</span>
+    <span class="cf">WHEN</span> spending_quartile = <span class="dv">1</span> <span class="kw">AND</span> frequency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Sampiyonlar'</span>
+    <span class="cf">WHEN</span> spending_quartile <= <span class="dv">2</span> <span class="kw">AND</span> recency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Sadik'</span>
+    <span class="cf">WHEN</span> recency_quartile >= <span class="dv">3</span> <span class="kw">AND</span> spending_quartile <= <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'Risk Altinda'</span>
+    <span class="cf">WHEN</span> recency_quartile = <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Kaybedilmis'</span>
+    <span class="cf">ELSE</span> <span class="st">'Normal'</span>
+<span class="cf">END</span> <span class="kw">AS</span> segment</code></pre>
+                        <p><strong>Aciklama:</strong></p>
+                        <ul>
+                            <li><strong>Sampiyonlar:</strong> Sik sik alim yapan yuksek harcayicilar</li>
+                            <li><strong>Sadik:</strong> Yakin zamanda alisveris yapan iyi harcayicilar</li>
+                            <li><strong>Risk Altinda:</strong> Eskiden iyi harcardi ama yakin zamanda alim yapmadi</li>
+                            <li><strong>Kaybedilmis:</strong> Uzun suredir alisveris yapmamis</li>
+                        </ul>
+                    </div>
+
+                    <h5>Tam Cozum</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2')">Tam Cozumu Goster</button>
                     <div id="sol3_2" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 customer_metrics <span class="kw">AS</span> (
@@ -1108,9 +1224,64 @@ customer_segments <span class="kw">AS</span> (
                     <h4>Alistirma 3.3: Recursive CTE - Organizasyon Hiyerarsisi (Organization Hierarchy)</h4>
                     <p>Raporlama zincirlerini gosteren eksiksiz bir organizasyon agaci olusturun.</p>
 
+                    <div class="info-box">
+                        <strong>Recursive CTE Nedir?</strong><br>
+                        Recursive CTE, hiyerarsik veya agac yapili verileri islemek icin kendini cagirir.
+                        Iki parcasi vardir: <strong>temel durum</strong> (baslangic noktasi) ve <strong>recursive durum</strong> (sonraki seviyeyi nasil bulacagi).
+                    </div>
+
                     <p><strong>Gorev:</strong> Calisan-yonetici iliskisini dolasmak icin recursive CTE kullanin.</p>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol3_3')">Cozumu Goster</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Adim Adim Yaklasim:</strong> Recursive CTE her zaman temel durum (anchor) ve kendine referans veren recursive durumdan olusur. Her parcayi olusturalim.
+                    </div>
+
+                    <h5>Adim 1: Temel Durum ile Basla (Kok Dugumler)</h5>
+                    <p><strong>Soru:</strong> Organizasyon hiyerarsisinde "kok" calisanlar kimlerdir? Onlari nasil tanimlayabiliriz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3_step1')">Cevabi Goster</button>
+                    <div id="sol3_3_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Temel durum: yoneticisi olmayan calisanlar (hiyerarsinin tepesi)</span>
+<span class="kw">SELECT</span>
+    id,
+    first_name || <span class="st">' '</span> || last_name <span class="kw">AS</span> full_name,
+    manager_id,
+    <span class="dv">1</span> <span class="kw">AS</span> level  <span class="co">-- Seviye 1'deler (en ust)</span>
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> manager_id <span class="kw">IS NULL</span>;</code></pre>
+                        <p><strong>Aciklama:</strong> <code>WHERE manager_id IS NULL</code> yoneticisi olmayan calisanlari bulur - genellikle CEO veya ust duzey yoneticiler.</p>
+                    </div>
+
+                    <h5>Adim 2: Recursive Durumu Olustur</h5>
+                    <p><strong>Soru:</strong> Daha once bulduklarimiza bagli olan calisanlari nasil buluruz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3_step2')">Cevabi Goster</button>
+                    <div id="sol3_3_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Recursive durum: yoneticisi mevcut sonucumuzda olan calisanlari bul</span>
+<span class="kw">SELECT</span>
+    e.id,
+    e.first_name || <span class="st">' '</span> || e.last_name,
+    e.manager_id,
+    oh.level + <span class="dv">1</span>  <span class="co">-- Yoneticisinden bir seviye asagi</span>
+<span class="kw">FROM</span> employees e
+<span class="kw">JOIN</span> org_hierarchy oh <span class="kw">ON</span> e.manager_id = oh.id;</code></pre>
+                        <p><strong>Aciklama:</strong> Recursive kisim calisanlari mevcut hiyerarsiye (<code>org_hierarchy</code>) <code>manager_id</code> uzerinden baglar. Her iterasyon sonraki seviyeyi bulur.</p>
+                    </div>
+
+                    <h5>Adim 3: Recursive'in Nasil Calistigini Anla</h5>
+                    <p><strong>Soru:</strong> Veritabani recursive CTE'yi nasil calistirir?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3_step3')">Cevabi Goster</button>
+                    <div id="sol3_3_step3" class="solution-content">
+                        <p><strong>Calistirma Akisi:</strong></p>
+                        <ol>
+                            <li><strong>Iterasyon 1:</strong> Temel durumu calistir → CEO'yu bul (seviye 1)</li>
+                            <li><strong>Iterasyon 2:</strong> Recursive durumu calistir → CEO'ya rapor verenleri bul (seviye 2)</li>
+                            <li><strong>Iterasyon 3:</strong> Recursive durumu tekrar calistir → Seviye 2'ye rapor verenleri bul (seviye 3)</li>
+                            <li><strong>Devam et</strong> satir donmeyene kadar</li>
+                        </ol>
+                        <p>Her iterasyonun ciktisi, sonraki iterasyonun <code>org_hierarchy</code> referansi icin girdi olur.</p>
+                    </div>
+
+                    <h5>Tam Cozum</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3')">Tam Cozumu Goster</button>
                     <div id="sol3_3" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH RECURSIVE</span> org_hierarchy <span class="kw">AS</span> (
     <span class="co">-- Temel durum: ust duzey calisanlar (yoneticisi yok)</span>
@@ -1361,7 +1532,95 @@ daily_sales <span class="kw">AS</span> (
                         <li>Hareketli ortalamali (Moving Average) gunluk satis trendi (Daily Sales Trend)</li>
                     </ul>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol5_1')">Cozumu Goster</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Ogrenme Yaklasimi:</strong> Bu karmasik bir pano sorgusudur. Bunu 4 bagimsiz parcaya bolelim - her biri kendi basina bir sorgu olabilir!
+                    </div>
+
+                    <h5>Adim 1: Aylik Satis Karsilastirmasi</h5>
+                    <p><strong>Soru:</strong> Bu ayin satislarini gecen ayin satislariyla tek bir sorguda nasil karsilastirabiliriz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step1')">Cevabi Goster</button>
+                    <div id="sol5_1_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- CASE ile kosullu toplama kullan</span>
+<span class="kw">SELECT</span>
+    <span class="fu">SUM</span>(<span class="cf">CASE</span>
+        <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
+        <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> current_month,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span>
+        <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span> - <span class="kw">INTERVAL</span> <span class="st">'1 month'</span>)
+        <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> previous_month
+<span class="kw">FROM</span> orders;</code></pre>
+                        <p><strong>Aciklama:</strong> CASE ile kosullu SUM, veriler uzerinde tek geciste farkli kosullari toplamaya olanak tanir.</p>
+                    </div>
+
+                    <h5>Adim 2: Gelire Gore En Iyi 5 Urun</h5>
+                    <p><strong>Soru:</strong> Bu ay icin gelire gore en iyi 5 urunu nasil buluruz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step2')">Cevabi Goster</button>
+                    <div id="sol5_1_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    p.name,
+    <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">AS</span> revenue,
+    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">DESC</span>) <span class="kw">AS</span> rank
+<span class="kw">FROM</span> products p
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> ol.order_id = o.id
+<span class="kw">WHERE</span> o.order_date >= <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
+<span class="kw">GROUP BY</span> p.id, p.name;</code></pre>
+                        <p><strong>Aciklama:</strong> ROW_NUMBER() urunleri gelire gore siralar. Sonra son sorguda rank <= 5 ile filtreleyebiliriz.</p>
+                    </div>
+
+                    <h5>Adim 3: Musteri Segmentleri</h5>
+                    <p><strong>Soru:</strong> Musterileri siparis sayilarina gore nasil segmentleriz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step3')">Cevabi Goster</button>
+                    <div id="sol5_1_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="cf">CASE</span>
+        <span class="cf">WHEN</span> total_orders >= <span class="dv">10</span> <span class="cf">THEN</span> <span class="st">'VIP'</span>
+        <span class="cf">WHEN</span> total_orders >= <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Normal'</span>
+        <span class="cf">ELSE</span> <span class="st">'Ara Sira'</span>
+    <span class="cf">END</span> <span class="kw">AS</span> segment,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> count
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span> customer_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> customer_id
+) cust
+<span class="kw">GROUP BY</span> <span class="dv">1</span>;</code></pre>
+                        <p><strong>Aciklama:</strong> Ic sorgu musteri basina siparis sayar, dis sorgu onlari segmentlere kategorize eder.</p>
+                    </div>
+
+                    <h5>Adim 4: Hareketli Ortalamali Gunluk Trend</h5>
+                    <p><strong>Soru:</strong> 7 gunluk hareketli ortalama ile gunluk satislari nasil hesaplariz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step4')">Cevabi Goster</button>
+                    <div id="sol5_1_step4" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    order_date,
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> daily_sales,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="fu">SUM</span>(total_amount)) <span class="kw">OVER</span> (
+        <span class="kw">ORDER BY</span> order_date
+        <span class="kw">ROWS</span> <span class="dv">6</span> <span class="kw">PRECEDING</span>
+    ), <span class="dv">2</span>) <span class="kw">AS</span> ma_7d
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> order_date >= <span class="fu">CURRENT_DATE</span> - <span class="dv">30</span>
+<span class="kw">GROUP BY</span> order_date;</code></pre>
+                        <p><strong>Aciklama:</strong> <code>ROWS 6 PRECEDING</code> 7 satirlik bir pencere olusturur (mevcut + onceki 6). Bu pencere uzerindeki AVG hareketli ortalamayi verir.</p>
+                    </div>
+
+                    <h5>Adim 5: JSON Ciktisina Birlestirme (Ileri Duzey)</h5>
+                    <p><strong>Soru:</strong> 4 metrigi nasil tek bir JSON sonucunda panolar icin birlestiririz?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step5')">Cevabi Goster</button>
+                    <div id="sol5_1_step5" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- JSON_BUILD_OBJECT bir JSON nesnesi olusturur</span>
+<span class="fu">JSON_BUILD_OBJECT</span>(
+    <span class="st">'summary'</span>, (...),
+    <span class="st">'top_products'</span>, (...),
+    <span class="st">'segments'</span>, (...),
+    <span class="st">'daily_trend'</span>, (...)
+) <span class="kw">AS</span> dashboard;</code></pre>
+                        <p><strong>Aciklama:</strong> JSON fonksiyonlari birden fazla sonuc kumesini tek bir JSON belgesine paketler - API yanitlari icin mukemmel!</p>
+                    </div>
+
+                    <h5>Tam Cozum</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1')">Tam Cozumu Goster</button>
                     <div id="sol5_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 <span class="co">-- Aylik karsilastirma</span>

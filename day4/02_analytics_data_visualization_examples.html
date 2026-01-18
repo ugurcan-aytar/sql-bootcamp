@@ -957,10 +957,66 @@ ranked_products <span class="kw">AS</span> (
                     <h4>Exercise 3.1: Cohort Retention Analysis</h4>
                     <p>Build a cohort analysis showing customer retention by their first purchase month.</p>
 
+                    <div class="info-box">
+                        <strong>What is Cohort Analysis?</strong><br>
+                        A cohort is a group of customers who share a common characteristic - in this case, the month of their first purchase.
+                        Cohort retention analysis tracks how many customers from each group return to make purchases in later months.
+                    </div>
+
                     <p><strong>Task:</strong> Calculate what percentage of customers from each cohort made purchases in
                         subsequent months.</p>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol3_1')">Show Solution</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Step-by-Step Approach:</strong> This complex analysis is built from 4 CTEs. Let's understand each step before seeing the full solution.
+                    </div>
+
+                    <h5>Step 1: Identify Customer Cohorts</h5>
+                    <p><strong>Question:</strong> How do we find each customer's "cohort month" (the month of their first purchase)?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step1')">Show Answer</button>
+                    <div id="sol3_1_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Find each customer's first purchase month (their cohort)</span>
+<span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">MIN</span>(order_date)) <span class="kw">AS</span> cohort_month
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> customer_id;</code></pre>
+                        <p><strong>Explanation:</strong> <code>MIN(order_date)</code> finds the first order date, <code>DATE_TRUNC('month', ...)</code> rounds it to the first day of the month.</p>
+                    </div>
+
+                    <h5>Step 2: Calculate Months Since Cohort</h5>
+                    <p><strong>Question:</strong> For each order, how do we calculate how many months have passed since the customer's cohort month?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step2')">Show Answer</button>
+                    <div id="sol3_1_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Calculate months between cohort and each activity</span>
+(<span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> activity_month) - <span class="fu">EXTRACT</span>(<span class="kw">YEAR</span> <span class="kw">FROM</span> cohort_month)) * <span class="dv">12</span> +
+(<span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> activity_month) - <span class="fu">EXTRACT</span>(<span class="kw">MONTH</span> <span class="kw">FROM</span> cohort_month)) <span class="kw">AS</span> months_since_cohort</code></pre>
+                        <p><strong>Explanation:</strong> We extract years and months separately to calculate the total months difference. Month 0 = first purchase month, Month 1 = next month, etc.</p>
+                    </div>
+
+                    <h5>Step 3: Count Cohort Sizes</h5>
+                    <p><strong>Question:</strong> How do we count how many customers are in each cohort?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step3')">Show Answer</button>
+                    <div id="sol3_1_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Count unique customers per cohort</span>
+<span class="kw">SELECT</span>
+    cohort_month,
+    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> customer_id) <span class="kw">AS</span> cohort_customers
+<span class="kw">FROM</span> customer_cohort
+<span class="kw">GROUP BY</span> cohort_month;</code></pre>
+                        <p><strong>Explanation:</strong> This gives us the "100%" baseline for each cohort.</p>
+                    </div>
+
+                    <h5>Step 4: Calculate Retention Rate</h5>
+                    <p><strong>Question:</strong> How do we calculate the percentage of customers who returned?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1_step4')">Show Answer</button>
+                    <div id="sol3_1_step4" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Retention percentage formula</span>
+<span class="fu">ROUND</span>(active_customers * <span class="fl">100.0</span> / cohort_customers, <span class="dv">1</span>) <span class="kw">AS</span> retention_pct</code></pre>
+                        <p><strong>Explanation:</strong> Divide active customers by total cohort customers, multiply by 100 for percentage.</p>
+                    </div>
+
+                    <h5>Complete Solution</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_1')">Show Full Solution</button>
                     <div id="sol3_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 <span class="co">-- Step 1: Identify each customer's cohort (first purchase month)</span>
@@ -1050,9 +1106,69 @@ retention_data <span class="kw">AS</span> (
                     <h4>Exercise 3.2: Customer Lifetime Value (CLV)</h4>
                     <p>Calculate customer lifetime value metrics and segment customers.</p>
 
+                    <div class="info-box">
+                        <strong>What is Customer Lifetime Value?</strong><br>
+                        CLV estimates the total revenue a business can expect from a single customer over their entire relationship.
+                        It helps identify which customers are most valuable and how to segment them.
+                    </div>
+
                     <p><strong>Task:</strong> Compute total spent, frequency, recency, and project future value.</p>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol3_2')">Show Solution</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Step-by-Step Approach:</strong> We'll build this in 3 parts: calculate basic metrics, add quartile rankings, then segment customers.
+                    </div>
+
+                    <h5>Step 1: Calculate Basic Customer Metrics</h5>
+                    <p><strong>Question:</strong> What metrics do we need to calculate for each customer? (Hint: think about spending, frequency, and recency)</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2_step1')">Show Answer</button>
+                    <div id="sol3_2_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    customer_id,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders,           <span class="co">-- Frequency: How often they buy</span>
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> total_spent,   <span class="co">-- Monetary: How much they spend</span>
+    <span class="fu">AVG</span>(total_amount) <span class="kw">AS</span> avg_order_value,
+    <span class="fu">MIN</span>(order_date) <span class="kw">AS</span> first_order,     <span class="co">-- When they started</span>
+    <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> last_order,      <span class="co">-- Most recent order</span>
+    <span class="fu">CURRENT_DATE</span> - <span class="fu">MAX</span>(order_date) <span class="kw">AS</span> days_since_last  <span class="co">-- Recency</span>
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> customer_id;</code></pre>
+                        <p><strong>Explanation:</strong> These are the RFM (Recency, Frequency, Monetary) metrics commonly used in customer analysis.</p>
+                    </div>
+
+                    <h5>Step 2: Understand NTILE for Quartile Ranking</h5>
+                    <p><strong>Question:</strong> What does <code>NTILE(4)</code> do and why is it useful for segmentation?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2_step2')">Show Answer</button>
+                    <div id="sol3_2_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- NTILE(4) divides customers into 4 equal groups (quartiles)</span>
+<span class="fu">NTILE</span>(<span class="dv">4</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>) <span class="kw">AS</span> spending_quartile
+<span class="co">-- Quartile 1 = Top 25% spenders</span>
+<span class="co">-- Quartile 4 = Bottom 25% spenders</span></code></pre>
+                        <p><strong>Explanation:</strong> NTILE divides rows into N equal groups. Quartile 1 = best performers, Quartile 4 = needs attention.</p>
+                    </div>
+
+                    <h5>Step 3: Create Customer Segments</h5>
+                    <p><strong>Question:</strong> How do we combine quartile rankings to create meaningful customer segments like "Champions" or "At Risk"?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2_step3')">Show Answer</button>
+                    <div id="sol3_2_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Segment based on combinations of quartiles</span>
+<span class="cf">CASE</span>
+    <span class="cf">WHEN</span> spending_quartile = <span class="dv">1</span> <span class="kw">AND</span> frequency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Champions'</span>
+    <span class="cf">WHEN</span> spending_quartile <= <span class="dv">2</span> <span class="kw">AND</span> recency_quartile = <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Loyal'</span>
+    <span class="cf">WHEN</span> recency_quartile >= <span class="dv">3</span> <span class="kw">AND</span> spending_quartile <= <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'At Risk'</span>
+    <span class="cf">WHEN</span> recency_quartile = <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Lost'</span>
+    <span class="cf">ELSE</span> <span class="st">'Regular'</span>
+<span class="cf">END</span> <span class="kw">AS</span> segment</code></pre>
+                        <p><strong>Explanation:</strong></p>
+                        <ul>
+                            <li><strong>Champions:</strong> High spenders who buy frequently</li>
+                            <li><strong>Loyal:</strong> Good spenders who purchased recently</li>
+                            <li><strong>At Risk:</strong> Used to spend well but haven't bought recently</li>
+                            <li><strong>Lost:</strong> Haven't purchased in a long time</li>
+                        </ul>
+                    </div>
+
+                    <h5>Complete Solution</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_2')">Show Full Solution</button>
                     <div id="sol3_2" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 customer_metrics <span class="kw">AS</span> (
@@ -1110,9 +1226,64 @@ customer_segments <span class="kw">AS</span> (
                     <h4>Exercise 3.3: Recursive CTE - Organization Hierarchy</h4>
                     <p>Build a complete organization tree showing reporting chains.</p>
 
+                    <div class="info-box">
+                        <strong>What is a Recursive CTE?</strong><br>
+                        A recursive CTE calls itself to process hierarchical or tree-structured data.
+                        It has two parts: a <strong>base case</strong> (starting point) and a <strong>recursive case</strong> (how to find the next level).
+                    </div>
+
                     <p><strong>Task:</strong> Use recursive CTE to traverse the employee-manager relationship.</p>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol3_3')">Show Solution</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Step-by-Step Approach:</strong> A recursive CTE always has a base case (anchor) and a recursive case that references itself. Let's build each part.
+                    </div>
+
+                    <h5>Step 1: Start with the Base Case (Root Nodes)</h5>
+                    <p><strong>Question:</strong> Who are the "root" employees in an organization hierarchy? How do we identify them?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3_step1')">Show Answer</button>
+                    <div id="sol3_3_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Base case: employees with no manager (top of hierarchy)</span>
+<span class="kw">SELECT</span>
+    id,
+    first_name || <span class="st">' '</span> || last_name <span class="kw">AS</span> full_name,
+    manager_id,
+    <span class="dv">1</span> <span class="kw">AS</span> level  <span class="co">-- They are at level 1 (the top)</span>
+<span class="kw">FROM</span> employees
+<span class="kw">WHERE</span> manager_id <span class="kw">IS NULL</span>;</code></pre>
+                        <p><strong>Explanation:</strong> <code>WHERE manager_id IS NULL</code> finds employees without a manager - typically the CEO or top executives.</p>
+                    </div>
+
+                    <h5>Step 2: Build the Recursive Case</h5>
+                    <p><strong>Question:</strong> How do we find employees who report to the managers we already found?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3_step2')">Show Answer</button>
+                    <div id="sol3_3_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Recursive case: find employees whose manager is in our current result</span>
+<span class="kw">SELECT</span>
+    e.id,
+    e.first_name || <span class="st">' '</span> || e.last_name,
+    e.manager_id,
+    oh.level + <span class="dv">1</span>  <span class="co">-- One level deeper than their manager</span>
+<span class="kw">FROM</span> employees e
+<span class="kw">JOIN</span> org_hierarchy oh <span class="kw">ON</span> e.manager_id = oh.id;</code></pre>
+                        <p><strong>Explanation:</strong> The recursive part joins employees to the current hierarchy (<code>org_hierarchy</code>) via their <code>manager_id</code>. Each iteration finds the next level down.</p>
+                    </div>
+
+                    <h5>Step 3: Understand How Recursion Works</h5>
+                    <p><strong>Question:</strong> How does the database execute a recursive CTE?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3_step3')">Show Answer</button>
+                    <div id="sol3_3_step3" class="solution-content">
+                        <p><strong>Execution Flow:</strong></p>
+                        <ol>
+                            <li><strong>Iteration 1:</strong> Run base case → Find CEO (level 1)</li>
+                            <li><strong>Iteration 2:</strong> Run recursive case → Find people reporting to CEO (level 2)</li>
+                            <li><strong>Iteration 3:</strong> Run recursive case again → Find people reporting to level 2 (level 3)</li>
+                            <li><strong>Continue</strong> until no more rows are returned</li>
+                        </ol>
+                        <p>Each iteration's output becomes the input for the next iteration's <code>org_hierarchy</code> reference.</p>
+                    </div>
+
+                    <h5>Complete Solution</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol3_3')">Show Full Solution</button>
                     <div id="sol3_3" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH RECURSIVE</span> org_hierarchy <span class="kw">AS</span> (
     <span class="co">-- Base case: top-level employees (no manager)</span>
@@ -1365,7 +1536,95 @@ daily_sales <span class="kw">AS</span> (
                         <li>Daily sales trend with moving average</li>
                     </ul>
 
-                    <button class="solution-toggle" onclick="toggleSolution('sol5_1')">Show Solution</button>
+                    <div class="hint-box" style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                        <strong>Learning Approach:</strong> This is a complex dashboard query. Let's break it into 4 independent parts - each is a separate CTE that could be its own query!
+                    </div>
+
+                    <h5>Step 1: Monthly Sales Comparison</h5>
+                    <p><strong>Question:</strong> How do we compare this month's sales vs last month's sales in a single query?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step1')">Show Answer</button>
+                    <div id="sol5_1_step1" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- Use conditional aggregation with CASE</span>
+<span class="kw">SELECT</span>
+    <span class="fu">SUM</span>(<span class="cf">CASE</span>
+        <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
+        <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> current_month,
+    <span class="fu">SUM</span>(<span class="cf">CASE</span>
+        <span class="cf">WHEN</span> <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, order_date) = <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span> - <span class="kw">INTERVAL</span> <span class="st">'1 month'</span>)
+        <span class="cf">THEN</span> total_amount <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> previous_month
+<span class="kw">FROM</span> orders;</code></pre>
+                        <p><strong>Explanation:</strong> Conditional SUM with CASE allows us to aggregate different conditions in a single pass through the data.</p>
+                    </div>
+
+                    <h5>Step 2: Top 5 Products by Revenue</h5>
+                    <p><strong>Question:</strong> How do we find the top 5 products by revenue for the current month?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step2')">Show Answer</button>
+                    <div id="sol5_1_step2" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    p.name,
+    <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">AS</span> revenue,
+    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="fu">SUM</span>(ol.quantity * ol.unit_price) <span class="kw">DESC</span>) <span class="kw">AS</span> rank
+<span class="kw">FROM</span> products p
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> p.id = ol.product_id
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> ol.order_id = o.id
+<span class="kw">WHERE</span> o.order_date >= <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, <span class="fu">CURRENT_DATE</span>)
+<span class="kw">GROUP BY</span> p.id, p.name;</code></pre>
+                        <p><strong>Explanation:</strong> ROW_NUMBER() ranks products by revenue. We can then filter for rank <= 5 in the final query.</p>
+                    </div>
+
+                    <h5>Step 3: Customer Segments</h5>
+                    <p><strong>Question:</strong> How do we segment customers based on their order count?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step3')">Show Answer</button>
+                    <div id="sol5_1_step3" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    <span class="cf">CASE</span>
+        <span class="cf">WHEN</span> total_orders >= <span class="dv">10</span> <span class="cf">THEN</span> <span class="st">'VIP'</span>
+        <span class="cf">WHEN</span> total_orders >= <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Regular'</span>
+        <span class="cf">ELSE</span> <span class="st">'Occasional'</span>
+    <span class="cf">END</span> <span class="kw">AS</span> segment,
+    <span class="fu">COUNT</span>(*) <span class="kw">AS</span> count
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span> customer_id, <span class="fu">COUNT</span>(*) <span class="kw">AS</span> total_orders
+    <span class="kw">FROM</span> orders
+    <span class="kw">GROUP BY</span> customer_id
+) cust
+<span class="kw">GROUP BY</span> <span class="dv">1</span>;</code></pre>
+                        <p><strong>Explanation:</strong> The inner query counts orders per customer, the outer query categorizes them into segments.</p>
+                    </div>
+
+                    <h5>Step 4: Daily Trend with Moving Average</h5>
+                    <p><strong>Question:</strong> How do we calculate daily sales with a 7-day moving average?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step4')">Show Answer</button>
+                    <div id="sol5_1_step4" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="kw">SELECT</span>
+    order_date,
+    <span class="fu">SUM</span>(total_amount) <span class="kw">AS</span> daily_sales,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="fu">SUM</span>(total_amount)) <span class="kw">OVER</span> (
+        <span class="kw">ORDER BY</span> order_date
+        <span class="kw">ROWS</span> <span class="dv">6</span> <span class="kw">PRECEDING</span>
+    ), <span class="dv">2</span>) <span class="kw">AS</span> ma_7d
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> order_date >= <span class="fu">CURRENT_DATE</span> - <span class="dv">30</span>
+<span class="kw">GROUP BY</span> order_date;</code></pre>
+                        <p><strong>Explanation:</strong> <code>ROWS 6 PRECEDING</code> creates a window of 7 rows (current + 6 before). AVG over this window gives the moving average.</p>
+                    </div>
+
+                    <h5>Step 5: Combining into JSON Output (Advanced)</h5>
+                    <p><strong>Question:</strong> How do we combine all 4 metrics into a single JSON result for dashboards?</p>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1_step5')">Show Answer</button>
+                    <div id="sol5_1_step5" class="solution-content">
+                        <pre><code class="sourceCode sql"><span class="co">-- JSON_BUILD_OBJECT creates a JSON object</span>
+<span class="fu">JSON_BUILD_OBJECT</span>(
+    <span class="st">'summary'</span>, (...),
+    <span class="st">'top_products'</span>, (...),
+    <span class="st">'segments'</span>, (...),
+    <span class="st">'daily_trend'</span>, (...)
+) <span class="kw">AS</span> dashboard;</code></pre>
+                        <p><strong>Explanation:</strong> JSON functions package multiple result sets into a single JSON document - perfect for API responses!</p>
+                    </div>
+
+                    <h5>Complete Solution</h5>
+                    <button class="solution-toggle" onclick="toggleSolution('sol5_1')">Show Full Solution</button>
                     <div id="sol5_1" class="solution-content">
                         <pre><code class="sourceCode sql"><span class="kw">WITH</span>
 <span class="co">-- Monthly comparison</span>
