@@ -347,7 +347,7 @@
       </section>
       <section>
         <h3 id="insert-statements-adding-data">INSERT Ifadeleri (Veri Ekleme)</h3>
-        <p><code>INSERT</code> ifadesi bir tabloya yeni satirlar (kayitlar) ekler.</p>
+        <p><code>INSERT</code> ifadesi bir tabloya yeni satirlar/kayitlar (rows/records) ekler.</p>
         <p><strong>Standart SQL Sozdizimi</strong>:</p>
         <ol type="1">
           <li>
@@ -389,8 +389,8 @@
         </ol>
       </section>
       <section>
-        <p><strong>Varsayilan Degerlerin Islenmesi (Standart SQL)</strong>:</p>
-        <p>Eger bir sutunun tanimli bir varsayilan degeri varsa, onu <code>INSERT</code> ifadesinden cikarabilir
+        <p><strong>Varsayilan Degerlerin Islenmesi (Handling Default Values) - Standart SQL</strong>:</p>
+        <p>Eger bir sutunun tanimli bir varsayilan degeri (default value) varsa, onu <code>INSERT</code> ifadesinden cikarabilir
           (sutunlari acikca listelerseniz) veya <code>DEFAULT</code> anahtar kelimesini kullanabilirsiniz.</p>
         <div class="sourceCode" id="cb04" onclick="CopyToClipboard('cb04')">
           <pre
@@ -402,10 +402,10 @@
         </div>
       </section>
       <section>
-        <p><strong>Olusturulan Degerleri Alma (Sozdizimi Degisir)</strong>:</p>
-        <p>Cogu zaman, bir eklemeden sonra otomatik olusturulan bir anahtarin (ID gibi) degerini almaniz gerekir.</p>
+        <p><strong>Olusturulan Degerleri Alma (Retrieving Generated Values) - Sozdizimi Degisir</strong>:</p>
+        <p>Cogu zaman, bir eklemeden sonra otomatik olusturulan bir anahtarin/birincil anahtarin (auto-generated key/primary key, ID gibi) degerini almaniz gerekir.</p>
         <ul>
-          <li><strong>PostgreSQL/Oracle</strong>: <code>RETURNING</code> yan tumcesini kullanin.
+          <li><strong>PostgreSQL/Oracle</strong>: <code>RETURNING</code> yan tumcesini (clause) kullanin.
             <div class="sourceCode" id="cb05" onclick="CopyToClipboard('cb05')">
               <pre class="sourceCode sql">
 <code><span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="co"></span>-- PostgreSQL/Oracle Ornegi</span></span>
@@ -414,7 +414,7 @@
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">RETURNING</span> product_id;</span></code></pre>
             </div>
           </li>
-          <li><strong>SQL Server</strong>: <code>OUTPUT</code> yan tumcesini kullanin.
+          <li><strong>SQL Server</strong>: <code>OUTPUT</code> yan tumcesini (clause) kullanin.
             <div class="sourceCode" id="cb06" onclick="CopyToClipboard('cb06')">
               <pre class="sourceCode sql">
 <code><span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co"></span>-- SQL Server Ornegi</span></span>
@@ -472,8 +472,8 @@
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    column2 <span class="op">=</span> value2, <span class="op">..</span>.</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="kw">WHERE</span> condition; <span class="co">-- KRITIK: Hangi satirlarin guncelleneceqini filtreler</span></span></code></pre>
         </div>
-        <p><strong>Onemli</strong>: Tablodaki <em>her satiri</em> guncellemeyi kastetmiyorsaniz <strong>her zaman bir <code>WHERE</code> yan tumcesi kullanin</strong>.
-          <code>WHERE</code> yan tumcesini unutmak yaygin ve tehlikeli bir hatadir.
+        <p><strong>Onemli</strong>: Tablodaki <em>her satiri</em> guncellemeyi kastetmiyorsaniz <strong>her zaman bir <code>WHERE</code> yan tumcesi (clause) kullanin</strong>.
+          <code>WHERE</code> yan tumcesi (clause)ni (clause) unutmak yaygin ve tehlikeli bir hatadir.
         </p>
       </section>
       <section>
@@ -511,7 +511,7 @@
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a><span class="kw">WHERE</span> p.supplier_id <span class="op">=</span> s.id <span class="kw">AND</span> s.active <span class="op">=</span> <span class="kw">true</span>;</span></code></pre>
             </div>
           </li>
-          <li><strong>Oracle/Db2</strong>: Iliskili alt sorgu veya <code>MERGE</code> kullanin.
+          <li><strong>Oracle/Db2</strong>: Iliskili alt sorgu (correlated subquery) veya <code>MERGE</code> kullanin.
             <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
               <pre class="sourceCode sql">
 <code><span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="co"></span>-- Oracle Ornegi (Iliskili Alt Sorgu)</span></span>
@@ -542,7 +542,7 @@
         </p>
         <p><strong><code>UPDATE</code> icin En Iyi Uygulamalar</strong>: 1. Tum satirlari guncellemeyi kastetmiyorsaniz <strong>her zaman <code>WHERE</code> kullanin</strong>.
           2. <strong>Once <code>SELECT</code> ile test edin</strong>: <code>UPDATE</code>'i calistirmadan once hangi satirlarin etkilenecegini dogrulamak icin
-          ayni <code>WHERE</code> yan tumcesiyle bir <code>SELECT</code> sorgusu yazin.
+          ayni <code>WHERE</code> yan tumcesi (clause)yle bir <code>SELECT</code> sorgusu yazin.
           3. <strong>Islemler (Transaction) Kullanin</strong>: Ozellikle karmasik veya birden fazla satiri etkileyen guncellemeleri,
           guvenlik icin bir islem (<code>BEGIN</code>/<code>COMMIT</code>/<code>ROLLBACK</code>) icine sarin.
           4. <strong>Performansi Dikkate Alin</strong>: Indeksli sutunlar veya buyuk tablolar uzerindeki guncellemeler yavas olabilir.
@@ -558,7 +558,7 @@
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> table_name</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="kw">WHERE</span> condition; <span class="co">-- KRITIK: Hangi satirlarin silinecegini filtreler</span></span></code></pre>
         </div>
-        <p><strong>Onemli</strong>: <code>UPDATE</code> gibi, <em>tum</em> satirlari silmeyi kastetmiyorsaniz <strong>her zaman bir <code>WHERE</code> yan tumcesi kullanin</strong>.
+        <p><strong>Onemli</strong>: <code>UPDATE</code> gibi, <em>tum</em> satirlari silmeyi kastetmiyorsaniz <strong>her zaman bir <code>WHERE</code> yan tumcesi (clause) kullanin</strong>.
           <code>DELETE</code> ifadesinde <code>WHERE</code>'i unutmak son derece tehlikelidir.</p>
         <p><strong>Ornekler</strong>:</p>
         <div class="sourceCode" id="cb15" onclick="CopyToClipboard('cb15')">
@@ -638,8 +638,8 @@
               <td style="text-align: left;">Minimal kayit (genellikle)</td>
             </tr>
             <tr class="even">
-              <td style="text-align: left;"><strong>Tetikleyiciler</strong></td>
-              <td style="text-align: left;"><code>DELETE</code> tetikleyicilerini calistirir</td>
+              <td style="text-align: left;"><strong>Tetikleyiciler (Triggers)</strong></td>
+              <td style="text-align: left;"><code>DELETE</code> tetikleyicilerini (triggers) calistirir</td>
               <td style="text-align: left;">Genellikle tetikleyicileri <em>calistirmaz</em></td>
             </tr>
             <tr class="odd">
@@ -661,9 +661,9 @@
                 secenegi)</td>
             </tr>
             <tr class="even">
-              <td style="text-align: left;"><strong>Yabanci Anahtarlar</strong></td>
+              <td style="text-align: left;"><strong>Yabanci Anahtarlar (Foreign Keys)</strong></td>
               <td style="text-align: left;">Standart kontroller uygulanir</td>
-              <td style="text-align: left;">FK'lar tarafindan referans gosteriliyorsa basarisiz olabilir, <code>CASCADE</code> kullanilmadikca
+              <td style="text-align: left;">FK'lar (foreign keys) tarafindan referans gosteriliyorsa basarisiz olabilir, <code>CASCADE</code> kullanilmadikca
                 (tehlikeli!)</td>
             </tr>
           </tbody>
@@ -676,8 +676,8 @@
         <h3 id="transaction-management-standard-sql">Islem (Transaction) Yonetimi (Standart SQL)</h3>
         <p>Islemler, bir dizi SQL operasyonunun tek, atomik bir calisma birimi olarak ele alinmasini saglar. Ya
           islem icindeki tum operasyonlar basarili olur ve kalici hale getirilir (<code>COMMIT</code>), ya da hicbiri
-          (<code>ROLLBACK</code>). Bu, <strong>ACID</strong> ozelliklerini (Atomiklik, Tutarlilik,
-          Izolasyon, Dayaniklilik) garanti eder.</p>
+          (<code>ROLLBACK</code>). Bu, <strong>ACID</strong> ozelliklerini (Atomiklik/Atomicity, Tutarlilik/Consistency,
+          Izolasyon/Isolation, Dayaniklilik/Durability) garanti eder.</p>
         <p><strong>Standart SQL Komutlari</strong>:</p>
         <ol type="1">
           <li><strong><code>BEGIN TRANSACTION</code></strong> (veya genellikle sadece <code>BEGIN</code>): Yeni bir
@@ -686,8 +686,8 @@
             islemi sonlandirir.</li>
           <li><strong><code>ROLLBACK</code></strong>: <code>BEGIN</code>'den bu yana yapilan tum degisiklikleri iptal eder ve
             islemi sonlandirir.</li>
-          <li><strong><code>SAVEPOINT savepoint_name</code></strong>: Bir islem icinde adlandirilmis bir nokta olusturur.</li>
-          <li><strong><code>ROLLBACK TO SAVEPOINT savepoint_name</code></strong>: Belirtilen kayit noktasindan sonra yapilan degisiklikleri iptal eder,
+          <li><strong><code>SAVEPOINT savepoint_name</code></strong>: Bir islem icinde adlandirilmis bir kayit noktasi (savepoint) olusturur.</li>
+          <li><strong><code>ROLLBACK TO SAVEPOINT savepoint_name</code></strong>: Belirtilen kayit noktasindan (savepoint) sonra yapilan degisiklikleri iptal eder,
             ancak islemi aktif tutar.</li>
         </ol>
       </section>
@@ -715,18 +715,18 @@
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a><span class="co">-- tum degisiklikleri iptal edin:</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a><span class="co">-- ROLLBACK;</span></span></code></pre>
         </div>
-        <p><strong>Otomatik Onay (Auto-Commit)</strong>: Varsayilan olarak, bircok SQL araci ve veritabani baglantisi "otomatik onay"
-          modunda calisir; burada her bireysel SQL ifadesi kendi islemi olarak ele alinir. Coklu ifade
+        <p><strong>Otomatik Onay (Auto-Commit)</strong>: Varsayilan olarak, bircok SQL araci ve veritabani baglantisi "otomatik onay (auto-commit)"
+          modunda calisir; burada her bireysel SQL ifadesi kendi islemi (transaction) olarak ele alinir. Coklu ifade
           islemleri gerceklestirmek icin, genellikle <code>BEGIN</code> ile acikca bir islem baslatmaniz gerekir.</p>
-        <p><strong>Izolasyon Seviyeleri</strong>: Standart SQL, degisikliklerin gorunurlugu konusunda
-          islemlerin birbirleriyle nasil etkilesecegini kontrol eden izolasyon seviyelerini (<code>READ UNCOMMITTED</code>,
+        <p><strong>Izolasyon Seviyeleri (Isolation Levels)</strong>: Standart SQL, degisikliklerin gorunurlugu konusunda
+          islemlerin birbirleriyle nasil etkilesecegini kontrol eden izolasyon seviyelerini (isolation levels) (<code>READ UNCOMMITTED</code>,
           <code>READ COMMITTED</code>, <code>REPEATABLE READ</code>, <code>SERIALIZABLE</code>) tanimlar. <code>READ COMMITTED</code> en yaygin
           varsayilandir.
         </p>
       </section>
       <section>
-        <h3 id="upsert-operations-insert-or-update">UPSERT Islemleri (INSERT veya UPDATE)</h3>
-        <p>"UPSERT", bir anahtar catismasina dayali olarak bir satir yoksa eklemek veya varsa guncellemek kavramidir. Standart SQL yolu <code>MERGE</code>'dir, ancak belirli veritabanlarinin kendilerine ozgu sozdizimi vardir.</p>
+        <h3 id="upsert-operations-insert-or-update">UPSERT Islemleri (INSERT or UPDATE)</h3>
+        <p>"UPSERT" (INSERT + UPDATE bilesimi), bir anahtar catismasina (key conflict) dayali olarak bir satir yoksa eklemek veya varsa guncellemek kavramidir. Standart SQL yolu <code>MERGE</code>'dir, ancak belirli veritabanlarinin kendilerine ozgu sozdizimi vardir.</p>
         <p><strong>Standart SQL <code>MERGE</code> Ifadesi</strong>:</p>
         <p><code>MERGE</code> ifadesi, bir kaynak ve hedef tablo arasindaki eslesen verilere dayali olarak kosullu eklemeler, guncellemeler veya silmeler gerceklestirmek icin standart bir yol saglar. Gucludur ancak karmasik olabilir.</p>
         <div class="sourceCode" id="cb20" onclick="CopyToClipboard('cb20')">
@@ -780,8 +780,8 @@
             </div>
           </li>
         </ul>
-        <p><strong>Kullanim Alanlari</strong>: UPSERT/MERGE, veri senkronizasyonu, harici kaynaklardan veri yukleme, sayaclari guncelleme veya yapilandirma tablolarini korumak icin cok kullanislidir.</p>
-        <p>Bu DML (Veri Manipulasyon Dili) ifadelerini ve islem kontrolunu anlamak, veritabanlariyla guvenilir bir sekilde etkilesen uygulamalar olusturmak icin temeldir.</p>
+        <p><strong>Kullanim Alanlari</strong>: UPSERT/MERGE, veri senkronizasyonu (data synchronization), harici kaynaklardan veri yukleme (data loading), sayaclari guncelleme veya yapilandirma tablolarini korumak icin cok kullanislidir.</p>
+        <p>Bu DML (Data Manipulation Language / Veri Manipulasyon Dili) ifadelerini ve islem (transaction) kontrolunu anlamak, veritabanlariyla guvenilir bir sekilde etkilesen uygulamalar olusturmak icin temeldir.</p>
       </section>
       <section>
         <h3 id="practice-exercises">Ogrendiklerinizi Uygulayin</h3>

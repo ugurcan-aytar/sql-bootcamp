@@ -13,7 +13,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>Gun 1: Veritabani Baglantisi ve Araclar</title>
+  <title>Gun 1: Veritabani (Database) Baglantisi (Connection) ve Araclar (Tools)</title>
   <style>
     .language-switcher {
       position: fixed;
@@ -71,19 +71,19 @@
   <div class="content-container">
     <div class="container">
       <section>
-        <h1 id="day-1-database-connection-and-tools">Gun 1: Veritabani Baglantisi ve Araclar</h1>
-        <h2 id="session-2-connecting-to-databases-and-using-tools-1-hour">Veritabanlarina Baglanma ve Arac Kullanimi</h2>
+        <h1 id="day-1-database-connection-and-tools">Gun 1: Veritabani (Database) Baglantisi (Connection) ve Araclar (Tools)</h1>
+        <h2 id="session-2-connecting-to-databases-and-using-tools-1-hour">Veritabanlarina (Databases) Baglanma (Connecting) ve Arac (Tool) Kullanimi</h2>
         <h3 id="understanding-the-training-environment">Egitim Ortamini Anlama</h3>
         <p>Bu egitimdeki uygulamali calismalarda oncelikli olarak PostgreSQL veritabani ortami kullanacagiz. Bu
           ozel kurulum sunlari icerir:</p>
-        <p><strong>Veritabani Yapilandirmasi</strong>: - PostgreSQL surumu: En son kararli surum - Etkinlestirilen
-          uzantilar: Gelismis islevsellik icin cesitli uzantilar - Ornek veri: Birden fazla semaya sahip Odoo
-          ornek veritabani - Veri tipleri: JSON sutunlari dahil standart tipler artis ozel tipler</p>
-        <p><strong>Kullanici Rolleri</strong>: - Yonetici rolu: Veritabani yonetimi ve manipulasyonu icin tam
-          yetkiler - Salt okunur rol: Guvenli veri kesfetme icin yalnizca SELECT yetkileri</p>
+        <p><strong>Veritabani (Database) Yapilandirmasi (Configuration)</strong>: - PostgreSQL surumu: En son kararli surum - Etkinlestirilen
+          uzantilar (extensions): Gelismis islevsellik icin cesitli uzantilar - Ornek veri: Birden fazla semaya (schema) sahip Odoo
+          ornek veritabani - Veri tipleri (data types): JSON sutunlari (columns) dahil standart tipler artis ozel tipler</p>
+        <p><strong>Kullanici (User) Rolleri (Roles)</strong>: - Yonetici (Admin) rolu: Veritabani yonetimi ve manipulasyonu icin tam
+          yetkiler - Salt okunur (Read-only) rol: Guvenli veri kesfetme icin yalnizca SELECT yetkileri</p>
         <p><strong>Onemli Not</strong>: Pratik orneklerimiz saglanan ortam nedeniyle PostgreSQL'e odaklansa da,
-          veritabanlarina baglanma, istemci araclari kullanma ve izinleri yonetme kavramlari <em>tum</em> buyuk
-          iliskisel veritabani sistemleri (MySQL, Oracle, SQL Server, Db2, vb.) icin temeldir. Genel ilkeleri
+          veritabanlarina baglanma, istemci (client) araclari kullanma ve izinleri (permissions) yonetme kavramlari <em>tum</em> buyuk
+          iliskisel veritabani (relational database) sistemleri (MySQL, Oracle, SQL Server, Db2, vb.) icin temeldir. Genel ilkeleri
           vurgulayacagiz ve ilgili farkliliklari belirtecegiz.</p>
         <br>
         <p>Egitim boyunca kullanacagimiz veritabani yedegini indirebilirsiniz</p>
@@ -92,8 +92,8 @@
         </ul>
       </section>
       <section>
-        <h3 id="accessing-neon-cloud-database">Neon Bulut Veritabanina Erisim</h3>
-        <p>Bu egitim icin sunucusuz PostgreSQL bulut platformu olan <strong>Neon</strong>'u kullanacagiz. Bu, herkesin
+        <h3 id="accessing-neon-cloud-database">Neon Bulut (Cloud) Veritabanina Erisim (Access)</h3>
+        <p>Bu egitim icin sunucusuz (serverless) PostgreSQL bulut platformu olan <strong>Neon</strong>'u kullanacagiz. Bu, herkesin
           herhangi bir yerel kurulum olmadan ayni veritabani ortamina erismesini saglar.</p>
 
         <p><strong>Adim 1: Giris Bilgileri</strong></p>
@@ -106,51 +106,51 @@
           <li><a href="https://console.neon.tech/app/projects/snowy-term-01499996?branchId=br-blue-bread-ahbvryfx" target="_blank">Neon Proje Paneli</a></li>
         </ul>
 
-        <p><strong>Adim 3: SQL Duzenleyicisini Ac</strong></p>
-        <p>SQL sorgulari yazmak ve calistirmak icin yerlesik SQL Duzenleyicisini kullanin:</p>
+        <p><strong>Adim 3: SQL Duzenleyicisini (Editor) Ac</strong></p>
+        <p>SQL sorgulari (queries) yazmak ve calistirmak icin yerlesik SQL Duzenleyicisini kullanin:</p>
         <ul>
           <li><a href="https://console.neon.tech/app/projects/snowy-term-01499996/branches/br-blue-bread-ahbvryfx/sql-editor?database=neondb" target="_blank">Neon SQL Duzenleyicisi</a></li>
         </ul>
 
         <div class="alert alert-info">
-          <strong>Not:</strong> Neon tarayici tabanli bir SQL duzenleyicisi saglar, bu nedenle yerel makinenize
-          herhangi bir veritabani araci yuklemenize gerek yoktur. Sadece giris yapin ve sorgu yazmaya baslayin!
+          <strong>Not:</strong> Neon tarayici tabanli bir SQL duzenleyicisi (editor) saglar, bu nedenle yerel makinenize
+          herhangi bir veritabani araci yuklemenize gerek yoktur. Sadece giris yapin ve sorgu (query) yazmaya baslayin!
         </div>
       </section>
       <section>
-        <h3 id="general-connection-concepts">Genel Baglanti Kavramlari</h3>
-        <p>Belirli RDBMS'den bagimsiz olarak, bir veritabanina baglanmak genellikle baglanti parametreleri veya
-          baglanti dizesi olarak adlandirilan bircok temel bilgi saglamayi gerektirir:</p>
+        <h3 id="general-connection-concepts">Genel Baglanti (Connection) Kavramlari</h3>
+        <p>Belirli RDBMS'den bagimsiz olarak, bir veritabanina baglanmak genellikle baglanti parametreleri (connection parameters) veya
+          baglanti dizesi (connection string) olarak adlandirilan bircok temel bilgi saglamayi gerektirir:</p>
         <ul>
-          <li><strong>Host</strong>: Veritabaninin calistigi sunucunun ag adresi (ana bilgisayar adi veya IP adresi)
+          <li><strong>Host (Sunucu)</strong>: Veritabaninin calistigi sunucunun (server) ag adresi (ana bilgisayar adi veya IP adresi)
             (ornegin, <code>localhost</code>, <code>db.example.com</code>, <code>192.168.1.100</code>).</li>
           <li><strong>Port</strong>: Veritabani sunucusunun dinledigi ag port numarasi. Varsayilanlar sisteme gore
             degisir (ornegin, PostgreSQL: 5432, MySQL: 3306, Oracle: 1521, SQL Server: 1433).</li>
-          <li><strong>Veritabani Adi</strong>: Sunucuda baglanmak istediginiz belirli veritabani ornegi.</li>
-          <li><strong>Kullanici Adi</strong>: Kimlik dogrulama icin kullanici hesabi (veya rol) adi.</li>
-          <li><strong>Sifre</strong>: Kullanici adiyla iliskili sifre.</li>
-          <li><strong>SSL/TLS Modu</strong>: Baglanti icin sifreleme kullanilip kullanilmayacagini belirtir (yerel
+          <li><strong>Veritabani Adi (Database Name)</strong>: Sunucuda baglanmak istediginiz belirli veritabani ornegi (instance).</li>
+          <li><strong>Kullanici Adi (Username)</strong>: Kimlik dogrulama (authentication) icin kullanici hesabi (veya rol) adi.</li>
+          <li><strong>Sifre (Password)</strong>: Kullanici adiyla iliskili sifre.</li>
+          <li><strong>SSL/TLS Modu</strong>: Baglanti icin sifreleme (encryption) kullanilip kullanilmayacagini belirtir (yerel
             olmayan baglantilar icin siddetle tavsiye edilir).</li>
         </ul>
         <p>Bu parametreler, veritabani sunucusuna baglanti kurmak icin cesitli araclar ve uygulamalar tarafindan
           kullanilir.</p>
       </section>
       <section>
-        <h3 id="common-connection-methods-and-tools">Yaygin Baglanti Yontemleri ve Araclari</h3>
-        <p>Veritabani yoneticileri ve gelistiriciler veritabanlariyla etkilesim icin cesitli araclar kullanir:</p>
-        <p><strong>1. Komut Satiri Arayuzleri (CLI'lar)</strong>: - Veritabani motoruna dogrudan erisim saglayan
-          metin tabanli araclar. - Betik, otomasyon ve hizli yonetim gorevleri icin mukemmeldir.
+        <h3 id="common-connection-methods-and-tools">Yaygin Baglanti (Connection) Yontemleri ve Araclari (Tools)</h3>
+        <p>Veritabani yoneticileri (administrators) ve gelistiriciler (developers) veritabanlariyla etkilesim icin cesitli araclar kullanir:</p>
+        <p><strong>1. Komut Satiri Arayuzleri (Command Line Interfaces - CLI'lar)</strong>: - Veritabani motoruna (database engine) dogrudan erisim saglayan
+          metin tabanli araclar. - Betik (script), otomasyon ve hizli yonetim gorevleri icin mukemmeldir.
           - <strong>Ornekler</strong>: <code>psql</code> (PostgreSQL), <code>mysql</code> (MySQL),
           <code>sqlplus</code> (Oracle), <code>sqlcmd</code> (SQL Server), <code>db2</code> (IBM Db2).</p>
-        <p><strong>2. Grafik Kullanici Arayuzleri (GUI'ler)</strong>: - Nesne tarayicilari, sozdizimi vurgulama ile
-          sorgu duzenleyicileri, veri izgaralari, gorsel sorgu olusturucular ve yonetim panollari gibi ozellikler
+        <p><strong>2. Grafik Kullanici Arayuzleri (Graphical User Interfaces - GUI'ler)</strong>: - Nesne tarayicilari (object browsers), sozdizimi vurgulama (syntax highlighting) ile
+          sorgu duzenleyicileri (query editors), veri izgaralari (data grids), gorsel sorgu olusturucular (visual query builders) ve yonetim panollari (dashboards) gibi ozellikler
           sunan gorsel araclar. - Gelistirme, veri kesfetme ve karmasik yonetim gorevleri icin genellikle tercih
           edilir. - <strong>Saticiya Ozel Ornekler</strong>: <code>pgAdmin</code> (PostgreSQL),
           <code>MySQL Workbench</code> (MySQL), <code>SQL Developer</code> (Oracle),
-          <code>SQL Server Management Studio (SSMS)</code> (SQL Server). - <strong>Evrensel Araclar</strong>:
+          <code>SQL Server Management Studio (SSMS)</code> (SQL Server). - <strong>Evrensel Araclar (Universal Tools)</strong>:
           <code>DBeaver</code>, <code>DataGrip</code> (ticari), <code>SQuirreL SQL</code> - bu araclar bircok
           farkli veritabani sistemine baglanabilir.</p>
-        <p><strong>3. Programatik Erisim (Suruculer ve Kutuphaneler)</strong>: - Uygulamalar, programlama dilleri
+        <p><strong>3. Programatik Erisim (Programmatic Access) - Suruculer (Drivers) ve Kutuphaneler (Libraries)</strong>: - Uygulamalar, programlama dilleri
           icin belirli suruculer veya kutuphaneler kullanarak veritabanlarina baglanir.
           - <strong>Standartlar</strong>: JDBC (Java), ODBC (cesitli), DB-API (Python).
           - <strong>Ornekler</strong>: <code>psycopg2</code> (PostgreSQL icin Python),
@@ -161,8 +161,8 @@
         <h3 id="focus-using-postgresql-tools-psql-and-pgadmin">Odak: PostgreSQL Araclarini Kullanma (psql ve pgAdmin)</h3>
         <p>Uygulamali ortamimiz PostgreSQL kullandigindan, birincil araclarina odaklanacagiz: <code>psql</code>
           (CLI) ve <code>pgAdmin</code> (GUI).</p>
-        <p><strong>psql Komut Satiri Araci</strong>:</p>
-        <p><code>psql</code>, PostgreSQL'in yerel etkilesimli terminalidir.</p>
+        <p><strong>psql Komut Satiri Araci (Command Line Tool)</strong>:</p>
+        <p><code>psql</code>, PostgreSQL'in yerel etkilesimli (interactive) terminalidir.</p>
         <p><strong>Baglanti Ornegi</strong>:</p>
         <div class="sourceCode" id="cb1">
           <pre
@@ -170,13 +170,13 @@
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="ex">psql</span> -h localhost -p 5432 -d odoo_db -U readonly_user</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co"># Sifre sorulacaktir.</span></span></code></pre>
         </div>
-        <p><strong>Yaygin psql Meta-Komutlari</strong> (<code>\</code> ile baslayan komutlar): - <code>\?</code>:
+        <p><strong>Yaygin psql Meta-Komutlari (Meta-Commands)</strong> (<code>\</code> ile baslayan komutlar): - <code>\?</code>:
           psql komutlari icin yardim goster. - <code>\l</code>: Tum veritabanlarini listele.
           - <code>\c [db_adi]</code>: Farkli bir veritabanina baglan. - <code>\dn</code>: Mevcut veritabanindaki
-          semalari listele. - <code>\dt [sema.]</code>: Tablolari listele (istege bagli olarak belirli bir semada).
-          - <code>\dv [sema.]</code>: Gorumleri listele. - <code>\df [sema.]</code>: Fonksiyonlari listele.
-          - <code>\d [tablo_adi]</code>: Bir tablo, gorum, indeks veya sekans acikla. - <code>\du</code>: Rolleri
-          (kullanicilar ve gruplar) listele. - <code>\timing</code>: Sorgu yurutme suresinin goruntulenmesini
+          semalari (schemas) listele. - <code>\dt [sema.]</code>: Tablolari (tables) listele (istege bagli olarak belirli bir semada).
+          - <code>\dv [sema.]</code>: Gorunumleri (views) listele. - <code>\df [sema.]</code>: Fonksiyonlari (functions) listele.
+          - <code>\d [tablo_adi]</code>: Bir tablo, gorunum, indeks (index) veya sekans (sequence) acikla. - <code>\du</code>: Rolleri
+          (kullanicilar ve gruplar) listele. - <code>\timing</code>: Sorgu (query) yurutme suresinin goruntulenmesini
           degistir. - <code>\i [dosyaadi.sql]</code>: Dosyadan komutlari calistir. - <code>\q</code>: psql'den cik.</p>
         <p><strong>SQL Calistirma</strong>: SQL komutlarini dogrudan yazin, noktalı virgul (<code>;</code>) ile
           bitirin ve Enter'a basin.</p>
@@ -209,26 +209,26 @@
           </div>
           <div class="col-md-6">
             <ol type="1" start="3">
-              <li><strong>Veritabani Gezinmesi</strong>:
+              <li><strong>Veritabani Gezinmesi (Database Navigation)</strong>:
                 <ul>
-                  <li>Veritabani Gezgininde baglantivi genis let</li>
-                  <li>Semalar, tablolar, gorunumler ve diger veritabani nesnelerine goz at</li>
-                  <li>Secilen nesneler hakkinda ayrintili bilgi gormek icin Ozellikler gorunumunu kullan</li>
+                  <li>Veritabani Gezgininde baglantiyi genislet</li>
+                  <li>Semalar (schemas), tablolar (tables), gorunumler (views) ve diger veritabani nesnelerine (database objects) goz at</li>
+                  <li>Secilen nesneler hakkinda ayrintili bilgi gormek icin Ozellikler (Properties) gorunumunu kullan</li>
                 </ul>
               </li>
-              <li><strong>SQL Duzenleyicisi</strong>:
+              <li><strong>SQL Duzenleyicisi (SQL Editor)</strong>:
                 <ul>
                   <li>Bir veritabani veya tabloya sag tikla ve "SQL Duzenleyicisi"ni sec</li>
-                  <li>SQL sorgulari yaz ve calistir</li>
-                  <li>Sorgulari calistirmak icin Calistir dugmesini (veya Ctrl+Enter) kullan</li>
-                  <li>Sonuclari Veri sekmesinde gor</li>
+                  <li>SQL sorgulari (queries) yaz ve calistir</li>
+                  <li>Sorgulari calistirmak icin Calistir (Execute) dugmesini (veya Ctrl+Enter) kullan</li>
+                  <li>Sonuclari Veri (Data) sekmesinde gor</li>
                 </ul>
               </li>
-              <li><strong>Veri Goruntuleme ve Duzenleme</strong>:
+              <li><strong>Veri (Data) Goruntuleme ve Duzenleme</strong>:
                 <ul>
                   <li>Verilerini gormek icin bir tabloya cift tikla</li>
                   <li>Verilere goz atmak, filtrelemek ve duzenlemek icin Veri sekmesini kullan</li>
-                  <li>Tablo tanimini gormek icin Yapi sekmesini kullan</li>
+                  <li>Tablo tanimini (table definition) gormek icin Yapi (Structure) sekmesini kullan</li>
                 </ul>
               </li>
             </ol>
@@ -236,57 +236,57 @@
         </div>
 
 
-        <p>DBeaver, farkli veritabani sistemlerinde tutarli bir arayuz saglar ve birden fazla veritabani turuyle
+        <p>DBeaver, farkli veritabani sistemlerinde tutarli bir arayuz (interface) saglar ve birden fazla veritabani turuyle
           calismayi kolaylastirir. Ayrica su ozellikleri icerir:
-          - SQL sozdizimi vurgulama ve otomatik tamamlama
-          - ER diyagramlari
-          - Veri disari/iceri aktarma
-          - Sorgu yurutme gecmisi
-          - Veritabani nesne arama
+          - SQL sozdizimi vurgulama (syntax highlighting) ve otomatik tamamlama (auto-completion)
+          - ER diyagramlari (Entity-Relationship diagrams)
+          - Veri disari/iceri aktarma (Export/Import)
+          - Sorgu (Query) yurutme gecmisi (history)
+          - Veritabani nesne arama (object search)
         </p>
 
         </p>
       </section>
       <section>
-        <h3 id="understanding-database-roles-and-permissions-general-concept">Veritabani Rollerini ve Izinleri
+        <h3 id="understanding-database-roles-and-permissions-general-concept">Veritabani Rollerini (Roles) ve Izinleri (Permissions)
           Anlama (Genel Kavram)</h3>
-        <p>Tum buyuk RDBMS'ler, kimin hangi verilere erisebiilecegini ve hangi islemleri yapabilecegini kontrol etmek
-          icin bir roller ve ayricaliklar sistemi kullanir. Bu, veritabani guvenligi icin temeldir.</p>
+        <p>Tum buyuk RDBMS'ler, kimin hangi verilere erisebilecegini ve hangi islemleri (transactions) yapabilecegini kontrol etmek
+          icin bir roller ve ayricaliklar (privileges) sistemi kullanir. Bu, veritabani guvenligi (security) icin temeldir.</p>
         <p><strong>Temel Kavramlar (Genel Olarak Uygulanir)</strong>:</p>
         <ul>
-          <li><strong>Kimlik Dogrulama</strong>: Baglanmaya calisan bir kullanicinin kimligini dogrulama (genellikle
+          <li><strong>Kimlik Dogrulama (Authentication)</strong>: Baglanmaya calisan bir kullanicinin kimligini dogrulama (genellikle
             kullanici adi/sifre ile, ancak baska yontemler de vardir).</li>
-          <li><strong>Yetkilendirme</strong>: Kimlik dogrulanmis bir kullanicinin ne yapmasina izin verildigini
+          <li><strong>Yetkilendirme (Authorization)</strong>: Kimlik dogrulanmis bir kullanicinin ne yapmasina izin verildigini
             belirleme.</li>
-          <li><strong>Roller/Kullanicilar</strong>: Izin verilebilecek varliklar. Bazi sistemler kullanicilar (giris
-            yapabilir) ve roller (ayricalik gruplari) arasinda ayrm yaparken, digerleri (PostgreSQL gibi) bunlari
+          <li><strong>Roller (Roles) / Kullanicilar (Users)</strong>: Izin verilebilecek varliklar. Bazi sistemler kullanicilar (giris
+            yapabilir) ve roller (ayricalik gruplari) arasinda ayrim yaparken, digerleri (PostgreSQL gibi) bunlari
             ayni sekilde ele alir.</li>
-          <li><strong>Ayricaliklar</strong>: Verilebilecek veya geri alinabilecek belirli izinler (ornegin,
+          <li><strong>Ayricaliklar (Privileges)</strong>: Verilebilecek veya geri alinabilecek belirli izinler (ornegin,
             <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>,
             <code>CREATE TABLE</code>, <code>EXECUTE FUNCTION</code>).</li>
-          <li><strong>Nesneler</strong>: Ayricaliklarin verildigi veritabani varliklari (ornegin, veritabanlari,
-            semalar, tablolar, gorunumler, sutunlar, fonksiyonlar).</li>
-          <li><strong>Sahiplik</strong>: Tipik olarak, bir nesnenin yaraticisi onun sahibidir ve uzerinde tam
+          <li><strong>Nesneler (Objects)</strong>: Ayricaliklarin verildigi veritabani varliklari (ornegin, veritabanlari,
+            semalar (schemas), tablolar (tables), gorunumler (views), sutunlar (columns), fonksiyonlar (functions)).</li>
+          <li><strong>Sahiplik (Ownership)</strong>: Tipik olarak, bir nesnenin yaraticisi onun sahibidir ve uzerinde tam
             ayricaliklara sahiptir.</li>
-          <li><strong>Verme/Geri Alma</strong>: Ayricaliklari yonetmek icin SQL komutlari (<code>GRANT</code>,
+          <li><strong>Verme/Geri Alma (Grant/Revoke)</strong>: Ayricaliklari yonetmek icin SQL komutlari (<code>GRANT</code>,
             <code>REVOKE</code>) kullanilir.</li>
-          <li><strong>En Az Ayricalik Ilkesi</strong>: En iyi uygulama, bir rolun islevini yerine getirmesi icin
+          <li><strong>En Az Ayricalik Ilkesi (Principle of Least Privilege)</strong>: En iyi uygulama, bir rolun islevini yerine getirmesi icin
             gereken minimum ayricaliklari vermektir.</li>
         </ul>
       </section>
       <section>
-        <p><strong>PostgreSQL Ozellikleri (Ornekler)</strong>:</p>
+        <p><strong>PostgreSQL Ozellikleri (Features) - Ornekler</strong>:</p>
         <ul>
           <li>
-            <p><strong>Roller</strong>: PostgreSQL hem kullanicilar hem de gruplar icin <code>ROLE</code> kavramini
+            <p><strong>Roller (Roles)</strong>: PostgreSQL hem kullanicilar hem de gruplar icin <code>ROLE</code> kavramini
               kullanir.</p>
           </li>
           <li>
-            <p><strong>Nitelikler</strong>: Roller <code>LOGIN</code>, <code>SUPERUSER</code>,
+            <p><strong>Nitelikler (Attributes)</strong>: Roller <code>LOGIN</code>, <code>SUPERUSER</code>,
               <code>CREATEDB</code>, <code>CREATEROLE</code> gibi niteliklere sahiptir.</p>
           </li>
           <li>
-            <p><strong>Kalitim</strong>: Roller, ayricaliklerini miras alarak diger rollerin uyesi olabilir.</p>
+            <p><strong>Kalitim (Inheritance)</strong>: Roller, ayricaliklerini miras alarak diger rollerin uyesi olabilir.</p>
           </li>
           <li>
             <p><strong>Komutlar</strong>:</p>
@@ -314,18 +314,18 @@
         </ul>
       </section>
       <section>
-        <p><strong>Sozdizimi Farkliliklari</strong>: <code>GRANT SELECT ON table TO user;</code> yaygin olsa da,
+        <p><strong>Sozdizimi (Syntax) Farkliliklari</strong>: <code>GRANT SELECT ON table TO user;</code> yaygin olsa da,
           kullanici/rol olusturma icin kesin sozdizimi ve ayricalik veya rol niteliklerinin belirli adlari
           RDBMS'ler arasinda biraz farklilik gosterebilir.</p>
-        <p><strong>Urun Sahipleri Icin Onemi</strong>: Erisim kontrolunu anlamak sunlar icin hayati onem tasir: -
-          Bir uygulama icinde kullanici rolleri ve veri erisim ihtiyaclari tanimlama. - Veri gizliligi
-          yonetmeliklerine (ornegin, GDPR, CCPA) uyumun saglanmasi. - Gelistirme ve operasyon ekiplerine guvenlik
+        <p><strong>Urun Sahipleri (Product Owners) Icin Onemi</strong>: Erisim kontrolunu (access control) anlamak sunlar icin hayati onem tasir: -
+          Bir uygulama icinde kullanici rolleri ve veri erisim ihtiyaclari tanimlama. - Veri gizliligi (data privacy)
+          yonetmeliklerine (ornegin, GDPR, CCPA) uyumun saglanmasi. - Gelistirme ve operasyon ekiplerine guvenlik (security)
           gereksinimlerinin iletilmesi. - Potansiyel guvenlik risklerinin anlasilmasi.</p>
         <p><strong>Egitim Ortami Rolleri</strong>: Unutmayin, uygulamali calismalar sirasinda sectiginiz arac
           (<code>psql</code>, <code>DBeaver</code>, vb.) araciligiyla baglanmak icin saglanan
           <code>admin_user</code> (tam erisim) ve <code>readonly_user</code> (yalnizca SELECT) kimlik bilgilerini
           kullanacaksiniz.</p>
-        <p>Sonraki oturumda, veri almak icin temel SQL <code>SELECT</code> sorgulari yazmaya baslayacagiz.</p>
+        <p>Sonraki oturumda, veri almak icin temel SQL <code>SELECT</code> sorgulari (queries) yazmaya baslayacagiz.</p>
       </section>
     </div>
   </div> <!-- /container -->

@@ -473,10 +473,10 @@
 
       <section>
         <h2 id="sample-datasets">Ornek Veri Setleri</h2>
-        <p>Asagidaki iliskili tablolar alistirmalar boyunca kullanilacaktir. Tablolar arasindaki yabanci anahtar (foreign key) iliskilerine dikkat edin.</p>
+        <p>Asagidaki iliskili tablolar alistirmalar boyunca kullanilacaktir. Tablolar arasindaki yabanci anahtar (Foreign Key) iliskilerine dikkat edin.</p>
 
         <div class="relationship-box">
-          <h4>Tablo Iliskileri</h4>
+          <h4>Tablo Iliskileri (Table Relationships)</h4>
           <ul>
             <li><code>orders.customer_id</code> &rarr; <code>customers.id</code> (Birden fazla siparis bir musteriye aittir)
             </li>
@@ -840,10 +840,10 @@
       </section>
 
       <section>
-        <h2 id="exercise-1">Alistirma 1: INNER JOIN Temelleri</h2>
+        <h2 id="exercise-1">Alistirma 1: Ic Birlestirme (INNER JOIN) Temelleri</h2>
 
         <div class="exercise-box">
-          <h4>Alistirma 1.1: Basit Iki Tablo JOIN</h4>
+          <h4>Alistirma 1.1: Basit Iki Tablo Birlestirme (JOIN)</h4>
           <p>Tum siparisleri musteri adiyla birlikte gosteren bir sorgu yazin. <code>order_id</code>,
             <code>customer_name</code> ve <code>order_date</code> alanlarini gosterin.
           </p>
@@ -865,7 +865,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 1.2: Urun Bilgisiyle JOIN</h4>
+          <h4>Alistirma 1.2: Urun Bilgisiyle Birlestirme (JOIN)</h4>
           <p>Siparis satirlarini urun adlariyla gosterin. <code>order_id</code>, <code>urun adi</code>,
             <code>quantity</code> ve <code>line_total</code> alanlarini gosterin.
           </p>
@@ -884,8 +884,8 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 1.3: Takma Adlarla JOIN</h4>
-          <p>Alistirma 1.1'i anlamli sutun takma adlari kullanarak yeniden yazin: "Siparis Numarasi", "Musteri" ve "Siparis Tarihi".</p>
+          <h4>Alistirma 1.3: Takma Adlarla (Aliases) Birlestirme (JOIN)</h4>
+          <p>Alistirma 1.1'i anlamli sutun takma adlari (column aliases) kullanarak yeniden yazin: "Siparis Numarasi", "Musteri" ve "Siparis Tarihi".</p>
           <button class="solution-toggle" onclick="toggleSolution('sol1-3')">Cozumu Goster</button>
           <div id="sol1-3" class="solution-content">
             <div class="sourceCode" onclick="CopyToClipboard('sol1-3-code')">
@@ -900,7 +900,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 1.4: WHERE Filtresiyle JOIN</h4>
+          <h4>Alistirma 1.4: WHERE Filtresiyle Birlestirme (JOIN)</h4>
           <p>Almanya'daki musteriler tarafindan verilen tum siparisleri bulun. Musteri adi, siparis ID ve siparis toplamini gosterin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol1-4')">Cozumu Goster</button>
           <div id="sol1-4" class="solution-content">
@@ -919,14 +919,14 @@
       </section>
 
       <section>
-        <h2 id="exercise-2">Alistirma 2: LEFT JOIN</h2>
+        <h2 id="exercise-2">Alistirma 2: Sol Birlestirme (LEFT JOIN)</h2>
 
         <div class="exercise-box">
           <h4>Alistirma 2.1: Tum Musterileri Siparisleriyle Bulma</h4>
           <p>TUM musterileri ve verdikleri siparisleri listeleyin. Hic siparis vermemis musterileri de dahil edin.
             Musteri adi, sehir ve order_id'yi gosterin (siparis olmayan musteriler icin NULL olacaktir).</p>
           <div class="hint-box">
-            <strong>Ipucu:</strong> Eslesen siparisi olmayanlar dahil tum musterileri tutmak icin LEFT JOIN kullanin.
+            <strong>Ipucu:</strong> Eslesen siparisi olmayanlar dahil tum musterileri tutmak icin Sol Birlestirme (LEFT JOIN) kullanin.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('sol2-1')">Cozumu Goster</button>
           <div id="sol2-1" class="solution-content">
@@ -945,7 +945,7 @@
           <h4>Alistirma 2.2: Siparisi OLMAYAN Musterileri Bulma</h4>
           <p>Hic siparis VERMEMIS musterileri bulun. Sadece adlarini ve sehirlerini gosterin.</p>
           <div class="hint-box">
-            <strong>Ipucu:</strong> LEFT JOIN kullanin ve ardindan order_id IS NULL ile filtreleyin.
+            <strong>Ipucu:</strong> Sol Birlestirme (LEFT JOIN) kullanin ve ardindan order_id IS NULL ile filtreleyin.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('sol2-2')">Cozumu Goster</button>
           <div id="sol2-2" class="solution-content">
@@ -962,7 +962,7 @@
 
         <div class="exercise-box">
           <h4>Alistirma 2.3: Urunler ve Kategorileri</h4>
-          <p>Tum urunleri kategori adlariyla listeleyin. Kategorisi atanmamis urunler icin LEFT JOIN kullanin.
+          <p>Tum urunleri kategori adlariyla listeleyin. Kategorisi atanmamis urunler icin Sol Birlestirme (LEFT JOIN) kullanin.
           </p>
           <button class="solution-toggle" onclick="toggleSolution('sol2-3')">Cozumu Goster</button>
           <div id="sol2-3" class="solution-content">
@@ -979,14 +979,14 @@
       </section>
 
       <section>
-        <h2 id="exercise-3">Alistirma 3: RIGHT JOIN ve FULL OUTER JOIN</h2>
+        <h2 id="exercise-3">Alistirma 3: Sag Birlestirme (RIGHT JOIN) ve Tam Dis Birlestirme (FULL OUTER JOIN)</h2>
 
         <div class="exercise-box">
-          <h4>Alistirma 3.1: RIGHT JOIN Ornegi</h4>
-          <p>Alistirma 2.1'i, ayni sonucu elde etmek icin LEFT JOIN yerine RIGHT JOIN kullanarak yeniden yazin
+          <h4>Alistirma 3.1: Sag Birlestirme (RIGHT JOIN) Ornegi</h4>
+          <p>Alistirma 2.1'i, ayni sonucu elde etmek icin Sol Birlestirme (LEFT JOIN) yerine Sag Birlestirme (RIGHT JOIN) kullanarak yeniden yazin
             (tum musteriler siparisleriyle).</p>
           <div class="hint-box">
-            <strong>Ipucu:</strong> Tablo sirasini degistirin ve LEFT JOIN yerine RIGHT JOIN kullanin.
+            <strong>Ipucu:</strong> Tablo sirasini degistirin ve Sol Birlestirme (LEFT JOIN) yerine Sag Birlestirme (RIGHT JOIN) kullanin.
           </div>
           <button class="solution-toggle" onclick="toggleSolution('sol3-1')">Cozumu Goster</button>
           <div id="sol3-1" class="solution-content">
@@ -998,7 +998,7 @@
 <span class="kw">FROM</span> orders o
 <span class="kw">RIGHT JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.id;</code></pre>
             </div>
-            <p><strong>Not:</strong> Bu, LEFT JOIN versiyonuyla ayni sonucu uretir, sadece tablolar yer degistirmistir.
+            <p><strong>Not:</strong> Bu, Sol Birlestirme (LEFT JOIN) versiyonuyla ayni sonucu uretir, sadece tablolar yer degistirmistir.
             </p>
           </div>
         </div>
@@ -1022,8 +1022,8 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 3.3: FULL OUTER JOIN (PostgreSQL)</h4>
-          <p>Tum musterileri ve tum siparisleri, mumkun oldugunca eslestirilmis sekilde gosteren bir FULL OUTER JOIN sorgusu yazin.
+          <h4>Alistirma 3.3: Tam Dis Birlestirme (FULL OUTER JOIN) (PostgreSQL)</h4>
+          <p>Tum musterileri ve tum siparisleri, mumkun oldugunca eslestirilmis sekilde gosteren bir Tam Dis Birlestirme (FULL OUTER JOIN) sorgusu yazin.
             Bu, siparisi olmayan musterileri VE musterisi olmayan siparisleri (varsa) gosterecektir.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol3-3')">Cozumu Goster</button>
           <div id="sol3-3" class="solution-content">
@@ -1037,7 +1037,7 @@
 <span class="kw">FULL OUTER JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
             </div>
             <div class="warning-box">
-              <strong>MySQL Notu:</strong> MySQL dogrudan FULL OUTER JOIN'i desteklemez. UNION kullanmaniz gerekir:
+              <strong>MySQL Notu:</strong> MySQL dogrudan Tam Dis Birlestirme (FULL OUTER JOIN)'i desteklemez. UNION kullanmaniz gerekir:
               <pre><code>SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON c.id = o.customer_id
 UNION
 SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id;</code></pre>
@@ -1047,10 +1047,10 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
       </section>
 
       <section>
-        <h2 id="exercise-4">Alistirma 4: Birden Fazla Tabloyu Birlestirme</h2>
+        <h2 id="exercise-4">Alistirma 4: Birden Fazla Tabloyu Birlestirme (Joining Multiple Tables)</h2>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.1: Dort Tablo JOIN</h4>
+          <h4>Alistirma 4.1: Dort Tablo Birlestirme (JOIN)</h4>
           <p>Tam siparis satiri bilgisini gosterin: musteri adi, urun adi, miktar ve satir toplami.</p>
           <div class="hint-box">
             <strong>Ipucu:</strong> <code>orders</code> tablosunu <code>customers</code> ile birlestirin, sonra
@@ -1073,7 +1073,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.2: Bes Tablo JOIN</h4>
+          <h4>Alistirma 4.2: Bes Tablo Birlestirme (JOIN)</h4>
           <p>Siparis satirlarini musteri adi, urun adi VE kategori adiyla gosterin. Siparis tarihine gore siralayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-2')">Cozumu Goster</button>
           <div id="sol4-2" class="solution-content">
@@ -1095,7 +1095,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.3: Karisik JOIN Turleri</h4>
+          <h4>Alistirma 4.3: Karisik Birlestirme (JOIN) Turleri</h4>
           <p>TUM musterileri, urun ve kategori adlari dahil siparis detaylariyla listeleyin.
             Siparisi olmayan musteriler de gorunmeli (siparis sutunlari icin NULL degerleriyle).</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Cozumu Goster</button>
@@ -1114,7 +1114,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
 <span class="kw">LEFT JOIN</span> categories cat <span class="kw">ON</span> p.category_id = cat.id
 <span class="kw">ORDER BY</span> c.name;</code></pre>
             </div>
-            <p><strong>Not:</strong> Siparisi olmayan musterileri korumak icin ilk LEFT JOIN'den sonraki tum JOIN'ler de LEFT JOIN olmalidir.</p>
+            <p><strong>Not:</strong> Siparisi olmayan musterileri korumak icin ilk Sol Birlestirme (LEFT JOIN)'den sonraki tum birlestirmeler de Sol Birlestirme (LEFT JOIN) olmalidir.</p>
           </div>
         </div>
       </section>
@@ -1194,7 +1194,7 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
         </div>
 
         <div class="challenge-box">
-          <h4>Meydan Okuma 4: Eksik Iliskileri Bulma</h4>
+          <h4>Meydan Okuma 4: Eksik Iliskileri (Missing Relationships) Bulma</h4>
           <p>Hic siparis edilmemis urunleri bulan bir sorgu yazin.
             Urun adi, kategori adi ve fiyati gosterin.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal4')">Cozumu Goster</button>
@@ -1240,14 +1240,14 @@ SELECT c.name, o.id FROM customers c RIGHT JOIN orders o ON c.id = o.customer_id
       <section>
         <h2 id="summary">Onemli Cikarimlar</h2>
         <ul>
-          <li><strong>INNER JOIN</strong>: Her iki tablodan yalnizca eslesen satirlari dondurur - her iki tabloda da var olan verilere ihtiyaciniz oldugunda kullanin</li>
-          <li><strong>LEFT JOIN</strong>: Sol tablodan tum satirlari dondurur - eslesmesi olmayanlar dahil kayitlari dahil etmek istediginizde kullanin</li>
-          <li><strong>RIGHT JOIN</strong>: Sag tablodan tum satirlari dondurur - genellikle LEFT JOIN olarak yeniden yazilabilir</li>
-          <li><strong>FULL OUTER JOIN</strong>: Her iki tablodan tum satirlari dondurur - tam resim icin kullanin (MySQL'de desteklenmez)</li>
-          <li><strong>Tablo Takma Adlari</strong>: Sorgulari okunabilir yapmak icin kisa takma adlar (o, c, p) kullanin</li>
-          <li><strong>Coklu JOIN'ler</strong>: Ikiden fazla tabloyu baglamak icin JOIN'leri zincirleyin</li>
-          <li><strong>LEFT JOIN ile IS NULL</strong>: Diger tabloda eslesmesi olmayan kayitlari bulun</li>
-          <li><strong>JOIN Sirasi</strong>: Tablo sirasi LEFT/RIGHT JOIN icin onemlidir ancak INNER JOIN icin onemli degildir</li>
+          <li><strong>Ic Birlestirme (INNER JOIN)</strong>: Her iki tablodan yalnizca eslesen satirlari dondurur - her iki tabloda da var olan verilere ihtiyaciniz oldugunda kullanin</li>
+          <li><strong>Sol Birlestirme (LEFT JOIN)</strong>: Sol tablodan tum satirlari dondurur - eslesmesi olmayanlar dahil kayitlari dahil etmek istediginizde kullanin</li>
+          <li><strong>Sag Birlestirme (RIGHT JOIN)</strong>: Sag tablodan tum satirlari dondurur - genellikle Sol Birlestirme (LEFT JOIN) olarak yeniden yazilabilir</li>
+          <li><strong>Tam Dis Birlestirme (FULL OUTER JOIN)</strong>: Her iki tablodan tum satirlari dondurur - tam resim icin kullanin (MySQL'de desteklenmez)</li>
+          <li><strong>Tablo Takma Adlari (Table Aliases)</strong>: Sorgulari okunabilir yapmak icin kisa takma adlar (o, c, p) kullanin</li>
+          <li><strong>Coklu Birlestirmeler (Multiple JOINs)</strong>: Ikiden fazla tabloyu baglamak icin birlestirmeleri zincirleyin</li>
+          <li><strong>Sol Birlestirme (LEFT JOIN) ile IS NULL</strong>: Diger tabloda eslesmesi olmayan kayitlari bulun</li>
+          <li><strong>Birlestirme (JOIN) Sirasi</strong>: Tablo sirasi Sol/Sag Birlestirme (LEFT/RIGHT JOIN) icin onemlidir ancak Ic Birlestirme (INNER JOIN) icin onemli degildir</li>
         </ul>
 
         <div class="back-link" style="margin-top: 30px;">

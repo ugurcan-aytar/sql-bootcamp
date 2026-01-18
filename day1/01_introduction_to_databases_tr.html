@@ -125,16 +125,16 @@
                         <ul>
                             <li><strong>Sema (Schema)</strong>: Verilerin nasil duzenlendigi ve veriler arasindaki
                                 iliskilerin nasil ele alindigini tanimlayan veritabaninin plani veya yapisidir.</li>
-                            <li><strong>Tablolar</strong>: Iliskisel veritabanindaki temel yapidir. Tablolar,
+                            <li><strong>Tablolar (Tables)</strong>: Iliskisel veritabanindaki temel yapidir. Tablolar,
                                 elektronik tablolara benzer sekilde satirlar ve sutunlardan olusur. Varliklari
                                 (musteriler, urunler, siparisler gibi) temsil ederler.</li>
-                            <li><strong>Satirlar (Kayitlar/Demetler)</strong>: Tablodaki her satir, tablonun temsil
+                            <li><strong>Satirlar (Rows / Records / Tuples)</strong>: Tablodaki her satir, tablonun temsil
                                 ettigi varligin benzersiz bir ornegini temsil eder (ornegin, belirli bir musteri,
                                 belirli bir urun).</li>
-                            <li><strong>Sutunlar (Alanlar/Nitelikler)</strong>: Her sutun, varlik hakkinda belirli
+                            <li><strong>Sutunlar (Columns / Fields / Attributes)</strong>: Her sutun, varlik hakkinda belirli
                                 bir ozellik veya veri parcasini temsil eder (ornegin, musteri adi, urun fiyati,
                                 siparis tarihi).</li>
-                            <li><strong>Veri Tipleri</strong>: Her sutun, depolayabilecegi veri turunu ve nasil
+                            <li><strong>Veri Tipleri (Data Types)</strong>: Her sutun, depolayabilecegi veri turunu ve nasil
                                 depolandigini belirleyen belirli bir veri tipiyle (ornegin, INTEGER, VARCHAR, DATE,
                                 BOOLEAN, JSON) tanimlanir. Veri tipleri farkli veritabani sistemleri arasinda
                                 biraz farklilik gosterebilir.</li>
@@ -150,19 +150,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <ul>
-                            <li><strong>Birincil Anahtarlar (PK)</strong>: Tablodaki her satiri benzersiz olarak
-                                tanimlayan bir sutun veya sutun kombinasyonu. Varlik butunlugunu saglar.</li>
-                            <li><strong>Yabanci Anahtarlar (FK)</strong>: Bir tablodaki, baska bir tablonun birincil
+                            <li><strong>Birincil Anahtarlar (Primary Keys / PK)</strong>: Tablodaki her satiri benzersiz olarak
+                                tanimlayan bir sutun veya sutun kombinasyonu. Varlik Butunlugunu (Entity Integrity) saglar.</li>
+                            <li><strong>Yabanci Anahtarlar (Foreign Keys / FK)</strong>: Bir tablodaki, baska bir tablonun birincil
                                 anahtarina atifta bulunan, tablolar arasinda bir baglanti veya iliski kuran ve
-                                uygulayan bir sutun veya sutun kombinasyonu. Referans butunlugunu saglar.</li>
+                                uygulayan bir sutun veya sutun kombinasyonu. Referans Butunlugunu (Referential Integrity) saglar.</li>
                             <li><strong>Kisitlamalar (Constraints)</strong>: Veri butunlugunu ve is kurallarini
                                 uygulamak icin sutunlar veya tablolar uzerinde tanimlanan kurallar. Yaygin
                                 kisitlamalar sunlardir: <code>NOT NULL</code>, <code>UNIQUE</code>,
                                 <code>CHECK</code>, <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>.</li>
-                            <li><strong>Normalizasyon</strong>: Veri tekrarini azaltmak ve veri butunlugunu
+                            <li><strong>Normalizasyon (Normalization)</strong>: Veri tekrarini azaltmak ve veri butunlugunu
                                 iyilestirmek icin veritabani tablolarini duzenleme sureci.</li>
-                            <li><strong>Iliskiler</strong>: Tablolar arasindaki baglantilar, genellikle Bire-Bir,
-                                Bire-Cok veya Coka-Cok olarak kategorize edilir.</li>
+                            <li><strong>Iliskiler (Relationships)</strong>: Tablolar arasindaki baglantilar, genellikle Bire-Bir (One-to-One),
+                                Bire-Cok (One-to-Many) veya Coka-Cok (Many-to-Many) olarak kategorize edilir.</li>
                         </ul>
                     </div>
                     <div class="col-md-6">
@@ -174,13 +174,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <ul>
-                            <li><strong>Sema hakkinda daha fazla bilgi</strong>: Bir sema sunlari icerir:
+                            <li><strong>Sema (Schema) hakkinda daha fazla bilgi</strong>: Bir sema sunlari icerir:
                                 <ul>
                                     <li>Tablo tanimlari (adlar, sutunlar, veri tipleri)</li>
-                                    <li>Tablolar arasindaki iliskiler</li>
-                                    <li>Kisitlamalar ve kurallar</li>
-                                    <li>Performans optimizasyonu icin indeksler</li>
-                                    <li>Gorunumler ve sakli prosedurler</li>
+                                    <li>Tablolar arasindaki iliskiler (Relationships)</li>
+                                    <li>Kisitlamalar (Constraints) ve kurallar</li>
+                                    <li>Performans optimizasyonu icin Indeksler (Indexes)</li>
+                                    <li>Gorunumler (Views) ve Sakli Prosedurler (Stored Procedures)</li>
                                     <li>Guvenlik ve erisim izinleri</li>
                                 </ul>
                                 Sema, veritabani nesneleri icin mantiksal bir kapsayici gorevi gorur ve veritabani
@@ -301,13 +301,13 @@
             <section>
                 <img class="sub-image" src="session1_content/session1-sql-ddl-dml-dcl.png" alt="">
                 <ul>
-                    <li><strong>DDL (Veri Tanimlama Dili)</strong>: Veritabani yapisini tanimlamak veya degistirmek
+                    <li><strong>DDL (Data Definition Language / Veri Tanimlama Dili)</strong>: Veritabani yapisini tanimlamak veya degistirmek
                         icin kullanilir (ornegin, <code>CREATE TABLE</code>, <code>ALTER TABLE</code>,
                         <code>DROP TABLE</code>).</li>
-                    <li><strong>DML (Veri Manipulasyon Dili)</strong>: Veri sorgulamak ve degistirmek icin kullanilir
+                    <li><strong>DML (Data Manipulation Language / Veri Manipulasyon Dili)</strong>: Veri sorgulamak ve degistirmek icin kullanilir
                         (ornegin, <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>,
                         <code>DELETE</code>).</li>
-                    <li><strong>DCL (Veri Kontrol Dili)</strong>: Izinleri ve erisim kontrolunu yonetmek icin
+                    <li><strong>DCL (Data Control Language / Veri Kontrol Dili)</strong>: Izinleri ve erisim kontrolunu yonetmek icin
                         kullanilir (ornegin, <code>GRANT</code>, <code>REVOKE</code>).</li>
                 </ul>
 

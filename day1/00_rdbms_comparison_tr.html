@@ -12,7 +12,7 @@
     <meta charset="utf-8" />
     <meta name="generator" content="pandoc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Giris: Buyuk RDBMS Sistemlerinin Karsilastirilmasi</title>
+    <title>Giris: Buyuk RDBMS (Relational Database Management System) Sistemlerinin Karsilastirilmasi</title>
     <style>
         code {
             white-space: pre-wrap;
@@ -97,20 +97,20 @@
     <div class="content-container">
         <div class="container">
             <section>
-                <h1 id="introduction-comparing-major-relational-database-systems">Giris: Buyuk Iliskisel Veritabani
+                <h1 id="introduction-comparing-major-relational-database-systems">Giris: Buyuk Iliskisel Veritabani (Relational Database)
                     Sistemlerinin Karsilastirilmasi</h1>
-                <h2 id="overview">Genel Bakis</h2>
+                <h2 id="overview">Genel Bakis (Overview)</h2>
                 <p>Bu egitim uygulamali calismalar icin oncelikli olarak PostgreSQL'e odaklansa da, Iliskisel Veritabani
-                    Yonetim Sistemleri (RDBMS) hakkinda genis bir perspektife sahip olmak, urun sahibi veya veri
-                    profesyoneli olmak isteyen herkes icin cok onemlidir. SQL (Yapilandirilmis Sorgu Dili), iliskisel
-                    veritabanlariyla etkilesim icin standart dildir, ancak her RDBMS'nin kendi gecmisi, guclui yonleri,
-                    zayif yonleri ve SQL sozdiziminde kucuk farkliliklari (genellikle SQL lehceleri olarak adlandirilir)
+                    Yonetim Sistemleri (Relational Database Management Systems - RDBMS) hakkinda genis bir perspektife sahip olmak, urun sahibi (product owner) veya veri
+                    profesyoneli olmak isteyen herkes icin cok onemlidir. SQL (Structured Query Language - Yapilandirilmis Sorgu Dili), iliskisel
+                    veritabanlariyla etkilesim icin standart dildir, ancak her RDBMS'nin kendi gecmisi, guclu yonleri,
+                    zayif yonleri ve SQL sozdiziminde (syntax) kucuk farkliliklari (genellikle SQL lehceleri (dialects) olarak adlandirilir)
                     vardir.</p>
             </section>
             <section>
                 <p>Bu bolum, en populer RDBMS'lerden bazilari hakkinda ust duzey bir karsilastirma sunmaktadir:
                     PostgreSQL, MySQL, Oracle Database, Microsoft SQL Server ve IBM Db2.</p>
-                <h2 id="key-rdbms-comparison">Temel RDBMS Karsilastirmasi</h2>
+                <h2 id="key-rdbms-comparison">Temel RDBMS Karsilastirmasi (Comparison)</h2>
                 <table>
                     <colgroup>
                         <col style="width: 8%" />
@@ -122,7 +122,7 @@
                     </colgroup>
                     <thead>
                         <tr class="header">
-                            <th style="text-align: left;">Ozellik</th>
+                            <th style="text-align: left;">Ozellik (Feature)</th>
                             <th style="text-align: left;">PostgreSQL</th>
                             <th style="text-align: left;">MySQL</th>
                             <th style="text-align: left;">Oracle Database</th>
@@ -132,7 +132,7 @@
                     </thead>
                     <tbody>
                         <tr class="odd">
-                            <td style="text-align: left;"><strong>Lisans</strong></td>
+                            <td style="text-align: left;"><strong>Lisans (License)</strong></td>
                             <td style="text-align: left;">PostgreSQL Lisansi (BSD benzeri, Acik Kaynak)</td>
                             <td style="text-align: left;">GPL (Acik Kaynak) / Ticari</td>
                             <td style="text-align: left;">Ticari</td>
@@ -140,33 +140,33 @@
                             <td style="text-align: left;">Ticari / Ucretsiz (Community Edition)</td>
                         </tr>
                         <tr class="even">
-                            <td style="text-align: left;"><strong>Temel Kullanim Alanlari</strong></td>
-                            <td style="text-align: left;">Karmasik sorgular, veri ambarlama, web uygulamalari</td>
-                            <td style="text-align: left;">Web uygulamalari (LAMP stack), okuma yogun</td>
-                            <td style="text-align: left;">Kurumsal uygulamalar, buyuk olcekli OLTP</td>
+                            <td style="text-align: left;"><strong>Temel Kullanim Alanlari (Use Cases)</strong></td>
+                            <td style="text-align: left;">Karmasik sorgular (complex queries), veri ambarlama (data warehousing), web uygulamalari</td>
+                            <td style="text-align: left;">Web uygulamalari (LAMP stack), okuma yogun (read-heavy)</td>
+                            <td style="text-align: left;">Kurumsal (enterprise) uygulamalar, buyuk olcekli OLTP</td>
                             <td style="text-align: left;">Kurumsal uygulamalar (Windows odakli)</td>
-                            <td style="text-align: left;">Kurumsal uygulamalar, ana bilgisayarlar, OLTP</td>
+                            <td style="text-align: left;">Kurumsal uygulamalar, ana bilgisayarlar (mainframes), OLTP</td>
                         </tr>
                         <tr class="odd">
-                            <td style="text-align: left;"><strong>Veri Tipleri</strong></td>
-                            <td style="text-align: left;">Zengin set, JSONB, diziler, geometrik dahil</td>
+                            <td style="text-align: left;"><strong>Veri Tipleri (Data Types)</strong></td>
+                            <td style="text-align: left;">Zengin set, JSONB, diziler (arrays), geometrik dahil</td>
                             <td style="text-align: left;">Standart tipler, iyi JSON destegi</td>
-                            <td style="text-align: left;">Zengin set, tescilli tipler dahil</td>
+                            <td style="text-align: left;">Zengin set, tescilli (proprietary) tipler dahil</td>
                             <td style="text-align: left;">Zengin set, iyi XML/JSON destegi</td>
                             <td style="text-align: left;">Zengin set, XML dahil</td>
                         </tr>
                         <tr class="even">
-                            <td style="text-align: left;"><strong>SQL Uyumlulugu</strong></td>
+                            <td style="text-align: left;"><strong>SQL Uyumlulugu (Compliance)</strong></td>
                             <td style="text-align: left;">Yuksek, SQL standartlarini yakindan takip eder</td>
                             <td style="text-align: left;">Iyi, uyumluluk gelistiriliyor</td>
-                            <td style="text-align: left;">Yuksek, ancak bircok tescilli uzanti ile</td>
-                            <td style="text-align: left;">Iyi, T-SQL uzantilari ile</td>
+                            <td style="text-align: left;">Yuksek, ancak bircok tescilli uzanti (proprietary extension) ile</td>
+                            <td style="text-align: left;">Iyi, T-SQL uzantilari (extensions) ile</td>
                             <td style="text-align: left;">Yuksek, SQL standartlarini yakindan takip eder</td>
                         </tr>
                         <tr class="odd">
-                            <td style="text-align: left;"><strong>Genisletilebilirlik</strong></td>
-                            <td style="text-align: left;">Cok yuksek (uzantilar, ozel tipler/fonksiyonlar)</td>
-                            <td style="text-align: left;">Orta (depolama motorlari, eklentiler)</td>
+                            <td style="text-align: left;"><strong>Genisletilebilirlik (Extensibility)</strong></td>
+                            <td style="text-align: left;">Cok yuksek (uzantilar (extensions), ozel tipler/fonksiyonlar (custom types/functions))</td>
+                            <td style="text-align: left;">Orta (depolama motorlari (storage engines), eklentiler (plugins))</td>
                             <td style="text-align: left;">Yuksek (PL/SQL, Java)</td>
                             <td style="text-align: left;">Yuksek (CLR entegrasyonu, T-SQL)</td>
                             <td style="text-align: left;">Yuksek (SQL PL, Java, C++)</td>
@@ -186,7 +186,7 @@
                     </colgroup>
                     <thead>
                         <tr class="header">
-                            <th style="text-align: left;">Ozellik</th>
+                            <th style="text-align: left;">Ozellik (Feature)</th>
                             <th style="text-align: left;">PostgreSQL</th>
                             <th style="text-align: left;">MySQL</th>
                             <th style="text-align: left;">Oracle Database</th>
@@ -196,25 +196,25 @@
                     </thead>
                     <tbody>
                         <tr class="even">
-                            <td style="text-align: left;"><strong>JSON Destegi</strong></td>
-                            <td style="text-align: left;">Mukemmel (JSONB ikili format, indeksleme)</td>
-                            <td style="text-align: left;">Iyi (JSON veri tipi, fonksiyonlar)</td>
+                            <td style="text-align: left;"><strong>JSON Destegi (Support)</strong></td>
+                            <td style="text-align: left;">Mukemmel (JSONB ikili (binary) format, indeksleme (indexing))</td>
+                            <td style="text-align: left;">Iyi (JSON veri tipi, fonksiyonlar (functions))</td>
                             <td style="text-align: left;">Iyi (JSON veri tipi, fonksiyonlar, indeksleme)</td>
                             <td style="text-align: left;">Iyi (JSON fonksiyonlari, indeksleme)</td>
-                            <td style="text-align: left;">Iyi (JSON fonksiyonlari, BSON depolama)</td>
+                            <td style="text-align: left;">Iyi (JSON fonksiyonlari, BSON depolama (storage))</td>
                         </tr>
                         <tr class="odd">
-                            <td style="text-align: left;"><strong>Prosedural Dil</strong></td>
+                            <td style="text-align: left;"><strong>Prosedural Dil (Procedural Language)</strong></td>
                             <td style="text-align: left;">PL/pgSQL, PL/Python, PL/Perl, PL/Tcl, vb.</td>
-                            <td style="text-align: left;">Sakli Prosedurler/Fonksiyonlar (SQL standart)</td>
+                            <td style="text-align: left;">Sakli Prosedurler (Stored Procedures)/Fonksiyonlar (Functions) (SQL standart)</td>
                             <td style="text-align: left;">PL/SQL, Java</td>
                             <td style="text-align: left;">T-SQL, .NET CLR</td>
                             <td style="text-align: left;">SQL PL, Java, C++, COBOL, REXX</td>
                         </tr>
                         <tr class="even">
-                            <td style="text-align: left;"><strong>Replikasyon</strong></td>
-                            <td style="text-align: left;">Streaming (Fiziksel), Mantiksal</td>
-                            <td style="text-align: left;">Asenkron, Yari-Senkron, Grup Rep.</td>
+                            <td style="text-align: left;"><strong>Replikasyon (Replication)</strong></td>
+                            <td style="text-align: left;">Streaming (Fiziksel/Physical), Mantiksal (Logical)</td>
+                            <td style="text-align: left;">Asenkron (Async), Yari-Senkron (Semi-Sync), Grup Rep.</td>
                             <td style="text-align: left;">Data Guard (Fiziksel), GoldenGate (Mantiksal)</td>
                             <td style="text-align: left;">Always On Availability Groups, Replikasyon</td>
                             <td style="text-align: left;">HADR (Fiziksel), Q Replication (Mantiksal)</td>
@@ -228,9 +228,9 @@
                             <td style="text-align: left;">Evet (Currently Committed semantikleri)</td>
                         </tr>
                         <tr class="even">
-                            <td style="text-align: left;"><strong>Popularite Trendi</strong></td>
-                            <td style="text-align: left;">Onemli olcude artis gosteriyor</td>
-                            <td style="text-align: left;">Yuksek, stabil</td>
+                            <td style="text-align: left;"><strong>Popularite Trendi (Popularity Trend)</strong></td>
+                            <td style="text-align: left;">Onemli olcude artis (growing) gosteriyor</td>
+                            <td style="text-align: left;">Yuksek, stabil (stable)</td>
                             <td style="text-align: left;">Yuksek, bazi alanlarda hafif dusus</td>
                             <td style="text-align: left;">Yuksek, stabil</td>
                             <td style="text-align: left;">Stabil, belirli kurumsal sektorlerde guclu</td>
@@ -239,10 +239,10 @@
                 </table>
             </section>
             <section>
-                <h2 id="sql-dialect-differences-examples">SQL Lehce Farkliliklari (Ornekler)</h2>
-                <p>SQL sozdiziminin degisebilecegini anlamak onemlidir. Iste birkac yaygin ornek:</p>
+                <h2 id="sql-dialect-differences-examples">SQL Lehce (Dialect) Farkliliklari - Ornekler</h2>
+                <p>SQL sozdiziminin (syntax) degisebilecegini anlamak onemlidir. Iste birkac yaygin ornek:</p>
                 <ol type="1">
-                    <li><strong>Otomatik Artan Sutunlar</strong>:
+                    <li><strong>Otomatik Artan Sutunlar (Auto-Increment Columns)</strong>:
                         <ul>
                             <li><strong>PostgreSQL</strong>: <code>SERIAL</code> veya
                                 <code>GENERATED ALWAYS AS IDENTITY</code>
@@ -253,7 +253,7 @@
                             <li><strong>Db2</strong>: <code>GENERATED ALWAYS AS IDENTITY</code></li>
                         </ul>
                     </li>
-                    <li><strong>Sonuclari Sinirlandirma</strong>:
+                    <li><strong>Sonuclari Sinirlandirma (Limiting Results)</strong>:
                         <ul>
                             <li><strong>PostgreSQL/MySQL</strong>: <code>LIMIT &lt;sayi&gt; OFFSET &lt;baslangic&gt;</code>
                             </li>
@@ -271,7 +271,7 @@
             </section>
             <section>
                 <ol type="1" start="3">
-                    <li><strong>String Birlestirme</strong>:
+                    <li><strong>String Birlestirme (String Concatenation)</strong>:
                         <ul>
                             <li><strong>PostgreSQL/Oracle/Db2</strong>: <code>||</code> operatoru</li>
                             <li><strong>MySQL</strong>: <code>CONCAT()</code> fonksiyonu</li>
@@ -279,7 +279,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li><strong>Tarih/Zaman Fonksiyonlari</strong>:
+                    <li><strong>Tarih/Zaman Fonksiyonlari (Date/Time Functions)</strong>:
                         <ul>
                             <li><strong>PostgreSQL</strong>: <code>NOW()</code>, <code>CURRENT_DATE</code>,
                                 <code>EXTRACT(EPOCH FROM ...)</code>
@@ -297,7 +297,7 @@
                             <li><strong>Db2</strong>: <code>CURRENT TIMESTAMP</code>, <code>CURRENT DATE</code></li>
                         </ul>
                     </li>
-                    <li><strong>Sorgularda Kosullu Mantik</strong>:
+                    <li><strong>Sorgularda Kosullu Mantik (Conditional Logic in Queries)</strong>:
                         <ul>
                             <li><strong>Standart SQL (Tumu)</strong>: <code>CASE WHEN ... THEN ... ELSE ... END</code>
                             </li>
@@ -317,21 +317,21 @@
                 </ol>
             </section>
             <section>
-                <h2 id="why-focus-on-postgresql-here">Neden Burada PostgreSQL'e Odaklaniyoruz?</h2>
+                <h2 id="why-focus-on-postgresql-here">Neden Burada PostgreSQL'e Odaklaniyoruz? (Why Focus on PostgreSQL?)</h2>
                 <p>Diger RDBMS'lerin onemini kabul etmekle birlikte, bu egitim uygulamali calisma icin PostgreSQL
                     kullanmaktadir, cunku:</p>
                 <ul>
-                    <li><strong>Acik Kaynak Yapisi</strong>: Ogrenme ve gelistirme icin ucretsiz olarak mevcuttur.</li>
-                    <li><strong>SQL Uyumlulugu</strong>: SQL standartlarina yakindan uyar, bu da ogrenilen kavramlari
-                        kolayca aktariabilir kilar.</li>
-                    <li><strong>Zengin Ozellik Seti</strong>: Modern uygulamalarda ilgili olan JSONB, pencere
-                        fonksiyonlari ve genisletilebilirlik gibi gelismis ozellikleri destekler.</li>
-                    <li><strong>Artan Popularite</strong>: Yeni projeler icin giderek daha fazla tercih edilmektedir.</li>
-                    <li><strong>Ozel Ortaminiz</strong>: Planlanmis Neon veritabani kurulumu ile uyumludur.</li>
+                    <li><strong>Acik Kaynak (Open Source) Yapisi</strong>: Ogrenme ve gelistirme icin ucretsiz olarak mevcuttur.</li>
+                    <li><strong>SQL Uyumlulugu (Compliance)</strong>: SQL standartlarina yakindan uyar, bu da ogrenilen kavramlari
+                        kolayca aktarilabilir kilar.</li>
+                    <li><strong>Zengin Ozellik Seti (Feature Set)</strong>: Modern uygulamalarda ilgili olan JSONB, pencere
+                        fonksiyonlari (window functions) ve genisletilebilirlik (extensibility) gibi gelismis ozellikleri destekler.</li>
+                    <li><strong>Artan Popularite (Growing Popularity)</strong>: Yeni projeler icin giderek daha fazla tercih edilmektedir.</li>
+                    <li><strong>Ozel Ortaminiz (Your Environment)</strong>: Planlanmis Neon veritabani kurulumu ile uyumludur.</li>
                 </ul>
-                <p>Kurs boyunca, ilgili oldugu yerlerde diger buyuk veritabanlarina kiyasla sozdizimi veya
-                    davranistaki onemli farkliliklara dikkat cekecegiz, boylece cesitli platformlarda uygulanabilir
-                    SQL ilkeleri hakkinda genis bir anlayis kazanmanizi saglayacagiz.</p>
+                <p>Kurs boyunca, ilgili oldugu yerlerde diger buyuk veritabanlarina kiyasla sozdizimi (syntax) veya
+                    davranistaki (behavior) onemli farkliliklara dikkat cekecegiz, boylece cesitli platformlarda uygulanabilir
+                    SQL ilkeleri (principles) hakkinda genis bir anlayis kazanmanizi saglayacagiz.</p>
             </section>
         </div>
     </div>

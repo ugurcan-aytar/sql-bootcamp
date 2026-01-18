@@ -97,32 +97,32 @@
             <section>
                 <h1 id="day-1-working-with-multiple-tables">Gun 1: Birden Fazla Tablo ile Calisma</h1>
                 <h2 id="session-4-working-with-multiple-tables-2-hours">Birden Fazla Tablo ile Calisma</h2>
-                <h3 id="understanding-table-relationships-standard-concept">Tablo Iliskilerini Anlama (Standart
+                <h3 id="understanding-table-relationships-standard-concept">Tablo Iliskilerini (Relationships) Anlama (Standart
                     Kavram)
                 </h3>
                 <p>Iliskisel veritabanlari, farkli bilgi parcalari arasindaki iliskileri yonetmede ustunluk saglar. Veriler
                     genellikle fazlaligi azaltmak (normalizasyon) icin birden fazla tabloya bolunur ve bu tablolar
                     iliskiler
                     kullanilarak birbirine baglanir.</p>
-                <p><strong>Iliski Turleri</strong>:</p>
+                <p><strong>Iliski (Relationship) Turleri</strong>:</p>
                 <ul>
-                    <li><strong>Bire-Bir (1:1)</strong>: Tablo A'daki her kayit, Tablo B'deki tam olarak bir kayda karsilik
+                    <li><strong>Bire-Bir (One-to-One, 1:1)</strong>: Tablo A'daki her kayit, Tablo B'deki tam olarak bir kayda karsilik
                         gelir.
                     </li>
-                    <li><strong>Bire-Cok (1:N)</strong>: Tablo A'daki bir kayit, Tablo B'deki bircok kayitla iliskili
+                    <li><strong>Bire-Cok (One-to-Many, 1:N)</strong>: Tablo A'daki bir kayit, Tablo B'deki bircok kayitla iliskili
                         olabilir.
                         (En yaygin).</li>
-                    <li><strong>Coka-Cok (M:N)</strong>: Tablo A'daki kayitlar, Tablo B'deki bircok kayitla iliskili
+                    <li><strong>Coka-Cok (Many-to-Many, M:N)</strong>: Tablo A'daki kayitlar, Tablo B'deki bircok kayitla iliskili
                         olabilir ve
                         bunun tersi de gecerlidir. Bir baglanti tablosu gerektirir.</li>
                 </ul>
             </section>
             <section>
-                <p><strong>Yabanci Anahtarlar (Standart Kavram)</strong>:</p>
-                <p>Iliskiler, <strong>yabanci anahtarlar</strong> kullanilarak uygulanir. Bir tablodaki yabanci anahtar,
+                <p><strong>Yabanci Anahtarlar (Foreign Keys) (Standart Kavram)</strong>:</p>
+                <p>Iliskiler, <strong>yabanci anahtarlar (foreign keys)</strong> kullanilarak uygulanir. Bir tablodaki yabanci anahtar,
                     baska
                     bir
-                    tablonun birincil anahtarina referans verir ve referans butunlugunu saglar.</p>
+                    tablonun birincil anahtarina (primary key) referans verir ve referans butunlugunu saglar.</p>
                 <div class="sourceCode" id="cb3" onclick="CopyToClipboard('cb3')">
                     <pre class="sourceCode sql">
 <code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- PostgreSQL semasini kullanan ornek (PostgreSQL)</span></span>
@@ -230,23 +230,23 @@
                 </div>
             </section>
             <section>
-                <h3 id="join-operations-standard-sql">JOIN Islemleri (Standart SQL)</h3>
+                <h3 id="join-operations-standard-sql">Birlestirme (JOIN) Islemleri (Standart SQL)</h3>
                 <p><code>JOIN</code> ifadeleri, iliskili bir sutuna dayali olarak iki veya daha fazla tablodaki satirlari birlestirir.</p>
                 <ul>
                     <li>
-                        <strong>INNER JOIN: </strong>
+                        <strong>Ic Birlestirme (INNER JOIN): </strong>
                         Yalnizca birlesim kosulunun her iki tabloda da karsilandigi satirlari dondurur.
                     </li>
                     <li>
-                        <strong>LEFT JOIN: </strong>
+                        <strong>Sol Birlestirme (LEFT JOIN): </strong>
                         Sol tablodaki tum satirlari ve sag tablodaki eslesen satirlari dondurur.
                     </li>
                     <li>
-                        <strong>RIGHT JOIN: </strong>
+                        <strong>Sag Birlestirme (RIGHT JOIN): </strong>
                         Sag tablodaki tum satirlari ve sol tablodaki eslesen satirlari dondurur.
                     </li>
                     <li>
-                        <strong>FULL OUTER JOIN: </strong>
+                        <strong>Tam Dis Birlestirme (FULL OUTER JOIN): </strong>
                         Her iki tablodaki tum satirlari dondurur.
                     </li>
                 </ul>
@@ -262,7 +262,7 @@
                                     stroke="none" />
                             </svg>
                             <p class="text-sm mt-1 font-semibold text-blue-200">INNER JOIN</p>
-                            <p class="text-xs text-gray-400">Yalnizca eslesen satirlar</p>
+                            <p class="text-xs text-gray-400">Yalnizca eslesen satirlar (matching rows)</p>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -312,7 +312,7 @@
             </section>
             <section>
 
-                <p><strong>INNER JOIN</strong>:</p>
+                <p><strong>Ic Birlestirme (INNER JOIN)</strong>:</p>
                 <ul>
                     <li><em>Her iki</em> tabloda da birlesim kosulunun karsilandigi yalnizca satirlari dondurur.</li>
                 </ul>
@@ -337,7 +337,7 @@
             </section>
             <section>
 
-                <p><strong>LEFT JOIN (veya LEFT OUTER JOIN)</strong>:</p>
+                <p><strong>Sol Birlestirme (LEFT JOIN veya LEFT OUTER JOIN)</strong>:</p>
                 <ul>
                     <li><strong>Sol</strong> tablodaki <em>tum</em> satirlari ve sag tablodaki eslesen satirlari
                         dondurur.
@@ -365,7 +365,7 @@
                 </div>
             </section>
             <section>
-                <p><strong>RIGHT JOIN (veya RIGHT OUTER JOIN)</strong>:</p>
+                <p><strong>Sag Birlestirme (RIGHT JOIN veya RIGHT OUTER JOIN)</strong>:</p>
                 <ul>
                     <li><strong>Sag</strong> tablodaki <em>tum</em> satirlari ve sol tablodaki eslesen satirlari
                         dondurur.
@@ -382,7 +382,7 @@
                 </div>
             </section>
             <section>
-                <p><strong>FULL OUTER JOIN (veya FULL JOIN)</strong>:</p>
+                <p><strong>Tam Dis Birlestirme (FULL OUTER JOIN veya FULL JOIN)</strong>:</p>
                 <ul>
                     <li><em>Her iki</em> tablodaki <em>tum</em> satirlari dondurur.</li>
                     <li>Bir tablodaki bir satirin digerinde eslesme yoksa, diger tablonun sutunlari
@@ -413,7 +413,7 @@
                 </div>
             </section>
             <section>
-                <h3 id="joining-multiple-tables">Birden Fazla Tabloyu Birlestirme</h3>
+                <h3 id="joining-multiple-tables">Birden Fazla Tabloyu Birlestirme (Joining Multiple Tables)</h3>
                 <p><code>JOIN</code> ifadelerini zincirleme yaparak ikiden fazla tabloyu birlestirebilirsiniz.</p>
                 <p><em>Ornek: Siparis detaylarini, musteri adini ve urun adini alin (
                         <code>order_lines</code>
@@ -437,8 +437,8 @@
                 </div>
             </section>
             <section>
-                <h3 id="table-aliases">Tablo Takma Adlari</h3>
-                <p>Tablolar icin takma adlar (kisa isimler) kullanmak, sorulari daha kisa ve okunakli hale getirir, ozellikle
+                <h3 id="table-aliases">Tablo Takma Adlari (Table Aliases)</h3>
+                <p>Tablolar icin takma adlar (aliases - kisa isimler) kullanmak, sorulari daha kisa ve okunakli hale getirir, ozellikle
                     birden fazla tabloyu veya ayni tabloyu kendisine birlestirirken (self-join).</p>
                 <div class="sourceCode" id="cb12" onclick="CopyToClipboard('cb12')">
                     <pre><code class="language-sql">-- orders icin 'o' ve customers icin 'c' takma adlarini kullanma

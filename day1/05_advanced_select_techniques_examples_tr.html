@@ -485,7 +485,7 @@
       </section>
 
       <section>
-        <h2 id="sample-datasets">Ornek Veri Setleri</h2>
+        <h2 id="sample-datasets">Ornek Veri Setleri (Sample Datasets)</h2>
 
         <h3 id="employees-table">employees</h3>
         <div class="dataset-table">
@@ -574,7 +574,7 @@
       </section>
 
       <section>
-        <h2 id="exercise-1">Alistirma 1: Toplama Fonksiyonlari</h2>
+        <h2 id="exercise-1">Alistirma 1: Toplama Fonksiyonlari (Aggregate Functions)</h2>
 
         <div class="exercise-box">
           <h4>Alistirma 1.1: Temel COUNT</h4>
@@ -670,10 +670,10 @@
       </section>
 
       <section>
-        <h2 id="exercise-2">Alistirma 2: GROUP BY</h2>
+        <h2 id="exercise-2">Alistirma 2: GROUP BY (Gruplama)</h2>
 
         <div class="concept-box">
-          <h4>GROUP BY Kuralini Unutmayin</h4>
+          <h4>GROUP BY Kuralini Unutmayin (GROUP BY Rule)</h4>
           <p>SELECT listesindeki toplanmamis her sutun <strong>mutlaka</strong> GROUP BY yan tumcesinde yer almalidir.</p>
         </div>
 
@@ -748,7 +748,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 2.5: Birden Fazla Sutuna Gore Gruplama</h4>
+          <h4>Alistirma 2.5: Birden Fazla Sutuna Gore Gruplama (Multi-Column GROUP BY)</h4>
           <p>sales_data tablosundan her bolgedeki her urun icin toplam satislari hesaplayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol2-5')">Cozumu Goster</button>
           <div id="sol2-5" class="solution-content">
@@ -765,7 +765,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 2.6: Tarih Parcasina Gore Gruplama</h4>
+          <h4>Alistirma 2.6: Tarih Parcasina Gore Gruplama (Grouping by Date Part)</h4>
           <p>2024 yilinin her ayinda verilen siparis sayisini sayiniz. Ayi almak icin EXTRACT kullanin.</p>
           <div class="hint-box">
             <strong>Ipucu:</strong> Ay numarasini almak icin EXTRACT(MONTH FROM order_date) kullanin.
@@ -787,10 +787,10 @@
       </section>
 
       <section>
-        <h2 id="exercise-3">Alistirma 3: HAVING Yan Tumcesi</h2>
+        <h2 id="exercise-3">Alistirma 3: HAVING Yan Tumcesi (Filtering Groups)</h2>
 
         <div class="concept-box">
-          <h4>WHERE ve HAVING Karsilastirmasi</h4>
+          <h4>WHERE ve HAVING Karsilastirmasi (WHERE vs HAVING)</h4>
           <div class="comparison-table">
             <table>
               <tr>
@@ -863,7 +863,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 3.4: WHERE ve HAVING'i Birlestirme</h4>
+          <h4>Alistirma 3.4: WHERE ve HAVING'i Birlestirme (Combining WHERE and HAVING)</h4>
           <p>Toplam satisi 30.000$'in uzerinde olan urunleri bulun, ancak sadece C1 ve C2'deki (1. ve 2. ceyrekler) satislari dikkate alin.</p>
           <div class="hint-box">
             <strong>Ipucu:</strong> Once ceyrege gore filtrelemek icin WHERE kullanin, sonra toplam satisa gore filtrelemek icin HAVING kullanin.
@@ -884,16 +884,16 @@
       </section>
 
       <section>
-        <h2 id="exercise-4">Alistirma 4: Pencere Fonksiyonlari</h2>
+        <h2 id="exercise-4">Alistirma 4: Pencere Fonksiyonlari (Window Functions)</h2>
 
         <div class="concept-box">
-          <h4>Pencere Fonksiyonlari ve GROUP BY Karsilastirmasi</h4>
+          <h4>Pencere Fonksiyonlari (Window Functions) ve GROUP BY Karsilastirmasi</h4>
           <p>Pencere fonksiyonlari satirlar uzerinde hesaplamalar yapar ancak GROUP BY gibi <strong>satirlari daraltmaz</strong>.
             Her satir kimligini korurken toplanmis veya siralanmis degerlere erisebilir.</p>
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.1: ROW_NUMBER</h4>
+          <h4>Alistirma 4.1: ROW_NUMBER (Satir Numaralama)</h4>
           <p>Her calisana maasa gore (en yuksekten baslayarak) bir satir numarasi atayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-1')">Cozumu Goster</button>
           <div id="sol4-1" class="solution-content">
@@ -909,7 +909,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.2: PARTITION BY ile ROW_NUMBER</h4>
+          <h4>Alistirma 4.2: PARTITION BY (Bolumleme) ile ROW_NUMBER</h4>
           <p>Her departman icinde calisanlari maasa gore siralayin. Departman, isim, maas ve sirayi gosterin.</p>
           <div class="hint-box">
             <strong>Ipucu:</strong> Her departman icin numaralandirmayi yeniden baslatmak icin PARTITION BY department kullanin.
@@ -932,7 +932,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.3: RANK ve DENSE_RANK Karsilastirmasi</h4>
+          <h4>Alistirma 4.3: RANK ve DENSE_RANK Karsilastirmasi (Siralama Fonksiyonlari)</h4>
           <p>Calisan maaslari uzerinde ROW_NUMBER, RANK ve DENSE_RANK fonksiyonlarini karsilastirin (gercek veride esitlikler olabilir).</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-3')">Cozumu Goster</button>
           <div id="sol4-3" class="solution-content">
@@ -957,7 +957,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.4: SUM ile Kumulatif Toplam</h4>
+          <h4>Alistirma 4.4: SUM ile Kumulatif Toplam (Running Total)</h4>
           <p>Siparis tarihine gore sirali olarak siparis tutarlarinin kumulatif toplamini hesaplayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-4')">Cozumu Goster</button>
           <div id="sol4-4" class="solution-content">
@@ -977,7 +977,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.5: LAG Fonksiyonu - Onceki Satirla Karsilastirma</h4>
+          <h4>Alistirma 4.5: LAG Fonksiyonu (Offset Function) - Onceki Satirla Karsilastirma</h4>
           <p>Her siparisi onceki sipariszin tutariyla gostererek ardisik siparisler arasindaki farki hesaplayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-5')">Cozumu Goster</button>
           <div id="sol4-5" class="solution-content">
@@ -996,7 +996,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.6: Toplamin Yuzdesini Hesaplama</h4>
+          <h4>Alistirma 4.6: Toplamin Yuzdesini Hesaplama (Percentage of Total)</h4>
           <p>Her sipariszin tum siparislerin toplamina olan yuzdesel katkilisini hesaplayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-6')">Cozumu Goster</button>
           <div id="sol4-6" class="solution-content">
@@ -1016,7 +1016,7 @@
         </div>
 
         <div class="exercise-box">
-          <h4>Alistirma 4.7: Hareketli Ortalama</h4>
+          <h4>Alistirma 4.7: Hareketli Ortalama (Moving Average)</h4>
           <p>sales_data tablosundan aya gore sirali olarak 3 satirlik hareketli ortalama hesaplayin.</p>
           <button class="solution-toggle" onclick="toggleSolution('sol4-7')">Cozumu Goster</button>
           <div id="sol4-7" class="solution-content">
@@ -1040,7 +1040,7 @@
       </section>
 
       <section>
-        <h2 id="challenge-exercises">Meydan Okuma Alistirmalari</h2>
+        <h2 id="challenge-exercises">Meydan Okuma Alistirmalari (Challenge Exercises)</h2>
 
         <div class="challenge-box">
           <h4>Meydan Okuma 1: Departman Maas Raporu</h4>
@@ -1088,7 +1088,7 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Meydan Okuma 3: Satis Buyume Analizi</h4>
+          <h4>Meydan Okuma 3: Satis Buyume Analizi (Growth Analysis)</h4>
           <p>sales_data'daki her ay icin toplam satislari, onceki ayin satislarini ve onceki aya gore yuzdesel buyumeyi gosterin.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal3')">Cozumu Goster</button>
           <div id="chal3" class="solution-content">
@@ -1116,7 +1116,7 @@
         </div>
 
         <div class="challenge-box">
-          <h4>Meydan Okuma 4: Bolgeye Gore Kumulatif Satislar</h4>
+          <h4>Meydan Okuma 4: Bolgeye Gore Kumulatif Satislar (Cumulative Sales by Region)</h4>
           <p>Her bolge icin ayri ayri aya gore sirali kumulatif (artan) satislari gosterin.</p>
           <button class="solution-toggle" onclick="toggleSolution('chal4')">Cozumu Goster</button>
           <div id="chal4" class="solution-content">
@@ -1168,18 +1168,18 @@
       </section>
 
       <section>
-        <h2 id="summary">Onemli Cikarimlar</h2>
+        <h2 id="summary">Onemli Cikarimlar (Key Takeaways)</h2>
         <ul>
-          <li><strong>Toplama Fonksiyonlari</strong>: COUNT, SUM, AVG, MIN, MAX satir kumeleri uzerinde islem yaparak tekil degerler uretir</li>
+          <li><strong>Toplama Fonksiyonlari (Aggregate Functions)</strong>: COUNT, SUM, AVG, MIN, MAX satir kumeleri uzerinde islem yaparak tekil degerler uretir</li>
           <li><strong>COUNT(*) ve COUNT(sutun)</strong>: COUNT(*) tum satirlari sayar; COUNT(sutun) NULL olmayan degerleri sayar</li>
-          <li><strong>GROUP BY</strong>: Ayni degerlere sahip satirlari gruplar; toplanmamis tum SELECT sutunlari GROUP BY'da olmalidir</li>
-          <li><strong>HAVING</strong>: Toplamadan sonra gruplari filtreler; toplama sonuclari uzerindeki kosullar icin kullanilir</li>
+          <li><strong>GROUP BY (Gruplama)</strong>: Ayni degerlere sahip satirlari gruplar; toplanmamis tum SELECT sutunlari GROUP BY'da olmalidir</li>
+          <li><strong>HAVING (Grup Filtreleme)</strong>: Toplamadan sonra gruplari filtreler; toplama sonuclari uzerindeki kosullar icin kullanilir</li>
           <li><strong>WHERE ve HAVING</strong>: WHERE gruplama oncesinde satirlari filtreler; HAVING gruplama sonrasinda gruplari filtreler</li>
-          <li><strong>Pencere Fonksiyonlari</strong>: Iliskili satirlar uzerinde satirlari daraltmadan hesaplamalar yapar</li>
-          <li><strong>PARTITION BY</strong>: Satirlari pencere fonksiyonu hesaplamalari icin bolumlere ayirir</li>
-          <li><strong>ROW_NUMBER, RANK, DENSE_RANK</strong>: Esitlikler icin farkli siralama davranislari</li>
-          <li><strong>LAG/LEAD</strong>: Karsilastirmalar icin onceki/sonraki satir degerlerine erisim</li>
-          <li><strong>Cerceve Yan Tumcesi</strong>: Toplama pencere fonksiyonlari icin satir penceresini tanimlar (ornegin kumulatif toplamlar)</li>
+          <li><strong>Pencere Fonksiyonlari (Window Functions)</strong>: Iliskili satirlar uzerinde satirlari daraltmadan hesaplamalar yapar</li>
+          <li><strong>PARTITION BY (Bolumleme)</strong>: Satirlari pencere fonksiyonu hesaplamalari icin bolumlere ayirir</li>
+          <li><strong>ROW_NUMBER, RANK, DENSE_RANK (Siralama Fonksiyonlari)</strong>: Esitlikler icin farkli siralama davranislari</li>
+          <li><strong>LAG/LEAD (Offset Fonksiyonlari)</strong>: Karsilastirmalar icin onceki/sonraki satir degerlerine erisim</li>
+          <li><strong>Cerceve Yan Tumcesi (Frame Clause)</strong>: Toplama pencere fonksiyonlari icin satir penceresini tanimlar (ornegin kumulatif toplamlar)</li>
         </ul>
 
         <div class="back-link" style="margin-top: 30px;">

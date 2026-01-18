@@ -66,22 +66,22 @@
 
         <!-- Hizli Referans -->
         <div class="quick-ref mb-4">
-            <h5 class="text-center mb-3">DML Hizli Referans</h5>
+            <h5 class="text-center mb-3">DML (Data Manipulation Language) Hizli Referans</h5>
             <div class="row text-center">
-                <div class="col-md-3"><code>INSERT</code> - Yeni satirlar ekle</div>
-                <div class="col-md-3"><code>UPDATE</code> - Mevcut satirlari degistir</div>
-                <div class="col-md-3"><code>DELETE</code> - Satirlari sil</div>
-                <div class="col-md-3"><code>UPSERT</code> - Ekle veya guncelle</div>
+                <div class="col-md-3"><code>INSERT</code> - Yeni satirlar ekle (add rows)</div>
+                <div class="col-md-3"><code>UPDATE</code> - Mevcut satirlari degistir (modify rows)</div>
+                <div class="col-md-3"><code>DELETE</code> - Satirlari sil (remove rows)</div>
+                <div class="col-md-3"><code>UPSERT</code> - Ekle veya guncelle (insert or update)</div>
             </div>
         </div>
 
         <!-- INSERT -->
-        <h3 class="section-title">INSERT Ifadesi</h3>
+        <h3 class="section-title">INSERT Ifadesi (INSERT Statement)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Tek Satir Ekleme</h5>
+                    <h5>Tek Satir Ekleme (Single Row Insert)</h5>
                     <pre><code><span class="comment">-- Sutunlari belirt (onerilen)</span>
 <span class="keyword">INSERT INTO</span> employees
     (first_name, last_name, email, salary)
@@ -95,7 +95,7 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Coklu Satir Ekleme</h5>
+                    <h5>Coklu Satir Ekleme (Multi-row Insert)</h5>
                     <pre><code><span class="keyword">INSERT INTO</span> employees
     (first_name, last_name, salary)
 <span class="keyword">VALUES</span>
@@ -112,7 +112,7 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>SELECT'ten Ekleme</h5>
+            <h5>SELECT'ten Ekleme (Insert from SELECT)</h5>
             <pre><code><span class="comment">-- Baska tablodan veri kopyala</span>
 <span class="keyword">INSERT INTO</span> employees_archive (id, name, salary, archived_at)
 <span class="keyword">SELECT</span> id, name, salary, <span class="function">NOW</span>()
@@ -121,12 +121,12 @@
         </div>
 
         <!-- UPDATE -->
-        <h3 class="section-title">UPDATE Ifadesi</h3>
+        <h3 class="section-title">UPDATE Ifadesi (UPDATE Statement)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Temel UPDATE</h5>
+                    <h5>Temel UPDATE (Basic UPDATE)</h5>
                     <pre><code><span class="comment">-- Tek sutun guncelle</span>
 <span class="keyword">UPDATE</span> employees
 <span class="keyword">SET</span> salary = 55000
@@ -142,7 +142,7 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Kosullu UPDATE</h5>
+                    <h5>Kosullu UPDATE (Conditional UPDATE)</h5>
                     <pre><code><span class="comment">-- Hesaplama ile guncelle</span>
 <span class="keyword">UPDATE</span> employees
 <span class="keyword">SET</span> salary = salary * 1.10  <span class="comment">-- %10 zam</span>
@@ -169,12 +169,12 @@
         </div>
 
         <!-- DELETE -->
-        <h3 class="section-title">DELETE Ifadesi</h3>
+        <h3 class="section-title">DELETE Ifadesi (DELETE Statement)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Temel DELETE</h5>
+                    <h5>Temel DELETE (Basic DELETE)</h5>
                     <pre><code><span class="comment">-- Belirli satirlari sil</span>
 <span class="keyword">DELETE FROM</span> employees
 <span class="keyword">WHERE</span> id = 1;
@@ -189,7 +189,7 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Alt Sorgu ile DELETE</h5>
+                    <h5>Alt Sorgu ile DELETE (DELETE with Subquery)</h5>
                     <pre><code><span class="comment">-- Alt sorgu kullanarak sil</span>
 <span class="keyword">DELETE FROM</span> employees
 <span class="keyword">WHERE</span> department_id <span class="keyword">IN</span> (
@@ -205,7 +205,7 @@
         </div>
 
         <!-- UPSERT -->
-        <h3 class="section-title">UPSERT (Ekle veya Guncelle)</h3>
+        <h3 class="section-title">UPSERT (Insert or Update / Ekle veya Guncelle)</h3>
 
         <div class="cheatsheet-card p-3">
             <h5>ON CONFLICT (PostgreSQL)</h5>
@@ -225,12 +225,12 @@
         </div>
 
         <!-- Veri Tipleri -->
-        <h3 class="section-title">Yaygin SQL Veri Tipleri</h3>
+        <h3 class="section-title">Yaygin SQL Veri Tipleri (Common SQL Data Types)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Sayisal Tipler</h5>
+            <h5>Sayisal Tipler (Numeric Types)</h5>
             <table>
-                <thead><tr><th>Tip</th><th>Aralik/Boyut</th><th>Kullanim Alani</th></tr></thead>
+                <thead><tr><th>Tip (Type)</th><th>Aralik/Boyut (Range/Size)</th><th>Kullanim Alani (Use Case)</th></tr></thead>
                 <tbody>
                     <tr><td><code>SMALLINT</code></td><td>-32,768 ile 32,767</td><td>Kucuk sayilar, bayraklar</td></tr>
                     <tr><td><code>INTEGER / INT</code></td><td>-2.1 milyar ile 2.1 milyar</td><td>En yaygin tamsayi tipi</td></tr>
@@ -244,9 +244,9 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Karakter Tipleri</h5>
+            <h5>Karakter Tipleri (Character Types)</h5>
             <table>
-                <thead><tr><th>Tip</th><th>Aciklama</th><th>Kullanim Alani</th></tr></thead>
+                <thead><tr><th>Tip (Type)</th><th>Aciklama (Description)</th><th>Kullanim Alani (Use Case)</th></tr></thead>
                 <tbody>
                     <tr><td><code>CHAR(n)</code></td><td>Sabit uzunluk, boslukla doldurulur</td><td>Sabit kodlar (ulke kodlari)</td></tr>
                     <tr><td><code>VARCHAR(n)</code></td><td>Degisken uzunluk, maks n</td><td>Cogu metin verisi</td></tr>
@@ -259,7 +259,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Tarih/Saat Tipleri</h5>
+                    <h5>Tarih/Saat Tipleri (Date/Time Types)</h5>
                     <table>
                         <tbody>
                             <tr><td><code>DATE</code></td><td>Sadece tarih (YYYY-MM-DD)</td></tr>
@@ -273,7 +273,7 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Diger Tipler</h5>
+                    <h5>Diger Tipler (Other Types)</h5>
                     <table>
                         <tbody>
                             <tr><td><code>BOOLEAN</code></td><td>TRUE, FALSE, NULL</td></tr>
@@ -288,12 +288,12 @@
         </div>
 
         <!-- JSON -->
-        <h3 class="section-title">JSON ile Calisma</h3>
+        <h3 class="section-title">JSON ile Calisma (Working with JSON)</h3>
 
         <div class="cheatsheet-card p-3">
             <h5>JSON vs JSONB (PostgreSQL)</h5>
             <table>
-                <thead><tr><th>Ozellik</th><th>JSON</th><th>JSONB</th></tr></thead>
+                <thead><tr><th>Ozellik (Feature)</th><th>JSON</th><th>JSONB</th></tr></thead>
                 <tbody>
                     <tr><td>Depolama</td><td>Metin (bosluklari korur)</td><td>Binary (kompakt)</td></tr>
                     <tr><td>Yazma hizi</td><td>Daha hizli</td><td>Biraz daha yavas</td></tr>
@@ -306,7 +306,7 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>JSON Operatorleri (PostgreSQL)</h5>
+            <h5>JSON Operatorleri / JSON Operators (PostgreSQL)</h5>
             <pre><code><span class="comment">-- Ornek veri</span>
 <span class="keyword">CREATE TABLE</span> users (
     id SERIAL PRIMARY KEY,
@@ -337,7 +337,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>JSON Sorgu Operatorleri</h5>
+                    <h5>JSON Sorgu Operatorleri (JSON Query Operators)</h5>
                     <pre><code><span class="comment">-- Icerir (sadece JSONB)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> users
 <span class="keyword">WHERE</span> data @> <span class="string">'{"age": 30}'</span>;
@@ -357,7 +357,7 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>JSON Fonksiyonlari</h5>
+                    <h5>JSON Fonksiyonlari (JSON Functions)</h5>
                     <pre><code><span class="comment">-- Tum anahtarlari al</span>
 <span class="keyword">SELECT</span> <span class="function">jsonb_object_keys</span>(data) <span class="keyword">FROM</span> users;
 
@@ -380,7 +380,7 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>JSON Degistirme (JSONB)</h5>
+            <h5>JSON Degistirme / JSON Modification (JSONB)</h5>
             <pre><code><span class="comment">-- Anahtar ayarla/guncelle</span>
 <span class="keyword">UPDATE</span> users
 <span class="keyword">SET</span> data = <span class="function">jsonb_set</span>(data, <span class="string">'{age}'</span>, <span class="string">'31'</span>)
@@ -404,7 +404,7 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>JSON Indeksleme (JSONB)</h5>
+            <h5>JSON Indeksleme / JSON Indexing (JSONB)</h5>
             <pre><code><span class="comment">-- @>, ?, ?|, ?& operatorleri icin GIN index</span>
 <span class="keyword">CREATE INDEX</span> idx_users_data <span class="keyword">ON</span> users <span class="keyword">USING GIN</span> (data);
 
@@ -416,10 +416,10 @@
         </div>
 
         <!-- Transactionlar -->
-        <h3 class="section-title">Transaction'lar</h3>
+        <h3 class="section-title">Transaction'lar / Islemler (Transactions)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Transaction Kontrolu</h5>
+            <h5>Transaction Kontrolu (Transaction Control)</h5>
             <pre><code><span class="comment">-- Transaction baslat</span>
 <span class="keyword">BEGIN</span>;  <span class="comment">-- veya START TRANSACTION</span>
 
@@ -443,7 +443,7 @@
         </div>
 
         <!-- En Iyi Uygulamalar -->
-        <h3 class="section-title">En Iyi Uygulamalar</h3>
+        <h3 class="section-title">En Iyi Uygulamalar (Best Practices)</h3>
 
         <div class="row">
             <div class="col-md-6">

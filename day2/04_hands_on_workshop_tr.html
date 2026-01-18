@@ -190,10 +190,10 @@
                 <p>Bu uygulamalı atölyede, öğrendiğimiz SQL kavramlarını uygulayarak <code>bootcamp_db</code> veritabanının yapısını ve içeriğini keşfedeceğiz. Bu PostgreSQL veritabanı, tipik bir e-ticaret senaryosu için tablolar içermektedir.</p>
 
                 <div class="concept-box">
-                    <code>bootcamp_db</code> veritabanı şunları içerir: <code>customers</code> (müşteriler), <code>products</code> (JSONB attributes ile), <code>orders</code> (JSONB metadata ile), <code>order_lines</code>, <code>categories</code>, <code>suppliers</code>, <code>employees</code>, <code>stock_movements</code> ve <code>countries</code>.
+                    <code>bootcamp_db</code> veritabanı şunları içerir: <code>customers</code> (müşteriler), <code>products</code> (JSONB attributes/özellikler ile), <code>orders</code> (siparişler - JSONB metadata ile), <code>order_lines</code> (sipariş satırları), <code>categories</code> (kategoriler), <code>suppliers</code> (tedarikçiler), <code>employees</code> (çalışanlar), <code>stock_movements</code> (stok hareketleri) ve <code>countries</code> (ülkeler).
                 </div>
 
-                <h3 id="semalari-ve-tablolari-gezinme">Şemaları ve Tabloları Gezinme</h3>
+                <h3 id="semalari-ve-tablolari-gezinme">Şemaları ve Tabloları Gezinme (Navigating Schemas and Tables)</h3>
                 <p>Mevcut şemaları ve tabloları keşfederek başlayalım:</p>
 
                 <div class="row">
@@ -222,7 +222,7 @@ ORDER BY table_count DESC;</code></pre>
             </section>
 
             <section>
-                <h3 id="tablo-yapisini-kesfetme">Tablo Yapısını Keşfetme</h3>
+                <h3 id="tablo-yapisini-kesfetme">Tablo Yapısını Keşfetme (Exploring Table Structure)</h3>
                 <p>Veritabanındaki bazı önemli tabloların yapısını inceleyelim:</p>
 
                 <div class="row">
@@ -266,7 +266,7 @@ ORDER BY
             </section>
 
             <section>
-                <h3 id="iliskileri-bulma">Tablolar Arası İlişkileri Bulma</h3>
+                <h3 id="iliskileri-bulma">Tablolar Arası İlişkileri Bulma (Finding Table Relationships)</h3>
                 <p>Tablo ilişkilerini anlamak etkili sorgulama için çok önemlidir:</p>
                 <pre><code class="language-sql">-- customers'a referans veren tüm tabloları bul
 SELECT
@@ -289,7 +289,7 @@ ORDER BY
             </section>
 
             <section>
-                <h3 id="veri-modelini-anlama">Veri Modelini Anlama</h3>
+                <h3 id="veri-modelini-anlama">Veri Modelini Anlama (Understanding the Data Model)</h3>
                 <p><code>bootcamp_db</code> veri modeli e-ticaret senaryoları için tasarlanmıştır. Temel iş varlıklarını keşfedelim:</p>
 
                 <div class="row">
@@ -388,19 +388,19 @@ ORDER BY path;</code></pre>
             </section>
 
             <section>
-                <h3 id="temel-sorgular-yazma">Veritabanına Karşı Temel Sorgular Yazma</h3>
+                <h3 id="temel-sorgular-yazma">Veritabanına Karşı Temel Sorgular Yazma (Writing Basic Queries)</h3>
                 <p>Şimdi yararlı iş bilgilerini çıkaran sorgular yazmayı pratik yapalım. SQL koduna bakmadan önce her örneği dikkatlice inceleyin.</p>
 
                 <div class="exercise-box">
                     <h4>Örnek 1: Müşteri Analizi</h4>
                     <p><strong>Amaç:</strong> Toplam satın alma tutarına göre en değerli 10 müşteriyi belirleyin.</p>
                     <p><strong>İş Sorusu:</strong> En iyi müşterilerimiz kimler ve ne kadar harcadılar?</p>
-                    <p><strong>Kullanılan Kavramlar:</strong></p>
+                    <p><strong>Kullanılan Kavramlar (Concepts Used):</strong></p>
                     <ul>
-                        <li>Müşterileri siparişleriyle bağlamak için <code>JOIN</code></li>
-                        <li>Müşteri başına verileri toplamak için <code>GROUP BY</code></li>
-                        <li><code>SUM()</code> ve <code>COUNT()</code> toplama fonksiyonları</li>
-                        <li>En iyi sonuçları almak için <code>ORDER BY ... DESC</code> ve <code>LIMIT</code></li>
+                        <li>Müşterileri siparişleriyle bağlamak için <code>JOIN</code> (birleştirme)</li>
+                        <li>Müşteri başına verileri gruplamak için <code>GROUP BY</code> (gruplama)</li>
+                        <li><code>SUM()</code> ve <code>COUNT()</code> toplama fonksiyonları (aggregate functions)</li>
+                        <li>En iyi sonuçları almak için <code>ORDER BY ... DESC</code> (sıralama) ve <code>LIMIT</code> (sınırlama)</li>
                     </ul>
                     <p><strong>Tablolar:</strong> <code>customers</code>, <code>orders</code></p>
                 </div>
@@ -428,7 +428,7 @@ LIMIT 10;</code></pre>
                 <div class="exercise-box">
                     <p><strong>Amaç:</strong> Siparişi olmayanlar dahil TÜM müşterilerin sipariş aktivitelerini gösteren bir özet oluşturun.</p>
                     <p><strong>İş Sorusu:</strong> Hangi müşteriler pasif veya düşük etkileşimli?</p>
-                    <p><strong>Anahtar Kavram:</strong> <code>LEFT JOIN</code> eşleşen siparişi olmasa bile tüm müşterileri tutar. <code>COALESCE()</code> join'den gelen NULL değerlerini işler.</p>
+                    <p><strong>Anahtar Kavram (Key Concept):</strong> <code>LEFT JOIN</code> (sol birleştirme) eşleşen siparişi olmasa bile tüm müşterileri tutar. <code>COALESCE()</code> join'den gelen NULL değerlerini işler.</p>
                 </div>
                 <pre><code class="language-sql">-- Müşteri sipariş özeti (tüm müşterileri sipariş sayılarıyla gösterir)
 SELECT
@@ -488,7 +488,7 @@ LIMIT 15;</code></pre>
                 <div class="exercise-box">
                     <p><strong>Amaç:</strong> Stok seviyesi minimum eşiğin altında olduğu için yeniden sipariş verilmesi gereken ürünleri belirleyin.</p>
                     <p><strong>İş Sorusu:</strong> Hangi ürünler azalıyor ve stoklama gerekiyor?</p>
-                    <p><strong>Anahtar Kavram:</strong> <code>CASE WHEN</code> koşullu bir durum sütunu oluşturur. <code>stock_quantity</code> ile <code>reorder_level</code> karşılaştırması dikkat gerektiren ürünleri belirler.</p>
+                    <p><strong>Anahtar Kavram (Key Concept):</strong> <code>CASE WHEN</code> (koşullu ifade/conditional expression) koşullu bir durum sütunu oluşturur. <code>stock_quantity</code> ile <code>reorder_level</code> karşılaştırması dikkat gerektiren ürünleri belirler.</p>
                 </div>
                 <pre><code class="language-sql">-- Düşük stoklu ürünler (yeniden sipariş seviyesinin altında)
 SELECT
@@ -517,9 +517,9 @@ ORDER BY
                     <p><strong>İş Sorusu:</strong> Satışlarımız aydan aya nasıl değişiyor? Mevsimsel kalıplar var mı?</p>
                     <p><strong>Kullanılan Kavramlar:</strong></p>
                     <ul>
-                        <li>Tarihleri aylık gruplara ayırmak için <code>DATE_TRUNC('month', ...)</code></li>
-                        <li>Benzersiz siparişleri saymak için <code>COUNT(DISTINCT ...)</code></li>
-                        <li>Zaman serisi analiz kalıbı</li>
+                        <li>Tarihleri aylık gruplara ayırmak için <code>DATE_TRUNC('month', ...)</code> (tarih kesme/truncate)</li>
+                        <li>Benzersiz siparişleri saymak için <code>COUNT(DISTINCT ...)</code> (benzersiz sayma)</li>
+                        <li>Zaman serisi analiz kalıbı (time series analysis pattern)</li>
                     </ul>
                     <p><strong>Tablolar:</strong> <code>orders</code></p>
                 </div>
@@ -699,7 +699,7 @@ ORDER BY
                     <p><strong>Amaç:</strong> Her çalışanın adını, yöneticisinin adını ve organizasyondaki seviyesini (CEO = seviye 0) gösteren tam çalışan hiyerarşisini görüntüleyin.</p>
 
                     <div class="hint-box">
-                        <code>manager_id IS NULL</code> olan çalışanlardan (üst seviye) başlayarak özyinelemeli bir CTE kullanın.
+                        <code>manager_id IS NULL</code> olan çalışanlardan (üst seviye) başlayarak özyinelemeli bir CTE (recursive CTE / Common Table Expression) kullanın.
                     </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution4')">Çözümü Göster</button>

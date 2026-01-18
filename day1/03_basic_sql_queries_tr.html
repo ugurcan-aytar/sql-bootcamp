@@ -379,7 +379,7 @@
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span> name, email, phone</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="kw">FROM</span> res_partner;</span></code></pre>
         </div>
-        <p><strong>Sutun Takma Adlari (Aliases - Standart SQL)</strong>: Takma adlar, sorgu sonucundaki sutunlar veya ifadeler icin gecici ve genellikle daha okunabilir adlar saglar. <code>AS</code> anahtar kelimesi standarttir ancak genellikle istege baglidir.</p>
+        <p><strong>Sutun Takma Adlari (Column Aliases - Standart SQL)</strong>: Takma adlar (Aliases), sorgu sonucundaki sutunlar veya ifadeler icin gecici ve genellikle daha okunabilir adlar saglar. <code>AS</code> anahtar kelimesi standarttir ancak genellikle istege baglidir.</p>
         <div class="sourceCode" id="cb4" onclick="CopyToClipboard('cb4')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">SELECT</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    name <span class="kw">AS</span> <span class="ot">&quot;Customer Name&quot;</span>, <span class="co">-- Quoted alias preserves case/spaces (standard)</span></span>
@@ -426,17 +426,17 @@
         </ul>
       </section>
       <section>
-        <h3 id="filtering-with-where-clauses-standard-sql">WHERE Maddesi ile Filtreleme (Standart SQL)</h3>
-        <p><code>WHERE</code> maddesi, belirtilen kosullara gore herhangi bir gruplama veya toplama isleminden <em>once</em> satirlari filtreler.</p>
+        <h3 id="filtering-with-where-clauses-standard-sql">WHERE Cumlecigi (WHERE Clause) ile Filtreleme (Standart SQL)</h3>
+        <p><code>WHERE</code> cumlecigi (clause), belirtilen kosullara gore herhangi bir gruplama veya toplama isleminden <em>once</em> satirlari filtreler.</p>
         <p><strong>Temel Soz Dizimi</strong>:</p>
         <div class="sourceCode" id="cb8" onclick="CopyToClipboard('cb8')">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">SELECT</span> column_list</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">FROM</span> table_name</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">WHERE</span> condition;</span></code></pre>
         </div>
-        <p><strong>Karsilastirma Operatorleri (Standart SQL)</strong>: - Esit: <code>=</code> - Esit degil:
-          <code>&lt;&gt;</code> (standart), <code>!=</code> (yaygin uzanti) - Buyuktur: <code>&gt;</code> - Kucuktur:
-          <code>&lt;</code> - Buyuk veya esit: <code>&gt;=</code> - Kucuk veya esit:
+        <p><strong>Karsilastirma Operatorleri (Comparison Operators - Standart SQL)</strong>: - Esit (Equal): <code>=</code> - Esit degil (Not Equal):
+          <code>&lt;&gt;</code> (standart), <code>!=</code> (yaygin uzanti) - Buyuktur (Greater Than): <code>&gt;</code> - Kucuktur (Less Than):
+          <code>&lt;</code> - Buyuk veya esit (Greater Than or Equal): <code>&gt;=</code> - Kucuk veya esit (Less Than or Equal):
           <code>&lt;=</code>
         </p>
       </section>
@@ -459,7 +459,7 @@
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="kw">FROM</span> sale_order</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="kw">WHERE</span> date_order <span class="op">&gt;=</span> <span class="st">&#39;2023-01-01&#39;</span>; <span class="co">-- Date format &#39;YYYY-MM-DD&#39; is standard</span></span></code></pre>
         </div>
-        <p><strong>Mantiksal Operatorler (Standart SQL)</strong>: - <code>AND</code>: Her iki kosul da dogru olmalidir. -
+        <p><strong>Mantiksal Operatorler (Logical Operators - Standart SQL)</strong>: - <code>AND</code>: Her iki kosul da dogru olmalidir. -
           <code>OR</code>: Kosullardan en az biri dogru olmalidir. - <code>NOT</code>: Bir kosulun dogru degerini tersine cevirir. Karmasik kosullarda degerlendirme sirasini kontrol etmek icin parantez <code>()</code> kullanin.
         </p>
       </section>
@@ -493,7 +493,7 @@
         </div>
       </section>
       <section>
-        <p><strong>NULL Degerlerini Isleme (Standart SQL)</strong>: <code>NULL</code> bilinmeyen veya eksik bir degeri temsil eder.
+        <p><strong>NULL Degerlerini (NULL Values) Isleme (Standart SQL)</strong>: <code>NULL</code> bilinmeyen veya eksik bir degeri temsil eder.
           <code>=</code> veya <code>&lt;&gt;</code> gibi standart operatorlerle karsilastirilamaz. Bunun yerine
           <code>IS NULL</code> veya <code>IS NOT NULL</code> kullanin.
         </p>
@@ -586,8 +586,8 @@
         </div>
       </section>
       <section>
-        <h3 id="sorting-with-order-by-standard-sql">ORDER BY ile Siralama (Standart SQL)</h3>
-        <p><code>ORDER BY</code> maddesi, sonuc kumesindeki satirlari siralar.</p>
+        <h3 id="sorting-with-order-by-standard-sql">ORDER BY Cumlecigi (ORDER BY Clause) ile Siralama (Standart SQL)</h3>
+        <p><code>ORDER BY</code> cumlecigi (clause), sonuc kumesindeki (result set) satirlari siralar.</p>
         <p><strong>Temel Soz Dizimi</strong>:</p>
         <div class="sourceCode" id="cb16" onclick="CopyToClipboard('cb16')">
           <pre
@@ -596,7 +596,7 @@
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">WHERE</span> condition <span class="co">-- Optional</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span> column1 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], column2 [<span class="kw">ASC</span>|<span class="kw">DESC</span>], <span class="op">..</span>.;</span></code></pre>
         </div>
-        <p><strong>Siralama Yonu</strong>: - <code>ASC</code>: Artan sirada (A-Z, 0-9). Belirtilmezse bu varsayilandir. - <code>DESC</code>: Azalan sirada (Z-A, 9-0).</p>
+        <p><strong>Siralama Yonu (Sort Direction)</strong>: - <code>ASC</code> (Ascending): Artan sirada (A-Z, 0-9). Belirtilmezse bu varsayilandir. - <code>DESC</code> (Descending): Azalan sirada (Z-A, 9-0).</p>
       </section>
       <section>
         <p><strong>Ornekler</strong>:</p>
@@ -629,8 +629,8 @@
         </p>
       </section>
       <section>
-        <h3 id="limiting-results-syntax-varies">Sonuclari Sinirlandirma (Soz Dizimi Degisir)</h3>
-        <p>Dondurulecek satir sayisini kisitlamak, ozellikle sayfalama icin yaygindir. Soz dizimi tarihsel olarak degismistir ancak SQL standardina dogru yaklasmakladir.</p>
+        <h3 id="limiting-results-syntax-varies">Sonuclari Sinirlandirma (Limiting Results - Soz Dizimi Degisir)</h3>
+        <p>Dondurulecek satir sayisini kisitlamak, ozellikle sayfalama (pagination) icin yaygindir. Soz dizimi tarihsel olarak degismistir ancak SQL standardina dogru yaklasmakladir.</p>
         <p><strong>PostgreSQL / MySQL Soz Dizimi</strong>:</p>
         <div class="sourceCode" id="cb18" onclick="CopyToClipboard('cb18')">
           <pre

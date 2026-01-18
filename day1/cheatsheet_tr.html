@@ -84,80 +84,80 @@
         <div class="container">
             <section>
                 <h1>Gun 1: SQL Temelleri</h1>
-                <p class="text-muted">Veritabanlari, SELECT, JOIN'ler & Gelismis Sorgular</p>
+                <p class="text-muted">Veritabanlari (Databases), SELECT, JOIN'ler & Gelismis Sorgular (Queries)</p>
 
         <!-- Hizli Referans -->
         <div class="quick-ref mb-4">
-            <h5 class="text-center mb-3">Hizli Referans - SQL Sorgu Sirasi</h5>
-            <pre><code><span class="keyword">SELECT</span> sutunlar      <span class="comment">-- 5. Sutunlari sec</span>
-<span class="keyword">FROM</span> tablo           <span class="comment">-- 1. Tabloyu sec</span>
-<span class="keyword">JOIN</span> tablo2 <span class="keyword">ON</span> ...  <span class="comment">-- 2. Tablolari birlestir</span>
-<span class="keyword">WHERE</span> kosul          <span class="comment">-- 3. Satirlari filtrele</span>
-<span class="keyword">GROUP BY</span> sutun       <span class="comment">-- 4. Satirlari grupla</span>
-<span class="keyword">HAVING</span> kosul         <span class="comment">-- 6. Gruplari filtrele</span>
-<span class="keyword">ORDER BY</span> sutun       <span class="comment">-- 7. Sonuclari sirala</span>
-<span class="keyword">LIMIT</span> n              <span class="comment">-- 8. Satir sayisini sinirla</span></code></pre>
+            <h5 class="text-center mb-3">Hizli Referans - SQL Sorgu Sirasi (Query Order)</h5>
+            <pre><code><span class="keyword">SELECT</span> sutunlar      <span class="comment">-- 5. Sutunlari sec (Select columns)</span>
+<span class="keyword">FROM</span> tablo           <span class="comment">-- 1. Tabloyu sec (Choose table)</span>
+<span class="keyword">JOIN</span> tablo2 <span class="keyword">ON</span> ...  <span class="comment">-- 2. Tablolari birlestir (Join tables)</span>
+<span class="keyword">WHERE</span> kosul          <span class="comment">-- 3. Satirlari filtrele (Filter rows)</span>
+<span class="keyword">GROUP BY</span> sutun       <span class="comment">-- 4. Satirlari grupla (Group rows)</span>
+<span class="keyword">HAVING</span> kosul         <span class="comment">-- 6. Gruplari filtrele (Filter groups)</span>
+<span class="keyword">ORDER BY</span> sutun       <span class="comment">-- 7. Sonuclari sirala (Sort results)</span>
+<span class="keyword">LIMIT</span> n              <span class="comment">-- 8. Satir sayisini sinirla (Limit rows)</span></code></pre>
         </div>
 
         <!-- Veritabani Temelleri -->
-        <h3 class="section-title">Veritabani Temelleri</h3>
+        <h3 class="section-title">Veritabani Temelleri (Database Fundamentals)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Temel Kavramlar</h5>
+                    <h5>Temel Kavramlar (Basic Concepts)</h5>
                     <ul>
-                        <li><strong>Database:</strong> Yapilandirilmis verilerin organize koleksiyonu</li>
-                        <li><strong>Table:</strong> Satir ve sutunlarda iliskili veri koleksiyonu</li>
-                        <li><strong>Row (Record):</strong> Tablodaki tek bir kayit</li>
-                        <li><strong>Column (Field):</strong> Verinin bir ozelligi</li>
-                        <li><strong>Schema:</strong> Veritabani yapisinin semasi</li>
+                        <li><strong>Veritabani (Database):</strong> Yapilandirilmis verilerin organize koleksiyonu</li>
+                        <li><strong>Tablo (Table):</strong> Satir ve sutunlarda iliskili veri koleksiyonu</li>
+                        <li><strong>Satir (Row/Record):</strong> Tablodaki tek bir kayit</li>
+                        <li><strong>Sutun (Column/Field):</strong> Verinin bir ozelligi</li>
+                        <li><strong>Sema (Schema):</strong> Veritabani yapisinin semasi</li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Anahtarlar & Kisitlamalar</h5>
+                    <h5>Anahtarlar & Kisitlamalar (Keys & Constraints)</h5>
                     <ul>
-                        <li><strong>PRIMARY KEY:</strong> Her satir icin benzersiz tanimlayici</li>
-                        <li><strong>FOREIGN KEY:</strong> Baska tablonun primary key'ine baglanti</li>
-                        <li><strong>UNIQUE:</strong> Tekrar eden degerlere izin verilmez</li>
-                        <li><strong>NOT NULL:</strong> Deger mutlaka saglanmali</li>
-                        <li><strong>CHECK:</strong> Deger belirli kosulu karsilamali</li>
+                        <li><strong>Birincil Anahtar (PRIMARY KEY):</strong> Her satir icin benzersiz tanimlayici</li>
+                        <li><strong>Yabanci Anahtar (FOREIGN KEY):</strong> Baska tablonun primary key'ine baglanti</li>
+                        <li><strong>Benzersiz (UNIQUE):</strong> Tekrar eden degerlere izin verilmez</li>
+                        <li><strong>Bos Olamaz (NOT NULL):</strong> Deger mutlaka saglanmali</li>
+                        <li><strong>Kontrol (CHECK):</strong> Deger belirli kosulu karsilamali</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- SELECT Temelleri -->
-        <h3 class="section-title">SELECT Ifadesi</h3>
+        <h3 class="section-title">SELECT Ifadesi (SELECT Statement)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Temel SELECT Sozdizimi</h5>
+            <h5>Temel SELECT Sozdizimi (Basic Syntax)</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <pre><code><span class="comment">-- Tum sutunlari sec</span>
+                    <pre><code><span class="comment">-- Tum sutunlari sec (Select all columns)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees;
 
-<span class="comment">-- Belirli sutunlari sec</span>
+<span class="comment">-- Belirli sutunlari sec (Select specific columns)</span>
 <span class="keyword">SELECT</span> first_name, last_name, salary
 <span class="keyword">FROM</span> employees;
 
-<span class="comment">-- Sutun takma adi</span>
+<span class="comment">-- Sutun takma adi (Column alias)</span>
 <span class="keyword">SELECT</span> first_name <span class="keyword">AS</span> <span class="string">"Ad"</span>,
        salary * 12 <span class="keyword">AS</span> yillik_maas
 <span class="keyword">FROM</span> employees;</code></pre>
                 </div>
                 <div class="col-md-6">
-                    <pre><code><span class="comment">-- Tekrarlari kaldir</span>
+                    <pre><code><span class="comment">-- Tekrarlari kaldir (Remove duplicates)</span>
 <span class="keyword">SELECT DISTINCT</span> department_id
 <span class="keyword">FROM</span> employees;
 
-<span class="comment">-- Sonuclari sinirla</span>
+<span class="comment">-- Sonuclari sinirla (Limit results)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">LIMIT</span> 10;
 
-<span class="comment">-- Satirlari atla (sayfalama)</span>
+<span class="comment">-- Satirlari atla - sayfalama (Pagination)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">LIMIT</span> 10 <span class="keyword">OFFSET</span> 20;</code></pre>
                 </div>
@@ -165,44 +165,44 @@
         </div>
 
         <!-- WHERE Cumleciegi -->
-        <h3 class="section-title">WHERE ile Filtreleme</h3>
+        <h3 class="section-title">WHERE ile Filtreleme (Filtering with WHERE)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Karsilastirma Operatorleri</h5>
+                    <h5>Karsilastirma Operatorleri (Comparison Operators)</h5>
                     <pre><code><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span>
-  salary = 50000          <span class="comment">-- Esit</span>
-  salary != 50000         <span class="comment">-- Esit degil</span>
-  salary > 50000          <span class="comment">-- Buyuk</span>
-  salary >= 50000         <span class="comment">-- Buyuk veya esit</span>
-  salary < 50000          <span class="comment">-- Kucuk</span>
-  salary <= 50000         <span class="comment">-- Kucuk veya esit</span>
+  salary = 50000          <span class="comment">-- Esit (Equal)</span>
+  salary != 50000         <span class="comment">-- Esit degil (Not equal)</span>
+  salary > 50000          <span class="comment">-- Buyuk (Greater than)</span>
+  salary >= 50000         <span class="comment">-- Buyuk veya esit (Greater or equal)</span>
+  salary < 50000          <span class="comment">-- Kucuk (Less than)</span>
+  salary <= 50000         <span class="comment">-- Kucuk veya esit (Less or equal)</span>
   salary <span class="keyword">BETWEEN</span> 40000 <span class="keyword">AND</span> 60000
   department_id <span class="keyword">IN</span> (1, 2, 3)
-  first_name <span class="keyword">LIKE</span> <span class="string">'J%'</span>    <span class="comment">-- J ile baslar</span>
-  email <span class="keyword">IS NULL</span>           <span class="comment">-- NULL kontrolu</span>
+  first_name <span class="keyword">LIKE</span> <span class="string">'J%'</span>    <span class="comment">-- J ile baslar (Starts with J)</span>
+  email <span class="keyword">IS NULL</span>           <span class="comment">-- NULL kontrolu (NULL check)</span>
   email <span class="keyword">IS NOT NULL</span></code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Mantiksal Operatorler</h5>
-                    <pre><code><span class="comment">-- AND: Her iki kosul da dogru olmali</span>
+                    <h5>Mantiksal Operatorler (Logical Operators)</h5>
+                    <pre><code><span class="comment">-- AND: Her iki kosul da dogru olmali (Both conditions must be true)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">WHERE</span> salary > 50000
   <span class="keyword">AND</span> department_id = 5;
 
-<span class="comment">-- OR: En az bir kosul dogru olmali</span>
+<span class="comment">-- OR: En az bir kosul dogru olmali (At least one condition must be true)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">WHERE</span> department_id = 1
   <span class="keyword">OR</span> department_id = 2;
 
-<span class="comment">-- NOT: Kosulu olumsuzla</span>
+<span class="comment">-- NOT: Kosulu olumsuzla (Negate condition)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">WHERE NOT</span> department_id = 5;
 
-<span class="comment">-- Parantezlerle birlesik</span>
+<span class="comment">-- Parantezlerle birlesik (Combined with parentheses)</span>
 <span class="keyword">WHERE</span> (dept = 1 <span class="keyword">OR</span> dept = 2)
   <span class="keyword">AND</span> salary > 50000</code></pre>
                 </div>
@@ -210,30 +210,30 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>LIKE Desen Eslestirme</h5>
+            <h5>LIKE Desen Eslestirme (Pattern Matching)</h5>
             <table>
-                <thead><tr><th>Desen</th><th>Anlami</th><th>Ornek</th></tr></thead>
+                <thead><tr><th>Desen (Pattern)</th><th>Anlami (Meaning)</th><th>Ornek (Example)</th></tr></thead>
                 <tbody>
-                    <tr><td><code>%</code></td><td>Herhangi bir karakter dizisi</td><td><code>'J%'</code> John, Jane, James ile eslesir</td></tr>
-                    <tr><td><code>_</code></td><td>Herhangi bir tek karakter</td><td><code>'_ohn'</code> John ile eslesir, Johan ile esmez</td></tr>
-                    <tr><td><code>%metin%</code></td><td>'metin' icerir</td><td><code>'%son%'</code> Johnson, Mason ile eslesir</td></tr>
+                    <tr><td><code>%</code></td><td>Herhangi bir karakter dizisi (Any characters)</td><td><code>'J%'</code> John, Jane, James ile eslesir</td></tr>
+                    <tr><td><code>_</code></td><td>Herhangi bir tek karakter (Single character wildcard)</td><td><code>'_ohn'</code> John ile eslesir, Johan ile esmez</td></tr>
+                    <tr><td><code>%metin%</code></td><td>'metin' icerir (Contains 'text')</td><td><code>'%son%'</code> Johnson, Mason ile eslesir</td></tr>
                 </tbody>
             </table>
         </div>
 
         <!-- JOIN Islemleri -->
-        <h3 class="section-title">JOIN Islemleri</h3>
+        <h3 class="section-title">JOIN Islemleri (JOIN Operations)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>JOIN Turleri</h5>
+            <h5>JOIN Turleri (JOIN Types)</h5>
             <table>
-                <thead><tr><th>JOIN Turu</th><th>Aciklama</th><th>Dondurur</th></tr></thead>
+                <thead><tr><th>JOIN Turu (Type)</th><th>Aciklama (Description)</th><th>Dondurur (Returns)</th></tr></thead>
                 <tbody>
-                    <tr><td><code>INNER JOIN</code></td><td>Her iki tabloda eslesme</td><td>Sadece eslesen satirlar</td></tr>
-                    <tr><td><code>LEFT JOIN</code></td><td>Soldan tum + eslesmeler</td><td>Tum sol satirlar, eslesme yoksa NULL</td></tr>
-                    <tr><td><code>RIGHT JOIN</code></td><td>Sagdan tum + eslesmeler</td><td>Tum sag satirlar, eslesme yoksa NULL</td></tr>
-                    <tr><td><code>FULL OUTER JOIN</code></td><td>Her iki tablodan tum</td><td>Tum satirlar, eslesme yoksa NULL</td></tr>
-                    <tr><td><code>CROSS JOIN</code></td><td>Kartezyen carpim</td><td>Her kombinasyon</td></tr>
+                    <tr><td><code>INNER JOIN</code></td><td>Her iki tabloda eslesme (Match in both)</td><td>Sadece eslesen satirlar (Only matching rows)</td></tr>
+                    <tr><td><code>LEFT JOIN</code></td><td>Soldan tum + eslesmeler (All left + matches)</td><td>Tum sol satirlar, eslesme yoksa NULL</td></tr>
+                    <tr><td><code>RIGHT JOIN</code></td><td>Sagdan tum + eslesmeler (All right + matches)</td><td>Tum sag satirlar, eslesme yoksa NULL</td></tr>
+                    <tr><td><code>FULL OUTER JOIN</code></td><td>Her iki tablodan tum (All from both)</td><td>Tum satirlar, eslesme yoksa NULL</td></tr>
+                    <tr><td><code>CROSS JOIN</code></td><td>Kartezyen carpim (Cartesian product)</td><td>Her kombinasyon (Every combination)</td></tr>
                 </tbody>
             </table>
         </div>
@@ -242,7 +242,7 @@
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
                     <h5>INNER JOIN</h5>
-                    <pre><code><span class="comment">-- Sadece eslesen satirlari dondurur</span>
+                    <pre><code><span class="comment">-- Sadece eslesen satirlari dondurur (Returns only matching rows)</span>
 <span class="keyword">SELECT</span> e.name, d.department_name
 <span class="keyword">FROM</span> employees e
 <span class="keyword">INNER JOIN</span> departments d
@@ -252,7 +252,7 @@
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
                     <h5>LEFT JOIN</h5>
-                    <pre><code><span class="comment">-- Departmani olmasa bile tum calisanlar</span>
+                    <pre><code><span class="comment">-- Departmani olmasa bile tum calisanlar (All employees even without department)</span>
 <span class="keyword">SELECT</span> e.name, d.department_name
 <span class="keyword">FROM</span> employees e
 <span class="keyword">LEFT JOIN</span> departments d
@@ -262,7 +262,7 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Coklu JOIN'ler</h5>
+            <h5>Coklu JOIN'ler (Multiple JOINs)</h5>
             <pre><code><span class="keyword">SELECT</span>
     e.first_name,
     d.department_name,
@@ -274,23 +274,23 @@
         </div>
 
         <!-- Toplama -->
-        <h3 class="section-title">Toplama Fonksiyonlari</h3>
+        <h3 class="section-title">Toplama Fonksiyonlari (Aggregate Functions)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Yaygin Toplama Fonksiyonlari</h5>
-                    <pre><code><span class="function">COUNT</span>(*)        <span class="comment">-- Tum satirlari say</span>
-<span class="function">COUNT</span>(sutun)    <span class="comment">-- NULL olmayan degerleri say</span>
-<span class="function">SUM</span>(sutun)      <span class="comment">-- Degerlerin toplami</span>
-<span class="function">AVG</span>(sutun)      <span class="comment">-- Ortalama deger</span>
-<span class="function">MIN</span>(sutun)      <span class="comment">-- Minimum deger</span>
-<span class="function">MAX</span>(sutun)      <span class="comment">-- Maksimum deger</span></code></pre>
+                    <h5>Yaygin Toplama Fonksiyonlari (Common Aggregate Functions)</h5>
+                    <pre><code><span class="function">COUNT</span>(*)        <span class="comment">-- Tum satirlari say (Count all rows)</span>
+<span class="function">COUNT</span>(sutun)    <span class="comment">-- NULL olmayan degerleri say (Count non-NULL)</span>
+<span class="function">SUM</span>(sutun)      <span class="comment">-- Degerlerin toplami (Sum of values)</span>
+<span class="function">AVG</span>(sutun)      <span class="comment">-- Ortalama deger (Average value)</span>
+<span class="function">MIN</span>(sutun)      <span class="comment">-- Minimum deger (Minimum value)</span>
+<span class="function">MAX</span>(sutun)      <span class="comment">-- Maksimum deger (Maximum value)</span></code></pre>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>GROUP BY & HAVING</h5>
+                    <h5>GROUP BY & HAVING (Gruplama ve Filtreleme)</h5>
                     <pre><code><span class="keyword">SELECT</span> department_id,
        <span class="function">COUNT</span>(*) <span class="keyword">AS</span> calisan_sayisi,
        <span class="function">AVG</span>(salary) <span class="keyword">AS</span> ort_maas
@@ -303,13 +303,13 @@
         </div>
 
         <!-- Alt Sorgular -->
-        <h3 class="section-title">Alt Sorgular</h3>
+        <h3 class="section-title">Alt Sorgular (Subqueries)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Skaler Alt Sorgu (Tek Deger)</h5>
-                    <pre><code><span class="comment">-- Ortalamadan fazla kazanan calisanlar</span>
+                    <h5>Skaler Alt Sorgu - Tek Deger (Scalar Subquery - Single Value)</h5>
+                    <pre><code><span class="comment">-- Ortalamadan fazla kazanan calisanlar (Employees earning above average)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">WHERE</span> salary > (
     <span class="keyword">SELECT</span> <span class="function">AVG</span>(salary)
@@ -319,8 +319,8 @@
             </div>
             <div class="col-md-6">
                 <div class="cheatsheet-card p-3">
-                    <h5>Liste Alt Sorgusu (Coklu Deger)</h5>
-                    <pre><code><span class="comment">-- Satis veya Pazarlamadaki calisanlar</span>
+                    <h5>Liste Alt Sorgusu - Coklu Deger (List Subquery - Multiple Values)</h5>
+                    <pre><code><span class="comment">-- Satis veya Pazarlamadaki calisanlar (Employees in Sales or Marketing)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">WHERE</span> department_id <span class="keyword">IN</span> (
     <span class="keyword">SELECT</span> id <span class="keyword">FROM</span> departments
@@ -331,8 +331,8 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>EXISTS Alt Sorgusu</h5>
-            <pre><code><span class="comment">-- Calisani olan departmanlar</span>
+            <h5>EXISTS Alt Sorgusu (EXISTS Subquery)</h5>
+            <pre><code><span class="comment">-- Calisani olan departmanlar (Departments with employees)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> departments d
 <span class="keyword">WHERE EXISTS</span> (
     <span class="keyword">SELECT</span> 1 <span class="keyword">FROM</span> employees e
@@ -341,10 +341,10 @@
         </div>
 
         <!-- CTE'ler -->
-        <h3 class="section-title">Ortak Tablo Ifadeleri (CTE)</h3>
+        <h3 class="section-title">Ortak Tablo Ifadeleri - CTE (Common Table Expressions)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>WITH Cumleciegi</h5>
+            <h5>WITH Cumleciegi (WITH Clause)</h5>
             <pre><code><span class="keyword">WITH</span> dept_stats <span class="keyword">AS</span> (
     <span class="keyword">SELECT</span> department_id,
            <span class="function">AVG</span>(salary) <span class="keyword">AS</span> ort_maas,
@@ -356,14 +356,14 @@
 <span class="keyword">FROM</span> departments d
 <span class="keyword">JOIN</span> dept_stats ds <span class="keyword">ON</span> d.id = ds.department_id
 <span class="keyword">WHERE</span> ds.ort_maas > 50000;</code></pre>
-            <div class="tip">CTE'ler okunabilirligi arttirir ve ana sorguda birden fazla kez referans edilebilir.</div>
+            <div class="tip">CTE'ler okunabilirligi arttirir ve ana sorguda birden fazla kez referans edilebilir. (CTEs improve readability and can be referenced multiple times in the main query.)</div>
         </div>
 
         <!-- Pencere Fonksiyonlari -->
-        <h3 class="section-title">Pencere Fonksiyonlari</h3>
+        <h3 class="section-title">Pencere Fonksiyonlari (Window Functions)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>Pencere Fonksiyonu Sozdizimi</h5>
+            <h5>Pencere Fonksiyonu Sozdizimi (Window Function Syntax)</h5>
             <pre><code><span class="keyword">SELECT</span>
     employee_name,
     department_id,
@@ -376,65 +376,65 @@
         </div>
 
         <div class="cheatsheet-card p-3">
-            <h5>Yaygin Pencere Fonksiyonlari</h5>
+            <h5>Yaygin Pencere Fonksiyonlari (Common Window Functions)</h5>
             <table>
-                <thead><tr><th>Fonksiyon</th><th>Aciklama</th></tr></thead>
+                <thead><tr><th>Fonksiyon (Function)</th><th>Aciklama (Description)</th></tr></thead>
                 <tbody>
-                    <tr><td><code>ROW_NUMBER()</code></td><td>Her satir icin benzersiz sira numarasi</td></tr>
-                    <tr><td><code>RANK()</code></td><td>Esitliklerde bosluklu siralama</td></tr>
-                    <tr><td><code>DENSE_RANK()</code></td><td>Esitliklerde bosluksuz siralama</td></tr>
-                    <tr><td><code>LAG(col, n)</code></td><td>n satir onceki deger</td></tr>
-                    <tr><td><code>LEAD(col, n)</code></td><td>n satir sonraki deger</td></tr>
-                    <tr><td><code>FIRST_VALUE(col)</code></td><td>Penceredeki ilk deger</td></tr>
-                    <tr><td><code>LAST_VALUE(col)</code></td><td>Penceredeki son deger</td></tr>
+                    <tr><td><code>ROW_NUMBER()</code></td><td>Her satir icin benzersiz sira numarasi (Unique row number)</td></tr>
+                    <tr><td><code>RANK()</code></td><td>Esitliklerde bosluklu siralama (Ranking with gaps)</td></tr>
+                    <tr><td><code>DENSE_RANK()</code></td><td>Esitliklerde bosluksuz siralama (Ranking without gaps)</td></tr>
+                    <tr><td><code>LAG(col, n)</code></td><td>n satir onceki deger (Value n rows before)</td></tr>
+                    <tr><td><code>LEAD(col, n)</code></td><td>n satir sonraki deger (Value n rows after)</td></tr>
+                    <tr><td><code>FIRST_VALUE(col)</code></td><td>Penceredeki ilk deger (First value in window)</td></tr>
+                    <tr><td><code>LAST_VALUE(col)</code></td><td>Penceredeki son deger (Last value in window)</td></tr>
                 </tbody>
             </table>
         </div>
 
         <!-- ORDER BY -->
-        <h3 class="section-title">Sonuclari Siralama</h3>
+        <h3 class="section-title">Sonuclari Siralama (Sorting Results)</h3>
 
         <div class="cheatsheet-card p-3">
-            <h5>ORDER BY Ornekleri</h5>
-            <pre><code><span class="comment">-- Artan (varsayilan)</span>
+            <h5>ORDER BY Ornekleri (ORDER BY Examples)</h5>
+            <pre><code><span class="comment">-- Artan - varsayilan (Ascending - default)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">ORDER BY</span> last_name;
 
-<span class="comment">-- Azalan</span>
+<span class="comment">-- Azalan (Descending)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>;
 
-<span class="comment">-- Coklu sutun</span>
+<span class="comment">-- Coklu sutun (Multiple columns)</span>
 <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> employees
 <span class="keyword">ORDER BY</span> department_id <span class="keyword">ASC</span>, salary <span class="keyword">DESC</span>;
 
-<span class="comment">-- NULL'lari yonetme</span>
+<span class="comment">-- NULL'lari yonetme (Handling NULLs)</span>
 <span class="keyword">ORDER BY</span> commission <span class="keyword">NULLS LAST</span>;
 <span class="keyword">ORDER BY</span> commission <span class="keyword">NULLS FIRST</span>;</code></pre>
         </div>
 
         <!-- Ipuclari -->
-        <h3 class="section-title">En Iyi Uygulamalar</h3>
+        <h3 class="section-title">En Iyi Uygulamalar (Best Practices)</h3>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="tip">
-                    <strong>Anlamli takma adlar kullanin</strong> - Karmasik sorgulari okunabilir kilar
+                    <strong>Anlamli takma adlar (aliases) kullanin</strong> - Karmasik sorgulari okunabilir kilar
                 </div>
                 <div class="tip">
-                    <strong>Sutunlari belirtin</strong> - Uretimde SELECT * kullanmayin
+                    <strong>Sutunlari (columns) belirtin</strong> - Uretimde SELECT * kullanmayin
                 </div>
                 <div class="tip">
-                    <strong>Tablo takma adlari kullanin</strong> - Self-join'lerde gerekli, genel olarak iyi aliskanlik
+                    <strong>Tablo takma adlari (table aliases) kullanin</strong> - Self-join'lerde gerekli, genel olarak iyi aliskanlik
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="warning">
-                    <strong>NULL, NULL'a esit degildir</strong> - = NULL degil, IS NULL kullanin
+                    <strong>NULL, NULL'a esit degildir (NULL is not equal to NULL)</strong> - = NULL degil, IS NULL kullanin
                 </div>
                 <div class="warning">
-                    <strong>GROUP BY tuzagi</strong> - Toplanmamis tum sutunlar GROUP BY'da olmali
+                    <strong>GROUP BY tuzagi (GROUP BY trap)</strong> - Toplanmamis tum sutunlar GROUP BY'da olmali
                 </div>
                 <div class="warning">
-                    <strong>ON olmadan JOIN</strong> - Kartezyen carpim olusturur (genellikle hatali)
+                    <strong>ON olmadan JOIN (JOIN without ON)</strong> - Kartezyen carpim (Cartesian product) olusturur (genellikle hatali)
                 </div>
             </div>
         </div>
