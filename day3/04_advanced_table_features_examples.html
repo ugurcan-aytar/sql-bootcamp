@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Advanced Table Features - Practical Examples</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .solution-box {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .output-display {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .toggle-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #218838;
+        }
+
+        .challenge-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_en.html" class="back-button">&larr; Back to Index</a>
+    <div class="language-switcher">
+        <a href="04_advanced_table_features_examples.html" class="active">EN</a>
+        <a href="04_advanced_table_features_examples_tr.html">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="advanced-features-examples">Advanced Table Features - Practical Examples</h1>
+                <p><a href="04_advanced_table_features.html">&larr; Back to Advanced Table Features Lesson</a></p>
+                <p>This page provides hands-on exercises to practice advanced table features using scenarios
+                   based on our bootcamp_db database. Each exercise demonstrates real-world applications
+                   of generated columns, identity columns, temporary tables, and more.</p>
+            </section>
+
+            <!-- Exercise 1: Generated Columns -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Generated Columns</h2>
+                <p>Practice creating and using generated (computed) columns.</p>
+
+                <div class="concept-box">
+                    <strong>Scenario:</strong> The bootcamp_db has an <code>order_lines</code> table with
+                    quantity, unit_price, and discount_percent columns. Let's create an enhanced version
+                    with automatically calculated totals.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Order Line with Auto-Calculated Total</h4>
+                    <p><strong>Goal:</strong> Create an order_lines table where the line total is automatically computed.</p>
+                    <p><strong>Task:</strong> Create a table <code>order_lines_v2</code> with a generated column
+                       <code>line_total</code> that calculates: <code>quantity * unit_price * (1 - discount_percent/100)</code></p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE order_lines_v2 (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price >= 0),
+    discount_percent DECIMAL(5,2) DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 100),
+    -- Generated column: auto-calculated line total
+    line_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        ROUND(quantity * unit_price * (1 - COALESCE(discount_percent, 0) / 100), 2)
+    ) STORED
+);
+
+-- Test with sample data
+INSERT INTO order_lines_v2 (order_id, product_id, quantity, unit_price, discount_percent)
+VALUES
+    (1, 101, 2, 999.99, 0),      -- No discount
+    (1, 102, 5, 29.99, 10),      -- 10% discount
+    (2, 103, 1, 1499.99, 15);    -- 15% discount
+
+-- Check results
+SELECT
+    id,
+    quantity,
+    unit_price,
+    discount_percent,
+    line_total
+FROM order_lines_v2;</code></pre>
+
+                        <div class="output-display">
+ id | quantity | unit_price | discount_percent | line_total
+----+----------+------------+------------------+------------
+  1 |        2 |     999.99 |             0.00 |    1999.98
+  2 |        5 |      29.99 |            10.00 |     134.96
+  3 |        1 |    1499.99 |            15.00 |    1274.99
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Employee with Auto-Generated Display Name</h4>
+                    <p><strong>Goal:</strong> Create an employee table where full name and email are auto-generated.</p>
+                    <p><strong>Task:</strong> Create a table with:
+                        <ul>
+                            <li><code>full_name</code>: Concatenation of first_name and last_name</li>
+                            <li><code>email_generated</code>: Auto-generated company email (lowercase first.last@company.com)</li>
+                        </ul>
+                    </p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE employees_enhanced (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    -- Generated: Full name
+    full_name VARCHAR(101) GENERATED ALWAYS AS (
+        first_name || ' ' || last_name
+    ) STORED,
+    -- Generated: Company email
+    email_generated VARCHAR(150) GENERATED ALWAYS AS (
+        LOWER(first_name || '.' || last_name || '@company.com')
+    ) STORED,
+    department VARCHAR(50),
+    hire_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Add some employees
+INSERT INTO employees_enhanced (first_name, last_name, department)
+VALUES
+    ('John', 'Smith', 'Engineering'),
+    ('Jane', 'Doe', 'Marketing'),
+    ('Bob', 'Johnson', 'Sales');
+
+SELECT id, first_name, last_name, full_name, email_generated, department
+FROM employees_enhanced;</code></pre>
+
+                        <div class="output-display">
+ id | first_name | last_name |    full_name    |       email_generated       | department
+----+------------+-----------+-----------------+-----------------------------+-------------
+  1 | John       | Smith     | John Smith      | john.smith@company.com      | Engineering
+  2 | Jane       | Doe       | Jane Doe        | jane.doe@company.com        | Marketing
+  3 | Bob        | Johnson   | Bob Johnson     | bob.johnson@company.com     | Sales
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: Product with Profit Margin</h4>
+                    <p><strong>Goal:</strong> Create a product table that auto-calculates profit margin percentage.</p>
+                    <p><strong>Task:</strong> Given <code>cost_price</code> and <code>selling_price</code>,
+                       auto-calculate <code>profit_margin</code> as a percentage.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE products_with_margin (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    sku VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    cost_price DECIMAL(10,2) NOT NULL CHECK (cost_price > 0),
+    selling_price DECIMAL(10,2) NOT NULL CHECK (selling_price > 0),
+    -- Generated: Profit amount
+    profit_amount DECIMAL(10,2) GENERATED ALWAYS AS (
+        selling_price - cost_price
+    ) STORED,
+    -- Generated: Profit margin percentage
+    profit_margin_pct DECIMAL(5,2) GENERATED ALWAYS AS (
+        ROUND(((selling_price - cost_price) / cost_price) * 100, 2)
+    ) STORED,
+    category_id INTEGER
+);
+
+-- Insert sample products
+INSERT INTO products_with_margin (sku, name, cost_price, selling_price, category_id)
+VALUES
+    ('LAPTOP-001', 'Business Laptop', 600.00, 999.99, 1),
+    ('PHONE-001', 'Smartphone Pro', 400.00, 799.99, 2),
+    ('CABLE-001', 'USB-C Cable', 2.50, 14.99, 3);
+
+SELECT sku, name, cost_price, selling_price, profit_amount, profit_margin_pct
+FROM products_with_margin;</code></pre>
+
+                        <div class="output-display">
+    sku     |      name       | cost_price | selling_price | profit_amount | profit_margin_pct
+------------+-----------------+------------+---------------+---------------+-------------------
+ LAPTOP-001 | Business Laptop |     600.00 |        999.99 |        399.99 |             66.67
+ PHONE-001  | Smartphone Pro  |     400.00 |        799.99 |        399.99 |            100.00
+ CABLE-001  | USB-C Cable     |       2.50 |         14.99 |         12.49 |            499.60
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Identity Columns -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: Identity Columns</h2>
+                <p>Practice using modern identity columns instead of SERIAL.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Invoice Table with ALWAYS Identity</h4>
+                    <p><strong>Goal:</strong> Create an invoice table where IDs can never be manually assigned.</p>
+                    <p><strong>Task:</strong> Create <code>invoices</code> table using GENERATED ALWAYS AS IDENTITY
+                       starting at 10000.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE invoices (
+    invoice_id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 10000) PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    invoice_date DATE DEFAULT CURRENT_DATE,
+    due_date DATE,
+    total_amount DECIMAL(12,2),
+    status VARCHAR(20) DEFAULT 'draft'
+        CHECK (status IN ('draft', 'sent', 'paid', 'overdue', 'cancelled'))
+);
+
+-- Normal insert (ID auto-generated)
+INSERT INTO invoices (customer_id, total_amount, status)
+VALUES (1, 1500.00, 'sent');
+
+INSERT INTO invoices (customer_id, total_amount, status)
+VALUES (2, 2750.50, 'draft');
+
+-- This will FAIL:
+-- INSERT INTO invoices (invoice_id, customer_id, total_amount)
+-- VALUES (99999, 3, 500.00);
+-- ERROR: cannot insert into column "invoice_id"
+
+-- Check results
+SELECT invoice_id, customer_id, total_amount, status FROM invoices;</code></pre>
+
+                        <div class="output-display">
+ invoice_id | customer_id | total_amount | status
+------------+-------------+--------------+--------
+      10000 |           1 |      1500.00 | sent
+      10001 |           2 |      2750.50 | draft
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Flexible Identity for Data Migration</h4>
+                    <p><strong>Goal:</strong> Create a table where IDs are auto-generated but can be overridden for migrations.</p>
+                    <p><strong>Task:</strong> Create <code>migrated_customers</code> using GENERATED BY DEFAULT.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE migrated_customers (
+    id INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    source_system VARCHAR(50),
+    original_id INTEGER  -- To track original ID from source system
+);
+
+-- Auto-generated ID for new customers
+INSERT INTO migrated_customers (name, email, source_system)
+VALUES ('New Customer', 'new@example.com', 'web');
+
+-- Specify ID for migrated data (preserving original IDs)
+INSERT INTO migrated_customers (id, name, email, source_system, original_id)
+VALUES
+    (1000, 'Legacy Customer 1', 'legacy1@old.com', 'legacy_crm', 1000),
+    (1001, 'Legacy Customer 2', 'legacy2@old.com', 'legacy_crm', 1001);
+
+-- More auto-generated
+INSERT INTO migrated_customers (name, email, source_system)
+VALUES ('Another New', 'another@example.com', 'mobile');
+
+SELECT * FROM migrated_customers ORDER BY id;</code></pre>
+
+                        <div class="output-display">
+  id  |       name         |        email         | source_system | original_id
+------+--------------------+----------------------+---------------+-------------
+    1 | New Customer       | new@example.com      | web           |
+    2 | Another New        | another@example.com  | mobile        |
+ 1000 | Legacy Customer 1  | legacy1@old.com      | legacy_crm    |        1000
+ 1001 | Legacy Customer 2  | legacy2@old.com      | legacy_crm    |        1001
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Note:</strong> After inserting ID 1001, the sequence is still at 2.
+                            New auto-generated IDs will be 3, 4, 5... which may eventually conflict with 1000.
+                            After migration, reset the sequence:
+                            <pre><code>ALTER TABLE migrated_customers ALTER COLUMN id RESTART WITH 2000;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: Temporary Tables -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: Temporary Tables</h2>
+                <p>Practice using temporary tables for intermediate calculations and batch processing.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Sales Analysis with Temp Table</h4>
+                    <p><strong>Goal:</strong> Use a temporary table to calculate customer order summaries,
+                       then query it multiple ways.</p>
+                    <p><strong>Task:</strong> Create a temp table with customer order statistics from bootcamp_db,
+                       then find VIP candidates (customers with high totals).</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Create temp table with customer order summary
+CREATE TEMP TABLE temp_customer_stats AS
+SELECT
+    c.id AS customer_id,
+    c.name AS customer_name,
+    c.customer_type,
+    COUNT(DISTINCT o.id) AS order_count,
+    SUM(ol.quantity * ol.unit_price) AS total_spent,
+    AVG(ol.quantity * ol.unit_price) AS avg_order_value,
+    MAX(o.order_date) AS last_order_date
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id
+LEFT JOIN order_lines ol ON o.id = ol.order_id
+GROUP BY c.id, c.name, c.customer_type;
+
+-- Query 1: Find VIP candidates (high spenders who aren't VIP yet)
+SELECT
+    customer_name,
+    customer_type,
+    total_spent,
+    order_count
+FROM temp_customer_stats
+WHERE customer_type != 'vip'
+  AND total_spent > 5000
+ORDER BY total_spent DESC;
+
+-- Query 2: Customer type comparison
+SELECT
+    customer_type,
+    COUNT(*) AS customer_count,
+    ROUND(AVG(total_spent), 2) AS avg_total_spent,
+    ROUND(AVG(order_count), 1) AS avg_orders
+FROM temp_customer_stats
+GROUP BY customer_type
+ORDER BY avg_total_spent DESC;
+
+-- Query 3: Inactive customers (no recent orders)
+SELECT customer_name, last_order_date, total_spent
+FROM temp_customer_stats
+WHERE last_order_date < CURRENT_DATE - INTERVAL '6 months'
+   OR last_order_date IS NULL
+ORDER BY total_spent DESC NULLS LAST;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Batch Processing with ON COMMIT DELETE ROWS</h4>
+                    <p><strong>Goal:</strong> Process data in batches using a temp table that clears after each transaction.</p>
+                    <p><strong>Task:</strong> Create a temp table for price updates that clears after each batch commit.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">-- Create temp table that clears after each transaction
+CREATE TEMP TABLE temp_price_updates (
+    product_id INTEGER PRIMARY KEY,
+    old_price DECIMAL(10,2),
+    new_price DECIMAL(10,2),
+    change_percent DECIMAL(5,2)
+) ON COMMIT DELETE ROWS;
+
+-- Transaction 1: Update electronics prices (10% increase)
+BEGIN;
+
+INSERT INTO temp_price_updates (product_id, old_price, new_price, change_percent)
+SELECT
+    p.id,
+    p.price,
+    ROUND(p.price * 1.10, 2),
+    10.00
+FROM products p
+JOIN categories c ON p.category_id = c.id
+WHERE c.name LIKE '%Electronics%'
+  AND p.active = true;
+
+-- Review changes before applying
+SELECT * FROM temp_price_updates LIMIT 5;
+
+-- Apply the updates
+UPDATE products p
+SET price = t.new_price
+FROM temp_price_updates t
+WHERE p.id = t.product_id;
+
+COMMIT;
+-- temp_price_updates is now EMPTY (but table still exists)
+
+-- Transaction 2: Different batch
+BEGIN;
+
+INSERT INTO temp_price_updates (product_id, old_price, new_price, change_percent)
+SELECT id, price, ROUND(price * 0.95, 2), -5.00
+FROM products
+WHERE stock_quantity > 100;  -- Discount overstocked items
+
+-- ... process this batch ...
+
+COMMIT;
+-- Again, table is cleared</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Unlogged Tables -->
+            <section>
+                <h2 id="exercise-4">Exercise 4: Unlogged Tables</h2>
+                <p>Practice using unlogged tables for high-performance scenarios.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Import Staging Table</h4>
+                    <p><strong>Goal:</strong> Create an unlogged staging table for fast data imports.</p>
+                    <p><strong>Task:</strong> Create an unlogged table for staging product imports,
+                       validate data, then move to the main table.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">-- Create unlogged staging table (fast writes, no WAL overhead)
+CREATE UNLOGGED TABLE product_import_staging (
+    row_id SERIAL,
+    sku VARCHAR(50),
+    name VARCHAR(200),
+    price_text VARCHAR(50),  -- Raw text, needs conversion
+    category_name VARCHAR(100),
+    supplier_name VARCHAR(100),
+    -- Validation columns
+    is_valid BOOLEAN DEFAULT NULL,
+    error_messages TEXT[],
+    processed_at TIMESTAMP
+);
+
+-- Simulate bulk import (in real scenario: COPY FROM CSV)
+INSERT INTO product_import_staging (sku, name, price_text, category_name, supplier_name)
+VALUES
+    ('NEW-001', 'Widget Pro', '99.99', 'Electronics', 'Acme Corp'),
+    ('NEW-002', 'Gadget Plus', 'invalid', 'Electronics', 'TechSupply'),
+    ('NEW-003', '', '149.99', 'Unknown Category', 'Acme Corp'),
+    ('NEW-004', 'Tool Basic', '29.99', 'Tools', 'BuildRight');
+
+-- Validate the imported data
+UPDATE product_import_staging
+SET
+    is_valid = (
+        sku IS NOT NULL AND sku != '' AND
+        name IS NOT NULL AND name != '' AND
+        price_text ~ '^\d+\.?\d*$'  -- Is numeric
+    ),
+    error_messages = ARRAY_REMOVE(ARRAY[
+        CASE WHEN sku IS NULL OR sku = '' THEN 'Missing SKU' END,
+        CASE WHEN name IS NULL OR name = '' THEN 'Missing name' END,
+        CASE WHEN NOT (price_text ~ '^\d+\.?\d*$') THEN 'Invalid price: ' || price_text END
+    ], NULL),
+    processed_at = CURRENT_TIMESTAMP;
+
+-- Review validation results
+SELECT sku, name, is_valid, error_messages
+FROM product_import_staging;
+
+-- Insert only valid records into main table
+INSERT INTO products (sku, name, price, category_id, supplier_id)
+SELECT
+    s.sku,
+    s.name,
+    s.price_text::DECIMAL(10,2),
+    c.id,
+    sup.id
+FROM product_import_staging s
+LEFT JOIN categories c ON LOWER(c.name) = LOWER(s.category_name)
+LEFT JOIN suppliers sup ON LOWER(sup.name) = LOWER(s.supplier_name)
+WHERE s.is_valid = true;
+
+-- Clean up staging
+TRUNCATE product_import_staging;</code></pre>
+
+                        <div class="output-display">
+   sku   |    name     | is_valid |      error_messages
+---------+-------------+----------+---------------------------
+ NEW-001 | Widget Pro  | t        | {}
+ NEW-002 | Gadget Plus | f        | {"Invalid price: invalid"}
+ NEW-003 |             | f        | {"Missing name"}
+ NEW-004 | Tool Basic  | t        | {}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 5: Table Cloning -->
+            <section>
+                <h2 id="exercise-5">Exercise 5: Table Cloning with LIKE</h2>
+                <p>Practice creating table copies with various options.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.1: Archive Table Creation</h4>
+                    <p><strong>Goal:</strong> Create an archive table for old orders.</p>
+                    <p><strong>Task:</strong> Clone the orders table structure including constraints,
+                       then move orders older than 2 years.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <div id="solution5_1" class="solution-box">
+                        <pre><code class="language-sql">-- Create archive table with full structure
+CREATE TABLE orders_archive (
+    LIKE orders INCLUDING ALL
+);
+
+-- Add archive-specific column
+ALTER TABLE orders_archive ADD COLUMN archived_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+-- Move old orders to archive
+WITH moved_orders AS (
+    DELETE FROM orders
+    WHERE order_date < CURRENT_DATE - INTERVAL '2 years'
+    RETURNING *
+)
+INSERT INTO orders_archive (
+    id, customer_id, order_date, status, total_amount,
+    shipping_address, payment_status, notes, metadata,
+    shipping_country_id, created_at, updated_at
+)
+SELECT
+    id, customer_id, order_date, status, total_amount,
+    shipping_address, payment_status, notes, metadata,
+    shipping_country_id, created_at, updated_at
+FROM moved_orders;
+
+-- Verify
+SELECT COUNT(*) as archived_count FROM orders_archive;
+SELECT MIN(order_date), MAX(order_date) FROM orders_archive;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.2: Staging Table Without Indexes</h4>
+                    <p><strong>Goal:</strong> Create a staging table for bulk loading (no indexes for speed).</p>
+                    <p><strong>Task:</strong> Clone customers table structure but exclude indexes for fast inserts.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
+                    <div id="solution5_2" class="solution-box">
+                        <pre><code class="language-sql">-- Create staging table: keep defaults and constraints, but no indexes
+CREATE TABLE customers_staging (
+    LIKE customers
+    INCLUDING DEFAULTS
+    INCLUDING CONSTRAINTS
+    EXCLUDING INDEXES
+);
+
+-- Bulk insert is faster without indexes
+INSERT INTO customers_staging (name, email, phone, city, customer_type, status)
+SELECT
+    'Bulk Customer ' || generate_series,
+    'bulk' || generate_series || '@example.com',
+    '555-' || LPAD(generate_series::text, 4, '0'),
+    'Import City',
+    'individual',
+    'active'
+FROM generate_series(1, 10000);
+
+-- Validate data before moving to production
+SELECT customer_type, COUNT(*) FROM customers_staging GROUP BY customer_type;
+
+-- Add indexes after data is loaded (if keeping this table)
+-- CREATE INDEX idx_staging_email ON customers_staging(email);
+
+-- Move valid records to main table
+INSERT INTO customers (name, email, phone, city, customer_type, status)
+SELECT name, email, phone, city, customer_type, status
+FROM customers_staging
+WHERE email NOT IN (SELECT email FROM customers WHERE email IS NOT NULL);
+
+-- Clean up
+DROP TABLE customers_staging;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 6: Deferrable Constraints -->
+            <section>
+                <h2 id="exercise-6">Exercise 6: Deferrable Constraints</h2>
+                <p>Practice using deferrable constraints for complex operations.</p>
+
+                <div class="exercise-box">
+                    <h4>Exercise 6.1: Swapping Unique Values</h4>
+                    <p><strong>Goal:</strong> Swap employee codes between two employees.</p>
+                    <p><strong>Task:</strong> Create a table with deferrable unique constraint,
+                       then swap unique values between rows.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Show Solution</button>
+                    <div id="solution6_1" class="solution-box">
+                        <pre><code class="language-sql">-- Create table with deferrable unique constraint
+CREATE TABLE employee_badges (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    employee_name VARCHAR(100) NOT NULL,
+    badge_number VARCHAR(10) NOT NULL,
+    department VARCHAR(50),
+    CONSTRAINT uk_badge_number UNIQUE (badge_number)
+        DEFERRABLE INITIALLY DEFERRED
+);
+
+-- Insert employees
+INSERT INTO employee_badges (employee_name, badge_number, department)
+VALUES
+    ('Alice Smith', 'BADGE-001', 'Engineering'),
+    ('Bob Johnson', 'BADGE-002', 'Marketing'),
+    ('Carol White', 'BADGE-003', 'Sales');
+
+-- Scenario: Alice and Bob need to swap badge numbers
+-- With regular UNIQUE, this would fail!
+
+BEGIN;
+
+-- Both updates happen, constraint checked at COMMIT
+UPDATE employee_badges SET badge_number = 'BADGE-002'
+WHERE employee_name = 'Alice Smith';
+
+UPDATE employee_badges SET badge_number = 'BADGE-001'
+WHERE employee_name = 'Bob Johnson';
+
+-- At this point, the swap is complete - constraint is valid
+COMMIT;
+
+-- Verify the swap
+SELECT employee_name, badge_number FROM employee_badges ORDER BY id;</code></pre>
+
+                        <div class="output-display">
+ employee_name | badge_number
+---------------+--------------
+ Alice Smith   | BADGE-002
+ Bob Johnson   | BADGE-001
+ Carol White   | BADGE-003
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenge Exercises -->
+            <section>
+                <h2 id="challenges">Challenge Exercises</h2>
+                <p>Test your skills with these advanced scenarios.</p>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Complete Order System with Generated Columns</h4>
+                    <p>Design an order management system with these generated columns:</p>
+                    <ul>
+                        <li>Order total (sum of line totals)</li>
+                        <li>Tax amount (8% of subtotal)</li>
+                        <li>Grand total (subtotal + tax)</li>
+                        <li>Order age in days</li>
+                    </ul>
+                    <p><em>Hint: You may need to use a combination of generated columns and triggers
+                       since generated columns can't reference other tables.</em></p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">-- Orders table with computed fields
+CREATE TABLE orders_complete (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    order_date DATE DEFAULT CURRENT_DATE,
+    subtotal DECIMAL(12,2) DEFAULT 0,  -- Updated by trigger
+    tax_rate DECIMAL(5,2) DEFAULT 8.00,
+    -- Generated columns
+    tax_amount DECIMAL(12,2) GENERATED ALWAYS AS (
+        ROUND(subtotal * tax_rate / 100, 2)
+    ) STORED,
+    grand_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        ROUND(subtotal * (1 + tax_rate / 100), 2)
+    ) STORED,
+    order_age_days INTEGER GENERATED ALWAYS AS (
+        CURRENT_DATE - order_date
+    ) STORED,
+    status VARCHAR(20) DEFAULT 'pending'
+);
+
+-- Order lines
+CREATE TABLE order_lines_complete (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id INTEGER REFERENCES orders_complete(id),
+    product_name VARCHAR(200),
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL,
+    line_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        quantity * unit_price
+    ) STORED
+);
+
+-- Trigger to update order subtotal when lines change
+CREATE OR REPLACE FUNCTION update_order_subtotal()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE orders_complete
+    SET subtotal = (
+        SELECT COALESCE(SUM(line_total), 0)
+        FROM order_lines_complete
+        WHERE order_id = COALESCE(NEW.order_id, OLD.order_id)
+    )
+    WHERE id = COALESCE(NEW.order_id, OLD.order_id);
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_subtotal
+AFTER INSERT OR UPDATE OR DELETE ON order_lines_complete
+FOR EACH ROW EXECUTE FUNCTION update_order_subtotal();
+
+-- Test it
+INSERT INTO orders_complete (customer_id) VALUES (1);
+
+INSERT INTO order_lines_complete (order_id, product_name, quantity, unit_price)
+VALUES
+    (1, 'Laptop', 1, 999.99),
+    (1, 'Mouse', 2, 29.99);
+
+SELECT id, subtotal, tax_amount, grand_total, order_age_days
+FROM orders_complete WHERE id = 1;</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: Data Migration with Identity Handling</h4>
+                    <p>You need to migrate data from a legacy system where IDs range from 1-5000.
+                       Your new system should preserve these IDs but continue auto-generating from 10000+.</p>
+                    <p>Design and implement this migration strategy.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- New table with GENERATED BY DEFAULT (allows override)
+CREATE TABLE accounts_migrated (
+    id INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 10000) PRIMARY KEY,
+    account_name VARCHAR(100) NOT NULL,
+    balance DECIMAL(15,2) DEFAULT 0,
+    legacy_id INTEGER,  -- Track original ID
+    migrated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Migrate legacy data (IDs 1-5000) preserving original IDs
+INSERT INTO accounts_migrated (id, account_name, balance, legacy_id)
+SELECT id, account_name, balance, id
+FROM legacy_accounts
+WHERE id <= 5000;
+
+-- New records get IDs starting at 10000
+INSERT INTO accounts_migrated (account_name, balance)
+VALUES ('New Account 1', 1000.00);
+
+-- Result: Legacy IDs preserved, new IDs start at 10000
+-- No conflict zone (5001-9999 unused)</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+<script>
+    function toggleSolution(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 3: Gelismis Tablo Ozellikleri</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .feature-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .tip-box {
+            background-color: #d1e7dd;
+            border: 1px solid #198754;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-button">&larr; Ana Sayfaya Don</a>
+    <div class="language-switcher">
+        <a href="04_advanced_table_features.html">EN</a>
+        <a href="04_advanced_table_features_tr.html" class="active">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="gun-3-gelismis-tablo-ozellikleri">Gun 3: Gelismis Tablo Ozellikleri</h1>
+                <h2 id="oturum-4-modern-sql-tablo-yetenekleri">Modern SQL Tablo Yetenekleri</h2>
+                <p>Bu oturum, daha verimli ve bakimi kolay veritabanlari tasarlamaniza yardimci olan
+                   PostgreSQL'deki gelismis tablo ozelliklerini kapsar. Bu ozellikler hesaplamalari
+                   otomatiklestirir, performansi arttirir ve veri yapilariniz uzerinde daha iyi kontrol saglar.</p>
+            </section>
+
+            <!-- Olusturulan Sutunlar -->
+            <section>
+                <h3 id="olusturulan-sutunlar">Olusturulan Sutunlar (Hesaplanan Sutunlar)</h3>
+                <p><strong>Olusturulan sutun</strong>, degeri ayni satirdaki diger sutunlardan otomatik olarak
+                   hesaplanan bir sutundur. Uygulamanizda veya sorgularinizda deger hesaplamak yerine,
+                   veritabani bunlari otomatik olarak korur.</p>
+
+                <div class="feature-box">
+                    <strong>Temel Faydalar:</strong>
+                    <ul>
+                        <li>Sorgularda gereksiz hesaplamalari ortadan kaldirir</li>
+                        <li>Veri tutarliligini saglar (hesaplanan deger her zaman kaynak sutunlarla eslesir)</li>
+                        <li>Hizli aramalar icin indekslenebilir</li>
+                        <li>Uygulama karmasikligini azaltir</li>
+                    </ul>
+                </div>
+
+                <h4 id="olusturulan-sutun-sozdizimi">Sozdizimi</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE tablo_adi (
+    sutun1 veri_turu,
+    sutun2 veri_turu,
+    hesaplanan_sutun veri_turu GENERATED ALWAYS AS (ifade) STORED
+);</code></pre>
+                </div>
+
+                <p><strong>STORED</strong>, degerin satir eklendiginde veya guncellendiginde hesaplandigi ve
+                   diskte saklananigi anlamina gelir. PostgreSQL yalnizca STORED olusturulan sutunlari destekler.</p>
+
+                <h4 id="olusturulan-sutun-ornekleri">Ornekler</h4>
+
+                <p><strong>Ornek 1: Ad ve Soyaddan Tam Ad</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE kisiler (
+    id SERIAL PRIMARY KEY,
+    ad VARCHAR(50) NOT NULL,
+    soyad VARCHAR(50) NOT NULL,
+    tam_ad VARCHAR(101) GENERATED ALWAYS AS (ad || ' ' || soyad) STORED,
+    email VARCHAR(255)
+);
+
+INSERT INTO kisiler (ad, soyad, email)
+VALUES ('Ahmet', 'Yilmaz', 'ahmet@ornek.com');
+
+SELECT * FROM kisiler;
+-- tam_ad otomatik olarak 'Ahmet Yilmaz'</code></pre>
+                </div>
+
+                <p><strong>Ornek 2: Siparis Satiri Toplam Fiyati</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- bootcamp_db'deki order_lines'a benzer
+CREATE TABLE siparis_kalemleri (
+    id SERIAL PRIMARY KEY,
+    siparis_id INTEGER NOT NULL,
+    urun_id INTEGER NOT NULL,
+    miktar INTEGER NOT NULL CHECK (miktar > 0),
+    birim_fiyat DECIMAL(10,2) NOT NULL,
+    indirim_yuzdesi DECIMAL(5,2) DEFAULT 0,
+    -- Otomatik hesaplanan satir toplami
+    satir_toplami DECIMAL(12,2) GENERATED ALWAYS AS (
+        miktar * birim_fiyat * (1 - indirim_yuzdesi / 100)
+    ) STORED
+);
+
+INSERT INTO siparis_kalemleri (siparis_id, urun_id, miktar, birim_fiyat, indirim_yuzdesi)
+VALUES (1, 101, 3, 99.99, 10);
+
+SELECT miktar, birim_fiyat, indirim_yuzdesi, satir_toplami FROM siparis_kalemleri;
+-- satir_toplami = 3 * 99.99 * 0.90 = 269.97</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Olusturulan Sutun Sinirliliklari:</strong>
+                    <ul>
+                        <li>Diger olusturulan sutunlara basvuramaz</li>
+                        <li>Diger tablolardaki sutunlara basvuramaz</li>
+                        <li>Alt sorgular veya volatile fonksiyonlar (RANDOM() gibi) kullanilamaz</li>
+                        <li>Dogrudan guncellenemez - kaynak sutunlar guncellenmeli</li>
+                    </ul>
+                </div>
+
+                <h4 id="olusturulan-sutunlari-indeksleme">Olusturulan Sutunlari Indeksleme</h4>
+                <p>Hizli aramalar icin olusturulan sutunlar uzerinde indeksler olusturabilirsiniz:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Hizli ad aramalari icin tam_ad uzerinde indeks
+CREATE INDEX idx_kisiler_tam_ad ON kisiler(tam_ad);
+
+-- Artik bu sorgu indeksi kullaniyor
+SELECT * FROM kisiler WHERE tam_ad = 'Ahmet Yilmaz';</code></pre>
+                </div>
+            </section>
+
+            <!-- Kimlik Sutunlari -->
+            <section>
+                <h3 id="kimlik-sutunlari">Kimlik Sutunlari (Modern Otomatik Artis)</h3>
+                <p><strong>Kimlik sutunlari</strong>, otomatik artan sutunlar olusturmanin SQL standart yoludur.
+                   Eski SERIAL turundan daha fazla kontrol saglar ve yeni tasarimlar icin onerilir.</p>
+
+                <h4 id="kimlik-serial-karsilastirma">Kimlik vs SERIAL Karsilastirmasi</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Ozellik</th>
+                            <th>SERIAL</th>
+                            <th>IDENTITY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SQL Standardi</td>
+                            <td>PostgreSQL'e ozgu</td>
+                            <td>SQL:2003 standardi</td>
+                        </tr>
+                        <tr>
+                            <td>Sekans sahipligi</td>
+                            <td>Ayri sekans nesnesi</td>
+                            <td>Sutuna bagli</td>
+                        </tr>
+                        <tr>
+                            <td>DROP davranisi</td>
+                            <td>Sekans ayri silinmeli</td>
+                            <td>Sekans sutunla silinir</td>
+                        </tr>
+                        <tr>
+                            <td>Ekleme geersiz kilma</td>
+                            <td>Her zaman izin verilir</td>
+                            <td>Kontrol edilir (ALWAYS vs BY DEFAULT)</td>
+                        </tr>
+                        <tr>
+                            <td>Tasinabilirlik</td>
+                            <td>Sadece PostgreSQL</td>
+                            <td>SQL Server, Oracle vb. ile calisir</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 id="kimlik-sozdizimi">Kimlik Sutunu Sozdizimi</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- GENERATED ALWAYS: Deger gecersiz kilinamaz (kati)
+CREATE TABLE urunler_yeni (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    ad VARCHAR(100) NOT NULL,
+    fiyat DECIMAL(10,2)
+);
+
+-- GENERATED BY DEFAULT: Gerekirse gecersiz kilinabilir (esnek)
+CREATE TABLE siparisler_yeni (
+    id INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    musteri_id INTEGER NOT NULL,
+    siparis_tarihi DATE DEFAULT CURRENT_DATE
+);</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>En Iyi Uygulama:</strong> Manuel ID atamasi istemediginiz birincil anahtarlar icin
+                    <code>GENERATED ALWAYS AS IDENTITY</code> kullanin. Veri tasimalari veya ozel durumlar
+                    icin esneklik gerektiginde <code>GENERATED BY DEFAULT</code> kullanin.
+                </div>
+            </section>
+
+            <!-- Gecici Tablolar -->
+            <section>
+                <h3 id="gecici-tablolar">Gecici Tablolar</h3>
+                <p><strong>Gecici tablolar</strong> yalnizca oturumunuz veya isleminiz suresince vardir.
+                   Ara sonuclari saklamak, veri hazirligi veya karmasik hesaplamalar icin kullnislidir.</p>
+
+                <h4 id="gecici-tablo-sozdizimi">Gecici Tablo Olusturma</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Temel gecici tablo (oturum icin vardir)
+CREATE TEMPORARY TABLE gecici_hesaplamalar (
+    id SERIAL PRIMARY KEY,
+    musteri_id INTEGER,
+    toplam_tutar DECIMAL(12,2),
+    hesaplama_tarihi DATE DEFAULT CURRENT_DATE
+);
+
+-- Kisa form
+CREATE TEMP TABLE gecici_sonuclar (
+    urun_id INTEGER,
+    satilan_miktar INTEGER
+);</code></pre>
+                </div>
+
+                <h4 id="gecici-tablo-yasam-suresi">Tablo Yasam Suresini Kontrol Etme</h4>
+                <p><code>ON COMMIT</code> kullanarak gecici tablo verilerinin ne zaman temizlenecegini kontrol edebilirsiniz:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Her islem sonunda veriler silinir (satirlar temizlenir, tablo kalir)
+CREATE TEMP TABLE gecici_yigin_verisi (
+    oege_id INTEGER,
+    durum VARCHAR(20)
+) ON COMMIT DELETE ROWS;
+
+-- Islem sonunda tablo tamamen silinir
+CREATE TEMP TABLE sadece_islem_icin (
+    hesap_id INTEGER,
+    sonuc DECIMAL(10,2)
+) ON COMMIT DROP;
+
+-- Varsayilan: Oturum sonuna kadar veriler korunur (PRESERVE ROWS)
+CREATE TEMP TABLE gecici_oturum_verisi (
+    veri_id INTEGER,
+    deger TEXT
+) ON COMMIT PRESERVE ROWS;</code></pre>
+                </div>
+
+                <div class="feature-box">
+                    <strong>Gecici Tablo Ozellikleri:</strong>
+                    <ul>
+                        <li>Yalnizca oturumunuz tarafindan gorulebilir (diger kullanicilar goremez)</li>
+                        <li>Kalici tablolarla ayni ada sahip olabilir (gecici oncelik alir)</li>
+                        <li>Indeksler, kisitlamalar ve tetikleyiciler iceribilir</li>
+                        <li>Varsayilan olarak WAL'a yazilmaz (daha hizli yazmalar)</li>
+                        <li>Oturum sonlandiginda otomatik olarak silinir</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Loglanmayan Tablolar -->
+            <section>
+                <h3 id="loglanmayan-tablolar">Loglanmayan Tablolar</h3>
+                <p><strong>Loglanmayan tablolar</strong>, Write-Ahead Log'a (WAL) yazmayan kalici tablolardir.
+                   Bu, yazma islemlerini onemli olcude hizlandirir, ancak sunucu cokerse veriler kaybolur.</p>
+
+                <h4 id="loglanmayan-sozdizimi">Loglanmayan Tablo Olusturma</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE UNLOGGED TABLE oturum_onbellek (
+    oturum_id VARCHAR(64) PRIMARY KEY,
+    kullanici_id INTEGER,
+    veri JSONB,
+    son_kullanim TIMESTAMP
+);
+
+CREATE UNLOGGED TABLE iceri_aktarim_hazirlama (
+    satir_no SERIAL,
+    ham_veri TEXT,
+    islendi BOOLEAN DEFAULT FALSE,
+    hata_mesaji TEXT
+);</code></pre>
+                </div>
+
+                <h4 id="loglanmayan-kullanim-alanlari">Loglanmayan Tablolari Ne Zaman Kullanmali</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Iyi Kullanim Alanlari</th>
+                            <th>Kotu Kullanim Alanlari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Oturum/onbellek verileri</td>
+                            <td>Finansal islemler</td>
+                        </tr>
+                        <tr>
+                            <td>Iceri aktarim hazirlama alanlari</td>
+                            <td>Siparis kayitlari</td>
+                        </tr>
+                        <tr>
+                            <td>Gecici hesaplama sonuclari</td>
+                            <td>Musteri verileri</td>
+                        </tr>
+                        <tr>
+                            <td>Kuyruk tablolari (kayip kabul edilebilirse)</td>
+                            <td>Denetim kayitlari</td>
+                        </tr>
+                        <tr>
+                            <td>Test/gelistirme verileri</td>
+                            <td>Kritik is verileri</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning-box">
+                    <strong>Kritik Uyari:</strong> Loglanmayan tablolar, veritabani cokmesi veya temiz olmayan
+                    kapatma sonrasinda kesilerek bosaltilir. Kaybetmeyi goze alamayacaginiz veriler icin
+                    asla kullanmayin!
+                </div>
+            </section>
+
+            <!-- Tablo Klonlama -->
+            <section>
+                <h3 id="tablo-klonlama">Tablo Klonlama (CREATE TABLE ... LIKE)</h3>
+                <p><code>CREATE TABLE ... LIKE</code> ifadesi, mevcut bir tabloyla ayni yapida yeni bir tablo
+                   olusturur. Yedek tablolar, hazirlama tablolari veya bolumler olusturmak icin kullanislidir.</p>
+
+                <h4 id="like-sozdizimi">Temel Sozdizimi</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Ayni sutun ve veri turleriyle tablo olustur
+CREATE TABLE musteriler_yedek (LIKE customers);
+
+-- Bu, ayni sutun tanimlarına sahip bos bir tablo olusturur
+-- ancak varsayilan olarak veri, indeks veya kisitlama YOKTUR</code></pre>
+                </div>
+
+                <h4 id="like-secenekleri">INCLUDING Secenekleri</h4>
+                <p>Kaynak tablodan cesitli ozellikleri dahil edebilirsiniz:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Belirli ozellikleri dahil et
+CREATE TABLE siparisler_arsiv (LIKE orders INCLUDING DEFAULTS);
+CREATE TABLE urunler_kopya (LIKE products INCLUDING INDEXES);
+CREATE TABLE musteriler_klon (LIKE customers INCLUDING CONSTRAINTS);
+
+-- Her seyi dahil et
+CREATE TABLE tam_yedek (LIKE orders INCLUDING ALL);
+
+-- Birden fazla secenek
+CREATE TABLE hazirlama_siparisler (
+    LIKE orders
+    INCLUDING DEFAULTS
+    INCLUDING CONSTRAINTS
+    EXCLUDING INDEXES  -- Indeksleri kopyalama (daha hizli toplu ekleme)
+);</code></pre>
+                </div>
+            </section>
+
+            <!-- Ertelenebilir Kisitlamalar -->
+            <section>
+                <h3 id="ertelenebilir-kisitlamalar">Ertelenebilir Kisitlamalar</h3>
+                <p><strong>Ertelenebilir kisitlamalar</strong>, kisitlama kontrolunu islem sonuna kadar
+                   ertelemenize olanak tanir. Bu, bir dizi islem sirasinda kisitlamalari gecici olarak
+                   ihlal etmeniz gerektiginde kullanislidir.</p>
+
+                <h4 id="ertelenebilir-problem">Problem</h4>
+                <p>Iki calisanin ID'lerini degistirmeniz gereken bir senaryo dusunun:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Normal UNIQUE kisitlamayla bu basarisiz olur!
+-- Calisan 1'in ID'si 100, Calisan 2'nin ID'si 200
+-- Bunlari degistirmek istiyoruz
+
+UPDATE calisanlar SET id = 200 WHERE id = 100;  -- BASARISIZ! 200 zaten var
+UPDATE calisanlar SET id = 100 WHERE id = 200;  -- Yine basarisiz olurdu</code></pre>
+                </div>
+
+                <h4 id="ertelenebilir-sozdizimi">Ertelenebilir Kisitlama Olusturma</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE departmanlar_v2 (
+    id INTEGER PRIMARY KEY,
+    ad VARCHAR(100) NOT NULL,
+    yonetici_id INTEGER,
+    -- Ertelenebilir benzersiz kisitlama
+    CONSTRAINT uk_dept_yonetici UNIQUE (yonetici_id)
+        DEFERRABLE INITIALLY DEFERRED
+);</code></pre>
+                </div>
+
+                <h4 id="ertelenebilir-modlar">Kisitlama Modlari</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Mod</th>
+                            <th>Ne Zaman Kontrol Edilir</th>
+                            <th>Kullanim Alani</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>NOT DEFERRABLE</code></td>
+                            <td>Hemen (varsayilan)</td>
+                            <td>Normal kisitlamalar</td>
+                        </tr>
+                        <tr>
+                            <td><code>DEFERRABLE INITIALLY IMMEDIATE</code></td>
+                            <td>Hemen, ama ertelenebilir</td>
+                            <td>Esnek - varsayilan hemen</td>
+                        </tr>
+                        <tr>
+                            <td><code>DEFERRABLE INITIALLY DEFERRED</code></td>
+                            <td>Islem onayinda</td>
+                            <td>Karmasik cok adimli islemler</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 id="ertelenebilir-kullanim">Ertelenebilir Kisitlamalari Kullanma</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Mevcut islem icin kisitlama modunu ayarla
+BEGIN;
+
+-- Tum ertelenebilir kisitlamalari ertele
+SET CONSTRAINTS ALL DEFERRED;
+
+-- Artik kisitlamayi gecici olarak ihlal edebiliriz
+UPDATE departmanlar_v2 SET yonetici_id = 999 WHERE id = 1;  -- gecici deger
+UPDATE departmanlar_v2 SET yonetici_id = 1 WHERE id = 2;    -- dept 1'in yoneticisiydi
+UPDATE departmanlar_v2 SET yonetici_id = 2 WHERE id = 1;    -- degisim tamamlandi
+
+-- Kisitlama burada kontrol edilir - simdi gecerli olmali
+COMMIT;</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Ertelenebilir Kisitlamalari Ne Zaman Kullanmali:</strong>
+                    <ul>
+                        <li>Satirlar arasinda benzersiz degerleri degistirme</li>
+                        <li>Dairesel basvurularla veri ekleme</li>
+                        <li>Karmasik veri tasimalari</li>
+                        <li>Kisitlamalari gecici olarak ihlal eden toplu islemler</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h3 id="pratik-alistirmalar">Ogrendiklerinizi Uygulayın</h3>
+                <p>Gelismis tablo ozelliklerinde ustalasmaya hazir misiniz? Bootcamp veritabanımizi kullanarak
+                   olusturulan sutunlar, kimlik sutunlari, gecici tablolar ve daha fazlasini kapsayan
+                   uygulamali alistirmalarla pratik yapin.</p>
+                <p><a href="04_advanced_table_features_examples_tr.html" class="btn btn-primary">Pratik Orneklere Git &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 4: Pratik SQL Problem Cozme</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .pattern-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip-box {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .use-case {
+            background-color: #f8f9fa;
+            border-left: 4px solid #6c757d;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-button">&larr; Indekse Don</a>
+    <div class="language-switcher">
+        <a href="03_practical_sql_problem_solving.html">EN</a>
+        <a href="03_practical_sql_problem_solving_tr.html" class="active">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="practical-sql">Gun 4: Pratik SQL Problem Cozme</h1>
+                <h2 id="common-patterns">Gercek Dunya Problemleri icin Yaygin SQL Kaliplari</h2>
+                <p>Bu oturum, muhendislerin gercek dunya senaryolarinda sikca karsilastigi temel SQL
+                   problem cozme kaliplarini kapsamaktadir. Bu kalilar teknik mulakatlarda sikca sorulur
+                   ve etkili veritabani sorgulamasi icin temeldir.</p>
+
+                <p><strong>Islenen Konular:</strong></p>
+                <ul>
+                    <li>Hiyerarsik Veriler icin Recursive CTE'ler</li>
+                    <li>Grup Basina En Iyi N Sorgulari</li>
+                    <li>Bosluk ve Ada Problemleri</li>
+                    <li>Veri Pivotlama (Satirdan Sutuna)</li>
+                    <li>Tekrar Edenelri Kaldirma Kaliplari</li>
+                    <li>Tarih Araligi ve Cakisma Tespiti</li>
+                </ul>
+            </section>
+
+            <!-- Bolum 1: Recursive CTE'ler -->
+            <section>
+                <h2 id="recursive-ctes">1. Hiyerarsik Veriler icin Recursive CTE'ler</h2>
+                <p>Recursive (Ozyinelemeli) Ortak Tablo Ifadeleri (CTE), organizasyon semalari,
+                   kategori agaclari veya malzeme listeleri gibi hiyerarsik veya agac yapili verileri
+                   sorgulamaniza olanak tanir.</p>
+
+                <h3>Recursive CTE Yapisini Anlama</h3>
+                <p>Bir recursive CTE'nin iki kismi vardir:</p>
+                <ol>
+                    <li><strong>Capa Uyesi (Anchor Member):</strong> Baslangic noktasi (temel durum)</li>
+                    <li><strong>Recursive Uye:</strong> Onceki sonuclar uzerine insa etmek icin CTE'nin kendisine referans verir</li>
+                </ol>
+
+                <pre><code class="language-sql">-- Temel recursive CTE yapisi
+WITH RECURSIVE cte_adi AS (
+    -- Capa uyesi: baslangic noktasi
+    SELECT sutunlar
+    FROM tablo
+    WHERE kosul  -- Genellikle: parent_id IS NULL veya baslangic kosulu
+
+    UNION ALL
+
+    -- Recursive uye: kendine referans verir
+    SELECT sutunlar
+    FROM tablo t
+    JOIN cte_adi c ON t.parent_id = c.id  -- Cocugu ebeveyne baglar
+)
+SELECT * FROM cte_adi;</code></pre>
+
+                <h3>Ornek: Calisan Hiyerarsisi</h3>
+                <p>bootcamp_db'deki <code>employees</code> tablosunu kullanarak organizasyon semasi olusturma:</p>
+
+                <pre><code class="language-sql">-- employees tablosunda hiyerarsi icin manager_id zaten mevcut
+-- SELECT id, first_name, last_name, job_title, manager_id FROM employees;
+
+-- Seviyelerle tam hiyerarsiyi gosteren Recursive CTE
+WITH RECURSIVE org_chart AS (
+    -- Capa: Ust duzey yoneticilerle basla (yoneticisi yok)
+    SELECT
+        id,
+        first_name || ' ' || last_name AS name,
+        job_title,
+        manager_id,
+        1 AS level,
+        first_name || ' ' || last_name AS path
+    FROM employees
+    WHERE manager_id IS NULL
+
+    UNION ALL
+
+    -- Recursive: Onceki seviyeye raporlayan calisanlari bul
+    SELECT
+        e.id,
+        e.first_name || ' ' || e.last_name,
+        e.job_title,
+        e.manager_id,
+        oc.level + 1,
+        oc.path || ' -> ' || e.first_name || ' ' || e.last_name
+    FROM employees e
+    JOIN org_chart oc ON e.manager_id = oc.id
+)
+SELECT
+    REPEAT('  ', level - 1) || name AS calisan,
+    job_title,
+    level,
+    path
+FROM org_chart
+ORDER BY path;</code></pre>
+
+                <div class="pattern-box">
+                    <strong>Cikti (ornek):</strong>
+                    <pre>calisan                | job_title          | level | path
+-----------------------+--------------------+-------+---------------------------
+Ahmet Yilmaz           | CEO                | 1     | Ahmet Yilmaz
+  Ayse Demir           | Muhendislik VP     | 2     | Ahmet Yilmaz -> Ayse Demir
+    Mehmet Kaya        | Muhendislik Muduru | 3     | ... -> Mehmet Kaya
+      Can Ozturk       | Kidemli Gelistirici| 4     | ... -> Can Ozturk
+  Fatma Celik          | Satis VP           | 2     | Ahmet Yilmaz -> Fatma Celik
+    Ali Sahin          | Satis Muduru       | 3     | ... -> Ali Sahin</pre>
+                </div>
+
+                <h3>Ornek: Sayi Dizileri Uretme</h3>
+                <p>Recursive CTE'ler mevcut veri olmadan diziler uretebilir:</p>
+
+                <pre><code class="language-sql">-- 1'den 10'a kadar sayilar uret
+WITH RECURSIVE numbers AS (
+    SELECT 1 AS n
+    UNION ALL
+    SELECT n + 1 FROM numbers WHERE n < 10
+)
+SELECT n FROM numbers;
+
+-- Tarih serisi uret (generate_series'e alternatif)
+WITH RECURSIVE date_range AS (
+    SELECT DATE '2024-01-01' AS dt
+    UNION ALL
+    SELECT dt + INTERVAL '1 day'
+    FROM date_range
+    WHERE dt < DATE '2024-01-31'
+)
+SELECT dt FROM date_range;</code></pre>
+
+                <div class="warning-box">
+                    <strong>Uyari:</strong> Sonsuz donguleri onlemek icin recursive CTE'lerde her zaman
+                    sonlandirma kosulu ekleyin. PostgreSQL'in varsayilan bir limiti vardir, ancak
+                    en iyi uygulama olarak recursive derinligi acikca kontrol etmek gerekir.
+                </div>
+
+                <div class="use-case">
+                    <strong>Gercek Dunya Kullanim Alanlari:</strong>
+                    <ul>
+                        <li>Organizasyon semalari ve raporlama yapilari</li>
+                        <li>Urun kategori agaclari (ornegin, Elektronik > Telefonlar > Akilli Telefonlar)</li>
+                        <li>Uretimde Malzeme Listesi (BOM)</li>
+                        <li>Dosya/klasor hiyerarsielri</li>
+                        <li>Yorum zincirleri ve yanitlar</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Bolum 2: Grup Basina En Iyi N -->
+            <section>
+                <h2 id="top-n-per-group">2. Grup Basina En Iyi N Sorgulari</h2>
+                <p>Yaygin bir gereksinim, her grup icindeki en iyi N kaydi bulmaktir (ornegin,
+                   kategori basina en iyi 3 urun, musteri basina son 5 siparis).</p>
+
+                <h3>Yontem 1: ROW_NUMBER() Pencere Fonksiyonu</h3>
+                <p>En esnek ve yaygin kullanilan yaklasim:</p>
+
+                <pre><code class="language-sql">-- Kategori basina en pahali 3 urun
+WITH ranked_products AS (
+    SELECT
+        p.id,
+        p.name,
+        p.price,
+        c.name AS category,
+        ROW_NUMBER() OVER (
+            PARTITION BY p.category_id
+            ORDER BY p.price DESC
+        ) AS rank_in_category
+    FROM products p
+    JOIN categories c ON p.category_id = c.id
+    WHERE p.active = true
+)
+SELECT id, name, price, category, rank_in_category
+FROM ranked_products
+WHERE rank_in_category <= 3
+ORDER BY category, rank_in_category;</code></pre>
+
+                <h3>Yontem 2: DISTINCT ON (PostgreSQL'e ozel)</h3>
+                <p>Grup basina En Iyi 1 icin daha basit sozdizimi:</p>
+
+                <pre><code class="language-sql">-- Musteri basina en son siparis (En Iyi 1)
+SELECT DISTINCT ON (customer_id)
+    id,
+    customer_id,
+    order_date,
+    total_amount
+FROM orders
+ORDER BY customer_id, order_date DESC;</code></pre>
+
+                <div class="tip-box">
+                    <strong>Ipucu:</strong> DISTINCT ON PostgreSQL'e ozeldir ve En Iyi 1 sorgulari icin cok verimlidir.
+                    En Iyi N (N > 1) icin ROW_NUMBER() yaklasimini kullanin.
+                </div>
+
+                <h3>Yontem 3: LATERAL JOIN</h3>
+                <p>FROM yan tumcesinde iliskili alt sorgulara izin veren guclu yaklasim:</p>
+
+                <pre><code class="language-sql">-- LATERAL kullanarak musteri basina en iyi 3 siparis
+SELECT
+    c.id AS customer_id,
+    c.name AS customer_name,
+    top_orders.id AS order_id,
+    top_orders.order_date,
+    top_orders.total_amount
+FROM customers c
+CROSS JOIN LATERAL (
+    SELECT id, order_date, total_amount
+    FROM orders o
+    WHERE o.customer_id = c.id
+    ORDER BY total_amount DESC
+    LIMIT 3
+) AS top_orders
+ORDER BY c.id, top_orders.total_amount DESC;</code></pre>
+
+                <h3>Yaklasimlarin Karsilastirilmasi</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Yontem</th>
+                            <th>En Uygun</th>
+                            <th>Artilari</th>
+                            <th>Eksileri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ROW_NUMBER()</td>
+                            <td>Herhangi bir En Iyi N</td>
+                            <td>Tasinabilir, esnek</td>
+                            <td>Once tum satirlari isler</td>
+                        </tr>
+                        <tr>
+                            <td>DISTINCT ON</td>
+                            <td>Sadece En Iyi 1</td>
+                            <td>Cok hizli, basit</td>
+                            <td>Sadece PostgreSQL, sadece En Iyi 1</td>
+                        </tr>
+                        <tr>
+                            <td>LATERAL</td>
+                            <td>Herhangi bir En Iyi N</td>
+                            <td>Indeksleri iyi kullanabilir</td>
+                            <td>Daha karmasik sozdizimi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Bolum 3: Bosluk ve Ada Problemleri -->
+            <section>
+                <h2 id="gap-island">3. Bosluk ve Ada Problemleri</h2>
+                <p>Bosluk ve Ada problemleri, verilerde ardisik dizileri (adalar) veya eksik degerleri (bosluklar)
+                   bulmayiicerir. Bunlar klasik SQL mulakat sorularidir.</p>
+
+                <h3>Problemi Anlama</h3>
+                <p>Bazi eksik degerler iceren bir dizi verildiginde, sunlari belirleyin:</p>
+                <ul>
+                    <li><strong>Bosluklar:</strong> Dizideki eksik degerler</li>
+                    <li><strong>Adalar:</strong> Mevcut degerlerin ardisik araliklari</li>
+                </ul>
+
+                <h3>Dizilerde Bosluklari Bulma</h3>
+                <pre><code class="language-sql">-- Ornek veri: bosluklu siparis ID'leri
+CREATE TABLE order_ids (id INTEGER PRIMARY KEY);
+INSERT INTO order_ids VALUES (1), (2), (3), (5), (6), (10), (11), (12), (15);
+
+-- ID dizisindeki bosluklari bul
+WITH id_with_next AS (
+    SELECT
+        id,
+        LEAD(id) OVER (ORDER BY id) AS next_id
+    FROM order_ids
+)
+SELECT
+    id + 1 AS bosluk_baslangic,
+    next_id - 1 AS bosluk_bitis,
+    next_id - id - 1 AS bosluk_boyutu
+FROM id_with_next
+WHERE next_id - id > 1
+ORDER BY id;
+
+-- Sonuc:
+-- bosluk_baslangic | bosluk_bitis | bosluk_boyutu
+-- -----------------+--------------+--------------
+--                4 |            4 |            1
+--                7 |            9 |            3
+--               13 |           14 |            2</code></pre>
+
+                <h3>Adalari Bulma (Ardisik Gruplar)</h3>
+                <pre><code class="language-sql">-- Ardisik araliklari (adalari) bul
+WITH grouped AS (
+    SELECT
+        id,
+        id - ROW_NUMBER() OVER (ORDER BY id) AS grp
+    FROM order_ids
+)
+SELECT
+    MIN(id) AS ada_baslangic,
+    MAX(id) AS ada_bitis,
+    COUNT(*) AS ada_boyutu
+FROM grouped
+GROUP BY grp
+ORDER BY ada_baslangic;
+
+-- Sonuc:
+-- ada_baslangic | ada_bitis | ada_boyutu
+-- --------------+-----------+-----------
+--             1 |         3 |         3
+--             5 |         6 |         2
+--            10 |        12 |         3
+--            15 |        15 |         1</code></pre>
+
+                <div class="pattern-box">
+                    <strong>Nasil calisir:</strong> Hile su ki, ardisik sayilar icin
+                    <code>deger - ROW_NUMBER()</code> ayni sonucu uretir. Bir bosluk oldugunda,
+                    bu fark degisir ve yeni bir grup olusturur.
+                    <pre>
+ID:   1  2  3  5  6  10 11 12 15
+ROW:  1  2  3  4  5   6  7  8  9
+FARK: 0  0  0  1  1   4  4  4  6  (ardisik degerleri gruplar)
+                    </pre>
+                </div>
+            </section>
+
+            <!-- Bolum 4: Veri Pivotlama -->
+            <section>
+                <h2 id="pivoting">4. Veri Pivotlama (Satirdan Sutuna)</h2>
+                <p>Pivotlama, satir verilerini sutunlara donusturur, ozet raporlari ve
+                   capraz tablolar olusturmak icin kullanislidir.</p>
+
+                <h3>Yontem 1: Toplama ile CASE (En Tasinabilir)</h3>
+                <pre><code class="language-sql">-- Aylik satis pivot tablosu
+SELECT
+    EXTRACT(YEAR FROM order_date) AS yil,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 1 THEN total_amount ELSE 0 END) AS oca,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 2 THEN total_amount ELSE 0 END) AS sub,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 3 THEN total_amount ELSE 0 END) AS mar,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 4 THEN total_amount ELSE 0 END) AS nis,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 5 THEN total_amount ELSE 0 END) AS may,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 6 THEN total_amount ELSE 0 END) AS haz,
+    -- ... diger aylar icin devam edin
+    SUM(total_amount) AS toplam
+FROM orders
+GROUP BY EXTRACT(YEAR FROM order_date)
+ORDER BY yil;</code></pre>
+
+                <h3>Yontem 2: FILTER Yan Tumcesi (PostgreSQL 9.4+)</h3>
+                <p>FILTER yan tumcesini kullanarak daha temiz sozdizimi:</p>
+
+                <pre><code class="language-sql">-- Musteri tipine gore kategori bazinda satislar
+SELECT
+    c.name AS kategori,
+    SUM(ol.quantity * ol.unit_price) FILTER (WHERE cu.customer_type = 'individual') AS bireysel_satis,
+    SUM(ol.quantity * ol.unit_price) FILTER (WHERE cu.customer_type = 'business') AS kurumsal_satis,
+    SUM(ol.quantity * ol.unit_price) FILTER (WHERE cu.customer_type = 'vip') AS vip_satis,
+    SUM(ol.quantity * ol.unit_price) AS toplam_satis
+FROM categories c
+JOIN products p ON c.id = p.category_id
+JOIN order_lines ol ON p.id = ol.product_id
+JOIN orders o ON ol.order_id = o.id
+JOIN customers cu ON o.customer_id = cu.id
+GROUP BY c.name
+ORDER BY toplam_satis DESC;</code></pre>
+            </section>
+
+            <!-- Bolum 5: Tekrar Edenleri Kaldirma -->
+            <section>
+                <h2 id="deduplication">5. Tekrar Edenleri Kaldirma Kaliplari</h2>
+                <p>Tekrar eden kayitlari bulma ve isleme, yaygin bir veri kalitesi gorevidir.</p>
+
+                <h3>Tekrar Edenleri Bulma</h3>
+                <pre><code class="language-sql">-- Musterilerde tekrar eden e-postalari bul
+SELECT
+    email,
+    COUNT(*) AS tekrar_sayisi,
+    ARRAY_AGG(id ORDER BY created_at) AS musteri_idleri,
+    MIN(created_at) AS ilk_olusturulma,
+    MAX(created_at) AS son_olusturulma
+FROM customers
+WHERE email IS NOT NULL
+GROUP BY email
+HAVING COUNT(*) > 1
+ORDER BY tekrar_sayisi DESC;</code></pre>
+
+                <h3>Tekrar Eden Grup Basina Sadece Bir Kayit Tutma</h3>
+                <pre><code class="language-sql">-- Yontem 1: Silinecek tekrarlari belirlemek icin ROW_NUMBER kullanma
+WITH duplicates AS (
+    SELECT
+        id,
+        email,
+        ROW_NUMBER() OVER (
+            PARTITION BY email
+            ORDER BY created_at ASC  -- En eskisini tut
+        ) AS rn
+    FROM customers
+    WHERE email IS NOT NULL
+)
+SELECT * FROM duplicates WHERE rn > 1;  -- Bunlar kaldirilacak tekrarlar
+
+-- Yontem 2: Tekrarlari sil (en eskisini tutarak)
+DELETE FROM customers
+WHERE id IN (
+    SELECT id FROM (
+        SELECT
+            id,
+            ROW_NUMBER() OVER (
+                PARTITION BY email
+                ORDER BY created_at ASC
+            ) AS rn
+        FROM customers
+        WHERE email IS NOT NULL
+    ) sub
+    WHERE rn > 1
+);</code></pre>
+
+                <div class="tip-box">
+                    <strong>En Iyi Uygulama:</strong> Tekrarlari silmeden once her zaman:
+                    <ol>
+                        <li>Nelerin etkilenecegini gormek icin once SELECT calistirin</li>
+                        <li>Yedek olusturun veya ROLLBACK hazir bir transaction kullanin</li>
+                        <li>Hangi kaydin tutulacagina dair net kriterler belirleyin (en eski, en yeni, en eksiksiz)</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Bolum 6: Tarih Araligi Islemleri -->
+            <section>
+                <h2 id="date-ranges">6. Tarih Araligi ve Cakisma Tespiti</h2>
+                <p>Tarih araliklariyla calismak ve cakismalari tespit etmek, zamanlama,
+                   rezervasyon sistemleri ve gecerlilik donemleri icin yaygindir.</p>
+
+                <h3>Cakisan Araliklari Tespit Etme</h3>
+                <pre><code class="language-sql">-- Ornek: oda rezervasyonlari
+CREATE TABLE room_bookings (
+    id SERIAL PRIMARY KEY,
+    room_id INTEGER,
+    start_date DATE,
+    end_date DATE,
+    guest_name VARCHAR(100)
+);
+
+-- Ayni oda icin cakisan rezervasyonlari bul
+SELECT
+    a.id AS rezervasyon1,
+    b.id AS rezervasyon2,
+    a.room_id,
+    a.start_date AS baslangic1, a.end_date AS bitis1,
+    b.start_date AS baslangic2, b.end_date AS bitis2,
+    a.guest_name AS misafir1,
+    b.guest_name AS misafir2
+FROM room_bookings a
+JOIN room_bookings b ON a.room_id = b.room_id
+    AND a.id < b.id  -- Kendi kendine birlestirme ve tekrarlardan kacin
+WHERE a.start_date <= b.end_date
+  AND a.end_date >= b.start_date;  -- Cakisma kosulu</code></pre>
+
+                <div class="pattern-box">
+                    <strong>Cakisma Mantigi:</strong> Iki aralik [A_baslangic, A_bitis] ve [B_baslangic, B_bitis] casiisir eger:
+                    <code>A_baslangic <= B_bitis AND A_bitis >= B_baslangic</code>
+                    <br><br>
+                    Cakismama: <code>A_bitis < B_baslangic OR A_baslangic > B_bitis</code>
+                </div>
+
+                <h3>PostgreSQL Aralik Tiplerini Kullanma</h3>
+                <p>PostgreSQL, daha zarif aralik islemleri icin yerlesik aralik tiplerine sahiptir:</p>
+
+                <pre><code class="language-sql">-- daterange tipini kullanma
+CREATE TABLE promotions (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    valid_period DATERANGE,
+    discount_percent INTEGER
+);
+
+-- Aralik degismezleriyle ekleme
+INSERT INTO promotions (name, valid_period, discount_percent) VALUES
+    ('Yaz Indirimi', '[2024-06-01, 2024-08-31]', 20),
+    ('Okula Donus', '[2024-08-15, 2024-09-15]', 15),
+    ('Tatil Ozel', '[2024-12-01, 2024-12-31]', 25);
+
+-- && operatoru ile cakisan promosyonlari bul
+SELECT
+    a.name AS promo1,
+    b.name AS promo2,
+    a.valid_period * b.valid_period AS cakisma_donemi  -- Kesisim
+FROM promotions a
+JOIN promotions b ON a.id < b.id
+WHERE a.valid_period && b.valid_period;  -- Cakisir operatoru
+
+-- Bir tarihin aralik icinde olup olmadigini kontrol et
+SELECT name, discount_percent
+FROM promotions
+WHERE valid_period @> DATE '2024-08-20';  -- Icerir operatoru</code></pre>
+            </section>
+
+            <!-- Ozet -->
+            <section>
+                <h2 id="summary">Ozet</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Kalip</th>
+                            <th>Anahtar Teknik</th>
+                            <th>Kullanim Alani</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Recursive CTE'ler</td>
+                            <td>WITH RECURSIVE + UNION ALL</td>
+                            <td>Hiyerarsiler, agaclar, diziler</td>
+                        </tr>
+                        <tr>
+                            <td>Grup Basina En Iyi N</td>
+                            <td>ROW_NUMBER() + PARTITION BY</td>
+                            <td>Kategori basina en iyi/en kotu</td>
+                        </tr>
+                        <tr>
+                            <td>Bosluklar ve Adalar</td>
+                            <td>deger - ROW_NUMBER()</td>
+                            <td>Dizileri bulma, eksik veri</td>
+                        </tr>
+                        <tr>
+                            <td>Pivotlama</td>
+                            <td>CASE/FILTER + GROUP BY</td>
+                            <td>Capraz tablo raporlari</td>
+                        </tr>
+                        <tr>
+                            <td>Tekrar Kaldirma</td>
+                            <td>ROW_NUMBER() veya DISTINCT ON</td>
+                            <td>Veri temizleme</td>
+                        </tr>
+                        <tr>
+                            <td>Tarih Araliklari</td>
+                            <td>Aralik operatorleri (&&, @>)</td>
+                            <td>Zamanlama, rezervasyon sistemleri</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Sonraki:</strong> <a href="03_practical_sql_problem_solving_examples_tr.html">Bu kaliplari uygulamali alistirmalarla pratik yapin</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+</html>

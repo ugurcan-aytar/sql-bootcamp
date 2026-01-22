@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 5: SQL Script Yazimi ve Otomasyon - Ornekler</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .exercise-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .solution-box {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        .output-display {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .toggle-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .toggle-btn:hover {
+            background-color: #218838;
+        }
+        .challenge-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .concept-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-button">&larr; Indekse Don</a>
+    <div class="language-switcher">
+        <a href="03_sql_scripting_and_automation_examples.html">EN</a>
+        <a href="03_sql_scripting_and_automation_examples_tr.html" class="active">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="scripting-examples">SQL Script Yazimi ve Otomasyon - Alistirmalar</h1>
+                <p><a href="03_sql_scripting_and_automation_tr.html">&larr; SQL Script Yazimi Dersine Don</a></p>
+                <p>Bu alistirmalar, bootcamp_db semasini kullanarak SQL script tekniklerini pratik yapmaniza
+                   yardimci olur. Saglam ve yeniden kullanilanilir veritabani araclari olusturmaya odaklanin.</p>
+            </section>
+
+            <!-- Exercise 1: Dynamic SQL -->
+            <section>
+                <h2 id="exercise-1">Alistirma 1: Dinamik SQL</h2>
+
+                <div class="concept-box">
+                    <strong>Senaryo:</strong> bootcamp_db semasini kullanarak calisma zamaninda farkli
+                    tablolar ve sutunlarla calisabilen esnek fonksiyonlar olusturun.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.1: Genel Kayit Sayaci</h4>
+                    <p><strong>Hedef:</strong> Istege bagli filtreleme ile herhangi bir tablodaki kayitlari sayan bir fonksiyon olusturun.</p>
+                    <p><strong>Gorev:</strong> Kayit sayisini donduren <code>count_records(table_name, where_clause)</code> fonksiyonunu yazin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION count_records(
+    p_table_name TEXT,
+    p_where_clause TEXT DEFAULT NULL
+) RETURNS BIGINT AS $$
+DECLARE
+    v_count BIGINT;
+    v_sql TEXT;
+BEGIN
+    -- Temel sorguyu olustur
+    v_sql := format('SELECT COUNT(*) FROM %I', p_table_name);
+
+    -- WHERE ifadesi verilmisse ekle
+    IF p_where_clause IS NOT NULL AND p_where_clause != '' THEN
+        v_sql := v_sql || ' WHERE ' || p_where_clause;
+    END IF;
+
+    -- Calistir ve sayiyi al
+    EXECUTE v_sql INTO v_count;
+
+    RETURN v_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test et
+SELECT count_records('customers');
+SELECT count_records('customers', 'customer_type = ''vip''');
+SELECT count_records('orders', 'status = ''pending'' AND total_amount > 100');
+SELECT count_records('products', 'active = true AND stock_quantity > 0');</code></pre>
+
+                        <div class="output-display">
+count_records('customers')                          -> 150
+count_records('customers', 'customer_type=''vip''') -> 23
+count_records('orders', 'status=''pending''...')    -> 47
+count_records('products', 'active=true...')         -> 89
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.2: Dinamik Sutun Istatistikleri</h4>
+                    <p><strong>Hedef:</strong> Herhangi bir sayisal sutun icin temel istatistikleri donduren bir fonksiyon olusturun.</p>
+                    <p><strong>Gorev:</strong> Bir tablodaki belirli bir sutun icin min, max, avg ve count degerleri dondurur.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION column_stats(
+    p_table TEXT,
+    p_column TEXT
+) RETURNS TABLE(
+    min_value NUMERIC,
+    max_value NUMERIC,
+    avg_value NUMERIC,
+    total_count BIGINT,
+    null_count BIGINT
+) AS $$
+BEGIN
+    RETURN QUERY EXECUTE format($sql$
+        SELECT
+            MIN(%I)::NUMERIC,
+            MAX(%I)::NUMERIC,
+            ROUND(AVG(%I)::NUMERIC, 2),
+            COUNT(*)::BIGINT,
+            COUNT(*) FILTER (WHERE %I IS NULL)::BIGINT
+        FROM %I
+    $sql$, p_column, p_column, p_column, p_column, p_table);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test et
+SELECT * FROM column_stats('products', 'price');
+SELECT * FROM column_stats('orders', 'total_amount');
+SELECT * FROM column_stats('order_lines', 'quantity');</code></pre>
+
+                        <div class="output-display">
+-- column_stats('products', 'price')
+min_value | max_value | avg_value | total_count | null_count
+----------+-----------+-----------+-------------+-----------
+     9.99 |   1999.99 |    249.50 |         120 |          0
+
+-- column_stats('orders', 'total_amount')
+min_value | max_value | avg_value | total_count | null_count
+----------+-----------+-----------+-------------+-----------
+    15.00 |   5420.00 |    342.75 |         500 |          3
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.3: Dinamik Tablo Yedekleme</h4>
+                    <p><strong>Hedef:</strong> Herhangi bir tablonun zaman damgali yedegini olusturan bir fonksiyon olusturun.</p>
+                    <p><strong>Gorev:</strong> Tablo yapisini ve verisini zaman damgasi eki ile yeni bir tabloya kopyalayin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION backup_table(
+    p_source_table TEXT,
+    p_include_data BOOLEAN DEFAULT true
+) RETURNS TEXT AS $$
+DECLARE
+    v_backup_table TEXT;
+    v_timestamp TEXT;
+BEGIN
+    -- Zaman damgasi eki olustur
+    v_timestamp := TO_CHAR(NOW(), 'YYYYMMDD_HH24MISS');
+    v_backup_table := p_source_table || '_backup_' || v_timestamp;
+
+    -- Tablo yapisini olustur
+    EXECUTE format(
+        'CREATE TABLE %I (LIKE %I INCLUDING ALL)',
+        v_backup_table,
+        p_source_table
+    );
+
+    -- Istenirse veriyi kopyala
+    IF p_include_data THEN
+        EXECUTE format(
+            'INSERT INTO %I SELECT * FROM %I',
+            v_backup_table,
+            p_source_table
+        );
+    END IF;
+
+    RAISE NOTICE 'Yedek olusturuldu: %', v_backup_table;
+    RETURN v_backup_table;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Verili yedek olustur
+SELECT backup_table('customers');
+
+-- Sadece yapi yedegi olustur
+SELECT backup_table('orders', false);</code></pre>
+
+                        <div class="output-display">
+NOTICE:  Yedek olusturuldu: customers_backup_20240115_143022
+backup_table
+------------------------------------
+customers_backup_20240115_143022
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Error Handling -->
+            <section>
+                <h2 id="exercise-2">Alistirma 2: Hata Yonetimi</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.1: Guvenli Musteri Ekleme</h4>
+                    <p><strong>Hedef:</strong> Musteri ekleyen ve tum olasi hatalari nazikce yoneten bir fonksiyon olusturun.</p>
+                    <p><strong>Gorev:</strong> Anlamli hata mesajlariyla basari/basarisizlik durumu dondurur.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION safe_insert_customer(
+    p_name TEXT,
+    p_email TEXT,
+    p_phone TEXT DEFAULT NULL,
+    p_city TEXT DEFAULT NULL,
+    p_customer_type TEXT DEFAULT 'individual'
+) RETURNS TABLE(
+    success BOOLEAN,
+    customer_id INTEGER,
+    message TEXT
+) AS $$
+DECLARE
+    v_id INTEGER;
+BEGIN
+    -- Girdileri dogrula
+    IF p_name IS NULL OR TRIM(p_name) = '' THEN
+        RETURN QUERY SELECT false, NULL::INTEGER, 'Ad gereklidir';
+        RETURN;
+    END IF;
+
+    IF p_email IS NULL OR p_email !~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' THEN
+        RETURN QUERY SELECT false, NULL::INTEGER, 'Gecerli e-posta gereklidir';
+        RETURN;
+    END IF;
+
+    -- Eklemeyi dene
+    INSERT INTO customers (name, email, phone, city, customer_type)
+    VALUES (TRIM(p_name), LOWER(TRIM(p_email)), p_phone, p_city, p_customer_type)
+    RETURNING id INTO v_id;
+
+    RETURN QUERY SELECT true, v_id, 'Musteri basariyla olusturuldu';
+
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Bu e-posta ile bir musteri zaten mevcut';
+
+    WHEN check_violation THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Gecersiz musteri_turu. Olmasi gereken: individual, business veya vip';
+
+    WHEN OTHERS THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Beklenmeyen hata: ' || SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Cesitli senaryolari test et
+SELECT * FROM safe_insert_customer('John Doe', 'john@example.com');
+SELECT * FROM safe_insert_customer('', 'invalid');
+SELECT * FROM safe_insert_customer('Jane Doe', 'john@example.com');  -- Tekrar
+SELECT * FROM safe_insert_customer('Bob', 'bob@test.com', NULL, NULL, 'invalid_type');</code></pre>
+
+                        <div class="output-display">
+-- Basarili durum
+success | customer_id | message
+--------+-------------+---------------------------
+t       |         151 | Musteri basariyla olusturuldu
+
+-- Gecersiz ad
+success | customer_id | message
+--------+-------------+---------------------------
+f       |             | Ad gereklidir
+
+-- Tekrar e-posta
+success | customer_id | message
+--------+-------------+------------------------------------------
+f       |             | Bu e-posta ile bir musteri zaten mevcut
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.2: Dogrulama ile Siparis Isleme</h4>
+                    <p><strong>Hedef:</strong> Birden fazla dogrulama adimi ile siparis isleyen bir fonksiyon olusturun.</p>
+                    <p><strong>Gorev:</strong> Musterinin varligini dogrula, urun stogunu kontrol et, duzgun hata yonetimiyle siparis olustur.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION process_order(
+    p_customer_id INTEGER,
+    p_product_id INTEGER,
+    p_quantity INTEGER
+) RETURNS TABLE(
+    success BOOLEAN,
+    order_id INTEGER,
+    message TEXT
+) AS $$
+DECLARE
+    v_customer_name TEXT;
+    v_product_name TEXT;
+    v_product_price NUMERIC;
+    v_stock INTEGER;
+    v_order_id INTEGER;
+    v_total NUMERIC;
+BEGIN
+    -- Adim 1: Musteriyi dogrula
+    SELECT name INTO v_customer_name
+    FROM customers WHERE id = p_customer_id;
+
+    IF NOT FOUND THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            format('Musteri ID %s bulunamadi', p_customer_id);
+        RETURN;
+    END IF;
+
+    -- Adim 2: Urunu dogrula ve stok kontrol et
+    SELECT name, price, stock_quantity
+    INTO v_product_name, v_product_price, v_stock
+    FROM products WHERE id = p_product_id AND active = true;
+
+    IF NOT FOUND THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            format('Urun ID %s bulunamadi veya aktif degil', p_product_id);
+        RETURN;
+    END IF;
+
+    IF v_stock < p_quantity THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            format('Yetersiz stok. Mevcut: %s, Istenen: %s', v_stock, p_quantity);
+        RETURN;
+    END IF;
+
+    -- Adim 3: Toplami hesapla
+    v_total := v_product_price * p_quantity;
+
+    -- Adim 4: Siparisi olustur (islem blogunda)
+    BEGIN
+        -- Siparis olustur
+        INSERT INTO orders (customer_id, total_amount, status)
+        VALUES (p_customer_id, v_total, 'pending')
+        RETURNING id INTO v_order_id;
+
+        -- Siparis satirini olustur
+        INSERT INTO order_lines (order_id, product_id, quantity, unit_price)
+        VALUES (v_order_id, p_product_id, p_quantity, v_product_price);
+
+        -- Stoku guncelle
+        UPDATE products
+        SET stock_quantity = stock_quantity - p_quantity
+        WHERE id = p_product_id;
+
+        RETURN QUERY SELECT true, v_order_id,
+            format('%s icin siparis olusturuldu: %s x %s = %s TL',
+                v_customer_name, p_quantity, v_product_name, v_total);
+
+    EXCEPTION WHEN OTHERS THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Siparis olusturulamadi: ' || SQLERRM;
+    END;
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test et
+SELECT * FROM process_order(1, 5, 2);     -- Gecerli siparis
+SELECT * FROM process_order(9999, 5, 2);  -- Gecersiz musteri
+SELECT * FROM process_order(1, 5, 9999);  -- Yetersiz stok</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: Database Metadata -->
+            <section>
+                <h2 id="exercise-3">Alistirma 3: Veritabani Metadata Sorgulari</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.1: Veritabani Boyut Raporu</h4>
+                    <p><strong>Hedef:</strong> Kapsamli bir veritabani boyut raporu olusturun.</p>
+                    <p><strong>Gorev:</strong> Tum tablolari satir sayilari ve indeks boyutlari ile boyuta gore siralayin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Kapsamli tablo boyut raporu
+SELECT
+    schemaname AS sema,
+    relname AS tablo_adi,
+    pg_size_pretty(pg_total_relation_size(relid)) AS toplam_boyut,
+    pg_size_pretty(pg_relation_size(relid)) AS veri_boyutu,
+    pg_size_pretty(pg_indexes_size(relid)) AS indeks_boyutu,
+    n_live_tup AS satir_tahmini,
+    CASE
+        WHEN n_live_tup > 0 THEN
+            pg_size_pretty(pg_relation_size(relid) / n_live_tup)
+        ELSE 'N/A'
+    END AS ort_satir_boyutu,
+    ROUND(100.0 * pg_indexes_size(relid) / NULLIF(pg_total_relation_size(relid), 0), 1) AS indeks_yuzdesi
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC
+LIMIT 15;</code></pre>
+
+                        <div class="output-display">
+sema   | tablo_adi   | toplam_boyut | veri_boyutu | indeks_boyutu | satir_tahmini | ort_satir_boyutu | indeks_yuzdesi
+-------+-------------+--------------+-------------+---------------+---------------+------------------+---------------
+public | order_lines |   15 MB      |   10 MB     |    5 MB       |      125000   | 84 bytes         |    33.3
+public | orders      |   12 MB      |    8 MB     |    4 MB       |       50000   | 168 bytes        |    33.3
+public | products    |    2 MB      |  1.5 MB     |  512 KB       |        1200   | 1.3 KB           |    25.0
+public | customers   |    1 MB      |  800 KB     |  256 KB       |         500   | 1.6 KB           |    25.0
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.2: Tablo Dokumantasyon Olusturucu</h4>
+                    <p><strong>Hedef:</strong> Sutunlar, kisitlamalar ve indeksler dahil bir tablo icin dokumantasyon olusturun.</p>
+                    <p><strong>Gorev:</strong> Tam tablo dokumantasyonu donduren bir fonksiyon olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION document_table(p_table_name TEXT)
+RETURNS TABLE(
+    section TEXT,
+    name TEXT,
+    details TEXT
+) AS $$
+BEGIN
+    -- Tablo bilgisi
+    RETURN QUERY
+    SELECT 'TABLO'::TEXT, p_table_name,
+           pg_size_pretty(pg_total_relation_size(p_table_name::regclass));
+
+    -- Sutunlar
+    RETURN QUERY
+    SELECT
+        'SUTUN'::TEXT,
+        column_name::TEXT,
+        format('%s %s %s',
+            data_type,
+            CASE WHEN is_nullable = 'NO' THEN 'NOT NULL' ELSE '' END,
+            COALESCE('DEFAULT ' || column_default, '')
+        )
+    FROM information_schema.columns
+    WHERE table_name = p_table_name AND table_schema = 'public'
+    ORDER BY ordinal_position;
+
+    -- Birincil Anahtar
+    RETURN QUERY
+    SELECT
+        'BIRINCIL ANAHTAR'::TEXT,
+        tc.constraint_name::TEXT,
+        string_agg(kcu.column_name, ', ')
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    WHERE tc.table_name = p_table_name
+      AND tc.constraint_type = 'PRIMARY KEY'
+    GROUP BY tc.constraint_name;
+
+    -- Yabanci Anahtarlar
+    RETURN QUERY
+    SELECT
+        'YABANCI ANAHTAR'::TEXT,
+        tc.constraint_name::TEXT,
+        format('%s -> %s.%s',
+            kcu.column_name,
+            ccu.table_name,
+            ccu.column_name)
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage ccu
+        ON tc.constraint_name = ccu.constraint_name
+    WHERE tc.table_name = p_table_name
+      AND tc.constraint_type = 'FOREIGN KEY';
+
+    -- Indeksler
+    RETURN QUERY
+    SELECT
+        'INDEKS'::TEXT,
+        indexname::TEXT,
+        indexdef
+    FROM pg_indexes
+    WHERE tablename = p_table_name AND schemaname = 'public';
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- Dokumantasyon olustur
+SELECT * FROM document_table('orders');
+SELECT * FROM document_table('order_lines');</code></pre>
+
+                        <div class="output-display">
+section          | name                  | details
+-----------------+-----------------------+------------------------------------------
+TABLO            | orders                | 12 MB
+SUTUN            | id                    | integer NOT NULL DEFAULT nextval(...)
+SUTUN            | customer_id           | integer NOT NULL
+SUTUN            | order_date            | timestamp with time zone DEFAULT now()
+SUTUN            | status                | character varying
+SUTUN            | total_amount          | numeric
+BIRINCIL ANAHTAR | orders_pkey           | id
+YABANCI ANAHTAR  | orders_customer_id_fk | customer_id -> customers.id
+INDEKS           | orders_pkey           | CREATE UNIQUE INDEX orders_pkey ON...
+INDEKS           | idx_orders_customer   | CREATE INDEX idx_orders_customer ON...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.3: Tablo Icin Iliskileri Bul</h4>
+                    <p><strong>Hedef:</strong> Verilen bir tabloyu referans alan veya tarafindan referans alanan tum tablolari bulun.</p>
+                    <p><strong>Gorev:</strong> Hem gelen hem de giden yabanci anahtar iliskilerini gosterin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Cozumu Goster</button>
+                    <div id="solution3_3" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION find_relationships(p_table_name TEXT)
+RETURNS TABLE(
+    direction TEXT,
+    related_table TEXT,
+    local_column TEXT,
+    foreign_column TEXT,
+    constraint_name TEXT
+) AS $$
+BEGIN
+    -- Giden: bu tablonun referans ettigi tablolar
+    RETURN QUERY
+    SELECT
+        'REFERANS EDER'::TEXT,
+        ccu.table_name::TEXT,
+        kcu.column_name::TEXT,
+        ccu.column_name::TEXT,
+        tc.constraint_name::TEXT
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage ccu
+        ON tc.constraint_name = ccu.constraint_name
+    WHERE tc.table_name = p_table_name
+      AND tc.constraint_type = 'FOREIGN KEY';
+
+    -- Gelen: bu tabloyu referans alan tablolar
+    RETURN QUERY
+    SELECT
+        'REFERANS EDILIR'::TEXT,
+        tc.table_name::TEXT,
+        kcu.column_name::TEXT,
+        ccu.column_name::TEXT,
+        tc.constraint_name::TEXT
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage ccu
+        ON tc.constraint_name = ccu.constraint_name
+    WHERE ccu.table_name = p_table_name
+      AND tc.constraint_type = 'FOREIGN KEY';
+END;
+$$ LANGUAGE plpgsql;
+
+-- customers tablosu icin tum iliskileri bul
+SELECT * FROM find_relationships('customers');
+SELECT * FROM find_relationships('products');</code></pre>
+
+                        <div class="output-display">
+-- find_relationships('customers')
+direction        | related_table | local_column | foreign_column | constraint_name
+-----------------+---------------+--------------+----------------+----------------
+REFERANS EDILIR  | orders        | customer_id  | id             | orders_customer_fk
+
+-- find_relationships('products')
+direction        | related_table | local_column | foreign_column | constraint_name
+-----------------+---------------+--------------+----------------+-------------------
+REFERANS EDER    | categories    | category_id  | id             | products_cat_fk
+REFERANS EDER    | suppliers     | supplier_id  | id             | products_sup_fk
+REFERANS EDILIR  | order_lines   | product_id   | id             | ol_product_fk
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Monitoring -->
+            <section>
+                <h2 id="exercise-4">Alistirma 4: Izleme Sorgulari</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 4.1: Aktif Oturum Izleyici</h4>
+                    <p><strong>Hedef:</strong> Faydali ayrintilarla aktif veritabani oturumlarini gosteren bir view olusturun.</p>
+                    <p><strong>Gorev:</strong> Sorgu suresi, durum ve kisaltilmis sorgu metni icerin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE VIEW active_sessions AS
+SELECT
+    pid,
+    usename AS kullanici,
+    datname AS veritabani,
+    client_addr AS istemci_ip,
+    application_name AS uygulama,
+    state AS durum,
+    CASE
+        WHEN state = 'active' THEN
+            NOW() - query_start
+        ELSE
+            NOW() - state_change
+    END AS sure,
+    wait_event_type,
+    wait_event,
+    LEFT(query, 100) AS sorgu_onizleme,
+    CASE
+        WHEN NOW() - query_start > INTERVAL '5 minutes' THEN 'UZUN SURELI'
+        WHEN NOW() - query_start > INTERVAL '1 minute' THEN 'ORTA'
+        ELSE 'NORMAL'
+    END AS status
+FROM pg_stat_activity
+WHERE pid != pg_backend_pid()
+  AND datname = current_database()
+ORDER BY
+    CASE state WHEN 'active' THEN 0 ELSE 1 END,
+    query_start;
+
+-- View'i kullan
+SELECT * FROM active_sessions WHERE durum = 'active';
+SELECT * FROM active_sessions WHERE status = 'UZUN SURELI';</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 4.2: Veritabani Saglik Kontrolu Fonksiyonu</h4>
+                    <p><strong>Hedef:</strong> Kapsamli bir saglik kontrolu fonksiyonu olusturun.</p>
+                    <p><strong>Gorev:</strong> Baglantilari, kilitleri, tablo sisman kontrolu ve saglik raporu dondur.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION database_health_check()
+RETURNS TABLE(
+    kontrol_adi TEXT,
+    durum TEXT,
+    deger TEXT,
+    oneri TEXT
+) AS $$
+DECLARE
+    v_conn_count INTEGER;
+    v_max_conn INTEGER;
+    v_active_queries INTEGER;
+    v_long_queries INTEGER;
+    v_locks INTEGER;
+    v_db_size TEXT;
+BEGIN
+    -- Maksimum baglanti ayarini al
+    SELECT setting::INTEGER INTO v_max_conn FROM pg_settings WHERE name = 'max_connections';
+
+    -- Baglanti sayisi
+    SELECT COUNT(*) INTO v_conn_count FROM pg_stat_activity;
+    RETURN QUERY SELECT
+        'Baglanti Sayisi'::TEXT,
+        CASE WHEN v_conn_count > v_max_conn * 0.8 THEN 'UYARI' ELSE 'NORMAL' END,
+        format('%s / %s (%s%%)', v_conn_count, v_max_conn,
+            ROUND(100.0 * v_conn_count / v_max_conn)),
+        CASE WHEN v_conn_count > v_max_conn * 0.8
+            THEN 'max_connections artirmayi veya baglanti havuzu kullanmayi dusunun'
+            ELSE 'Baglanti kullanimi saglikli'
+        END;
+
+    -- Aktif sorgular
+    SELECT COUNT(*) INTO v_active_queries
+    FROM pg_stat_activity WHERE state = 'active' AND pid != pg_backend_pid();
+    RETURN QUERY SELECT
+        'Aktif Sorgular'::TEXT,
+        CASE WHEN v_active_queries > 50 THEN 'UYARI' ELSE 'NORMAL' END,
+        v_active_queries::TEXT,
+        CASE WHEN v_active_queries > 50
+            THEN 'Yuksek sayida aktif sorgu - yavas sorgulari kontrol edin'
+            ELSE 'Sorgu yuku normal'
+        END;
+
+    -- Uzun sureli sorgular (> 5 dk)
+    SELECT COUNT(*) INTO v_long_queries
+    FROM pg_stat_activity
+    WHERE state = 'active'
+      AND NOW() - query_start > INTERVAL '5 minutes';
+    RETURN QUERY SELECT
+        'Uzun Sureli Sorgular'::TEXT,
+        CASE WHEN v_long_queries > 0 THEN 'UYARI' ELSE 'NORMAL' END,
+        v_long_queries::TEXT,
+        CASE WHEN v_long_queries > 0
+            THEN 'Uzun sureli sorgulari inceleyin ve optimize edin'
+            ELSE 'Uzun sureli sorgu tespit edilmedi'
+        END;
+
+    -- Kilit sayisi
+    SELECT COUNT(*) INTO v_locks FROM pg_locks WHERE NOT granted;
+    RETURN QUERY SELECT
+        'Bekleyen Kilitler'::TEXT,
+        CASE WHEN v_locks > 10 THEN 'UYARI' ELSE 'NORMAL' END,
+        v_locks::TEXT,
+        CASE WHEN v_locks > 10
+            THEN 'Yuksek kilit cekismesi - engelleyen sorgulari kontrol edin'
+            ELSE 'Kilit durumu saglikli'
+        END;
+
+    -- Veritabani boyutu
+    SELECT pg_size_pretty(pg_database_size(current_database())) INTO v_db_size;
+    RETURN QUERY SELECT
+        'Veritabani Boyutu'::TEXT,
+        'BILGI'::TEXT,
+        v_db_size,
+        'Buyume trendlerini izleyin'::TEXT;
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- Saglik kontrolunu calistir
+SELECT * FROM database_health_check();</code></pre>
+
+                        <div class="output-display">
+kontrol_adi          | durum   | deger          | oneri
+---------------------+---------+----------------+------------------------------------------
+Baglanti Sayisi      | NORMAL  | 15 / 100 (15%) | Baglanti kullanimi saglikli
+Aktif Sorgular       | NORMAL  | 3              | Sorgu yuku normal
+Uzun Sureli Sorgular | NORMAL  | 0              | Uzun sureli sorgu tespit edilmedi
+Bekleyen Kilitler    | NORMAL  | 0              | Kilit durumu saglikli
+Veritabani Boyutu    | BILGI   | 256 MB         | Buyume trendlerini izleyin
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenges -->
+            <section>
+                <h2 id="challenges">Ileri Duzey Alistirmalar</h2>
+
+                <div class="challenge-box">
+                    <h4>Zorluk 1: Otomatik Tablo Bakim Scripti</h4>
+                    <p>Olu tuple'lar ve sisman yuzdelerine gore VACUUM veya REINDEX gerektiren tablolari
+                       belirleyen, ardindan bakim islemlerini toplu olarak gerceklestiren bir procedure olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE PROCEDURE auto_maintain_tables(
+    p_dead_tuple_threshold INTEGER DEFAULT 10000,
+    p_bloat_threshold NUMERIC DEFAULT 20.0
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    r RECORD;
+    v_maintained INTEGER := 0;
+BEGIN
+    FOR r IN
+        SELECT
+            schemaname,
+            relname,
+            n_dead_tup,
+            ROUND(100.0 * n_dead_tup / NULLIF(n_live_tup + n_dead_tup, 0), 2) AS dead_pct
+        FROM pg_stat_user_tables
+        WHERE n_dead_tup > p_dead_tuple_threshold
+           OR (n_live_tup > 0 AND
+               100.0 * n_dead_tup / (n_live_tup + n_dead_tup) > p_bloat_threshold)
+        ORDER BY n_dead_tup DESC
+    LOOP
+        RAISE NOTICE '%.% vacuum ediliyor (% olu tuple, %% sisman)',
+            r.schemaname, r.relname, r.n_dead_tup, r.dead_pct;
+
+        EXECUTE format('VACUUM ANALYZE %I.%I', r.schemaname, r.relname);
+
+        v_maintained := v_maintained + 1;
+
+        -- Yuku azaltmak icin tablolar arasinda duraklat
+        PERFORM pg_sleep(1);
+    END LOOP;
+
+    RAISE NOTICE 'Bakim tamamlandi. Islenen tablo sayisi: %', v_maintained;
+END;
+$$;
+
+-- Bakimi calistir
+CALL auto_maintain_tables(5000, 15.0);</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Zorluk 2: Sorgu Performans Kaydedici</h4>
+                    <p>Yavas sorgulari yrutme planlari ile birlikte sonraki analiz icin kaydeden bir sistem olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- Kayit tablosu olustur
+CREATE TABLE IF NOT EXISTS slow_query_log (
+    id SERIAL PRIMARY KEY,
+    logged_at TIMESTAMP DEFAULT NOW(),
+    query_text TEXT,
+    duration INTERVAL,
+    username TEXT,
+    database_name TEXT,
+    client_addr INET,
+    rows_affected INTEGER,
+    execution_plan TEXT
+);
+
+-- Zamanlamali sorgu kayit ve calistirma fonksiyonu
+CREATE OR REPLACE FUNCTION log_slow_query(
+    p_query TEXT,
+    p_threshold INTERVAL DEFAULT INTERVAL '1 second'
+) RETURNS TABLE(result_text TEXT) AS $$
+DECLARE
+    v_start TIMESTAMP;
+    v_end TIMESTAMP;
+    v_duration INTERVAL;
+    v_plan TEXT;
+    v_rows INTEGER;
+BEGIN
+    -- Yrutme planini al
+    EXECUTE 'EXPLAIN ' || p_query INTO v_plan;
+
+    -- Sorguyu zamanla
+    v_start := clock_timestamp();
+    EXECUTE p_query;
+    GET DIAGNOSTICS v_rows = ROW_COUNT;
+    v_end := clock_timestamp();
+
+    v_duration := v_end - v_start;
+
+    -- Yavas ise kaydet
+    IF v_duration > p_threshold THEN
+        INSERT INTO slow_query_log (
+            query_text, duration, username, database_name,
+            client_addr, rows_affected, execution_plan
+        ) VALUES (
+            p_query, v_duration, current_user, current_database(),
+            inet_client_addr(), v_rows, v_plan
+        );
+
+        RETURN QUERY SELECT format(
+            'Sorgu kaydedildi (sure: %s, satir: %s)',
+            v_duration, v_rows
+        );
+    ELSE
+        RETURN QUERY SELECT format(
+            'Sorgu tamamlandi (sure: %s, satir: %s)',
+            v_duration, v_rows
+        );
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Son yavas sorgulari goruntule
+SELECT
+    logged_at,
+    duration,
+    username,
+    rows_affected,
+    LEFT(query_text, 80) AS sorgu_onizleme
+FROM slow_query_log
+ORDER BY logged_at DESC
+LIMIT 10;</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+<script>
+    function toggleSolution(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+</html>

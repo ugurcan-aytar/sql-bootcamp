@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 4: Practical SQL Problem Solving - Examples</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .exercise-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .solution-box {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        .output-display {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .toggle-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .toggle-btn:hover {
+            background-color: #218838;
+        }
+        .challenge-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .concept-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_en.html" class="back-button">&larr; Back to Index</a>
+    <div class="language-switcher">
+        <a href="03_practical_sql_problem_solving_examples.html" class="active">EN</a>
+        <a href="03_practical_sql_problem_solving_examples_tr.html">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="practical-examples">Practical SQL Problem Solving - Exercises</h1>
+                <p><a href="03_practical_sql_problem_solving.html">&larr; Back to Practical SQL Problem Solving Lesson</a></p>
+                <p>These exercises use the bootcamp_db schema to practice common SQL problem-solving patterns.
+                   Each exercise represents a real-world scenario you might encounter.</p>
+            </section>
+
+            <!-- Exercise 1: Recursive CTE - Category Hierarchy -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Recursive CTEs</h2>
+
+                <div class="concept-box">
+                    <strong>Scenario:</strong> The categories table has a self-referencing parent_id column
+                    that creates a hierarchy (e.g., Electronics > Phones > Smartphones).
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Build Category Tree</h4>
+                    <p><strong>Goal:</strong> Display all categories with their full path from root to leaf.</p>
+                    <p><strong>Task:</strong> Write a recursive CTE that shows each category with its full
+                       hierarchical path (e.g., "Electronics > Phones > Smartphones").</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">WITH RECURSIVE category_tree AS (
+    -- Anchor: root categories (no parent)
+    SELECT
+        id,
+        name,
+        parent_id,
+        1 AS level,
+        name AS full_path,
+        ARRAY[id] AS path_ids
+    FROM categories
+    WHERE parent_id IS NULL
+
+    UNION ALL
+
+    -- Recursive: child categories
+    SELECT
+        c.id,
+        c.name,
+        c.parent_id,
+        ct.level + 1,
+        ct.full_path || ' > ' || c.name,
+        ct.path_ids || c.id
+    FROM categories c
+    JOIN category_tree ct ON c.parent_id = ct.id
+)
+SELECT
+    REPEAT('  ', level - 1) || name AS category,
+    level,
+    full_path
+FROM category_tree
+ORDER BY path_ids;</code></pre>
+
+                        <div class="output-display">
+category              | level | full_path
+----------------------+-------+--------------------------------
+Electronics           |     1 | Electronics
+  Phones              |     2 | Electronics > Phones
+    Smartphones       |     3 | Electronics > Phones > Smartphones
+  Computers           |     2 | Electronics > Computers
+    Laptops           |     3 | Electronics > Computers > Laptops
+Clothing              |     1 | Clothing
+  Men's Wear          |     2 | Clothing > Men's Wear
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Find All Descendants</h4>
+                    <p><strong>Goal:</strong> Given a category, find all its sub-categories at any depth.</p>
+                    <p><strong>Task:</strong> Write a query that returns all products in 'Electronics' category
+                       AND all its sub-categories.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">-- First, get all category IDs under 'Electronics'
+WITH RECURSIVE electronics_tree AS (
+    -- Start with Electronics
+    SELECT id, name
+    FROM categories
+    WHERE name = 'Electronics'
+
+    UNION ALL
+
+    -- Get all children
+    SELECT c.id, c.name
+    FROM categories c
+    JOIN electronics_tree et ON c.parent_id = et.id
+)
+-- Now get products in any of these categories
+SELECT
+    p.id,
+    p.name AS product_name,
+    p.price,
+    c.name AS category
+FROM products p
+JOIN categories c ON p.category_id = c.id
+WHERE p.category_id IN (SELECT id FROM electronics_tree)
+ORDER BY c.name, p.name;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: Generate Date Series</h4>
+                    <p><strong>Goal:</strong> Generate a series of dates to find days without orders.</p>
+                    <p><strong>Task:</strong> Using recursive CTE, find all dates in January 2024 that had no orders.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">WITH RECURSIVE date_series AS (
+    SELECT DATE '2024-01-01' AS day
+    UNION ALL
+    SELECT day + INTERVAL '1 day'
+    FROM date_series
+    WHERE day < DATE '2024-01-31'
+),
+order_dates AS (
+    SELECT DISTINCT DATE(order_date) AS order_day
+    FROM orders
+    WHERE order_date >= '2024-01-01' AND order_date < '2024-02-01'
+)
+SELECT
+    ds.day AS date_without_orders,
+    TO_CHAR(ds.day, 'Day') AS day_name
+FROM date_series ds
+LEFT JOIN order_dates od ON ds.day = od.order_day
+WHERE od.order_day IS NULL
+ORDER BY ds.day;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Top-N per Group -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: Top-N per Group</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Top 3 Products per Category by Revenue</h4>
+                    <p><strong>Goal:</strong> Find the top 3 best-selling products in each category by total revenue.</p>
+                    <p><strong>Task:</strong> Show product name, category, total revenue, and rank within category.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">WITH product_revenue AS (
+    SELECT
+        p.id AS product_id,
+        p.name AS product_name,
+        c.name AS category_name,
+        SUM(ol.quantity * ol.unit_price) AS total_revenue,
+        COUNT(DISTINCT ol.order_id) AS order_count
+    FROM products p
+    JOIN categories c ON p.category_id = c.id
+    JOIN order_lines ol ON p.id = ol.product_id
+    GROUP BY p.id, p.name, c.name
+),
+ranked AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY category_name
+            ORDER BY total_revenue DESC
+        ) AS rank_in_category,
+        RANK() OVER (
+            PARTITION BY category_name
+            ORDER BY total_revenue DESC
+        ) AS tied_rank
+    FROM product_revenue
+)
+SELECT
+    category_name,
+    product_name,
+    total_revenue,
+    order_count,
+    rank_in_category
+FROM ranked
+WHERE rank_in_category <= 3
+ORDER BY category_name, rank_in_category;</code></pre>
+
+                        <div class="output-display">
+category_name | product_name    | total_revenue | order_count | rank_in_category
+--------------+-----------------+---------------+-------------+-----------------
+Clothing      | Winter Jacket   |       8542.50 |          57 |                1
+Clothing      | Running Shoes   |       6234.00 |          89 |                2
+Clothing      | Cotton T-Shirt  |       4521.75 |         124 |                3
+Electronics   | Smartphone Pro  |      45678.99 |          42 |                1
+Electronics   | Laptop Elite    |      38920.00 |          28 |                2
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Most Recent Order per Customer</h4>
+                    <p><strong>Goal:</strong> Get the most recent order for each customer.</p>
+                    <p><strong>Task:</strong> Show customer name, their last order date, order total, and order status.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">-- Method 1: DISTINCT ON (PostgreSQL specific, very efficient)
+SELECT DISTINCT ON (c.id)
+    c.id AS customer_id,
+    c.name AS customer_name,
+    o.id AS order_id,
+    o.order_date,
+    o.total_amount,
+    o.status
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+ORDER BY c.id, o.order_date DESC;
+
+-- Method 2: ROW_NUMBER (portable across databases)
+WITH ranked_orders AS (
+    SELECT
+        c.id AS customer_id,
+        c.name AS customer_name,
+        o.id AS order_id,
+        o.order_date,
+        o.total_amount,
+        o.status,
+        ROW_NUMBER() OVER (
+            PARTITION BY c.id
+            ORDER BY o.order_date DESC
+        ) AS rn
+    FROM customers c
+    JOIN orders o ON c.id = o.customer_id
+)
+SELECT customer_id, customer_name, order_id, order_date, total_amount, status
+FROM ranked_orders
+WHERE rn = 1
+ORDER BY customer_name;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.3: Top 5 Spenders This Month</h4>
+                    <p><strong>Goal:</strong> Find the 5 customers who spent the most in the current month.</p>
+                    <p><strong>Task:</strong> Include their total spent, number of orders, and average order value.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Show Solution</button>
+                    <div id="solution2_3" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    c.id,
+    c.name,
+    c.customer_type,
+    COUNT(o.id) AS order_count,
+    SUM(o.total_amount) AS total_spent,
+    ROUND(AVG(o.total_amount), 2) AS avg_order_value
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.order_date >= DATE_TRUNC('month', CURRENT_DATE)
+  AND o.order_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+GROUP BY c.id, c.name, c.customer_type
+ORDER BY total_spent DESC
+LIMIT 5;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: Gap and Island -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: Gap and Island Problems</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Find Missing Order IDs</h4>
+                    <p><strong>Goal:</strong> Identify gaps in order ID sequence (deleted or failed orders).</p>
+                    <p><strong>Task:</strong> Find all missing order IDs between the minimum and maximum order ID.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Method 1: Using LEAD to find gaps
+WITH order_gaps AS (
+    SELECT
+        id,
+        LEAD(id) OVER (ORDER BY id) AS next_id
+    FROM orders
+)
+SELECT
+    id AS gap_starts_after,
+    next_id AS gap_ends_before,
+    next_id - id - 1 AS missing_count
+FROM order_gaps
+WHERE next_id - id > 1
+ORDER BY id;
+
+-- Method 2: Generate complete series and find missing
+WITH order_range AS (
+    SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM orders
+),
+all_ids AS (
+    SELECT generate_series(min_id, max_id) AS id
+    FROM order_range
+)
+SELECT a.id AS missing_order_id
+FROM all_ids a
+LEFT JOIN orders o ON a.id = o.id
+WHERE o.id IS NULL
+ORDER BY a.id;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Find Consecutive Order Streaks per Customer</h4>
+                    <p><strong>Goal:</strong> Find customers with consecutive days of ordering.</p>
+                    <p><strong>Task:</strong> Identify "islands" of consecutive order days for each customer.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">WITH customer_order_days AS (
+    -- Get distinct order days per customer
+    SELECT DISTINCT
+        customer_id,
+        DATE(order_date) AS order_day
+    FROM orders
+),
+with_groups AS (
+    -- Create groups for consecutive days
+    SELECT
+        customer_id,
+        order_day,
+        order_day - (ROW_NUMBER() OVER (
+            PARTITION BY customer_id
+            ORDER BY order_day
+        ))::INTEGER AS grp
+    FROM customer_order_days
+),
+streaks AS (
+    -- Calculate streak information
+    SELECT
+        customer_id,
+        MIN(order_day) AS streak_start,
+        MAX(order_day) AS streak_end,
+        COUNT(*) AS consecutive_days
+    FROM with_groups
+    GROUP BY customer_id, grp
+    HAVING COUNT(*) >= 2  -- At least 2 consecutive days
+)
+SELECT
+    c.name AS customer_name,
+    s.streak_start,
+    s.streak_end,
+    s.consecutive_days
+FROM streaks s
+JOIN customers c ON s.customer_id = c.id
+ORDER BY s.consecutive_days DESC, s.streak_start;</code></pre>
+
+                        <div class="output-display">
+customer_name  | streak_start | streak_end  | consecutive_days
+---------------+--------------+-------------+-----------------
+John Smith     | 2024-01-15   | 2024-01-19  |                5
+Alice Johnson  | 2024-02-01   | 2024-02-04  |                4
+Bob Wilson     | 2024-01-20   | 2024-01-22  |                3
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.3: Product Stock Availability Periods</h4>
+                    <p><strong>Goal:</strong> Find periods when products were in stock vs out of stock.</p>
+                    <p><strong>Task:</strong> Given a product_inventory_log table, find continuous periods of availability.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <div id="solution3_3" class="solution-box">
+                        <pre><code class="language-sql">-- Assuming we have an inventory log table
+-- CREATE TABLE product_inventory_log (
+--     id SERIAL, product_id INT, log_date DATE, quantity INT
+-- );
+
+WITH inventory_status AS (
+    SELECT
+        product_id,
+        log_date,
+        quantity,
+        CASE WHEN quantity > 0 THEN 'in_stock' ELSE 'out_of_stock' END AS status
+    FROM product_inventory_log
+),
+status_changes AS (
+    SELECT
+        product_id,
+        log_date,
+        status,
+        LAG(status) OVER (PARTITION BY product_id ORDER BY log_date) AS prev_status
+    FROM inventory_status
+),
+periods AS (
+    SELECT
+        product_id,
+        log_date AS period_start,
+        status,
+        LEAD(log_date) OVER (PARTITION BY product_id ORDER BY log_date) AS period_end
+    FROM status_changes
+    WHERE status != prev_status OR prev_status IS NULL
+)
+SELECT
+    p.name AS product_name,
+    pe.status,
+    pe.period_start,
+    COALESCE(pe.period_end - INTERVAL '1 day', CURRENT_DATE)::DATE AS period_end,
+    COALESCE(pe.period_end, CURRENT_DATE + 1) - pe.period_start AS days_in_status
+FROM periods pe
+JOIN products p ON pe.product_id = p.id
+ORDER BY p.name, pe.period_start;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Pivoting -->
+            <section>
+                <h2 id="exercise-4">Exercise 4: Data Pivoting</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Monthly Sales by Category</h4>
+                    <p><strong>Goal:</strong> Create a pivot table showing sales by category for each month.</p>
+                    <p><strong>Task:</strong> Columns should be months (Jan, Feb, Mar...), rows should be categories.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    c.name AS category,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 1) AS jan,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 2) AS feb,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 3) AS mar,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 4) AS apr,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 5) AS may,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 6) AS jun,
+    SUM(ol.quantity * ol.unit_price) AS total
+FROM categories c
+JOIN products p ON c.id = p.category_id
+JOIN order_lines ol ON p.id = ol.product_id
+JOIN orders o ON ol.order_id = o.id
+WHERE EXTRACT(YEAR FROM o.order_date) = 2024
+GROUP BY c.name
+ORDER BY total DESC;</code></pre>
+
+                        <div class="output-display">
+category    |    jan    |    feb    |    mar    |   total
+------------+-----------+-----------+-----------+-----------
+Electronics | 45,230.00 | 52,180.50 | 48,920.00 | 146,330.50
+Clothing    | 12,450.00 | 15,230.00 | 18,540.00 |  46,220.00
+Home        |  8,920.00 | 10,150.00 |  9,870.00 |  28,940.00
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.2: Customer Type vs Order Status Matrix</h4>
+                    <p><strong>Goal:</strong> Show count of orders by customer type and order status.</p>
+                    <p><strong>Task:</strong> Create a cross-tabulation with customer types as rows and statuses as columns.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    c.customer_type,
+    COUNT(*) FILTER (WHERE o.status = 'pending') AS pending,
+    COUNT(*) FILTER (WHERE o.status = 'processing') AS processing,
+    COUNT(*) FILTER (WHERE o.status = 'shipped') AS shipped,
+    COUNT(*) FILTER (WHERE o.status = 'delivered') AS delivered,
+    COUNT(*) FILTER (WHERE o.status = 'cancelled') AS cancelled,
+    COUNT(*) AS total_orders
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+GROUP BY c.customer_type
+ORDER BY total_orders DESC;</code></pre>
+
+                        <div class="output-display">
+customer_type | pending | processing | shipped | delivered | cancelled | total_orders
+--------------+---------+------------+---------+-----------+-----------+-------------
+individual    |      45 |         32 |      28 |       156 |        12 |          273
+business      |      12 |         18 |      15 |        89 |         3 |          137
+vip           |       3 |          5 |       8 |        42 |         0 |           58
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 5: Deduplication -->
+            <section>
+                <h2 id="exercise-5">Exercise 5: Deduplication</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.1: Find Duplicate Customer Entries</h4>
+                    <p><strong>Goal:</strong> Identify customers who may have been entered multiple times.</p>
+                    <p><strong>Task:</strong> Find customers with the same email or phone number.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Show Solution</button>
+                    <div id="solution5_1" class="solution-box">
+                        <pre><code class="language-sql">-- Find duplicate emails
+WITH email_duplicates AS (
+    SELECT
+        email,
+        COUNT(*) AS count,
+        ARRAY_AGG(id ORDER BY created_at) AS customer_ids,
+        ARRAY_AGG(name ORDER BY created_at) AS names
+    FROM customers
+    WHERE email IS NOT NULL AND email != ''
+    GROUP BY LOWER(email)  -- Case-insensitive comparison
+    HAVING COUNT(*) > 1
+)
+SELECT
+    email,
+    count AS duplicate_count,
+    customer_ids,
+    names
+FROM email_duplicates
+ORDER BY count DESC;
+
+-- Find potential duplicates by similar name and city
+SELECT
+    c1.id AS id1,
+    c2.id AS id2,
+    c1.name AS name1,
+    c2.name AS name2,
+    c1.city,
+    c1.created_at AS created1,
+    c2.created_at AS created2
+FROM customers c1
+JOIN customers c2 ON c1.id < c2.id
+    AND c1.city = c2.city
+    AND SIMILARITY(c1.name, c2.name) > 0.6  -- Requires pg_trgm extension
+ORDER BY SIMILARITY(c1.name, c2.name) DESC;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 5.2: Create Deduplicated Customer View</h4>
+                    <p><strong>Goal:</strong> Create a view that shows each customer only once.</p>
+                    <p><strong>Task:</strong> Keep the customer with the most orders; if tied, keep the oldest.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Show Solution</button>
+                    <div id="solution5_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE VIEW customers_deduplicated AS
+WITH customer_stats AS (
+    SELECT
+        c.id,
+        c.name,
+        c.email,
+        c.phone,
+        c.city,
+        c.customer_type,
+        c.created_at,
+        COUNT(o.id) AS order_count,
+        SUM(COALESCE(o.total_amount, 0)) AS total_spent
+    FROM customers c
+    LEFT JOIN orders o ON c.id = o.customer_id
+    GROUP BY c.id, c.name, c.email, c.phone, c.city, c.customer_type, c.created_at
+),
+ranked AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY LOWER(COALESCE(email, '')) || COALESCE(phone, '')
+            ORDER BY order_count DESC, total_spent DESC, created_at ASC
+        ) AS rn
+    FROM customer_stats
+    WHERE email IS NOT NULL OR phone IS NOT NULL
+)
+SELECT
+    id,
+    name,
+    email,
+    phone,
+    city,
+    customer_type,
+    created_at,
+    order_count,
+    total_spent
+FROM ranked
+WHERE rn = 1;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 6: Date Ranges -->
+            <section>
+                <h2 id="exercise-6">Exercise 6: Date Range Operations</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 6.1: Find Overlapping Promotions</h4>
+                    <p><strong>Goal:</strong> Identify promotions that overlap in time (potential conflicts).</p>
+                    <p><strong>Task:</strong> Find all pairs of promotions where the date ranges overlap.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Show Solution</button>
+                    <div id="solution6_1" class="solution-box">
+                        <pre><code class="language-sql">-- Assuming a promotions table
+-- CREATE TABLE promotions (
+--     id SERIAL PRIMARY KEY,
+--     name VARCHAR(100),
+--     start_date DATE,
+--     end_date DATE,
+--     discount_percent INTEGER
+-- );
+
+SELECT
+    p1.id AS promo1_id,
+    p1.name AS promo1_name,
+    p1.start_date AS promo1_start,
+    p1.end_date AS promo1_end,
+    p2.id AS promo2_id,
+    p2.name AS promo2_name,
+    p2.start_date AS promo2_start,
+    p2.end_date AS promo2_end,
+    GREATEST(p1.start_date, p2.start_date) AS overlap_start,
+    LEAST(p1.end_date, p2.end_date) AS overlap_end
+FROM promotions p1
+JOIN promotions p2 ON p1.id < p2.id  -- Avoid self-join and duplicates
+WHERE p1.start_date <= p2.end_date  -- Overlap condition
+  AND p1.end_date >= p2.start_date
+ORDER BY overlap_start;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 6.2: Daily Revenue with Date Fill</h4>
+                    <p><strong>Goal:</strong> Show daily revenue including days with zero sales.</p>
+                    <p><strong>Task:</strong> Generate a complete date series and left join with orders.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_2')">Show Solution</button>
+                    <div id="solution6_2" class="solution-box">
+                        <pre><code class="language-sql">WITH date_range AS (
+    SELECT generate_series(
+        DATE '2024-01-01',
+        DATE '2024-01-31',
+        INTERVAL '1 day'
+    )::DATE AS day
+),
+daily_revenue AS (
+    SELECT
+        DATE(order_date) AS order_day,
+        COUNT(*) AS order_count,
+        SUM(total_amount) AS revenue
+    FROM orders
+    WHERE order_date >= '2024-01-01' AND order_date < '2024-02-01'
+    GROUP BY DATE(order_date)
+)
+SELECT
+    dr.day,
+    TO_CHAR(dr.day, 'Day') AS day_name,
+    COALESCE(drev.order_count, 0) AS orders,
+    COALESCE(drev.revenue, 0) AS revenue,
+    SUM(COALESCE(drev.revenue, 0)) OVER (ORDER BY dr.day) AS cumulative_revenue
+FROM date_range dr
+LEFT JOIN daily_revenue drev ON dr.day = drev.order_day
+ORDER BY dr.day;</code></pre>
+
+                        <div class="output-display">
+day        | day_name  | orders | revenue  | cumulative_revenue
+-----------+-----------+--------+----------+-------------------
+2024-01-01 | Monday    |     12 |  2,450.00|           2,450.00
+2024-01-02 | Tuesday   |     18 |  3,820.50|           6,270.50
+2024-01-03 | Wednesday |      0 |     0.00 |           6,270.50
+2024-01-04 | Thursday  |     15 |  2,980.00|           9,250.50
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenges -->
+            <section>
+                <h2 id="challenges">Challenge Exercises</h2>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Customer Lifetime Value with Cohort Analysis</h4>
+                    <p>Calculate customer lifetime value grouped by the month they made their first purchase (cohort).
+                       Show how much each cohort has spent in months 1, 2, 3 after joining.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">WITH customer_first_order AS (
+    SELECT
+        customer_id,
+        DATE_TRUNC('month', MIN(order_date)) AS cohort_month
+    FROM orders
+    GROUP BY customer_id
+),
+customer_orders AS (
+    SELECT
+        o.customer_id,
+        cfo.cohort_month,
+        DATE_TRUNC('month', o.order_date) AS order_month,
+        o.total_amount,
+        -- Calculate months since joining (0 = first month)
+        EXTRACT(YEAR FROM AGE(DATE_TRUNC('month', o.order_date), cfo.cohort_month)) * 12 +
+        EXTRACT(MONTH FROM AGE(DATE_TRUNC('month', o.order_date), cfo.cohort_month)) AS months_since_join
+    FROM orders o
+    JOIN customer_first_order cfo ON o.customer_id = cfo.customer_id
+)
+SELECT
+    cohort_month,
+    COUNT(DISTINCT customer_id) AS cohort_size,
+    ROUND(SUM(total_amount) FILTER (WHERE months_since_join = 0), 2) AS month_0_revenue,
+    ROUND(SUM(total_amount) FILTER (WHERE months_since_join = 1), 2) AS month_1_revenue,
+    ROUND(SUM(total_amount) FILTER (WHERE months_since_join = 2), 2) AS month_2_revenue,
+    ROUND(SUM(total_amount) FILTER (WHERE months_since_join = 3), 2) AS month_3_revenue,
+    ROUND(SUM(total_amount), 2) AS total_ltv
+FROM customer_orders
+GROUP BY cohort_month
+ORDER BY cohort_month;</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: Inventory Movement Analysis</h4>
+                    <p>Track inventory changes over time, showing running balance and identifying
+                       when stock went below reorder point.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- Simulate inventory movements from order_lines
+WITH inventory_movements AS (
+    SELECT
+        ol.product_id,
+        DATE(o.order_date) AS movement_date,
+        -SUM(ol.quantity) AS quantity_change,  -- Negative for sales
+        'sale' AS movement_type
+    FROM order_lines ol
+    JOIN orders o ON ol.order_id = o.id
+    GROUP BY ol.product_id, DATE(o.order_date)
+),
+running_inventory AS (
+    SELECT
+        p.id AS product_id,
+        p.name AS product_name,
+        p.stock_quantity AS current_stock,
+        p.reorder_point,
+        im.movement_date,
+        im.quantity_change,
+        im.movement_type,
+        -- Calculate running balance (working backwards from current)
+        p.stock_quantity - SUM(im.quantity_change) OVER (
+            PARTITION BY p.id
+            ORDER BY im.movement_date DESC
+            ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
+        ) AS stock_after_movement
+    FROM products p
+    LEFT JOIN inventory_movements im ON p.id = im.product_id
+)
+SELECT
+    product_name,
+    movement_date,
+    movement_type,
+    quantity_change,
+    stock_after_movement,
+    reorder_point,
+    CASE
+        WHEN stock_after_movement < reorder_point THEN 'REORDER NEEDED'
+        WHEN stock_after_movement < reorder_point * 1.5 THEN 'LOW STOCK'
+        ELSE 'OK'
+    END AS stock_status
+FROM running_inventory
+WHERE movement_date IS NOT NULL
+ORDER BY product_name, movement_date;</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+<script>
+    function toggleSolution(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+</html>

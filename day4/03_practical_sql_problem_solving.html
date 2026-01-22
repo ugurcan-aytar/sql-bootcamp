@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 4: Practical SQL Problem Solving</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .pattern-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip-box {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .use-case {
+            background-color: #f8f9fa;
+            border-left: 4px solid #6c757d;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_en.html" class="back-button">&larr; Back to Index</a>
+    <div class="language-switcher">
+        <a href="03_practical_sql_problem_solving.html" class="active">EN</a>
+        <a href="03_practical_sql_problem_solving_tr.html">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="practical-sql">Day 4: Practical SQL Problem Solving</h1>
+                <h2 id="common-patterns">Common SQL Patterns for Real-World Problems</h2>
+                <p>This session covers essential SQL problem-solving patterns that engineers frequently encounter
+                   in real-world scenarios. These patterns are commonly asked in technical interviews and are
+                   fundamental for effective database querying.</p>
+
+                <p><strong>Topics Covered:</strong></p>
+                <ul>
+                    <li>Recursive CTEs for Hierarchical Data</li>
+                    <li>Top-N per Group Queries</li>
+                    <li>Gap and Island Problems</li>
+                    <li>Data Pivoting (Rows to Columns)</li>
+                    <li>Deduplication Patterns</li>
+                    <li>Date Range and Overlap Detection</li>
+                </ul>
+            </section>
+
+            <!-- Section 1: Recursive CTEs -->
+            <section>
+                <h2 id="recursive-ctes">1. Recursive CTEs for Hierarchical Data</h2>
+                <p>Recursive Common Table Expressions (CTEs) allow you to query hierarchical or tree-structured data,
+                   such as organizational charts, category trees, or bill of materials.</p>
+
+                <h3>Understanding Recursive CTE Structure</h3>
+                <p>A recursive CTE has two parts:</p>
+                <ol>
+                    <li><strong>Anchor Member:</strong> The starting point (base case)</li>
+                    <li><strong>Recursive Member:</strong> References the CTE itself to build upon previous results</li>
+                </ol>
+
+                <pre><code class="language-sql">-- Basic recursive CTE structure
+WITH RECURSIVE cte_name AS (
+    -- Anchor member: starting point
+    SELECT columns
+    FROM table
+    WHERE condition  -- Usually: parent_id IS NULL or starting condition
+
+    UNION ALL
+
+    -- Recursive member: references itself
+    SELECT columns
+    FROM table t
+    JOIN cte_name c ON t.parent_id = c.id  -- Links child to parent
+)
+SELECT * FROM cte_name;</code></pre>
+
+                <h3>Example: Employee Hierarchy</h3>
+                <p>Building an organizational chart using the <code>employees</code> table from bootcamp_db:</p>
+
+                <pre><code class="language-sql">-- The employees table already has manager_id for hierarchy
+-- SELECT id, first_name, last_name, job_title, manager_id FROM employees;
+
+-- Recursive CTE to show full hierarchy with levels
+WITH RECURSIVE org_chart AS (
+    -- Anchor: Start with top-level managers (no manager)
+    SELECT
+        id,
+        first_name || ' ' || last_name AS name,
+        job_title,
+        manager_id,
+        1 AS level,
+        first_name || ' ' || last_name AS path
+    FROM employees
+    WHERE manager_id IS NULL
+
+    UNION ALL
+
+    -- Recursive: Find employees reporting to previous level
+    SELECT
+        e.id,
+        e.first_name || ' ' || e.last_name,
+        e.job_title,
+        e.manager_id,
+        oc.level + 1,
+        oc.path || ' -> ' || e.first_name || ' ' || e.last_name
+    FROM employees e
+    JOIN org_chart oc ON e.manager_id = oc.id
+)
+SELECT
+    REPEAT('  ', level - 1) || name AS employee,
+    job_title,
+    level,
+    path
+FROM org_chart
+ORDER BY path;</code></pre>
+
+                <div class="pattern-box">
+                    <strong>Output (example):</strong>
+                    <pre>employee              | job_title          | level | path
+----------------------+--------------------+-------+---------------------------
+John Smith            | CEO                | 1     | John Smith
+  Sarah Johnson       | VP Engineering     | 2     | John Smith -> Sarah Johnson
+    Mike Davis        | Engineering Manager| 3     | ... -> Mike Davis
+      Tom Wilson      | Senior Developer   | 4     | ... -> Tom Wilson
+  Emily Brown         | VP Sales           | 2     | John Smith -> Emily Brown
+    Lisa Anderson     | Sales Manager      | 3     | ... -> Lisa Anderson</pre>
+                </div>
+
+                <h3>Example: Generating Number Sequences</h3>
+                <p>Recursive CTEs can generate sequences without existing data:</p>
+
+                <pre><code class="language-sql">-- Generate numbers 1 to 10
+WITH RECURSIVE numbers AS (
+    SELECT 1 AS n
+    UNION ALL
+    SELECT n + 1 FROM numbers WHERE n < 10
+)
+SELECT n FROM numbers;
+
+-- Generate date series (alternative to generate_series)
+WITH RECURSIVE date_range AS (
+    SELECT DATE '2024-01-01' AS dt
+    UNION ALL
+    SELECT dt + INTERVAL '1 day'
+    FROM date_range
+    WHERE dt < DATE '2024-01-31'
+)
+SELECT dt FROM date_range;</code></pre>
+
+                <div class="warning-box">
+                    <strong>Warning:</strong> Always include a termination condition in recursive CTEs to prevent
+                    infinite loops. PostgreSQL has a default limit, but it's best practice to explicitly control recursion depth.
+                </div>
+
+                <div class="use-case">
+                    <strong>Real-World Use Cases:</strong>
+                    <ul>
+                        <li>Organizational charts and reporting structures</li>
+                        <li>Product category trees (e.g., Electronics > Phones > Smartphones)</li>
+                        <li>Bill of Materials (BOM) in manufacturing</li>
+                        <li>File/folder hierarchies</li>
+                        <li>Comment threads and replies</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section 2: Top-N per Group -->
+            <section>
+                <h2 id="top-n-per-group">2. Top-N per Group Queries</h2>
+                <p>A common requirement is to find the top N records within each group (e.g., top 3 products
+                   per category, latest 5 orders per customer).</p>
+
+                <h3>Method 1: ROW_NUMBER() Window Function</h3>
+                <p>The most flexible and widely-used approach:</p>
+
+                <pre><code class="language-sql">-- Top 3 most expensive products per category
+WITH ranked_products AS (
+    SELECT
+        p.id,
+        p.name,
+        p.price,
+        c.name AS category,
+        ROW_NUMBER() OVER (
+            PARTITION BY p.category_id
+            ORDER BY p.price DESC
+        ) AS rank_in_category
+    FROM products p
+    JOIN categories c ON p.category_id = c.id
+    WHERE p.active = true
+)
+SELECT id, name, price, category, rank_in_category
+FROM ranked_products
+WHERE rank_in_category <= 3
+ORDER BY category, rank_in_category;</code></pre>
+
+                <h3>Method 2: DISTINCT ON (PostgreSQL-specific)</h3>
+                <p>Simpler syntax for Top-1 per group:</p>
+
+                <pre><code class="language-sql">-- Most recent order per customer (Top-1)
+SELECT DISTINCT ON (customer_id)
+    id,
+    customer_id,
+    order_date,
+    total_amount
+FROM orders
+ORDER BY customer_id, order_date DESC;</code></pre>
+
+                <div class="tip-box">
+                    <strong>Tip:</strong> DISTINCT ON is PostgreSQL-specific and very efficient for Top-1 queries.
+                    For Top-N (where N > 1), use the ROW_NUMBER() approach.
+                </div>
+
+                <h3>Method 3: LATERAL JOIN</h3>
+                <p>Powerful approach that allows correlated subqueries in FROM clause:</p>
+
+                <pre><code class="language-sql">-- Top 3 orders per customer using LATERAL
+SELECT
+    c.id AS customer_id,
+    c.name AS customer_name,
+    top_orders.id AS order_id,
+    top_orders.order_date,
+    top_orders.total_amount
+FROM customers c
+CROSS JOIN LATERAL (
+    SELECT id, order_date, total_amount
+    FROM orders o
+    WHERE o.customer_id = c.id
+    ORDER BY total_amount DESC
+    LIMIT 3
+) AS top_orders
+ORDER BY c.id, top_orders.total_amount DESC;</code></pre>
+
+                <h3>Comparing Approaches</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Best For</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ROW_NUMBER()</td>
+                            <td>Any Top-N</td>
+                            <td>Portable, flexible</td>
+                            <td>Processes all rows first</td>
+                        </tr>
+                        <tr>
+                            <td>DISTINCT ON</td>
+                            <td>Top-1 only</td>
+                            <td>Very fast, simple</td>
+                            <td>PostgreSQL only, Top-1 only</td>
+                        </tr>
+                        <tr>
+                            <td>LATERAL</td>
+                            <td>Any Top-N</td>
+                            <td>Can use indexes well</td>
+                            <td>More complex syntax</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 3: Gap and Island Problems -->
+            <section>
+                <h2 id="gap-island">3. Gap and Island Problems</h2>
+                <p>Gap and Island problems involve finding consecutive sequences (islands) or missing values (gaps)
+                   in data. These are classic SQL interview questions.</p>
+
+                <h3>Understanding the Problem</h3>
+                <p>Given a sequence with some missing values, identify:</p>
+                <ul>
+                    <li><strong>Gaps:</strong> Missing values in the sequence</li>
+                    <li><strong>Islands:</strong> Consecutive ranges of existing values</li>
+                </ul>
+
+                <h3>Finding Gaps in Sequences</h3>
+                <pre><code class="language-sql">-- Sample data: order IDs with gaps
+CREATE TABLE order_ids (id INTEGER PRIMARY KEY);
+INSERT INTO order_ids VALUES (1), (2), (3), (5), (6), (10), (11), (12), (15);
+
+-- Find gaps in ID sequence
+WITH id_with_next AS (
+    SELECT
+        id,
+        LEAD(id) OVER (ORDER BY id) AS next_id
+    FROM order_ids
+)
+SELECT
+    id + 1 AS gap_start,
+    next_id - 1 AS gap_end,
+    next_id - id - 1 AS gap_size
+FROM id_with_next
+WHERE next_id - id > 1
+ORDER BY id;
+
+-- Result:
+-- gap_start | gap_end | gap_size
+-- ----------+---------+---------
+--         4 |       4 |       1
+--         7 |       9 |       3
+--        13 |      14 |       2</code></pre>
+
+                <h3>Finding Islands (Consecutive Groups)</h3>
+                <pre><code class="language-sql">-- Find consecutive ranges (islands)
+WITH grouped AS (
+    SELECT
+        id,
+        id - ROW_NUMBER() OVER (ORDER BY id) AS grp
+    FROM order_ids
+)
+SELECT
+    MIN(id) AS island_start,
+    MAX(id) AS island_end,
+    COUNT(*) AS island_size
+FROM grouped
+GROUP BY grp
+ORDER BY island_start;
+
+-- Result:
+-- island_start | island_end | island_size
+-- -------------+------------+------------
+--            1 |          3 |          3
+--            5 |          6 |          2
+--           10 |         12 |          3
+--           15 |         15 |          1</code></pre>
+
+                <div class="pattern-box">
+                    <strong>How it works:</strong> The trick is that for consecutive numbers,
+                    <code>value - ROW_NUMBER()</code> produces the same result. When there's a gap,
+                    this difference changes, creating a new group.
+                    <pre>
+ID:  1  2  3  5  6  10 11 12 15
+ROW: 1  2  3  4  5   6  7  8  9
+DIFF:0  0  0  1  1   4  4  4  6  (groups consecutive values)
+                    </pre>
+                </div>
+
+                <h3>Date-Based Islands: Finding Active Periods</h3>
+                <pre><code class="language-sql">-- Find consecutive days with orders
+WITH order_dates AS (
+    SELECT DISTINCT DATE(order_date) AS order_day
+    FROM orders
+    ORDER BY order_day
+),
+grouped AS (
+    SELECT
+        order_day,
+        order_day - (ROW_NUMBER() OVER (ORDER BY order_day))::INTEGER AS grp
+    FROM order_dates
+)
+SELECT
+    MIN(order_day) AS period_start,
+    MAX(order_day) AS period_end,
+    MAX(order_day) - MIN(order_day) + 1 AS consecutive_days
+FROM grouped
+GROUP BY grp
+ORDER BY period_start;</code></pre>
+            </section>
+
+            <!-- Section 4: Data Pivoting -->
+            <section>
+                <h2 id="pivoting">4. Data Pivoting (Rows to Columns)</h2>
+                <p>Pivoting transforms row data into columns, useful for creating summary reports and
+                   cross-tabulations.</p>
+
+                <h3>Method 1: CASE with Aggregation (Most Portable)</h3>
+                <pre><code class="language-sql">-- Monthly sales pivot table
+SELECT
+    EXTRACT(YEAR FROM order_date) AS year,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 1 THEN total_amount ELSE 0 END) AS jan,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 2 THEN total_amount ELSE 0 END) AS feb,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 3 THEN total_amount ELSE 0 END) AS mar,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 4 THEN total_amount ELSE 0 END) AS apr,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 5 THEN total_amount ELSE 0 END) AS may,
+    SUM(CASE WHEN EXTRACT(MONTH FROM order_date) = 6 THEN total_amount ELSE 0 END) AS jun,
+    -- ... continue for other months
+    SUM(total_amount) AS total
+FROM orders
+GROUP BY EXTRACT(YEAR FROM order_date)
+ORDER BY year;</code></pre>
+
+                <h3>Method 2: FILTER Clause (PostgreSQL 9.4+)</h3>
+                <p>Cleaner syntax using the FILTER clause:</p>
+
+                <pre><code class="language-sql">-- Sales by category per customer type
+SELECT
+    c.name AS category,
+    SUM(ol.quantity * ol.unit_price) FILTER (WHERE cu.customer_type = 'individual') AS individual_sales,
+    SUM(ol.quantity * ol.unit_price) FILTER (WHERE cu.customer_type = 'business') AS business_sales,
+    SUM(ol.quantity * ol.unit_price) FILTER (WHERE cu.customer_type = 'vip') AS vip_sales,
+    SUM(ol.quantity * ol.unit_price) AS total_sales
+FROM categories c
+JOIN products p ON c.id = p.category_id
+JOIN order_lines ol ON p.id = ol.product_id
+JOIN orders o ON ol.order_id = o.id
+JOIN customers cu ON o.customer_id = cu.id
+GROUP BY c.name
+ORDER BY total_sales DESC;</code></pre>
+
+                <h3>Method 3: crosstab() Function (tablefunc extension)</h3>
+                <pre><code class="language-sql">-- Enable the extension first
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+
+-- Dynamic pivot with crosstab
+SELECT * FROM crosstab(
+    $$
+    SELECT
+        customer_type,
+        TO_CHAR(order_date, 'Mon') AS month,
+        SUM(total_amount)::NUMERIC
+    FROM orders o
+    JOIN customers c ON o.customer_id = c.id
+    WHERE order_date >= '2024-01-01' AND order_date < '2024-04-01'
+    GROUP BY customer_type, TO_CHAR(order_date, 'Mon'), EXTRACT(MONTH FROM order_date)
+    ORDER BY customer_type, EXTRACT(MONTH FROM order_date)
+    $$,
+    $$ VALUES ('Jan'), ('Feb'), ('Mar') $$
+) AS ct(customer_type VARCHAR, jan NUMERIC, feb NUMERIC, mar NUMERIC);</code></pre>
+
+                <h3>Unpivoting: Columns to Rows</h3>
+                <p>The reverse operation - converting columns back to rows:</p>
+
+                <pre><code class="language-sql">-- Sample pivoted data
+CREATE TABLE quarterly_sales (
+    product VARCHAR(50),
+    q1_sales DECIMAL(10,2),
+    q2_sales DECIMAL(10,2),
+    q3_sales DECIMAL(10,2),
+    q4_sales DECIMAL(10,2)
+);
+
+-- Unpivot using UNION ALL
+SELECT product, 'Q1' AS quarter, q1_sales AS sales FROM quarterly_sales
+UNION ALL
+SELECT product, 'Q2', q2_sales FROM quarterly_sales
+UNION ALL
+SELECT product, 'Q3', q3_sales FROM quarterly_sales
+UNION ALL
+SELECT product, 'Q4', q4_sales FROM quarterly_sales
+ORDER BY product, quarter;
+
+-- Unpivot using LATERAL (more elegant)
+SELECT
+    qs.product,
+    x.quarter,
+    x.sales
+FROM quarterly_sales qs
+CROSS JOIN LATERAL (
+    VALUES
+        ('Q1', q1_sales),
+        ('Q2', q2_sales),
+        ('Q3', q3_sales),
+        ('Q4', q4_sales)
+) AS x(quarter, sales)
+ORDER BY product, quarter;</code></pre>
+            </section>
+
+            <!-- Section 5: Deduplication -->
+            <section>
+                <h2 id="deduplication">5. Deduplication Patterns</h2>
+                <p>Finding and handling duplicate records is a common data quality task.</p>
+
+                <h3>Finding Duplicates</h3>
+                <pre><code class="language-sql">-- Find duplicate emails in customers
+SELECT
+    email,
+    COUNT(*) AS duplicate_count,
+    ARRAY_AGG(id ORDER BY created_at) AS customer_ids,
+    MIN(created_at) AS first_created,
+    MAX(created_at) AS last_created
+FROM customers
+WHERE email IS NOT NULL
+GROUP BY email
+HAVING COUNT(*) > 1
+ORDER BY duplicate_count DESC;</code></pre>
+
+                <h3>Keeping Only One Record per Duplicate Group</h3>
+                <pre><code class="language-sql">-- Method 1: Using ROW_NUMBER to identify duplicates to delete
+WITH duplicates AS (
+    SELECT
+        id,
+        email,
+        ROW_NUMBER() OVER (
+            PARTITION BY email
+            ORDER BY created_at ASC  -- Keep oldest
+        ) AS rn
+    FROM customers
+    WHERE email IS NOT NULL
+)
+SELECT * FROM duplicates WHERE rn > 1;  -- These are duplicates to remove
+
+-- Method 2: Delete duplicates (keeping the oldest)
+DELETE FROM customers
+WHERE id IN (
+    SELECT id FROM (
+        SELECT
+            id,
+            ROW_NUMBER() OVER (
+                PARTITION BY email
+                ORDER BY created_at ASC
+            ) AS rn
+        FROM customers
+        WHERE email IS NOT NULL
+    ) sub
+    WHERE rn > 1
+);</code></pre>
+
+                <h3>Using DISTINCT ON for Deduplication</h3>
+                <pre><code class="language-sql">-- Create deduplicated view keeping most recent record per email
+CREATE VIEW customers_deduped AS
+SELECT DISTINCT ON (email)
+    id,
+    name,
+    email,
+    phone,
+    created_at
+FROM customers
+WHERE email IS NOT NULL
+ORDER BY email, created_at DESC;  -- Keep most recent</code></pre>
+
+                <div class="tip-box">
+                    <strong>Best Practice:</strong> Before deleting duplicates, always:
+                    <ol>
+                        <li>Run a SELECT first to see what will be affected</li>
+                        <li>Create a backup or use a transaction with ROLLBACK ready</li>
+                        <li>Define clear criteria for which record to keep (oldest, newest, most complete)</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Section 6: Date Range Operations -->
+            <section>
+                <h2 id="date-ranges">6. Date Range and Overlap Detection</h2>
+                <p>Working with date ranges and detecting overlaps is common in scheduling,
+                   booking systems, and validity periods.</p>
+
+                <h3>Detecting Overlapping Ranges</h3>
+                <pre><code class="language-sql">-- Sample: room bookings
+CREATE TABLE room_bookings (
+    id SERIAL PRIMARY KEY,
+    room_id INTEGER,
+    start_date DATE,
+    end_date DATE,
+    guest_name VARCHAR(100)
+);
+
+-- Find overlapping bookings for the same room
+SELECT
+    a.id AS booking1,
+    b.id AS booking2,
+    a.room_id,
+    a.start_date AS start1, a.end_date AS end1,
+    b.start_date AS start2, b.end_date AS end2,
+    a.guest_name AS guest1,
+    b.guest_name AS guest2
+FROM room_bookings a
+JOIN room_bookings b ON a.room_id = b.room_id
+    AND a.id < b.id  -- Avoid self-join and duplicates
+WHERE a.start_date <= b.end_date
+  AND a.end_date >= b.start_date;  -- Overlap condition</code></pre>
+
+                <div class="pattern-box">
+                    <strong>Overlap Logic:</strong> Two ranges [A_start, A_end] and [B_start, B_end] overlap if:
+                    <code>A_start <= B_end AND A_end >= B_start</code>
+                    <br><br>
+                    Non-overlap: <code>A_end < B_start OR A_start > B_end</code>
+                </div>
+
+                <h3>Using PostgreSQL Range Types</h3>
+                <p>PostgreSQL has built-in range types for more elegant range operations:</p>
+
+                <pre><code class="language-sql">-- Using daterange type
+CREATE TABLE promotions (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    valid_period DATERANGE,
+    discount_percent INTEGER
+);
+
+-- Insert with range literals
+INSERT INTO promotions (name, valid_period, discount_percent) VALUES
+    ('Summer Sale', '[2024-06-01, 2024-08-31]', 20),
+    ('Back to School', '[2024-08-15, 2024-09-15]', 15),
+    ('Holiday Special', '[2024-12-01, 2024-12-31]', 25);
+
+-- Find overlapping promotions using && operator
+SELECT
+    a.name AS promo1,
+    b.name AS promo2,
+    a.valid_period * b.valid_period AS overlap_period  -- Intersection
+FROM promotions a
+JOIN promotions b ON a.id < b.id
+WHERE a.valid_period && b.valid_period;  -- Overlaps operator
+
+-- Check if a date is within a range
+SELECT name, discount_percent
+FROM promotions
+WHERE valid_period @> DATE '2024-08-20';  -- Contains operator
+
+-- Find adjacent or overlapping ranges
+SELECT name, valid_period
+FROM promotions
+WHERE valid_period -|- '[2024-09-01, 2024-09-30]'::daterange  -- Adjacent to
+   OR valid_period && '[2024-09-01, 2024-09-30]'::daterange;  -- Overlaps</code></pre>
+
+                <h3>Merging Overlapping Ranges</h3>
+                <pre><code class="language-sql">-- Merge overlapping date ranges into continuous periods
+WITH RECURSIVE date_ranges AS (
+    -- Sample data
+    SELECT 1 AS id, DATE '2024-01-01' AS start_date, DATE '2024-01-10' AS end_date
+    UNION ALL SELECT 2, '2024-01-08', '2024-01-15'
+    UNION ALL SELECT 3, '2024-01-20', '2024-01-25'
+    UNION ALL SELECT 4, '2024-01-14', '2024-01-22'
+),
+ordered_ranges AS (
+    SELECT *,
+           ROW_NUMBER() OVER (ORDER BY start_date) AS rn
+    FROM date_ranges
+),
+merged AS (
+    SELECT start_date, end_date, rn
+    FROM ordered_ranges WHERE rn = 1
+
+    UNION ALL
+
+    SELECT
+        CASE
+            WHEN o.start_date <= m.end_date + 1 THEN m.start_date
+            ELSE o.start_date
+        END,
+        GREATEST(m.end_date, o.end_date),
+        o.rn
+    FROM merged m
+    JOIN ordered_ranges o ON o.rn = m.rn + 1
+)
+SELECT DISTINCT ON (end_date)
+    start_date, end_date
+FROM merged
+ORDER BY end_date, start_date;</code></pre>
+            </section>
+
+            <!-- Summary -->
+            <section>
+                <h2 id="summary">Summary</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Key Technique</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Recursive CTEs</td>
+                            <td>WITH RECURSIVE + UNION ALL</td>
+                            <td>Hierarchies, trees, sequences</td>
+                        </tr>
+                        <tr>
+                            <td>Top-N per Group</td>
+                            <td>ROW_NUMBER() + PARTITION BY</td>
+                            <td>Best/worst per category</td>
+                        </tr>
+                        <tr>
+                            <td>Gaps and Islands</td>
+                            <td>value - ROW_NUMBER()</td>
+                            <td>Finding sequences, missing data</td>
+                        </tr>
+                        <tr>
+                            <td>Pivoting</td>
+                            <td>CASE/FILTER + GROUP BY</td>
+                            <td>Cross-tabulation reports</td>
+                        </tr>
+                        <tr>
+                            <td>Deduplication</td>
+                            <td>ROW_NUMBER() or DISTINCT ON</td>
+                            <td>Data cleaning</td>
+                        </tr>
+                        <tr>
+                            <td>Date Ranges</td>
+                            <td>Range operators (&&, @>)</td>
+                            <td>Scheduling, booking systems</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Next:</strong> <a href="03_practical_sql_problem_solving_examples.html">Practice these patterns with hands-on exercises</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+</html>

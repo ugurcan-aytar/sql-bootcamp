@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 3: Advanced Table Features</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        span.underline {
+            text-decoration: underline;
+        }
+
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        ul.task-list {
+            list-style: none;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .feature-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .tip-box {
+            background-color: #d1e7dd;
+            border: 1px solid #198754;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_en.html" class="back-button">&larr; Back to Index</a>
+    <div class="language-switcher">
+        <a href="04_advanced_table_features.html" class="active">EN</a>
+        <a href="04_advanced_table_features_tr.html">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="day-3-advanced-table-features">Day 3: Advanced Table Features</h1>
+                <h2 id="session-4-modern-sql-table-capabilities">Modern SQL Table Capabilities</h2>
+                <p>This session covers advanced table features in PostgreSQL that help you design more efficient
+                   and maintainable databases. These features automate calculations, improve performance,
+                   and provide better control over your data structures.</p>
+            </section>
+
+            <!-- Generated Columns -->
+            <section>
+                <h3 id="generated-columns">Generated Columns (Computed Columns)</h3>
+                <p>A <strong>generated column</strong> is a column whose value is automatically computed from other
+                   columns in the same row. Instead of calculating values in your application or queries,
+                   the database maintains them automatically.</p>
+
+                <div class="feature-box">
+                    <strong>Key Benefits:</strong>
+                    <ul>
+                        <li>Eliminates redundant calculations in queries</li>
+                        <li>Ensures data consistency (computed value always matches source columns)</li>
+                        <li>Can be indexed for fast lookups</li>
+                        <li>Reduces application complexity</li>
+                    </ul>
+                </div>
+
+                <h4 id="generated-column-syntax">Syntax</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE table_name (
+    column1 data_type,
+    column2 data_type,
+    computed_column data_type GENERATED ALWAYS AS (expression) STORED
+);</code></pre>
+                </div>
+
+                <p><strong>STORED</strong> means the value is calculated when the row is inserted or updated,
+                   and stored on disk. PostgreSQL only supports STORED generated columns (not virtual ones).</p>
+
+                <h4 id="generated-column-examples">Examples</h4>
+
+                <p><strong>Example 1: Full Name from First and Last Name</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE contacts (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    full_name VARCHAR(101) GENERATED ALWAYS AS (first_name || ' ' || last_name) STORED,
+    email VARCHAR(255)
+);
+
+INSERT INTO contacts (first_name, last_name, email)
+VALUES ('John', 'Smith', 'john@example.com');
+
+SELECT * FROM contacts;
+-- full_name is automatically 'John Smith'</code></pre>
+                </div>
+
+                <p><strong>Example 2: Order Line Total Price</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Similar to order_lines in bootcamp_db
+CREATE TABLE order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL,
+    discount_percent DECIMAL(5,2) DEFAULT 0,
+    -- Automatically calculated line total
+    line_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        quantity * unit_price * (1 - discount_percent / 100)
+    ) STORED
+);
+
+INSERT INTO order_items (order_id, product_id, quantity, unit_price, discount_percent)
+VALUES (1, 101, 3, 99.99, 10);
+
+SELECT quantity, unit_price, discount_percent, line_total FROM order_items;
+-- line_total = 3 * 99.99 * 0.90 = 269.97</code></pre>
+                </div>
+
+                <p><strong>Example 3: Age from Birth Date</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE employees_v2 (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    birth_date DATE,
+    -- Age calculated from birth_date
+    age INTEGER GENERATED ALWAYS AS (
+        DATE_PART('year', AGE(birth_date))::INTEGER
+    ) STORED,
+    hire_date DATE
+);
+
+INSERT INTO employees_v2 (first_name, last_name, birth_date, hire_date)
+VALUES ('Jane', 'Doe', '1990-05-15', '2020-01-10');
+
+SELECT first_name, birth_date, age FROM employees_v2;
+-- age automatically calculated based on current date</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Limitations of Generated Columns:</strong>
+                    <ul>
+                        <li>Cannot reference other generated columns</li>
+                        <li>Cannot reference columns from other tables</li>
+                        <li>Cannot use subqueries or volatile functions (like RANDOM())</li>
+                        <li>Cannot be directly updated - must update source columns</li>
+                    </ul>
+                </div>
+
+                <h4 id="indexing-generated-columns">Indexing Generated Columns</h4>
+                <p>You can create indexes on generated columns for fast lookups:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Index on full_name for fast name searches
+CREATE INDEX idx_contacts_full_name ON contacts(full_name);
+
+-- Now this query uses the index
+SELECT * FROM contacts WHERE full_name = 'John Smith';
+
+-- Index on line_total for reporting
+CREATE INDEX idx_order_items_line_total ON order_items(line_total);</code></pre>
+                </div>
+            </section>
+
+            <!-- Identity Columns -->
+            <section>
+                <h3 id="identity-columns">Identity Columns (Modern Auto-Increment)</h3>
+                <p><strong>Identity columns</strong> are the SQL standard way to create auto-incrementing columns.
+                   They provide more control than the older SERIAL type and are recommended for new designs.</p>
+
+                <h4 id="identity-vs-serial">Identity vs SERIAL Comparison</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>SERIAL</th>
+                            <th>IDENTITY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SQL Standard</td>
+                            <td>PostgreSQL-specific</td>
+                            <td>SQL:2003 standard</td>
+                        </tr>
+                        <tr>
+                            <td>Sequence ownership</td>
+                            <td>Separate sequence object</td>
+                            <td>Tied to column</td>
+                        </tr>
+                        <tr>
+                            <td>DROP behavior</td>
+                            <td>Must drop sequence separately</td>
+                            <td>Sequence dropped with column</td>
+                        </tr>
+                        <tr>
+                            <td>Override insert</td>
+                            <td>Always allowed</td>
+                            <td>Controlled (ALWAYS vs BY DEFAULT)</td>
+                        </tr>
+                        <tr>
+                            <td>Portability</td>
+                            <td>PostgreSQL only</td>
+                            <td>Works in SQL Server, Oracle, etc.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 id="identity-syntax">Identity Column Syntax</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- GENERATED ALWAYS: Cannot override the value (strict)
+CREATE TABLE products_new (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2)
+);
+
+-- GENERATED BY DEFAULT: Can override if needed (flexible)
+CREATE TABLE orders_new (
+    id INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    order_date DATE DEFAULT CURRENT_DATE
+);</code></pre>
+                </div>
+
+                <h4 id="identity-options">Identity Column Options</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Full syntax with options
+CREATE TABLE invoices (
+    invoice_id INTEGER GENERATED ALWAYS AS IDENTITY (
+        START WITH 1000      -- First value
+        INCREMENT BY 1       -- Step
+        MINVALUE 1000        -- Minimum allowed
+        MAXVALUE 9999999     -- Maximum allowed
+        NO CYCLE             -- Don't restart at max (error instead)
+        CACHE 10             -- Pre-allocate 10 values for performance
+    ) PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    amount DECIMAL(12,2),
+    invoice_date DATE DEFAULT CURRENT_DATE
+);</code></pre>
+                </div>
+
+                <h4 id="identity-insert">Inserting with Identity Columns</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Normal insert (id auto-generated)
+INSERT INTO products_new (name, price) VALUES ('Laptop', 999.99);
+
+-- With GENERATED ALWAYS, this fails:
+INSERT INTO products_new (id, name, price) VALUES (100, 'Phone', 599.99);
+-- ERROR: cannot insert into column "id"
+
+-- Override with OVERRIDING SYSTEM VALUE (if you really need to)
+INSERT INTO products_new (id, name, price)
+OVERRIDING SYSTEM VALUE
+VALUES (100, 'Phone', 599.99);
+
+-- With GENERATED BY DEFAULT, direct insert works:
+INSERT INTO orders_new (id, customer_id) VALUES (5000, 1);</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Best Practice:</strong> Use <code>GENERATED ALWAYS AS IDENTITY</code> for primary keys
+                    where you never want manual ID assignment. Use <code>GENERATED BY DEFAULT</code> when you need
+                    flexibility for data migrations or special cases.
+                </div>
+            </section>
+
+            <!-- Temporary Tables -->
+            <section>
+                <h3 id="temporary-tables">Temporary Tables</h3>
+                <p><strong>Temporary tables</strong> exist only for the duration of your session or transaction.
+                   They are useful for storing intermediate results, staging data, or complex calculations.</p>
+
+                <h4 id="temp-table-syntax">Creating Temporary Tables</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Basic temporary table (exists for session)
+CREATE TEMPORARY TABLE temp_calculations (
+    id SERIAL PRIMARY KEY,
+    customer_id INTEGER,
+    total_amount DECIMAL(12,2),
+    calculation_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Short form
+CREATE TEMP TABLE temp_results (
+    product_id INTEGER,
+    qty_sold INTEGER
+);</code></pre>
+                </div>
+
+                <h4 id="temp-table-scope">Controlling Table Lifetime</h4>
+                <p>You can control when temporary table data is cleared using <code>ON COMMIT</code>:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Data deleted at end of each transaction (rows cleared, table remains)
+CREATE TEMP TABLE temp_batch_data (
+    item_id INTEGER,
+    status VARCHAR(20)
+) ON COMMIT DELETE ROWS;
+
+-- Table dropped at end of transaction
+CREATE TEMP TABLE temp_transaction_only (
+    calc_id INTEGER,
+    result DECIMAL(10,2)
+) ON COMMIT DROP;
+
+-- Default: Data preserved until session ends (PRESERVE ROWS)
+CREATE TEMP TABLE temp_session_data (
+    data_id INTEGER,
+    value TEXT
+) ON COMMIT PRESERVE ROWS;</code></pre>
+                </div>
+
+                <h4 id="temp-table-use-cases">Practical Use Cases</h4>
+
+                <p><strong>Use Case 1: Staging Data for Complex Reports</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Create temp table to hold intermediate results
+CREATE TEMP TABLE temp_monthly_sales AS
+SELECT
+    DATE_TRUNC('month', o.order_date) AS month,
+    c.customer_type,
+    SUM(ol.quantity * ol.unit_price) AS total_sales
+FROM orders o
+JOIN customers c ON o.customer_id = c.id
+JOIN order_lines ol ON o.id = ol.order_id
+WHERE o.order_date >= '2024-01-01'
+GROUP BY DATE_TRUNC('month', o.order_date), c.customer_type;
+
+-- Now use the temp table for multiple queries
+SELECT * FROM temp_monthly_sales WHERE customer_type = 'vip';
+SELECT month, SUM(total_sales) FROM temp_monthly_sales GROUP BY month;</code></pre>
+                </div>
+
+                <p><strong>Use Case 2: Batch Processing with Transaction Scope</strong></p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">BEGIN;
+
+-- Temp table cleared after each transaction
+CREATE TEMP TABLE temp_updates (
+    product_id INTEGER,
+    new_price DECIMAL(10,2)
+) ON COMMIT DELETE ROWS;
+
+-- Load data to process
+INSERT INTO temp_updates VALUES (1, 99.99), (2, 149.99), (3, 199.99);
+
+-- Process the batch
+UPDATE products p
+SET price = t.new_price
+FROM temp_updates t
+WHERE p.id = t.product_id;
+
+COMMIT;
+-- temp_updates is now empty but still exists</code></pre>
+                </div>
+
+                <div class="feature-box">
+                    <strong>Temporary Table Features:</strong>
+                    <ul>
+                        <li>Visible only to your session (other users can't see them)</li>
+                        <li>Can have the same name as permanent tables (temp takes precedence)</li>
+                        <li>Can have indexes, constraints, and triggers</li>
+                        <li>Not logged to WAL by default (faster writes)</li>
+                        <li>Automatically dropped when session ends</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Unlogged Tables -->
+            <section>
+                <h3 id="unlogged-tables">Unlogged Tables</h3>
+                <p><strong>Unlogged tables</strong> are permanent tables that don't write to the Write-Ahead Log (WAL).
+                   This makes them significantly faster for writes, but data is lost if the server crashes.</p>
+
+                <h4 id="unlogged-syntax">Creating Unlogged Tables</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE UNLOGGED TABLE session_cache (
+    session_id VARCHAR(64) PRIMARY KEY,
+    user_id INTEGER,
+    data JSONB,
+    expires_at TIMESTAMP
+);
+
+CREATE UNLOGGED TABLE import_staging (
+    row_num SERIAL,
+    raw_data TEXT,
+    processed BOOLEAN DEFAULT FALSE,
+    error_message TEXT
+);</code></pre>
+                </div>
+
+                <h4 id="unlogged-use-cases">When to Use Unlogged Tables</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Good Use Cases</th>
+                            <th>Bad Use Cases</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Session/cache data</td>
+                            <td>Financial transactions</td>
+                        </tr>
+                        <tr>
+                            <td>Import staging areas</td>
+                            <td>Order records</td>
+                        </tr>
+                        <tr>
+                            <td>Temporary calculation results</td>
+                            <td>Customer data</td>
+                        </tr>
+                        <tr>
+                            <td>Queue tables (if loss acceptable)</td>
+                            <td>Audit logs</td>
+                        </tr>
+                        <tr>
+                            <td>Test/development data</td>
+                            <td>Any critical business data</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 id="unlogged-performance">Performance Comparison</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Regular table (WAL logged)
+CREATE TABLE logged_test (id SERIAL, data TEXT);
+
+-- Unlogged table (no WAL)
+CREATE UNLOGGED TABLE unlogged_test (id SERIAL, data TEXT);
+
+-- Insert performance: Unlogged can be 2-10x faster for bulk inserts
+INSERT INTO unlogged_test (data)
+SELECT 'test data ' || generate_series(1, 100000);</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Critical Warning:</strong> Unlogged tables are truncated (emptied) after a database crash
+                    or unclean shutdown. Never use them for data you cannot afford to lose!
+                </div>
+
+                <h4 id="convert-logged">Converting Between Logged and Unlogged</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Convert regular table to unlogged (requires ACCESS EXCLUSIVE lock)
+ALTER TABLE import_staging SET UNLOGGED;
+
+-- Convert unlogged table back to regular (logged)
+ALTER TABLE import_staging SET LOGGED;</code></pre>
+                </div>
+            </section>
+
+            <!-- Table Cloning -->
+            <section>
+                <h3 id="table-cloning">Table Cloning (CREATE TABLE ... LIKE)</h3>
+                <p>The <code>CREATE TABLE ... LIKE</code> statement creates a new table with the same structure
+                   as an existing table. This is useful for creating backup tables, staging tables, or partitions.</p>
+
+                <h4 id="like-syntax">Basic Syntax</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Create table with same columns and data types
+CREATE TABLE customers_backup (LIKE customers);
+
+-- This creates an empty table with the same column definitions
+-- but NO data, NO indexes, NO constraints (by default)</code></pre>
+                </div>
+
+                <h4 id="like-options">INCLUDING Options</h4>
+                <p>You can include various properties from the source table:</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Include specific features
+CREATE TABLE orders_archive (LIKE orders INCLUDING DEFAULTS);
+CREATE TABLE products_copy (LIKE products INCLUDING INDEXES);
+CREATE TABLE customers_clone (LIKE customers INCLUDING CONSTRAINTS);
+
+-- Include everything
+CREATE TABLE full_backup (LIKE orders INCLUDING ALL);
+
+-- Include multiple options
+CREATE TABLE staging_orders (
+    LIKE orders
+    INCLUDING DEFAULTS
+    INCLUDING CONSTRAINTS
+    EXCLUDING INDEXES  -- Don't copy indexes (faster bulk inserts)
+);</code></pre>
+                </div>
+
+                <h4 id="like-options-table">Available INCLUDING/EXCLUDING Options</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>What It Includes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>DEFAULTS</code></td>
+                            <td>Column default values</td>
+                        </tr>
+                        <tr>
+                            <td><code>CONSTRAINTS</code></td>
+                            <td>CHECK constraints (not FK)</td>
+                        </tr>
+                        <tr>
+                            <td><code>INDEXES</code></td>
+                            <td>Indexes (including PRIMARY KEY)</td>
+                        </tr>
+                        <tr>
+                            <td><code>STORAGE</code></td>
+                            <td>Column storage settings</td>
+                        </tr>
+                        <tr>
+                            <td><code>COMMENTS</code></td>
+                            <td>Column and table comments</td>
+                        </tr>
+                        <tr>
+                            <td><code>GENERATED</code></td>
+                            <td>Generated column expressions</td>
+                        </tr>
+                        <tr>
+                            <td><code>IDENTITY</code></td>
+                            <td>Identity column specifications</td>
+                        </tr>
+                        <tr>
+                            <td><code>STATISTICS</code></td>
+                            <td>Extended statistics</td>
+                        </tr>
+                        <tr>
+                            <td><code>ALL</code></td>
+                            <td>All of the above</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 id="like-practical">Practical Examples</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Create archive table for old orders
+CREATE TABLE orders_2023_archive (LIKE orders INCLUDING ALL);
+
+-- Copy old data
+INSERT INTO orders_2023_archive
+SELECT * FROM orders WHERE order_date < '2024-01-01';
+
+-- Create staging table for imports (no indexes for fast loading)
+CREATE TABLE products_import_staging (
+    LIKE products
+    INCLUDING DEFAULTS
+    INCLUDING CONSTRAINTS
+    EXCLUDING INDEXES
+);
+
+-- After loading, create indexes manually if needed
+CREATE INDEX idx_staging_sku ON products_import_staging(sku);</code></pre>
+                </div>
+            </section>
+
+            <!-- Deferrable Constraints -->
+            <section>
+                <h3 id="deferrable-constraints">Deferrable Constraints</h3>
+                <p><strong>Deferrable constraints</strong> allow you to delay constraint checking until the end
+                   of a transaction. This is useful when you need to temporarily violate constraints during
+                   a series of operations.</p>
+
+                <h4 id="deferrable-problem">The Problem</h4>
+                <p>Consider a scenario where you need to swap two employees' IDs (perhaps for organizational restructuring):</p>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- This fails with regular UNIQUE constraint!
+-- Employee 1 has ID 100, Employee 2 has ID 200
+-- We want to swap them
+
+UPDATE employees SET id = 200 WHERE id = 100;  -- FAILS! 200 already exists
+UPDATE employees SET id = 100 WHERE id = 200;  -- Would fail anyway</code></pre>
+                </div>
+
+                <h4 id="deferrable-syntax">Creating Deferrable Constraints</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">CREATE TABLE departments_v2 (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    manager_id INTEGER,
+    -- Deferrable unique constraint
+    CONSTRAINT uk_dept_manager UNIQUE (manager_id)
+        DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE project_assignments (
+    employee_id INTEGER,
+    project_id INTEGER,
+    role VARCHAR(50),
+    -- Deferrable foreign key
+    CONSTRAINT fk_employee FOREIGN KEY (employee_id)
+        REFERENCES employees(id)
+        DEFERRABLE INITIALLY IMMEDIATE,
+    PRIMARY KEY (employee_id, project_id)
+);</code></pre>
+                </div>
+
+                <h4 id="deferrable-modes">Constraint Modes</h4>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Mode</th>
+                            <th>When Checked</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>NOT DEFERRABLE</code></td>
+                            <td>Immediately (default)</td>
+                            <td>Normal constraints</td>
+                        </tr>
+                        <tr>
+                            <td><code>DEFERRABLE INITIALLY IMMEDIATE</code></td>
+                            <td>Immediately, but can be deferred</td>
+                            <td>Flexible - default immediate</td>
+                        </tr>
+                        <tr>
+                            <td><code>DEFERRABLE INITIALLY DEFERRED</code></td>
+                            <td>At transaction commit</td>
+                            <td>Complex multi-step operations</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 id="deferrable-usage">Using Deferrable Constraints</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Set constraint mode for current transaction
+BEGIN;
+
+-- Defer all deferrable constraints
+SET CONSTRAINTS ALL DEFERRED;
+
+-- Or defer specific constraint
+SET CONSTRAINTS uk_dept_manager DEFERRED;
+
+-- Now we can temporarily violate the constraint
+UPDATE departments_v2 SET manager_id = 999 WHERE id = 1;  -- temp value
+UPDATE departments_v2 SET manager_id = 1 WHERE id = 2;    -- was manager of dept 1
+UPDATE departments_v2 SET manager_id = 2 WHERE id = 1;    -- swap complete
+
+-- Constraint checked here - must be valid now
+COMMIT;</code></pre>
+                </div>
+
+                <h4 id="deferrable-fk">Deferrable Foreign Keys Example</h4>
+                <div class="sourceCode">
+                    <pre><code class="language-sql">-- Circular reference scenario
+CREATE TABLE nodes (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(50),
+    parent_id INTEGER,
+    CONSTRAINT fk_parent FOREIGN KEY (parent_id)
+        REFERENCES nodes(id)
+        DEFERRABLE INITIALLY DEFERRED
+);
+
+BEGIN;
+-- Insert nodes that reference each other
+INSERT INTO nodes (id, name, parent_id) VALUES (1, 'Root', NULL);
+INSERT INTO nodes (id, name, parent_id) VALUES (2, 'Child', 1);
+INSERT INTO nodes (id, name, parent_id) VALUES (3, 'Grandchild', 2);
+-- At commit, all references are valid
+COMMIT;</code></pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>When to Use Deferrable Constraints:</strong>
+                    <ul>
+                        <li>Swapping unique values between rows</li>
+                        <li>Inserting data with circular references</li>
+                        <li>Complex data migrations</li>
+                        <li>Bulk operations that temporarily violate constraints</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h3 id="practice-exercises">Practice What You Learned</h3>
+                <p>Ready to master advanced table features? Practice with hands-on exercises covering generated columns,
+                   identity columns, temporary tables, and more using our bootcamp database.</p>
+                <p><a href="04_advanced_table_features_examples.html" class="btn btn-primary">Go to Practical Examples &rarr;</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+</html>

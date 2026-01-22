@@ -415,6 +415,103 @@ Execution Time: 0.987 ms</code></pre>
 <span class="comment">-- Uretir: (region,product), (region), (product), ()</span></code></pre>
         </div>
 
+        <!-- Yaygin SQL Kaliplari -->
+        <h3 class="section-title">Yaygin SQL Kaliplari</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Recursive CTE'ler (Hiyerarsiler)</h5>
+                    <pre><code><span class="keyword">WITH RECURSIVE</span> tree <span class="keyword">AS</span> (
+    <span class="comment">-- Capa: baslangic noktasi</span>
+    <span class="keyword">SELECT</span> id, name, parent_id, 1 <span class="keyword">AS</span> lvl
+    <span class="keyword">FROM</span> categories
+    <span class="keyword">WHERE</span> parent_id <span class="keyword">IS NULL</span>
+
+    <span class="keyword">UNION ALL</span>
+
+    <span class="comment">-- Recursive: kendine birlestir</span>
+    <span class="keyword">SELECT</span> c.id, c.name, c.parent_id, t.lvl + 1
+    <span class="keyword">FROM</span> categories c
+    <span class="keyword">JOIN</span> tree t <span class="keyword">ON</span> c.parent_id = t.id
+)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> tree;</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Grup Basina En Iyi N</h5>
+                    <pre><code><span class="comment">-- ROW_NUMBER yontemi</span>
+<span class="keyword">WITH</span> ranked <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> *,
+        <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+            <span class="keyword">PARTITION BY</span> category_id
+            <span class="keyword">ORDER BY</span> price <span class="keyword">DESC</span>
+        ) <span class="keyword">AS</span> rn
+    <span class="keyword">FROM</span> products
+)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ranked <span class="keyword">WHERE</span> rn <= 3;
+
+<span class="comment">-- DISTINCT ON (En Iyi 1, PostgreSQL)</span>
+<span class="keyword">SELECT DISTINCT ON</span> (customer_id)
+    * <span class="keyword">FROM</span> orders
+<span class="keyword">ORDER BY</span> customer_id, order_date <span class="keyword">DESC</span>;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Bosluk ve Ada (Ardisik Gruplar)</h5>
+                    <pre><code><span class="comment">-- Adalari bul (ardisik degerler)</span>
+<span class="keyword">WITH</span> grouped <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> id,
+        id - <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+            <span class="keyword">ORDER BY</span> id
+        ) <span class="keyword">AS</span> grp
+    <span class="keyword">FROM</span> order_ids
+)
+<span class="keyword">SELECT</span>
+    <span class="function">MIN</span>(id) <span class="keyword">AS</span> baslangic_id,
+    <span class="function">MAX</span>(id) <span class="keyword">AS</span> bitis_id
+<span class="keyword">FROM</span> grouped
+<span class="keyword">GROUP BY</span> grp;</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Veri Pivotlama (Satirdan Sutuna)</h5>
+                    <pre><code><span class="comment">-- FILTER yan tumcesiyle</span>
+<span class="keyword">SELECT</span>
+    kategori,
+    <span class="function">SUM</span>(tutar) <span class="keyword">FILTER</span> (
+        <span class="keyword">WHERE</span> ay = 1
+    ) <span class="keyword">AS</span> oca,
+    <span class="function">SUM</span>(tutar) <span class="keyword">FILTER</span> (
+        <span class="keyword">WHERE</span> ay = 2
+    ) <span class="keyword">AS</span> sub
+<span class="keyword">FROM</span> satislar
+<span class="keyword">GROUP BY</span> kategori;
+
+<span class="comment">-- CASE kullanarak</span>
+<span class="function">SUM</span>(<span class="keyword">CASE WHEN</span> ay=1 <span class="keyword">THEN</span> tutar <span class="keyword">END</span>)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Tarih Araligi Cakisma Tespiti</h5>
+            <pre><code><span class="comment">-- Iki aralik cakisir eger: baslangic1 <= bitis2 AND bitis1 >= baslangic2</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> rezervasyonlar a
+<span class="keyword">JOIN</span> rezervasyonlar b <span class="keyword">ON</span> a.oda_id = b.oda_id <span class="keyword">AND</span> a.id < b.id
+<span class="keyword">WHERE</span> a.baslangic <= b.bitis <span class="keyword">AND</span> a.bitis >= b.baslangic;
+
+<span class="comment">-- PostgreSQL daterange tipi kullanarak</span>
+<span class="keyword">WHERE</span> daterange(baslangic1, bitis1) && daterange(baslangic2, bitis2)  <span class="comment">-- Cakisir</span>
+<span class="keyword">WHERE</span> daterange(baslangic1, bitis1) @> <span class="string">'2024-06-15'</span>::date          <span class="comment">-- Tarihi icerir</span></code></pre>
+        </div>
+
         <!-- Performans En Iyi Uygulamalari -->
         <h3 class="section-title">Performans En Iyi Uygulamalari (Performance Best Practices)</h3>
 

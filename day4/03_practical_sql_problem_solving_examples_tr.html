@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 4: Pratik SQL Problem Cozme - Ornekler</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .exercise-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .solution-box {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        .output-display {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .toggle-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .toggle-btn:hover {
+            background-color: #218838;
+        }
+        .challenge-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .concept-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-button">&larr; Indekse Don</a>
+    <div class="language-switcher">
+        <a href="03_practical_sql_problem_solving_examples.html">EN</a>
+        <a href="03_practical_sql_problem_solving_examples_tr.html" class="active">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="practical-examples">Pratik SQL Problem Cozme - Alistirmalar</h1>
+                <p><a href="03_practical_sql_problem_solving_tr.html">&larr; Pratik SQL Problem Cozme Dersine Don</a></p>
+                <p>Bu alistirmalar, yaygin SQL problem cozme kaliplarini pratik yapmak icin bootcamp_db semasini
+                   kullanmaktadir. Her alistirma, karsilasabileceginiz gercek dunya senaryosunu temsil eder.</p>
+            </section>
+
+            <!-- Alistirma 1: Recursive CTE - Kategori Hiyerarsisi -->
+            <section>
+                <h2 id="exercise-1">Alistirma 1: Recursive CTE'ler</h2>
+
+                <div class="concept-box">
+                    <strong>Senaryo:</strong> Categories tablosu, bir hiyerarsi olusturan kendi kendine referans
+                    veren parent_id sutununa sahiptir (ornegin, Elektronik > Telefonlar > Akilli Telefonlar).
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.1: Kategori Agaci Olusturma</h4>
+                    <p><strong>Hedef:</strong> Tum kategorileri kokten yapraga tam yollariyla birlikte gosterin.</p>
+                    <p><strong>Gorev:</strong> Her kategoriyi tam hiyerarsik yoluyla gosteren (ornegin,
+                       "Elektronik > Telefonlar > Akilli Telefonlar") bir recursive CTE yazin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">WITH RECURSIVE category_tree AS (
+    -- Capa: kok kategoriler (ebeveyni yok)
+    SELECT
+        id,
+        name,
+        parent_id,
+        1 AS level,
+        name AS full_path,
+        ARRAY[id] AS path_ids
+    FROM categories
+    WHERE parent_id IS NULL
+
+    UNION ALL
+
+    -- Recursive: alt kategoriler
+    SELECT
+        c.id,
+        c.name,
+        c.parent_id,
+        ct.level + 1,
+        ct.full_path || ' > ' || c.name,
+        ct.path_ids || c.id
+    FROM categories c
+    JOIN category_tree ct ON c.parent_id = ct.id
+)
+SELECT
+    REPEAT('  ', level - 1) || name AS kategori,
+    level,
+    full_path
+FROM category_tree
+ORDER BY path_ids;</code></pre>
+
+                        <div class="output-display">
+kategori              | level | full_path
+----------------------+-------+--------------------------------
+Elektronik            |     1 | Elektronik
+  Telefonlar          |     2 | Elektronik > Telefonlar
+    Akilli Telefonlar |     3 | Elektronik > Telefonlar > Akilli Telefonlar
+  Bilgisayarlar       |     2 | Elektronik > Bilgisayarlar
+    Laptoplar         |     3 | Elektronik > Bilgisayarlar > Laptoplar
+Giyim                 |     1 | Giyim
+  Erkek Giyim         |     2 | Giyim > Erkek Giyim
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.2: Tum Alt Kategorileri Bulma</h4>
+                    <p><strong>Hedef:</strong> Verilen bir kategori icin herhangi bir derinlikteki tum alt kategorilerini bulun.</p>
+                    <p><strong>Gorev:</strong> 'Elektronik' kategorisindeki VE tum alt kategorilerindeki tum urunleri
+                       donduren bir sorgu yazin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">-- Once 'Elektronik' altindaki tum kategori ID'lerini al
+WITH RECURSIVE electronics_tree AS (
+    -- Elektronik ile basla
+    SELECT id, name
+    FROM categories
+    WHERE name = 'Electronics'
+
+    UNION ALL
+
+    -- Tum cocuklari al
+    SELECT c.id, c.name
+    FROM categories c
+    JOIN electronics_tree et ON c.parent_id = et.id
+)
+-- Simdi bu kategorilerin herhangi birindeki urunleri al
+SELECT
+    p.id,
+    p.name AS urun_adi,
+    p.price,
+    c.name AS kategori
+FROM products p
+JOIN categories c ON p.category_id = c.id
+WHERE p.category_id IN (SELECT id FROM electronics_tree)
+ORDER BY c.name, p.name;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.3: Tarih Serisi Uretme</h4>
+                    <p><strong>Hedef:</strong> Siparis olmayan gunleri bulmak icin bir tarih serisi uretin.</p>
+                    <p><strong>Gorev:</strong> Recursive CTE kullanarak, Ocak 2024'te siparis olmayan tum gunleri bulun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">WITH RECURSIVE date_series AS (
+    SELECT DATE '2024-01-01' AS gun
+    UNION ALL
+    SELECT gun + INTERVAL '1 day'
+    FROM date_series
+    WHERE gun < DATE '2024-01-31'
+),
+order_dates AS (
+    SELECT DISTINCT DATE(order_date) AS siparis_gunu
+    FROM orders
+    WHERE order_date >= '2024-01-01' AND order_date < '2024-02-01'
+)
+SELECT
+    ds.gun AS siparissiz_tarih,
+    TO_CHAR(ds.gun, 'Day') AS gun_adi
+FROM date_series ds
+LEFT JOIN order_dates od ON ds.gun = od.siparis_gunu
+WHERE od.siparis_gunu IS NULL
+ORDER BY ds.gun;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 2: Grup Basina En Iyi N -->
+            <section>
+                <h2 id="exercise-2">Alistirma 2: Grup Basina En Iyi N</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.1: Gelire Gore Kategori Basina En Iyi 3 Urun</h4>
+                    <p><strong>Hedef:</strong> Toplam gelire gore her kategorideki en cok satan 3 urunu bulun.</p>
+                    <p><strong>Gorev:</strong> Urun adi, kategori, toplam gelir ve kategori icindeki siralamayi gosterin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">WITH product_revenue AS (
+    SELECT
+        p.id AS product_id,
+        p.name AS urun_adi,
+        c.name AS kategori_adi,
+        SUM(ol.quantity * ol.unit_price) AS toplam_gelir,
+        COUNT(DISTINCT ol.order_id) AS siparis_sayisi
+    FROM products p
+    JOIN categories c ON p.category_id = c.id
+    JOIN order_lines ol ON p.id = ol.product_id
+    GROUP BY p.id, p.name, c.name
+),
+ranked AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY kategori_adi
+            ORDER BY toplam_gelir DESC
+        ) AS kategori_sirasi
+    FROM product_revenue
+)
+SELECT
+    kategori_adi,
+    urun_adi,
+    toplam_gelir,
+    siparis_sayisi,
+    kategori_sirasi
+FROM ranked
+WHERE kategori_sirasi <= 3
+ORDER BY kategori_adi, kategori_sirasi;</code></pre>
+
+                        <div class="output-display">
+kategori_adi  | urun_adi        | toplam_gelir | siparis_sayisi | kategori_sirasi
+--------------+-----------------+--------------+----------------+----------------
+Giyim         | Kis Montu       |     8542.50  |            57  |              1
+Giyim         | Kosu Ayakkabisi |     6234.00  |            89  |              2
+Giyim         | Pamuklu Tisort  |     4521.75  |           124  |              3
+Elektronik    | Akilli Telefon  |    45678.99  |            42  |              1
+Elektronik    | Laptop Elite    |    38920.00  |            28  |              2
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.2: Musteri Basina En Son Siparis</h4>
+                    <p><strong>Hedef:</strong> Her musteri icin en son siparisi alin.</p>
+                    <p><strong>Gorev:</strong> Musteri adi, son siparis tarihi, siparis toplami ve siparis durumunu gosterin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">-- Yontem 1: DISTINCT ON (PostgreSQL'e ozel, cok verimli)
+SELECT DISTINCT ON (c.id)
+    c.id AS musteri_id,
+    c.name AS musteri_adi,
+    o.id AS siparis_id,
+    o.order_date,
+    o.total_amount,
+    o.status
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+ORDER BY c.id, o.order_date DESC;
+
+-- Yontem 2: ROW_NUMBER (veritabanlari arasinda tasinabilir)
+WITH ranked_orders AS (
+    SELECT
+        c.id AS musteri_id,
+        c.name AS musteri_adi,
+        o.id AS siparis_id,
+        o.order_date,
+        o.total_amount,
+        o.status,
+        ROW_NUMBER() OVER (
+            PARTITION BY c.id
+            ORDER BY o.order_date DESC
+        ) AS rn
+    FROM customers c
+    JOIN orders o ON c.id = o.customer_id
+)
+SELECT musteri_id, musteri_adi, siparis_id, order_date, total_amount, status
+FROM ranked_orders
+WHERE rn = 1
+ORDER BY musteri_adi;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.3: Bu Ayin En Cok Harcayan 5 Musterisi</h4>
+                    <p><strong>Hedef:</strong> Mevcut ayda en cok harcayan 5 musteriyi bulun.</p>
+                    <p><strong>Gorev:</strong> Toplam harcama, siparis sayisi ve ortalama siparis degerini dahil edin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Cozumu Goster</button>
+                    <div id="solution2_3" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    c.id,
+    c.name,
+    c.customer_type,
+    COUNT(o.id) AS siparis_sayisi,
+    SUM(o.total_amount) AS toplam_harcama,
+    ROUND(AVG(o.total_amount), 2) AS ort_siparis_degeri
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.order_date >= DATE_TRUNC('month', CURRENT_DATE)
+  AND o.order_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month'
+GROUP BY c.id, c.name, c.customer_type
+ORDER BY toplam_harcama DESC
+LIMIT 5;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 3: Bosluk ve Ada -->
+            <section>
+                <h2 id="exercise-3">Alistirma 3: Bosluk ve Ada Problemleri</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.1: Eksik Siparis ID'lerini Bulma</h4>
+                    <p><strong>Hedef:</strong> Siparis ID dizisindeki bosluklari belirleyin (silinen veya basarisiz siparisler).</p>
+                    <p><strong>Gorev:</strong> Minimum ve maksimum siparis ID'si arasindaki tum eksik siparis ID'lerini bulun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Yontem 1: Bosluklari bulmak icin LEAD kullanma
+WITH order_gaps AS (
+    SELECT
+        id,
+        LEAD(id) OVER (ORDER BY id) AS sonraki_id
+    FROM orders
+)
+SELECT
+    id AS bosluk_sonrasi,
+    sonraki_id AS bosluk_oncesi,
+    sonraki_id - id - 1 AS eksik_sayisi
+FROM order_gaps
+WHERE sonraki_id - id > 1
+ORDER BY id;
+
+-- Yontem 2: Tam seri uret ve eksikleri bul
+WITH order_range AS (
+    SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM orders
+),
+all_ids AS (
+    SELECT generate_series(min_id, max_id) AS id
+    FROM order_range
+)
+SELECT a.id AS eksik_siparis_id
+FROM all_ids a
+LEFT JOIN orders o ON a.id = o.id
+WHERE o.id IS NULL
+ORDER BY a.id;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.2: Musteri Basina Ardisik Siparis Serilerini Bulma</h4>
+                    <p><strong>Hedef:</strong> Ardisik gunlerde siparis veren musterileri bulun.</p>
+                    <p><strong>Gorev:</strong> Her musteri icin ardisik siparis gunleri "adalarini" belirleyin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">WITH customer_order_days AS (
+    -- Musteri basina benzersiz siparis gunlerini al
+    SELECT DISTINCT
+        customer_id,
+        DATE(order_date) AS siparis_gunu
+    FROM orders
+),
+with_groups AS (
+    -- Ardisik gunler icin gruplar olustur
+    SELECT
+        customer_id,
+        siparis_gunu,
+        siparis_gunu - (ROW_NUMBER() OVER (
+            PARTITION BY customer_id
+            ORDER BY siparis_gunu
+        ))::INTEGER AS grp
+    FROM customer_order_days
+),
+streaks AS (
+    -- Seri bilgilerini hesapla
+    SELECT
+        customer_id,
+        MIN(siparis_gunu) AS seri_baslangic,
+        MAX(siparis_gunu) AS seri_bitis,
+        COUNT(*) AS ardisik_gunler
+    FROM with_groups
+    GROUP BY customer_id, grp
+    HAVING COUNT(*) >= 2  -- En az 2 ardisik gun
+)
+SELECT
+    c.name AS musteri_adi,
+    s.seri_baslangic,
+    s.seri_bitis,
+    s.ardisik_gunler
+FROM streaks s
+JOIN customers c ON s.customer_id = c.id
+ORDER BY s.ardisik_gunler DESC, s.seri_baslangic;</code></pre>
+
+                        <div class="output-display">
+musteri_adi    | seri_baslangic | seri_bitis  | ardisik_gunler
+---------------+----------------+-------------+---------------
+Ahmet Yilmaz   | 2024-01-15     | 2024-01-19  |             5
+Ayse Kaya      | 2024-02-01     | 2024-02-04  |             4
+Mehmet Demir   | 2024-01-20     | 2024-01-22  |             3
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 4: Pivotlama -->
+            <section>
+                <h2 id="exercise-4">Alistirma 4: Veri Pivotlama</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 4.1: Kategoriye Gore Aylik Satislar</h4>
+                    <p><strong>Hedef:</strong> Her ay icin kategoriye gore satislari gosteren bir pivot tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> Sutunlar aylar (Oca, Sub, Mar...), satirlar kategoriler olmali.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    c.name AS kategori,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 1) AS oca,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 2) AS sub,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 3) AS mar,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 4) AS nis,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 5) AS may,
+    SUM(ol.quantity * ol.unit_price)
+        FILTER (WHERE EXTRACT(MONTH FROM o.order_date) = 6) AS haz,
+    SUM(ol.quantity * ol.unit_price) AS toplam
+FROM categories c
+JOIN products p ON c.id = p.category_id
+JOIN order_lines ol ON p.id = ol.product_id
+JOIN orders o ON ol.order_id = o.id
+WHERE EXTRACT(YEAR FROM o.order_date) = 2024
+GROUP BY c.name
+ORDER BY toplam DESC;</code></pre>
+
+                        <div class="output-display">
+kategori    |    oca    |    sub    |    mar    |   toplam
+------------+-----------+-----------+-----------+-----------
+Elektronik  | 45,230.00 | 52,180.50 | 48,920.00 | 146,330.50
+Giyim       | 12,450.00 | 15,230.00 | 18,540.00 |  46,220.00
+Ev          |  8,920.00 | 10,150.00 |  9,870.00 |  28,940.00
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 4.2: Musteri Tipi ve Siparis Durumu Matrisi</h4>
+                    <p><strong>Hedef:</strong> Musteri tipi ve siparis durumuna gore siparis sayisini gosterin.</p>
+                    <p><strong>Gorev:</strong> Satirlar musteri tipleri, sutunlar durumlar olan bir capraz tablo olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    c.customer_type AS musteri_tipi,
+    COUNT(*) FILTER (WHERE o.status = 'pending') AS beklemede,
+    COUNT(*) FILTER (WHERE o.status = 'processing') AS isleniyor,
+    COUNT(*) FILTER (WHERE o.status = 'shipped') AS kargoda,
+    COUNT(*) FILTER (WHERE o.status = 'delivered') AS teslim_edildi,
+    COUNT(*) FILTER (WHERE o.status = 'cancelled') AS iptal,
+    COUNT(*) AS toplam_siparis
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+GROUP BY c.customer_type
+ORDER BY toplam_siparis DESC;</code></pre>
+
+                        <div class="output-display">
+musteri_tipi  | beklemede | isleniyor | kargoda | teslim_edildi | iptal | toplam_siparis
+--------------+-----------+-----------+---------+---------------+-------+---------------
+individual    |        45 |        32 |      28 |           156 |    12 |           273
+business      |        12 |        18 |      15 |            89 |     3 |           137
+vip           |         3 |         5 |       8 |            42 |     0 |            58
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 5: Tekrar Kaldirma -->
+            <section>
+                <h2 id="exercise-5">Alistirma 5: Tekrar Edenleri Kaldirma</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 5.1: Tekrar Eden Musteri Girisleri Bulma</h4>
+                    <p><strong>Hedef:</strong> Birden fazla kez girilmis olabilecek musterileri belirleyin.</p>
+                    <p><strong>Gorev:</strong> Ayni e-posta veya telefon numarasina sahip musterileri bulun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
+                    <div id="solution5_1" class="solution-box">
+                        <pre><code class="language-sql">-- Tekrar eden e-postalari bul
+WITH email_duplicates AS (
+    SELECT
+        email,
+        COUNT(*) AS sayi,
+        ARRAY_AGG(id ORDER BY created_at) AS musteri_idleri,
+        ARRAY_AGG(name ORDER BY created_at) AS isimler
+    FROM customers
+    WHERE email IS NOT NULL AND email != ''
+    GROUP BY LOWER(email)  -- Buyuk/kucuk harf duyarsiz karsilastirma
+    HAVING COUNT(*) > 1
+)
+SELECT
+    email,
+    sayi AS tekrar_sayisi,
+    musteri_idleri,
+    isimler
+FROM email_duplicates
+ORDER BY sayi DESC;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 5.2: Tekrarsiz Musteri Gorunumu Olusturma</h4>
+                    <p><strong>Hedef:</strong> Her musteriyi sadece bir kez gosteren bir gorunum olusturun.</p>
+                    <p><strong>Gorev:</strong> En cok siparisi olan musteriyi tutun; esitlik durumunda en eskisini tutun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
+                    <div id="solution5_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE VIEW customers_deduplicated AS
+WITH customer_stats AS (
+    SELECT
+        c.id,
+        c.name,
+        c.email,
+        c.phone,
+        c.city,
+        c.customer_type,
+        c.created_at,
+        COUNT(o.id) AS siparis_sayisi,
+        SUM(COALESCE(o.total_amount, 0)) AS toplam_harcama
+    FROM customers c
+    LEFT JOIN orders o ON c.id = o.customer_id
+    GROUP BY c.id, c.name, c.email, c.phone, c.city, c.customer_type, c.created_at
+),
+ranked AS (
+    SELECT
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY LOWER(COALESCE(email, '')) || COALESCE(phone, '')
+            ORDER BY siparis_sayisi DESC, toplam_harcama DESC, created_at ASC
+        ) AS rn
+    FROM customer_stats
+    WHERE email IS NOT NULL OR phone IS NOT NULL
+)
+SELECT
+    id,
+    name,
+    email,
+    phone,
+    city,
+    customer_type,
+    created_at,
+    siparis_sayisi,
+    toplam_harcama
+FROM ranked
+WHERE rn = 1;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 6: Tarih Araliklari -->
+            <section>
+                <h2 id="exercise-6">Alistirma 6: Tarih Araligi Islemleri</h2>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 6.1: Cakisan Promosyonlari Bulma</h4>
+                    <p><strong>Hedef:</strong> Zamanda cakisan promosyonlari belirleyin (potansiyel cakismalar).</p>
+                    <p><strong>Gorev:</strong> Tarih araliklari cakisan tum promosyon ciftlerini bulun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Cozumu Goster</button>
+                    <div id="solution6_1" class="solution-box">
+                        <pre><code class="language-sql">SELECT
+    p1.id AS promo1_id,
+    p1.name AS promo1_adi,
+    p1.start_date AS promo1_baslangic,
+    p1.end_date AS promo1_bitis,
+    p2.id AS promo2_id,
+    p2.name AS promo2_adi,
+    p2.start_date AS promo2_baslangic,
+    p2.end_date AS promo2_bitis,
+    GREATEST(p1.start_date, p2.start_date) AS cakisma_baslangic,
+    LEAST(p1.end_date, p2.end_date) AS cakisma_bitis
+FROM promotions p1
+JOIN promotions p2 ON p1.id < p2.id
+WHERE p1.start_date <= p2.end_date
+  AND p1.end_date >= p2.start_date
+ORDER BY cakisma_baslangic;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 6.2: Tarih Doldurma ile Gunluk Gelir</h4>
+                    <p><strong>Hedef:</strong> Sifir satisli gunler dahil gunluk geliri gosterin.</p>
+                    <p><strong>Gorev:</strong> Tam bir tarih serisi uretin ve siparislerle left join yapin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_2')">Cozumu Goster</button>
+                    <div id="solution6_2" class="solution-box">
+                        <pre><code class="language-sql">WITH date_range AS (
+    SELECT generate_series(
+        DATE '2024-01-01',
+        DATE '2024-01-31',
+        INTERVAL '1 day'
+    )::DATE AS gun
+),
+daily_revenue AS (
+    SELECT
+        DATE(order_date) AS siparis_gunu,
+        COUNT(*) AS siparis_sayisi,
+        SUM(total_amount) AS gelir
+    FROM orders
+    WHERE order_date >= '2024-01-01' AND order_date < '2024-02-01'
+    GROUP BY DATE(order_date)
+)
+SELECT
+    dr.gun,
+    TO_CHAR(dr.gun, 'Day') AS gun_adi,
+    COALESCE(drev.siparis_sayisi, 0) AS siparisler,
+    COALESCE(drev.gelir, 0) AS gelir,
+    SUM(COALESCE(drev.gelir, 0)) OVER (ORDER BY dr.gun) AS kumulatif_gelir
+FROM date_range dr
+LEFT JOIN daily_revenue drev ON dr.gun = drev.siparis_gunu
+ORDER BY dr.gun;</code></pre>
+
+                        <div class="output-display">
+gun        | gun_adi   | siparisler | gelir     | kumulatif_gelir
+-----------+-----------+------------+-----------+----------------
+2024-01-01 | Pazartesi |         12 |  2,450.00 |        2,450.00
+2024-01-02 | Sali      |         18 |  3,820.50 |        6,270.50
+2024-01-03 | Carsamba  |          0 |      0.00 |        6,270.50
+2024-01-04 | Persembe  |         15 |  2,980.00 |        9,250.50
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Zorluklar -->
+            <section>
+                <h2 id="challenges">Zorluk Alistirmalari</h2>
+
+                <div class="challenge-box">
+                    <h4>Zorluk 1: Kohort Analizi ile Musteri Yasam Boyu Degeri</h4>
+                    <p>Ilk alisverislerini yaptiklari aya (kohort) gore gruplanmis musteri yasam boyu degerini hesaplayin.
+                       Her kohortin katildiktan sonra 1, 2, 3. aylarda ne kadar harcadigini gosterin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">WITH customer_first_order AS (
+    SELECT
+        customer_id,
+        DATE_TRUNC('month', MIN(order_date)) AS kohort_ay
+    FROM orders
+    GROUP BY customer_id
+),
+customer_orders AS (
+    SELECT
+        o.customer_id,
+        cfo.kohort_ay,
+        DATE_TRUNC('month', o.order_date) AS siparis_ay,
+        o.total_amount,
+        EXTRACT(YEAR FROM AGE(DATE_TRUNC('month', o.order_date), cfo.kohort_ay)) * 12 +
+        EXTRACT(MONTH FROM AGE(DATE_TRUNC('month', o.order_date), cfo.kohort_ay)) AS katilimdan_aylar
+    FROM orders o
+    JOIN customer_first_order cfo ON o.customer_id = cfo.customer_id
+)
+SELECT
+    kohort_ay,
+    COUNT(DISTINCT customer_id) AS kohort_boyutu,
+    ROUND(SUM(total_amount) FILTER (WHERE katilimdan_aylar = 0), 2) AS ay_0_gelir,
+    ROUND(SUM(total_amount) FILTER (WHERE katilimdan_aylar = 1), 2) AS ay_1_gelir,
+    ROUND(SUM(total_amount) FILTER (WHERE katilimdan_aylar = 2), 2) AS ay_2_gelir,
+    ROUND(SUM(total_amount) FILTER (WHERE katilimdan_aylar = 3), 2) AS ay_3_gelir,
+    ROUND(SUM(total_amount), 2) AS toplam_deger
+FROM customer_orders
+GROUP BY kohort_ay
+ORDER BY kohort_ay;</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+<script>
+    function toggleSolution(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+</html>

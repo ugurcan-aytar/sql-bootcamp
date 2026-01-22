@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 3: Gelismis Tablo Ozellikleri - Pratik Ornekler</title>
+    <style>
+        code {
+            white-space: pre-wrap;
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+
+        .exercise-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .solution-box {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .output-display {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .toggle-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #218838;
+        }
+
+        .challenge-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .concept-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_tr.html" class="back-button">&larr; Indekse Don</a>
+    <div class="language-switcher">
+        <a href="04_advanced_table_features_examples.html">EN</a>
+        <a href="04_advanced_table_features_examples_tr.html" class="active">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="advanced-features-examples">Gelismis Tablo Ozellikleri - Pratik Ornekler</h1>
+                <p><a href="04_advanced_table_features_tr.html">&larr; Gelismis Tablo Ozellikleri Dersine Don</a></p>
+                <p>Bu sayfa, bootcamp_db veritabanindaki senaryolari kullanarak gelismis tablo ozelliklerini
+                   pratik yapmak icin alistirmalar sunmaktadir. Her alistirma; uretilen sutunlar (generated columns),
+                   kimlik sutunlari (identity columns), gecici tablolar ve diger ozelliklerin gercek dunya
+                   uygulamalarini gostermektedir.</p>
+            </section>
+
+            <!-- Alistirma 1: Uretilen Sutunlar -->
+            <section>
+                <h2 id="exercise-1">Alistirma 1: Uretilen Sutunlar (Generated Columns)</h2>
+                <p>Uretilen (hesaplanan) sutunlari olusturma ve kullanma pratigi.</p>
+
+                <div class="concept-box">
+                    <strong>Senaryo:</strong> bootcamp_db'de quantity, unit_price ve discount_percent sutunlarina
+                    sahip bir <code>order_lines</code> tablosu bulunmaktadir. Otomatik hesaplanan toplamlarla
+                    gelistirilmis bir versiyon olusturalim.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.1: Otomatik Hesaplanan Toplamli Siparis Kalemi</h4>
+                    <p><strong>Hedef:</strong> Satir toplaminin otomatik hesaplandigi bir siparis kalemleri tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> Asagidaki formulu hesaplayan <code>line_total</code> uretilen sutunuyla
+                       <code>order_lines_v2</code> tablosu olusturun: <code>quantity * unit_price * (1 - discount_percent/100)</code></p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE order_lines_v2 (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price >= 0),
+    discount_percent DECIMAL(5,2) DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 100),
+    -- Uretilen sutun: otomatik hesaplanan satir toplami
+    line_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        ROUND(quantity * unit_price * (1 - COALESCE(discount_percent, 0) / 100), 2)
+    ) STORED
+);
+
+-- Ornek verilerle test et
+INSERT INTO order_lines_v2 (order_id, product_id, quantity, unit_price, discount_percent)
+VALUES
+    (1, 101, 2, 999.99, 0),      -- Indirim yok
+    (1, 102, 5, 29.99, 10),      -- %10 indirim
+    (2, 103, 1, 1499.99, 15);    -- %15 indirim
+
+-- Sonuclari kontrol et
+SELECT
+    id,
+    quantity,
+    unit_price,
+    discount_percent,
+    line_total
+FROM order_lines_v2;</code></pre>
+
+                        <div class="output-display">
+ id | quantity | unit_price | discount_percent | line_total
+----+----------+------------+------------------+------------
+  1 |        2 |     999.99 |             0.00 |    1999.98
+  2 |        5 |      29.99 |            10.00 |     134.96
+  3 |        1 |    1499.99 |            15.00 |    1274.99
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.2: Otomatik Uretilen Goruntuleme Adli Calisan</h4>
+                    <p><strong>Hedef:</strong> Tam ad ve e-posta otomatik uretilen bir calisan tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> Asagidaki uretilen sutunlarla bir tablo olusturun:
+                        <ul>
+                            <li><code>full_name</code>: first_name ve last_name birlesimi</li>
+                            <li><code>email_generated</code>: Otomatik uretilen sirket e-postasi (kucuk harfle ad.soyad@company.com)</li>
+                        </ul>
+                    </p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE employees_enhanced (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    -- Uretilen: Tam ad
+    full_name VARCHAR(101) GENERATED ALWAYS AS (
+        first_name || ' ' || last_name
+    ) STORED,
+    -- Uretilen: Sirket e-postasi
+    email_generated VARCHAR(150) GENERATED ALWAYS AS (
+        LOWER(first_name || '.' || last_name || '@company.com')
+    ) STORED,
+    department VARCHAR(50),
+    hire_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Bazi calisanlar ekle
+INSERT INTO employees_enhanced (first_name, last_name, department)
+VALUES
+    ('John', 'Smith', 'Engineering'),
+    ('Jane', 'Doe', 'Marketing'),
+    ('Bob', 'Johnson', 'Sales');
+
+SELECT id, first_name, last_name, full_name, email_generated, department
+FROM employees_enhanced;</code></pre>
+
+                        <div class="output-display">
+ id | first_name | last_name |    full_name    |       email_generated       | department
+----+------------+-----------+-----------------+-----------------------------+-------------
+  1 | John       | Smith     | John Smith      | john.smith@company.com      | Engineering
+  2 | Jane       | Doe       | Jane Doe        | jane.doe@company.com        | Marketing
+  3 | Bob        | Johnson   | Bob Johnson     | bob.johnson@company.com     | Sales
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 1.3: Kar Marji Hesaplayan Urun</h4>
+                    <p><strong>Hedef:</strong> Kar marji yuzdesini otomatik hesaplayan bir urun tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> <code>cost_price</code> ve <code>selling_price</code> verildiginde,
+                       <code>profit_margin</code> yuzdesini otomatik hesaplayin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE products_with_margin (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    sku VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    cost_price DECIMAL(10,2) NOT NULL CHECK (cost_price > 0),
+    selling_price DECIMAL(10,2) NOT NULL CHECK (selling_price > 0),
+    -- Uretilen: Kar tutari
+    profit_amount DECIMAL(10,2) GENERATED ALWAYS AS (
+        selling_price - cost_price
+    ) STORED,
+    -- Uretilen: Kar marji yuzdesi
+    profit_margin_pct DECIMAL(5,2) GENERATED ALWAYS AS (
+        ROUND(((selling_price - cost_price) / cost_price) * 100, 2)
+    ) STORED,
+    category_id INTEGER
+);
+
+-- Ornek urunler ekle
+INSERT INTO products_with_margin (sku, name, cost_price, selling_price, category_id)
+VALUES
+    ('LAPTOP-001', 'Is Laptoptu', 600.00, 999.99, 1),
+    ('PHONE-001', 'Akilli Telefon Pro', 400.00, 799.99, 2),
+    ('CABLE-001', 'USB-C Kablo', 2.50, 14.99, 3);
+
+SELECT sku, name, cost_price, selling_price, profit_amount, profit_margin_pct
+FROM products_with_margin;</code></pre>
+
+                        <div class="output-display">
+    sku     |        name        | cost_price | selling_price | profit_amount | profit_margin_pct
+------------+--------------------+------------+---------------+---------------+-------------------
+ LAPTOP-001 | Is Laptoptu        |     600.00 |        999.99 |        399.99 |             66.67
+ PHONE-001  | Akilli Telefon Pro |     400.00 |        799.99 |        399.99 |            100.00
+ CABLE-001  | USB-C Kablo        |       2.50 |         14.99 |         12.49 |            499.60
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 2: Kimlik Sutunlari -->
+            <section>
+                <h2 id="exercise-2">Alistirma 2: Kimlik Sutunlari (Identity Columns)</h2>
+                <p>SERIAL yerine modern kimlik sutunlarini kullanma pratigi.</p>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.1: ALWAYS Identity ile Fatura Tablosu</h4>
+                    <p><strong>Hedef:</strong> ID'lerin asla manuel olarak atanamayacagi bir fatura tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> 10000'den baslayan GENERATED ALWAYS AS IDENTITY kullanarak
+                       <code>invoices</code> tablosu olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE invoices (
+    invoice_id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 10000) PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    invoice_date DATE DEFAULT CURRENT_DATE,
+    due_date DATE,
+    total_amount DECIMAL(12,2),
+    status VARCHAR(20) DEFAULT 'draft'
+        CHECK (status IN ('draft', 'sent', 'paid', 'overdue', 'cancelled'))
+);
+
+-- Normal ekleme (ID otomatik uretilir)
+INSERT INTO invoices (customer_id, total_amount, status)
+VALUES (1, 1500.00, 'sent');
+
+INSERT INTO invoices (customer_id, total_amount, status)
+VALUES (2, 2750.50, 'draft');
+
+-- Bu BASARISIZ olacaktir:
+-- INSERT INTO invoices (invoice_id, customer_id, total_amount)
+-- VALUES (99999, 3, 500.00);
+-- HATA: "invoice_id" sutununa eklenemez
+
+-- Sonuclari kontrol et
+SELECT invoice_id, customer_id, total_amount, status FROM invoices;</code></pre>
+
+                        <div class="output-display">
+ invoice_id | customer_id | total_amount | status
+------------+-------------+--------------+--------
+      10000 |           1 |      1500.00 | sent
+      10001 |           2 |      2750.50 | draft
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 2.2: Veri Gocusu icin Esnek Kimlik</h4>
+                    <p><strong>Hedef:</strong> ID'lerin otomatik uretildigi ancak gocusler icin gecersiz kilinabilecegi bir tablo olusturun.</p>
+                    <p><strong>Gorev:</strong> GENERATED BY DEFAULT kullanarak <code>migrated_customers</code> olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE TABLE migrated_customers (
+    id INTEGER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    source_system VARCHAR(50),
+    original_id INTEGER  -- Kaynak sistemdeki orijinal ID'yi takip etmek icin
+);
+
+-- Yeni musteriler icin otomatik uretilen ID
+INSERT INTO migrated_customers (name, email, source_system)
+VALUES ('Yeni Musteri', 'yeni@ornek.com', 'web');
+
+-- Gocu edilen veriler icin ID belirt (orijinal ID'leri koruyarak)
+INSERT INTO migrated_customers (id, name, email, source_system, original_id)
+VALUES
+    (1000, 'Eski Musteri 1', 'eski1@ornek.com', 'legacy_crm', 1000),
+    (1001, 'Eski Musteri 2', 'eski2@ornek.com', 'legacy_crm', 1001);
+
+-- Daha fazla otomatik uretilen
+INSERT INTO migrated_customers (name, email, source_system)
+VALUES ('Diger Yeni', 'diger@ornek.com', 'mobil');
+
+SELECT * FROM migrated_customers ORDER BY id;</code></pre>
+
+                        <div class="output-display">
+  id  |      name         |       email          | source_system | original_id
+------+-------------------+----------------------+---------------+-------------
+    1 | Yeni Musteri      | yeni@ornek.com       | web           |
+    2 | Diger Yeni        | diger@ornek.com      | mobil         |
+ 1000 | Eski Musteri 1    | eski1@ornek.com      | legacy_crm    |        1000
+ 1001 | Eski Musteri 2    | eski2@ornek.com      | legacy_crm    |        1001
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Not:</strong> ID 1001 eklendikten sonra, sira hala 2'de.
+                            Yeni otomatik uretilen ID'ler 3, 4, 5... olacak ve sonunda 1000 ile cakisabilir.
+                            Gocusten sonra sirayi sifirlayin:
+                            <pre><code>ALTER TABLE migrated_customers ALTER COLUMN id RESTART WITH 2000;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 3: Gecici Tablolar -->
+            <section>
+                <h2 id="exercise-3">Alistirma 3: Gecici Tablolar (Temporary Tables)</h2>
+                <p>Ara hesaplamalar ve toplu islemler icin gecici tablolari kullanma pratigi.</p>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.1: Gecici Tablo ile Satis Analizi</h4>
+                    <p><strong>Hedef:</strong> Musteri siparis ozetlerini hesaplamak icin gecici tablo kullanin,
+                       sonra birkac farkli sekilde sorgulama yapin.</p>
+                    <p><strong>Gorev:</strong> bootcamp_db'den musteri siparis istatistiklerini iceren bir gecici tablo olusturun,
+                       ardindan VIP adaylarini (yuksek toplamlara sahip musteriler) bulun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Musteri siparis ozeti ile gecici tablo olustur
+CREATE TEMP TABLE temp_customer_stats AS
+SELECT
+    c.id AS customer_id,
+    c.name AS customer_name,
+    c.customer_type,
+    COUNT(DISTINCT o.id) AS order_count,
+    SUM(ol.quantity * ol.unit_price) AS total_spent,
+    AVG(ol.quantity * ol.unit_price) AS avg_order_value,
+    MAX(o.order_date) AS last_order_date
+FROM customers c
+LEFT JOIN orders o ON c.id = o.customer_id
+LEFT JOIN order_lines ol ON o.id = ol.order_id
+GROUP BY c.id, c.name, c.customer_type;
+
+-- Sorgu 1: VIP adaylarini bul (henuz VIP olmayan yuksek harcama yapanlar)
+SELECT
+    customer_name,
+    customer_type,
+    total_spent,
+    order_count
+FROM temp_customer_stats
+WHERE customer_type != 'vip'
+  AND total_spent > 5000
+ORDER BY total_spent DESC;
+
+-- Sorgu 2: Musteri tipi karsilastirmasi
+SELECT
+    customer_type,
+    COUNT(*) AS customer_count,
+    ROUND(AVG(total_spent), 2) AS avg_total_spent,
+    ROUND(AVG(order_count), 1) AS avg_orders
+FROM temp_customer_stats
+GROUP BY customer_type
+ORDER BY avg_total_spent DESC;
+
+-- Sorgu 3: Aktif olmayan musteriler (yakin zamanda siparis vermemis)
+SELECT customer_name, last_order_date, total_spent
+FROM temp_customer_stats
+WHERE last_order_date < CURRENT_DATE - INTERVAL '6 months'
+   OR last_order_date IS NULL
+ORDER BY total_spent DESC NULLS LAST;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 3.2: ON COMMIT DELETE ROWS ile Toplu Isleme</h4>
+                    <p><strong>Hedef:</strong> Her islemden sonra temizlenen bir gecici tablo kullanarak verileri toplu isleyin.</p>
+                    <p><strong>Gorev:</strong> Her toplu islem sonrasinda temizlenen fiyat guncellemeleri icin gecici tablo olusturun.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">-- Her islemden sonra temizlenen gecici tablo olustur
+CREATE TEMP TABLE temp_price_updates (
+    product_id INTEGER PRIMARY KEY,
+    old_price DECIMAL(10,2),
+    new_price DECIMAL(10,2),
+    change_percent DECIMAL(5,2)
+) ON COMMIT DELETE ROWS;
+
+-- Islem 1: Elektronik fiyatlarini guncelle (%10 artis)
+BEGIN;
+
+INSERT INTO temp_price_updates (product_id, old_price, new_price, change_percent)
+SELECT
+    p.id,
+    p.price,
+    ROUND(p.price * 1.10, 2),
+    10.00
+FROM products p
+JOIN categories c ON p.category_id = c.id
+WHERE c.name LIKE '%Electronics%'
+  AND p.active = true;
+
+-- Uygulamadan once degisiklikleri incele
+SELECT * FROM temp_price_updates LIMIT 5;
+
+-- Guncellemeleri uygula
+UPDATE products p
+SET price = t.new_price
+FROM temp_price_updates t
+WHERE p.id = t.product_id;
+
+COMMIT;
+-- temp_price_updates artik BOS (ancak tablo hala mevcut)
+
+-- Islem 2: Farkli toplu islem
+BEGIN;
+
+INSERT INTO temp_price_updates (product_id, old_price, new_price, change_percent)
+SELECT id, price, ROUND(price * 0.95, 2), -5.00
+FROM products
+WHERE stock_quantity > 100;  -- Fazla stoklu urunlere indirim
+
+-- ... bu toplu islemi isle ...
+
+COMMIT;
+-- Yine, tablo temizlendi</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 4: Kaydedilmemis Tablolar -->
+            <section>
+                <h2 id="exercise-4">Alistirma 4: Kaydedilmemis Tablolar (Unlogged Tables)</h2>
+                <p>Yuksek performans senaryolari icin kaydedilmemis tablolari kullanma pratigi.</p>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 4.1: Iceri Aktarma Hazirlama Tablosu</h4>
+                    <p><strong>Hedef:</strong> Hizli veri iceri aktarmalari icin kaydedilmemis hazirlama tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> Urun iceri aktarmalari icin kaydedilmemis bir tablo olusturun,
+                       verileri dogrulayin, ardindan ana tabloya tasiyln.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">-- Kaydedilmemis hazirlama tablosu olustur (hizli yazmalar, WAL yuhu yok)
+CREATE UNLOGGED TABLE product_import_staging (
+    row_id SERIAL,
+    sku VARCHAR(50),
+    name VARCHAR(200),
+    price_text VARCHAR(50),  -- Ham metin, donusum gerekli
+    category_name VARCHAR(100),
+    supplier_name VARCHAR(100),
+    -- Dogrulama sutunlari
+    is_valid BOOLEAN DEFAULT NULL,
+    error_messages TEXT[],
+    processed_at TIMESTAMP
+);
+
+-- Toplu iceri aktarmayi simule et (gercek senaryoda: COPY FROM CSV)
+INSERT INTO product_import_staging (sku, name, price_text, category_name, supplier_name)
+VALUES
+    ('NEW-001', 'Widget Pro', '99.99', 'Electronics', 'Acme Corp'),
+    ('NEW-002', 'Gadget Plus', 'gecersiz', 'Electronics', 'TechSupply'),
+    ('NEW-003', '', '149.99', 'Bilinmeyen Kategori', 'Acme Corp'),
+    ('NEW-004', 'Tool Basic', '29.99', 'Tools', 'BuildRight');
+
+-- Iceri aktarilan verileri dogrula
+UPDATE product_import_staging
+SET
+    is_valid = (
+        sku IS NOT NULL AND sku != '' AND
+        name IS NOT NULL AND name != '' AND
+        price_text ~ '^\d+\.?\d*$'  -- Sayisal mi
+    ),
+    error_messages = ARRAY_REMOVE(ARRAY[
+        CASE WHEN sku IS NULL OR sku = '' THEN 'SKU eksik' END,
+        CASE WHEN name IS NULL OR name = '' THEN 'Ad eksik' END,
+        CASE WHEN NOT (price_text ~ '^\d+\.?\d*$') THEN 'Gecersiz fiyat: ' || price_text END
+    ], NULL),
+    processed_at = CURRENT_TIMESTAMP;
+
+-- Dogrulama sonuclarini incele
+SELECT sku, name, is_valid, error_messages
+FROM product_import_staging;
+
+-- Sadece gecerli kayitlari ana tabloya ekle
+INSERT INTO products (sku, name, price, category_id, supplier_id)
+SELECT
+    s.sku,
+    s.name,
+    s.price_text::DECIMAL(10,2),
+    c.id,
+    sup.id
+FROM product_import_staging s
+LEFT JOIN categories c ON LOWER(c.name) = LOWER(s.category_name)
+LEFT JOIN suppliers sup ON LOWER(sup.name) = LOWER(s.supplier_name)
+WHERE s.is_valid = true;
+
+-- Hazirlama tablosunu temizle
+TRUNCATE product_import_staging;</code></pre>
+
+                        <div class="output-display">
+   sku   |    name     | is_valid |         error_messages
+---------+-------------+----------+-------------------------------
+ NEW-001 | Widget Pro  | t        | {}
+ NEW-002 | Gadget Plus | f        | {"Gecersiz fiyat: gecersiz"}
+ NEW-003 |             | f        | {"Ad eksik"}
+ NEW-004 | Tool Basic  | t        | {}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 5: Tablo Klonlama -->
+            <section>
+                <h2 id="exercise-5">Alistirma 5: LIKE ile Tablo Klonlama</h2>
+                <p>Cesitli seceneklerle tablo kopyalari olusturma pratigi.</p>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 5.1: Arsiv Tablosu Olusturma</h4>
+                    <p><strong>Hedef:</strong> Eski siparisler icin arsiv tablosu olusturun.</p>
+                    <p><strong>Gorev:</strong> Kisitlamalar dahil siparis tablosu yapisini klonlayin,
+                       ardindan 2 yildan eski siparisleri tasiyln.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
+                    <div id="solution5_1" class="solution-box">
+                        <pre><code class="language-sql">-- Tam yapi ile arsiv tablosu olustur
+CREATE TABLE orders_archive (
+    LIKE orders INCLUDING ALL
+);
+
+-- Arsive ozel sutun ekle
+ALTER TABLE orders_archive ADD COLUMN archived_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+-- Eski siparisleri arsive tasi
+WITH moved_orders AS (
+    DELETE FROM orders
+    WHERE order_date < CURRENT_DATE - INTERVAL '2 years'
+    RETURNING *
+)
+INSERT INTO orders_archive (
+    id, customer_id, order_date, status, total_amount,
+    shipping_address, payment_status, notes, metadata,
+    shipping_country_id, created_at, updated_at
+)
+SELECT
+    id, customer_id, order_date, status, total_amount,
+    shipping_address, payment_status, notes, metadata,
+    shipping_country_id, created_at, updated_at
+FROM moved_orders;
+
+-- Dogrula
+SELECT COUNT(*) as archived_count FROM orders_archive;
+SELECT MIN(order_date), MAX(order_date) FROM orders_archive;</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 5.2: Indeks Olmadan Hazirlama Tablosu</h4>
+                    <p><strong>Hedef:</strong> Toplu yukleme icin hazirlama tablosu olusturun (hiz icin indeks yok).</p>
+                    <p><strong>Gorev:</strong> Hizli eklemeler icin indeksleri haric tutarak musteri tablosu yapisini klonlayin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
+                    <div id="solution5_2" class="solution-box">
+                        <pre><code class="language-sql">-- Hazirlama tablosu olustur: varsayilanlar ve kisitlamalari koru, ancak indeks yok
+CREATE TABLE customers_staging (
+    LIKE customers
+    INCLUDING DEFAULTS
+    INCLUDING CONSTRAINTS
+    EXCLUDING INDEXES
+);
+
+-- Indeksler olmadan toplu ekleme daha hizlidir
+INSERT INTO customers_staging (name, email, phone, city, customer_type, status)
+SELECT
+    'Toplu Musteri ' || generate_series,
+    'toplu' || generate_series || '@ornek.com',
+    '555-' || LPAD(generate_series::text, 4, '0'),
+    'Ithalat Sehri',
+    'individual',
+    'active'
+FROM generate_series(1, 10000);
+
+-- Uretime tasimadan once verileri dogrula
+SELECT customer_type, COUNT(*) FROM customers_staging GROUP BY customer_type;
+
+-- Veri yuklendikten sonra indeksler ekle (bu tabloyu tutuyorsaniz)
+-- CREATE INDEX idx_staging_email ON customers_staging(email);
+
+-- Gecerli kayitlari ana tabloya tasi
+INSERT INTO customers (name, email, phone, city, customer_type, status)
+SELECT name, email, phone, city, customer_type, status
+FROM customers_staging
+WHERE email NOT IN (SELECT email FROM customers WHERE email IS NOT NULL);
+
+-- Temizle
+DROP TABLE customers_staging;</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alistirma 6: Ertelenebilir Kisitlamalar -->
+            <section>
+                <h2 id="exercise-6">Alistirma 6: Ertelenebilir Kisitlamalar (Deferrable Constraints)</h2>
+                <p>Karmasik islemler icin ertelenebilir kisitlamalari kullanma pratigi.</p>
+
+                <div class="exercise-box">
+                    <h4>Alistirma 6.1: Benzersiz Degerleri Degistirme</h4>
+                    <p><strong>Hedef:</strong> Iki calisan arasinda calisan kodlarini degistirin.</p>
+                    <p><strong>Gorev:</strong> Ertelenebilir benzersiz kisitlamali bir tablo olusturun,
+                       ardindan satirlar arasinda benzersiz degerleri degistirin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Cozumu Goster</button>
+                    <div id="solution6_1" class="solution-box">
+                        <pre><code class="language-sql">-- Ertelenebilir benzersiz kisitlamali tablo olustur
+CREATE TABLE employee_badges (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    employee_name VARCHAR(100) NOT NULL,
+    badge_number VARCHAR(10) NOT NULL,
+    department VARCHAR(50),
+    CONSTRAINT uk_badge_number UNIQUE (badge_number)
+        DEFERRABLE INITIALLY DEFERRED
+);
+
+-- Calisanlari ekle
+INSERT INTO employee_badges (employee_name, badge_number, department)
+VALUES
+    ('Alice Smith', 'BADGE-001', 'Engineering'),
+    ('Bob Johnson', 'BADGE-002', 'Marketing'),
+    ('Carol White', 'BADGE-003', 'Sales');
+
+-- Senaryo: Alice ve Bob rozet numaralarini degistirmeli
+-- Normal UNIQUE ile bu BASARISIZ olurdu!
+
+BEGIN;
+
+-- Her iki guncelleme de gerceklesir, kisitlama COMMIT'te kontrol edilir
+UPDATE employee_badges SET badge_number = 'BADGE-002'
+WHERE employee_name = 'Alice Smith';
+
+UPDATE employee_badges SET badge_number = 'BADGE-001'
+WHERE employee_name = 'Bob Johnson';
+
+-- Bu noktada degisim tamamlandi - kisitlama gecerli
+COMMIT;
+
+-- Degisimi dogrula
+SELECT employee_name, badge_number FROM employee_badges ORDER BY id;</code></pre>
+
+                        <div class="output-display">
+ employee_name | badge_number
+---------------+--------------
+ Alice Smith   | BADGE-002
+ Bob Johnson   | BADGE-001
+ Carol White   | BADGE-003
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Zorluk Alistirmalari -->
+            <section>
+                <h2 id="challenges">Zorluk Alistirmalari</h2>
+                <p>Bu ileri duzey senaryolarla becerilerinizi test edin.</p>
+
+                <div class="challenge-box">
+                    <h4>Zorluk 1: Uretilen Sutunlarla Tam Siparis Sistemi</h4>
+                    <p>Su uretilen sutunlarla bir siparis yonetim sistemi tasarlayin:</p>
+                    <ul>
+                        <li>Siparis toplami (satir toplamlarinin toplami)</li>
+                        <li>Vergi tutari (alt toplahin %8'i)</li>
+                        <li>Genel toplam (alt toplam + vergi)</li>
+                        <li>Gun cinsinden siparis yasi</li>
+                    </ul>
+                    <p><em>Ipucu: Uretilen sutunlar diger tablolara basvuramayacagi icin
+                       uretilen sutunlar ve tetikleyicilerin bir kombinasyonunu kullanmaniz gerekebilir.</em></p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">-- Hesaplanan alanlarla siparis tablosu
+CREATE TABLE orders_complete (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    order_date DATE DEFAULT CURRENT_DATE,
+    subtotal DECIMAL(12,2) DEFAULT 0,  -- Tetikleyici tarafindan guncellenir
+    tax_rate DECIMAL(5,2) DEFAULT 8.00,
+    -- Uretilen sutunlar
+    tax_amount DECIMAL(12,2) GENERATED ALWAYS AS (
+        ROUND(subtotal * tax_rate / 100, 2)
+    ) STORED,
+    grand_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        ROUND(subtotal * (1 + tax_rate / 100), 2)
+    ) STORED,
+    order_age_days INTEGER GENERATED ALWAYS AS (
+        CURRENT_DATE - order_date
+    ) STORED,
+    status VARCHAR(20) DEFAULT 'pending'
+);
+
+-- Siparis kalemleri
+CREATE TABLE order_lines_complete (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id INTEGER REFERENCES orders_complete(id),
+    product_name VARCHAR(200),
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL,
+    line_total DECIMAL(12,2) GENERATED ALWAYS AS (
+        quantity * unit_price
+    ) STORED
+);
+
+-- Kalemler degistiginde siparis alt toplamini guncelleyen tetikleyici
+CREATE OR REPLACE FUNCTION update_order_subtotal()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE orders_complete
+    SET subtotal = (
+        SELECT COALESCE(SUM(line_total), 0)
+        FROM order_lines_complete
+        WHERE order_id = COALESCE(NEW.order_id, OLD.order_id)
+    )
+    WHERE id = COALESCE(NEW.order_id, OLD.order_id);
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_subtotal
+AFTER INSERT OR UPDATE OR DELETE ON order_lines_complete
+FOR EACH ROW EXECUTE FUNCTION update_order_subtotal();
+
+-- Test et
+INSERT INTO orders_complete (customer_id) VALUES (1);
+
+INSERT INTO order_lines_complete (order_id, product_name, quantity, unit_price)
+VALUES
+    (1, 'Laptop', 1, 999.99),
+    (1, 'Mouse', 2, 29.99);
+
+SELECT id, subtotal, tax_amount, grand_total, order_age_days
+FROM orders_complete WHERE id = 1;</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Zorluk 2: Kimlik Isleme ile Veri Gocusu</h4>
+                    <p>ID'lerin 1-5000 araliginda oldugu bir eski sistemden veri gocu etmeniz gerekiyor.
+                       Yeni sisteminiz bu ID'leri korumali ancak 10000+'dan otomatik uretmeye devam etmeli.</p>
+                    <p>Bu gocu stratejisini tasarlayin ve uygulayin.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Cozumu Goster</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- GENERATED BY DEFAULT ile yeni tablo (gecersiz kilmaya izin verir)
+CREATE TABLE accounts_migrated (
+    id INTEGER GENERATED BY DEFAULT AS IDENTITY (START WITH 10000) PRIMARY KEY,
+    account_name VARCHAR(100) NOT NULL,
+    balance DECIMAL(15,2) DEFAULT 0,
+    legacy_id INTEGER,  -- Orijinal ID'yi takip et
+    migrated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Eski verileri (ID'ler 1-5000) orijinal ID'leri koruyarak gocu et
+INSERT INTO accounts_migrated (id, account_name, balance, legacy_id)
+SELECT id, account_name, balance, id
+FROM legacy_accounts
+WHERE id <= 5000;
+
+-- Yeni kayitlar 10000'den baslayan ID'ler alir
+INSERT INTO accounts_migrated (account_name, balance)
+VALUES ('Yeni Hesap 1', 1000.00);
+
+-- Sonuc: Eski ID'ler korundu, yeni ID'ler 10000'den basliyor
+-- Cakisma bolgesi yok (5001-9999 kullanilmiyor)</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+<script>
+    function toggleSolution(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+</html>

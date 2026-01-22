@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Gun 5: SQL Script Yazimi ve Otomasyon</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip-box {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .danger-box {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-button">&larr; Indekse Don</a>
+    <div class="language-switcher">
+        <a href="03_sql_scripting_and_automation.html">EN</a>
+        <a href="03_sql_scripting_and_automation_tr.html" class="active">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Kopyalandi!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="scripting">Gun 5: SQL Script Yazimi ve Otomasyon</h1>
+                <h2 id="practical-db">Muhendisler Icin Pratik Veritabani Script Yazimi</h2>
+                <p>Bu oturumda, muhendislerin veritabani gorevlerini otomatiklestirmesine, hatalari duzgun
+                   bir sekilde yonetmesine ve veritabani sistemleri hakkinda faydali bilgiler toplamasina
+                   yardimci olan temel SQL script tekniklerini inceleyecegiz.</p>
+
+                <p><strong>Islenen Konular:</strong></p>
+                <ul>
+                    <li>EXECUTE ile Dinamik SQL</li>
+                    <li>PL/pgSQL'de Hata Yonetimi</li>
+                    <li>Veritabani Metadata Sorgulari</li>
+                    <li>Aktif Oturum ve Sorgu Izleme</li>
+                    <li>Toplu Islem Kaliplari</li>
+                </ul>
+            </section>
+
+            <!-- Section 1: Dynamic SQL -->
+            <section>
+                <h2 id="dynamic-sql">1. EXECUTE ile Dinamik SQL</h2>
+                <p>Dinamik SQL, calisma zamaninda SQL ifadeleri olusturmanizi ve calistirmanizi saglar. Bu,
+                   tablo adlari, sutun adlari veya sorgu yapisinin calisma zamanina kadar bilinmedigi
+                   durumlarda kullanislidir.</p>
+
+                <h3>Temel EXECUTE Sozdizimi</h3>
+                <pre><code class="language-sql">-- Basit dinamik SQL
+DO $$
+DECLARE
+    table_name TEXT := 'customers';
+    row_count INTEGER;
+BEGIN
+    EXECUTE 'SELECT COUNT(*) FROM ' || quote_ident(table_name)
+    INTO row_count;
+
+    RAISE NOTICE 'Tablo % icinde % satir var', table_name, row_count;
+END $$;</code></pre>
+
+                <h3>USING Ifadesi ile Parametreler</h3>
+                <p>USING ifadesi, SQL enjeksiyonunu onleyerek guvenli parametre baglama saglar:</p>
+
+                <pre><code class="language-sql">-- Guvenli parametreli dinamik SQL
+CREATE OR REPLACE FUNCTION get_records_by_status(
+    p_table_name TEXT,
+    p_status TEXT
+) RETURNS SETOF RECORD AS $$
+BEGIN
+    RETURN QUERY EXECUTE
+        'SELECT * FROM ' || quote_ident(p_table_name) ||
+        ' WHERE status = $1'
+    USING p_status;
+END;
+$$ LANGUAGE plpgsql;
+
+-- format() ile daha temiz SQL olusturma
+CREATE OR REPLACE FUNCTION count_by_column(
+    p_table TEXT,
+    p_column TEXT,
+    p_value TEXT
+) RETURNS BIGINT AS $$
+DECLARE
+    result BIGINT;
+BEGIN
+    EXECUTE format(
+        'SELECT COUNT(*) FROM %I WHERE %I = $1',
+        p_table,
+        p_column
+    ) INTO result USING p_value;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <div class="info-box">
+                    <strong>Format Belirleyicileri:</strong>
+                    <ul>
+                        <li><code>%I</code> - Tanimlayici (tablo/sutun adi) - gerekirse tirnak ekler</li>
+                        <li><code>%L</code> - Literal deger - duzgun tirnak icine alinmis metin</li>
+                        <li><code>%s</code> - Basit metin degistirme (tirnak yok)</li>
+                    </ul>
+                </div>
+
+                <h3>Dinamik Tablo Islemleri</h3>
+                <pre><code class="language-sql">-- Dinamik olarak arsiv tablolari olusturma
+CREATE OR REPLACE FUNCTION create_monthly_archive(
+    p_source_table TEXT,
+    p_year INTEGER,
+    p_month INTEGER
+) RETURNS TEXT AS $$
+DECLARE
+    archive_table TEXT;
+    sql_create TEXT;
+    sql_insert TEXT;
+BEGIN
+    -- Arsiv tablo adini olustur
+    archive_table := format('%s_archive_%s_%s',
+        p_source_table,
+        p_year,
+        LPAD(p_month::TEXT, 2, '0')
+    );
+
+    -- Ayni yapiyla arsiv tablosu olustur
+    sql_create := format(
+        'CREATE TABLE IF NOT EXISTS %I (LIKE %I INCLUDING ALL)',
+        archive_table,
+        p_source_table
+    );
+    EXECUTE sql_create;
+
+    -- Eski verileri arsive tasi
+    sql_insert := format($sql$
+        WITH moved AS (
+            DELETE FROM %I
+            WHERE EXTRACT(YEAR FROM created_at) = $1
+              AND EXTRACT(MONTH FROM created_at) = $2
+            RETURNING *
+        )
+        INSERT INTO %I SELECT * FROM moved
+    $sql$, p_source_table, archive_table);
+
+    EXECUTE sql_insert USING p_year, p_month;
+
+    RETURN archive_table;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <div class="warning-box">
+                    <strong>Guvenlik Uyarisi:</strong> Tanimlayicilar icin her zaman <code>quote_ident()</code>,
+                    degerler icin <code>quote_literal()</code> veya <code>USING</code> kullanin. Kullanici
+                    girdisini asla dogrudan SQL metinlerine birlestirmeyin!
+                </div>
+            </section>
+
+            <!-- Section 2: Error Handling -->
+            <section>
+                <h2 id="error-handling">2. PL/pgSQL'de Hata Yonetimi</h2>
+                <p>Duzgun hata yonetimi, veritabani kodunuzu saglam ve hata ayiklanabilir hale getirir.</p>
+
+                <h3>Temel Istisna Yonetimi</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION safe_divide(
+    p_numerator NUMERIC,
+    p_denominator NUMERIC
+) RETURNS NUMERIC AS $$
+BEGIN
+    RETURN p_numerator / p_denominator;
+EXCEPTION
+    WHEN division_by_zero THEN
+        RAISE NOTICE 'Sifira bolme girisimi';
+        RETURN NULL;
+    WHEN numeric_value_out_of_range THEN
+        RAISE NOTICE 'Sonuc aralik disi';
+        RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Yaygin Istisna Turleri</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Istisna</th>
+                            <th>SQLSTATE</th>
+                            <th>Aciklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>division_by_zero</td><td>22012</td><td>Sifira bolme</td></tr>
+                        <tr><td>unique_violation</td><td>23505</td><td>Tekil anahtar ihlali</td></tr>
+                        <tr><td>foreign_key_violation</td><td>23503</td><td>FK kisitlamasi basarisiz</td></tr>
+                        <tr><td>not_null_violation</td><td>23502</td><td>NOT NULL sutununda NULL</td></tr>
+                        <tr><td>check_violation</td><td>23514</td><td>CHECK kisitlamasi basarisiz</td></tr>
+                        <tr><td>undefined_table</td><td>42P01</td><td>Tablo mevcut degil</td></tr>
+                        <tr><td>undefined_column</td><td>42703</td><td>Sutun mevcut degil</td></tr>
+                        <tr><td>OTHERS</td><td>-</td><td>Herhangi bir hatayi yakalar</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Kapsamli Hata Yonetimi</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION insert_customer_safe(
+    p_name TEXT,
+    p_email TEXT
+) RETURNS TABLE(success BOOLEAN, message TEXT, customer_id INTEGER) AS $$
+DECLARE
+    v_customer_id INTEGER;
+BEGIN
+    INSERT INTO customers (name, email)
+    VALUES (p_name, p_email)
+    RETURNING id INTO v_customer_id;
+
+    RETURN QUERY SELECT true, 'Musteri basariyla olusturuldu'::TEXT, v_customer_id;
+
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN QUERY SELECT false, 'E-posta zaten mevcut'::TEXT, NULL::INTEGER;
+
+    WHEN not_null_violation THEN
+        RETURN QUERY SELECT false, 'Gerekli alan eksik'::TEXT, NULL::INTEGER;
+
+    WHEN check_violation THEN
+        RETURN QUERY SELECT false, 'Gecersiz veri: check kisitlamasi basarisiz'::TEXT, NULL::INTEGER;
+
+    WHEN OTHERS THEN
+        -- Hata ayrintilari kaydet
+        RAISE WARNING 'Beklenmeyen hata: % - %', SQLSTATE, SQLERRM;
+        RETURN QUERY SELECT false, ('Beklenmeyen hata: ' || SQLERRM)::TEXT, NULL::INTEGER;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Hata Ayrintilarini Alma</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION log_and_handle_error()
+RETURNS VOID AS $$
+DECLARE
+    v_sqlstate TEXT;
+    v_message TEXT;
+    v_detail TEXT;
+    v_hint TEXT;
+    v_context TEXT;
+BEGIN
+    -- Basarisiz olabilecek bir islem
+    PERFORM 1/0;
+
+EXCEPTION WHEN OTHERS THEN
+    -- Tum hata bilgilerini yakala
+    GET STACKED DIAGNOSTICS
+        v_sqlstate = RETURNED_SQLSTATE,
+        v_message = MESSAGE_TEXT,
+        v_detail = PG_EXCEPTION_DETAIL,
+        v_hint = PG_EXCEPTION_HINT,
+        v_context = PG_EXCEPTION_CONTEXT;
+
+    -- Hata tablosuna kaydet
+    INSERT INTO error_log (
+        error_time, sqlstate, message, detail, hint, context
+    ) VALUES (
+        NOW(), v_sqlstate, v_message, v_detail, v_hint, v_context
+    );
+
+    -- Yeniden firlatilabilir veya gerektiginde islenebilir
+    RAISE EXCEPTION 'Kaydedilen hata: %', v_message;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>RAISE ile Ozel Istisnalar</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION validate_order(p_order_id INTEGER)
+RETURNS VOID AS $$
+DECLARE
+    v_status TEXT;
+    v_total NUMERIC;
+BEGIN
+    SELECT status, total_amount INTO v_status, v_total
+    FROM orders WHERE id = p_order_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Siparis % bulunamadi', p_order_id
+            USING ERRCODE = 'P0001',
+                  HINT = 'Siparis ID''sinin dogru olup olmadigini kontrol edin';
+    END IF;
+
+    IF v_status = 'cancelled' THEN
+        RAISE EXCEPTION 'Iptal edilmis siparis % islenemez', p_order_id
+            USING ERRCODE = 'P0002';
+    END IF;
+
+    IF v_total <= 0 THEN
+        RAISE EXCEPTION 'Siparis % gecersiz toplama sahip: %', p_order_id, v_total
+            USING ERRCODE = 'P0003',
+                  DETAIL = 'Toplam sifirdan buyuk olmalidir';
+    END IF;
+
+    RAISE NOTICE 'Siparis % basariyla dogrulandi', p_order_id;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+            </section>
+
+            <!-- Section 3: Database Metadata Queries -->
+            <section>
+                <h2 id="metadata">3. Veritabani Metadata Sorgulari</h2>
+                <p>PostgreSQL'in sistem kataloglari, veritabani yapisiniz hakkinda degerli bilgiler icerir.</p>
+
+                <h3>Tablo ve Sutun Bilgileri</h3>
+                <pre><code class="language-sql">-- Mevcut semadaki tum tablolari satir sayilariyla (tahmin) listele
+SELECT
+    schemaname,
+    relname AS table_name,
+    n_live_tup AS estimated_rows,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    pg_size_pretty(pg_relation_size(relid)) AS table_size,
+    pg_size_pretty(pg_indexes_size(relid)) AS index_size
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC;
+
+-- Bir tablo icin sutun ayrintilari
+SELECT
+    column_name,
+    data_type,
+    character_maximum_length,
+    is_nullable,
+    column_default
+FROM information_schema.columns
+WHERE table_name = 'customers'
+  AND table_schema = 'public'
+ORDER BY ordinal_position;
+
+-- Belirli sutun adina sahip tablolari bul
+SELECT
+    table_schema,
+    table_name,
+    column_name,
+    data_type
+FROM information_schema.columns
+WHERE column_name LIKE '%email%'
+ORDER BY table_schema, table_name;</code></pre>
+
+                <h3>Indeks Bilgileri</h3>
+                <pre><code class="language-sql">-- Tum indeksleri ayrintilariyla listele
+SELECT
+    schemaname,
+    tablename,
+    indexname,
+    indexdef
+FROM pg_indexes
+WHERE schemaname = 'public'
+ORDER BY tablename, indexname;
+
+-- Kullanilmayan indeksleri bul (kaldirilabilir adaylar)
+SELECT
+    schemaname,
+    relname AS table_name,
+    indexrelname AS index_name,
+    pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,
+    idx_scan AS times_used,
+    idx_tup_read AS tuples_read,
+    idx_tup_fetch AS tuples_fetched
+FROM pg_stat_user_indexes
+WHERE idx_scan = 0  -- Hic kullanilmamis
+  AND indexrelname NOT LIKE '%_pkey'  -- Birincil anahtarlari haric tut
+ORDER BY pg_relation_size(indexrelid) DESC;
+
+-- Eksik indeksleri bul (cok seq scan yapan tablolar)
+SELECT
+    schemaname,
+    relname AS table_name,
+    seq_scan,
+    seq_tup_read,
+    idx_scan,
+    CASE WHEN seq_scan > 0
+         THEN seq_tup_read / seq_scan
+         ELSE 0
+    END AS avg_rows_per_seq_scan
+FROM pg_stat_user_tables
+WHERE seq_scan > 100
+  AND seq_tup_read / GREATEST(seq_scan, 1) > 1000
+ORDER BY seq_tup_read DESC;</code></pre>
+
+                <h3>Yabanci Anahtar Iliskileri</h3>
+                <pre><code class="language-sql">-- Tum yabanci anahtar iliskilerini listele
+SELECT
+    tc.table_schema,
+    tc.table_name,
+    kcu.column_name,
+    ccu.table_schema AS foreign_table_schema,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name,
+    tc.constraint_name
+FROM information_schema.table_constraints AS tc
+JOIN information_schema.key_column_usage AS kcu
+    ON tc.constraint_name = kcu.constraint_name
+    AND tc.table_schema = kcu.table_schema
+JOIN information_schema.constraint_column_usage AS ccu
+    ON ccu.constraint_name = tc.constraint_name
+    AND ccu.table_schema = tc.table_schema
+WHERE tc.constraint_type = 'FOREIGN KEY'
+ORDER BY tc.table_name;</code></pre>
+
+                <h3>Kisitlama Bilgileri</h3>
+                <pre><code class="language-sql">-- Bir tablo icin tum kisitlamalari listele
+SELECT
+    conname AS constraint_name,
+    contype AS constraint_type,
+    pg_get_constraintdef(oid) AS definition
+FROM pg_constraint
+WHERE conrelid = 'customers'::regclass;
+
+-- Kisitlama turleri: p=primary, f=foreign, u=unique, c=check, x=exclusion</code></pre>
+            </section>
+
+            <!-- Section 4: Monitoring Queries -->
+            <section>
+                <h2 id="monitoring">4. Aktif Oturum ve Sorgu Izleme</h2>
+                <p>Veritabaninizda su anda neler oldugunu anlamak icin temel sorgular.</p>
+
+                <h3>Aktif Baglantilar ve Sorgular</h3>
+                <pre><code class="language-sql">-- Tum aktif baglantilari goruntule
+SELECT
+    pid,
+    usename AS username,
+    datname AS database,
+    client_addr,
+    application_name,
+    state,
+    query_start,
+    NOW() - query_start AS query_duration,
+    LEFT(query, 100) AS query_preview
+FROM pg_stat_activity
+WHERE state != 'idle'
+  AND pid != pg_backend_pid()  -- Bu sorguyu haric tut
+ORDER BY query_start;
+
+-- Uzun sureli sorgulari bul (5 dakikadan fazla)
+SELECT
+    pid,
+    usename,
+    NOW() - query_start AS duration,
+    state,
+    query
+FROM pg_stat_activity
+WHERE state != 'idle'
+  AND NOW() - query_start > INTERVAL '5 minutes'
+ORDER BY query_start;
+
+-- Veritabani ve kullaniciya gore baglanti sayisi
+SELECT
+    datname AS database,
+    usename AS username,
+    COUNT(*) AS connections,
+    COUNT(*) FILTER (WHERE state = 'active') AS active,
+    COUNT(*) FILTER (WHERE state = 'idle') AS idle,
+    COUNT(*) FILTER (WHERE state = 'idle in transaction') AS idle_in_transaction
+FROM pg_stat_activity
+GROUP BY datname, usename
+ORDER BY connections DESC;</code></pre>
+
+                <h3>Kilit Izleme</h3>
+                <pre><code class="language-sql">-- Mevcut kilitleri goruntule
+SELECT
+    l.pid,
+    l.locktype,
+    l.mode,
+    l.granted,
+    l.relation::regclass AS table_name,
+    a.usename,
+    a.query_start,
+    LEFT(a.query, 80) AS query
+FROM pg_locks l
+JOIN pg_stat_activity a ON l.pid = a.pid
+WHERE l.relation IS NOT NULL
+ORDER BY l.relation, l.pid;
+
+-- Engelleyen sorgulari bul (kim kimi engelliyor)
+SELECT
+    blocked.pid AS blocked_pid,
+    blocked.usename AS blocked_user,
+    LEFT(blocked.query, 60) AS blocked_query,
+    blocking.pid AS blocking_pid,
+    blocking.usename AS blocking_user,
+    LEFT(blocking.query, 60) AS blocking_query,
+    NOW() - blocked.query_start AS blocked_duration
+FROM pg_stat_activity blocked
+JOIN pg_locks blocked_locks ON blocked.pid = blocked_locks.pid
+JOIN pg_locks blocking_locks ON blocked_locks.locktype = blocking_locks.locktype
+    AND blocked_locks.database IS NOT DISTINCT FROM blocking_locks.database
+    AND blocked_locks.relation IS NOT DISTINCT FROM blocking_locks.relation
+    AND blocked_locks.page IS NOT DISTINCT FROM blocking_locks.page
+    AND blocked_locks.tuple IS NOT DISTINCT FROM blocking_locks.tuple
+    AND blocked_locks.virtualxid IS NOT DISTINCT FROM blocking_locks.virtualxid
+    AND blocked_locks.transactionid IS NOT DISTINCT FROM blocking_locks.transactionid
+    AND blocked_locks.classid IS NOT DISTINCT FROM blocking_locks.classid
+    AND blocked_locks.objid IS NOT DISTINCT FROM blocking_locks.objid
+    AND blocked_locks.objsubid IS NOT DISTINCT FROM blocking_locks.objsubid
+    AND blocked_locks.pid != blocking_locks.pid
+JOIN pg_stat_activity blocking ON blocking_locks.pid = blocking.pid
+WHERE NOT blocked_locks.granted
+  AND blocking_locks.granted;</code></pre>
+
+                <h3>Sorunlu Sorgulari Sonlandirma</h3>
+                <pre><code class="language-sql">-- Bir sorguyu iptal et (nazik)
+SELECT pg_cancel_backend(12345);  -- Gercek PID ile degistirin
+
+-- Bir baglantiya son ver (zorla)
+SELECT pg_terminate_backend(12345);
+
+-- Bir veritabanina tum baglantilari sonlandir (kendiniz haric)
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE datname = 'hedef_veritabani'
+  AND pid != pg_backend_pid();</code></pre>
+
+                <div class="danger-box">
+                    <strong>Dikkat:</strong> <code>pg_terminate_backend()</code> baglantilari zorla kapatir.
+                    Mumkun oldugunda once <code>pg_cancel_backend()</code> kullanin, cunku bu yalnizca mevcut
+                    sorguyu iptal eder.
+                </div>
+            </section>
+
+            <!-- Section 5: Batch Processing -->
+            <section>
+                <h2 id="batch">5. Toplu Islem Kaliplari</h2>
+                <p>Buyuk miktarda veri islerken, toplu halde calismak zaman asimlarini onler ve kilit cekismesini azaltir.</p>
+
+                <h3>Toplu Guncelleme Kalibi</h3>
+                <pre><code class="language-sql">-- Buyuk tabloyu toplu halde guncelle
+CREATE OR REPLACE FUNCTION batch_update_status(
+    p_batch_size INTEGER DEFAULT 1000
+) RETURNS TABLE(batches_processed INTEGER, rows_updated BIGINT) AS $$
+DECLARE
+    v_batches INTEGER := 0;
+    v_total_rows BIGINT := 0;
+    v_rows_affected INTEGER;
+BEGIN
+    LOOP
+        -- Bir toplu isleyi guncelle
+        WITH batch AS (
+            SELECT id FROM orders
+            WHERE status = 'pending'
+              AND created_at < NOW() - INTERVAL '30 days'
+            LIMIT p_batch_size
+            FOR UPDATE SKIP LOCKED  -- Kilitli satirlari bekleme
+        )
+        UPDATE orders o
+        SET status = 'expired',
+            updated_at = NOW()
+        FROM batch b
+        WHERE o.id = b.id;
+
+        GET DIAGNOSTICS v_rows_affected = ROW_COUNT;
+
+        EXIT WHEN v_rows_affected = 0;
+
+        v_batches := v_batches + 1;
+        v_total_rows := v_total_rows + v_rows_affected;
+
+        -- Toplu islemler arasinda commit ve duraklama
+        COMMIT;
+        PERFORM pg_sleep(0.1);  -- 100ms duraklama
+
+        RAISE NOTICE 'Toplu islem %: % satir guncellendi', v_batches, v_rows_affected;
+    END LOOP;
+
+    RETURN QUERY SELECT v_batches, v_total_rows;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Toplu Silme Kalibi</h3>
+                <pre><code class="language-sql">-- Eski kayitlari toplu halde sil
+CREATE OR REPLACE PROCEDURE cleanup_old_logs(
+    p_days_to_keep INTEGER DEFAULT 90,
+    p_batch_size INTEGER DEFAULT 5000
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    v_deleted INTEGER;
+    v_total INTEGER := 0;
+BEGIN
+    LOOP
+        DELETE FROM audit_logs
+        WHERE id IN (
+            SELECT id FROM audit_logs
+            WHERE created_at < NOW() - (p_days_to_keep || ' days')::INTERVAL
+            LIMIT p_batch_size
+        );
+
+        GET DIAGNOSTICS v_deleted = ROW_COUNT;
+
+        EXIT WHEN v_deleted = 0;
+
+        v_total := v_total + v_deleted;
+
+        COMMIT;  -- Toplu islemler arasinda kilitleri serbest birak
+
+        RAISE NOTICE '% satir silindi (toplam: %)', v_deleted, v_total;
+    END LOOP;
+
+    RAISE NOTICE 'Temizlik tamamlandi. Toplam silinen satir: %', v_total;
+END;
+$$;
+
+-- Proseduru cagir
+CALL cleanup_old_logs(90, 10000);</code></pre>
+
+                <h3>Uzun Islemler icin Ilerleme Takibi</h3>
+                <pre><code class="language-sql">-- Ilerleme takip tablosu olustur
+CREATE TABLE IF NOT EXISTS batch_job_progress (
+    job_name TEXT PRIMARY KEY,
+    total_items INTEGER,
+    processed_items INTEGER DEFAULT 0,
+    started_at TIMESTAMP DEFAULT NOW(),
+    last_update TIMESTAMP DEFAULT NOW(),
+    status TEXT DEFAULT 'running'
+);
+
+-- Ilerleme takipli fonksiyon
+CREATE OR REPLACE FUNCTION process_with_progress(p_job_name TEXT)
+RETURNS VOID AS $$
+DECLARE
+    v_total INTEGER;
+    v_processed INTEGER := 0;
+    v_batch_size INTEGER := 100;
+    r RECORD;
+BEGIN
+    -- Toplam ogelerini say
+    SELECT COUNT(*) INTO v_total FROM items_to_process WHERE processed = false;
+
+    -- Ilerlemeyi baslat
+    INSERT INTO batch_job_progress (job_name, total_items)
+    VALUES (p_job_name, v_total)
+    ON CONFLICT (job_name) DO UPDATE
+    SET total_items = v_total, processed_items = 0,
+        started_at = NOW(), status = 'running';
+
+    -- Toplu halde isle
+    FOR r IN
+        SELECT id FROM items_to_process
+        WHERE processed = false
+        ORDER BY id
+    LOOP
+        -- Ogeyi isle
+        UPDATE items_to_process SET processed = true WHERE id = r.id;
+
+        v_processed := v_processed + 1;
+
+        -- Her batch_size ogede ilerlemeyi guncelle
+        IF v_processed % v_batch_size = 0 THEN
+            UPDATE batch_job_progress
+            SET processed_items = v_processed,
+                last_update = NOW()
+            WHERE job_name = p_job_name;
+
+            COMMIT;
+        END IF;
+    END LOOP;
+
+    -- Tamamlandi olarak isaretle
+    UPDATE batch_job_progress
+    SET processed_items = v_processed,
+        status = 'completed',
+        last_update = NOW()
+    WHERE job_name = p_job_name;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Baska bir oturumdan ilerlemeyi kontrol et
+SELECT
+    job_name,
+    processed_items || '/' || total_items AS progress,
+    ROUND(100.0 * processed_items / NULLIF(total_items, 0), 1) AS percent_complete,
+    NOW() - started_at AS elapsed_time,
+    status
+FROM batch_job_progress;</code></pre>
+
+                <div class="tip-box">
+                    <strong>Toplu Islem Icin En Iyi Uygulamalar:</strong>
+                    <ul>
+                        <li>Toplu is boyutunu kontrol etmek icin her zaman <code>LIMIT</code> kullanin</li>
+                        <li>Kilitlenmeleri onlemek icin <code>FOR UPDATE SKIP LOCKED</code> kullanin</li>
+                        <li>Kilitleri serbest birakmak icin toplu islemler arasinda COMMIT yapin</li>
+                        <li>Sistem yukunu azaltmak icin toplu islemler arasina kucuk gecikmeler ekleyin</li>
+                        <li>Uzun sureli islemler icin ilerlemeyi kaydedin</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Summary -->
+            <section>
+                <h2 id="summary">Ozet</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Konu</th>
+                            <th>Anahtar Fonksiyonlar/Komutlar</th>
+                            <th>Kullanim Alani</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dinamik SQL</td>
+                            <td>EXECUTE, format(), quote_ident()</td>
+                            <td>Calisma zamani sorgu olusturma</td>
+                        </tr>
+                        <tr>
+                            <td>Hata Yonetimi</td>
+                            <td>EXCEPTION, RAISE, GET DIAGNOSTICS</td>
+                            <td>Saglam hata yonetimi</td>
+                        </tr>
+                        <tr>
+                            <td>Metadata Sorgulari</td>
+                            <td>information_schema, pg_stat_*</td>
+                            <td>Veritabani incelemesi</td>
+                        </tr>
+                        <tr>
+                            <td>Izleme</td>
+                            <td>pg_stat_activity, pg_locks</td>
+                            <td>Performans analizi</td>
+                        </tr>
+                        <tr>
+                            <td>Toplu Islem</td>
+                            <td>LIMIT, SKIP LOCKED, COMMIT</td>
+                            <td>Buyuk veri islemleri</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Sonraki:</strong> <a href="03_sql_scripting_and_automation_examples_tr.html">Uygulamali aliştirmalarla bu teknikleri pratik yapin</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+</html>

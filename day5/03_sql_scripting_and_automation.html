@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 5: SQL Scripting and Automation</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip-box {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .danger-box {
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_en.html" class="back-button">&larr; Back to Index</a>
+    <div class="language-switcher">
+        <a href="03_sql_scripting_and_automation.html" class="active">EN</a>
+        <a href="03_sql_scripting_and_automation_tr.html">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="scripting">Day 5: SQL Scripting and Automation</h1>
+                <h2 id="practical-db">Practical Database Scripting for Engineers</h2>
+                <p>This session covers essential SQL scripting techniques that help engineers automate
+                   database tasks, handle errors gracefully, and gather useful information about their
+                   database systems.</p>
+
+                <p><strong>Topics Covered:</strong></p>
+                <ul>
+                    <li>Dynamic SQL with EXECUTE</li>
+                    <li>Error Handling in PL/pgSQL</li>
+                    <li>Database Metadata Queries</li>
+                    <li>Monitoring Active Sessions and Queries</li>
+                    <li>Batch Processing Patterns</li>
+                </ul>
+            </section>
+
+            <!-- Section 1: Dynamic SQL -->
+            <section>
+                <h2 id="dynamic-sql">1. Dynamic SQL with EXECUTE</h2>
+                <p>Dynamic SQL allows you to build and execute SQL statements at runtime. This is useful
+                   when table names, column names, or query structure isn't known until execution time.</p>
+
+                <h3>Basic EXECUTE Syntax</h3>
+                <pre><code class="language-sql">-- Simple dynamic SQL
+DO $$
+DECLARE
+    table_name TEXT := 'customers';
+    row_count INTEGER;
+BEGIN
+    EXECUTE 'SELECT COUNT(*) FROM ' || quote_ident(table_name)
+    INTO row_count;
+
+    RAISE NOTICE 'Table % has % rows', table_name, row_count;
+END $$;</code></pre>
+
+                <h3>Using Parameters with USING Clause</h3>
+                <p>The USING clause provides safe parameter binding, preventing SQL injection:</p>
+
+                <pre><code class="language-sql">-- Safe parameterized dynamic SQL
+CREATE OR REPLACE FUNCTION get_records_by_status(
+    p_table_name TEXT,
+    p_status TEXT
+) RETURNS SETOF RECORD AS $$
+BEGIN
+    RETURN QUERY EXECUTE
+        'SELECT * FROM ' || quote_ident(p_table_name) ||
+        ' WHERE status = $1'
+    USING p_status;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Using format() for cleaner SQL building
+CREATE OR REPLACE FUNCTION count_by_column(
+    p_table TEXT,
+    p_column TEXT,
+    p_value TEXT
+) RETURNS BIGINT AS $$
+DECLARE
+    result BIGINT;
+BEGIN
+    EXECUTE format(
+        'SELECT COUNT(*) FROM %I WHERE %I = $1',
+        p_table,
+        p_column
+    ) INTO result USING p_value;
+
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <div class="info-box">
+                    <strong>Format Specifiers:</strong>
+                    <ul>
+                        <li><code>%I</code> - Identifier (table/column name) - adds quotes if needed</li>
+                        <li><code>%L</code> - Literal value - properly quoted string</li>
+                        <li><code>%s</code> - Simple string substitution (no quoting)</li>
+                    </ul>
+                </div>
+
+                <h3>Dynamic Table Operations</h3>
+                <pre><code class="language-sql">-- Create archive tables dynamically
+CREATE OR REPLACE FUNCTION create_monthly_archive(
+    p_source_table TEXT,
+    p_year INTEGER,
+    p_month INTEGER
+) RETURNS TEXT AS $$
+DECLARE
+    archive_table TEXT;
+    sql_create TEXT;
+    sql_insert TEXT;
+BEGIN
+    -- Generate archive table name
+    archive_table := format('%s_archive_%s_%s',
+        p_source_table,
+        p_year,
+        LPAD(p_month::TEXT, 2, '0')
+    );
+
+    -- Create archive table with same structure
+    sql_create := format(
+        'CREATE TABLE IF NOT EXISTS %I (LIKE %I INCLUDING ALL)',
+        archive_table,
+        p_source_table
+    );
+    EXECUTE sql_create;
+
+    -- Move old data to archive
+    sql_insert := format($sql$
+        WITH moved AS (
+            DELETE FROM %I
+            WHERE EXTRACT(YEAR FROM created_at) = $1
+              AND EXTRACT(MONTH FROM created_at) = $2
+            RETURNING *
+        )
+        INSERT INTO %I SELECT * FROM moved
+    $sql$, p_source_table, archive_table);
+
+    EXECUTE sql_insert USING p_year, p_month;
+
+    RETURN archive_table;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <div class="warning-box">
+                    <strong>Security Warning:</strong> Always use <code>quote_ident()</code> for identifiers
+                    and <code>quote_literal()</code> or <code>USING</code> for values. Never concatenate
+                    user input directly into SQL strings!
+                </div>
+            </section>
+
+            <!-- Section 2: Error Handling -->
+            <section>
+                <h2 id="error-handling">2. Error Handling in PL/pgSQL</h2>
+                <p>Proper error handling makes your database code robust and debuggable.</p>
+
+                <h3>Basic Exception Handling</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION safe_divide(
+    p_numerator NUMERIC,
+    p_denominator NUMERIC
+) RETURNS NUMERIC AS $$
+BEGIN
+    RETURN p_numerator / p_denominator;
+EXCEPTION
+    WHEN division_by_zero THEN
+        RAISE NOTICE 'Division by zero attempted';
+        RETURN NULL;
+    WHEN numeric_value_out_of_range THEN
+        RAISE NOTICE 'Result out of range';
+        RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Common Exception Types</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Exception</th>
+                            <th>SQLSTATE</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>division_by_zero</td><td>22012</td><td>Division by zero</td></tr>
+                        <tr><td>unique_violation</td><td>23505</td><td>Duplicate key</td></tr>
+                        <tr><td>foreign_key_violation</td><td>23503</td><td>FK constraint failed</td></tr>
+                        <tr><td>not_null_violation</td><td>23502</td><td>NULL in NOT NULL column</td></tr>
+                        <tr><td>check_violation</td><td>23514</td><td>CHECK constraint failed</td></tr>
+                        <tr><td>undefined_table</td><td>42P01</td><td>Table doesn't exist</td></tr>
+                        <tr><td>undefined_column</td><td>42703</td><td>Column doesn't exist</td></tr>
+                        <tr><td>OTHERS</td><td>-</td><td>Catch-all for any error</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Comprehensive Error Handling</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION insert_customer_safe(
+    p_name TEXT,
+    p_email TEXT
+) RETURNS TABLE(success BOOLEAN, message TEXT, customer_id INTEGER) AS $$
+DECLARE
+    v_customer_id INTEGER;
+BEGIN
+    INSERT INTO customers (name, email)
+    VALUES (p_name, p_email)
+    RETURNING id INTO v_customer_id;
+
+    RETURN QUERY SELECT true, 'Customer created successfully'::TEXT, v_customer_id;
+
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN QUERY SELECT false, 'Email already exists'::TEXT, NULL::INTEGER;
+
+    WHEN not_null_violation THEN
+        RETURN QUERY SELECT false, 'Required field is missing'::TEXT, NULL::INTEGER;
+
+    WHEN check_violation THEN
+        RETURN QUERY SELECT false, 'Invalid data: check constraint failed'::TEXT, NULL::INTEGER;
+
+    WHEN OTHERS THEN
+        -- Log the error details
+        RAISE WARNING 'Unexpected error: % - %', SQLSTATE, SQLERRM;
+        RETURN QUERY SELECT false, ('Unexpected error: ' || SQLERRM)::TEXT, NULL::INTEGER;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Getting Error Details</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION log_and_handle_error()
+RETURNS VOID AS $$
+DECLARE
+    v_sqlstate TEXT;
+    v_message TEXT;
+    v_detail TEXT;
+    v_hint TEXT;
+    v_context TEXT;
+BEGIN
+    -- Some operation that might fail
+    PERFORM 1/0;
+
+EXCEPTION WHEN OTHERS THEN
+    -- Capture all error information
+    GET STACKED DIAGNOSTICS
+        v_sqlstate = RETURNED_SQLSTATE,
+        v_message = MESSAGE_TEXT,
+        v_detail = PG_EXCEPTION_DETAIL,
+        v_hint = PG_EXCEPTION_HINT,
+        v_context = PG_EXCEPTION_CONTEXT;
+
+    -- Log to an error table
+    INSERT INTO error_log (
+        error_time, sqlstate, message, detail, hint, context
+    ) VALUES (
+        NOW(), v_sqlstate, v_message, v_detail, v_hint, v_context
+    );
+
+    -- Re-raise or handle as needed
+    RAISE EXCEPTION 'Logged error: %', v_message;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Custom Exceptions with RAISE</h3>
+                <pre><code class="language-sql">CREATE OR REPLACE FUNCTION validate_order(p_order_id INTEGER)
+RETURNS VOID AS $$
+DECLARE
+    v_status TEXT;
+    v_total NUMERIC;
+BEGIN
+    SELECT status, total_amount INTO v_status, v_total
+    FROM orders WHERE id = p_order_id;
+
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Order % not found', p_order_id
+            USING ERRCODE = 'P0001',
+                  HINT = 'Check if the order ID is correct';
+    END IF;
+
+    IF v_status = 'cancelled' THEN
+        RAISE EXCEPTION 'Cannot process cancelled order %', p_order_id
+            USING ERRCODE = 'P0002';
+    END IF;
+
+    IF v_total <= 0 THEN
+        RAISE EXCEPTION 'Order % has invalid total: %', p_order_id, v_total
+            USING ERRCODE = 'P0003',
+                  DETAIL = 'Total must be greater than zero';
+    END IF;
+
+    RAISE NOTICE 'Order % validated successfully', p_order_id;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+            </section>
+
+            <!-- Section 3: Database Metadata Queries -->
+            <section>
+                <h2 id="metadata">3. Database Metadata Queries</h2>
+                <p>PostgreSQL's system catalogs contain valuable information about your database structure.</p>
+
+                <h3>Table and Column Information</h3>
+                <pre><code class="language-sql">-- List all tables in current schema with row counts (estimate)
+SELECT
+    schemaname,
+    relname AS table_name,
+    n_live_tup AS estimated_rows,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    pg_size_pretty(pg_relation_size(relid)) AS table_size,
+    pg_size_pretty(pg_indexes_size(relid)) AS index_size
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC;
+
+-- Get column details for a table
+SELECT
+    column_name,
+    data_type,
+    character_maximum_length,
+    is_nullable,
+    column_default
+FROM information_schema.columns
+WHERE table_name = 'customers'
+  AND table_schema = 'public'
+ORDER BY ordinal_position;
+
+-- Find tables with specific column name
+SELECT
+    table_schema,
+    table_name,
+    column_name,
+    data_type
+FROM information_schema.columns
+WHERE column_name LIKE '%email%'
+ORDER BY table_schema, table_name;</code></pre>
+
+                <h3>Index Information</h3>
+                <pre><code class="language-sql">-- List all indexes with their details
+SELECT
+    schemaname,
+    tablename,
+    indexname,
+    indexdef
+FROM pg_indexes
+WHERE schemaname = 'public'
+ORDER BY tablename, indexname;
+
+-- Find unused indexes (candidates for removal)
+SELECT
+    schemaname,
+    relname AS table_name,
+    indexrelname AS index_name,
+    pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,
+    idx_scan AS times_used,
+    idx_tup_read AS tuples_read,
+    idx_tup_fetch AS tuples_fetched
+FROM pg_stat_user_indexes
+WHERE idx_scan = 0  -- Never used
+  AND indexrelname NOT LIKE '%_pkey'  -- Exclude primary keys
+ORDER BY pg_relation_size(indexrelid) DESC;
+
+-- Find missing indexes (tables with lots of seq scans)
+SELECT
+    schemaname,
+    relname AS table_name,
+    seq_scan,
+    seq_tup_read,
+    idx_scan,
+    CASE WHEN seq_scan > 0
+         THEN seq_tup_read / seq_scan
+         ELSE 0
+    END AS avg_rows_per_seq_scan
+FROM pg_stat_user_tables
+WHERE seq_scan > 100
+  AND seq_tup_read / GREATEST(seq_scan, 1) > 1000
+ORDER BY seq_tup_read DESC;</code></pre>
+
+                <h3>Foreign Key Relationships</h3>
+                <pre><code class="language-sql">-- List all foreign key relationships
+SELECT
+    tc.table_schema,
+    tc.table_name,
+    kcu.column_name,
+    ccu.table_schema AS foreign_table_schema,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name,
+    tc.constraint_name
+FROM information_schema.table_constraints AS tc
+JOIN information_schema.key_column_usage AS kcu
+    ON tc.constraint_name = kcu.constraint_name
+    AND tc.table_schema = kcu.table_schema
+JOIN information_schema.constraint_column_usage AS ccu
+    ON ccu.constraint_name = tc.constraint_name
+    AND ccu.table_schema = tc.table_schema
+WHERE tc.constraint_type = 'FOREIGN KEY'
+ORDER BY tc.table_name;</code></pre>
+
+                <h3>Constraint Information</h3>
+                <pre><code class="language-sql">-- List all constraints for a table
+SELECT
+    conname AS constraint_name,
+    contype AS constraint_type,
+    pg_get_constraintdef(oid) AS definition
+FROM pg_constraint
+WHERE conrelid = 'customers'::regclass;
+
+-- Constraint types: p=primary, f=foreign, u=unique, c=check, x=exclusion</code></pre>
+            </section>
+
+            <!-- Section 4: Monitoring Queries -->
+            <section>
+                <h2 id="monitoring">4. Monitoring Active Sessions and Queries</h2>
+                <p>Essential queries for understanding what's happening in your database right now.</p>
+
+                <h3>Active Connections and Queries</h3>
+                <pre><code class="language-sql">-- View all active connections
+SELECT
+    pid,
+    usename AS username,
+    datname AS database,
+    client_addr,
+    application_name,
+    state,
+    query_start,
+    NOW() - query_start AS query_duration,
+    LEFT(query, 100) AS query_preview
+FROM pg_stat_activity
+WHERE state != 'idle'
+  AND pid != pg_backend_pid()  -- Exclude this query
+ORDER BY query_start;
+
+-- Find long-running queries (over 5 minutes)
+SELECT
+    pid,
+    usename,
+    NOW() - query_start AS duration,
+    state,
+    query
+FROM pg_stat_activity
+WHERE state != 'idle'
+  AND NOW() - query_start > INTERVAL '5 minutes'
+ORDER BY query_start;
+
+-- Connection count by database and user
+SELECT
+    datname AS database,
+    usename AS username,
+    COUNT(*) AS connections,
+    COUNT(*) FILTER (WHERE state = 'active') AS active,
+    COUNT(*) FILTER (WHERE state = 'idle') AS idle,
+    COUNT(*) FILTER (WHERE state = 'idle in transaction') AS idle_in_transaction
+FROM pg_stat_activity
+GROUP BY datname, usename
+ORDER BY connections DESC;</code></pre>
+
+                <h3>Lock Monitoring</h3>
+                <pre><code class="language-sql">-- View current locks
+SELECT
+    l.pid,
+    l.locktype,
+    l.mode,
+    l.granted,
+    l.relation::regclass AS table_name,
+    a.usename,
+    a.query_start,
+    LEFT(a.query, 80) AS query
+FROM pg_locks l
+JOIN pg_stat_activity a ON l.pid = a.pid
+WHERE l.relation IS NOT NULL
+ORDER BY l.relation, l.pid;
+
+-- Find blocking queries (who is blocking whom)
+SELECT
+    blocked.pid AS blocked_pid,
+    blocked.usename AS blocked_user,
+    LEFT(blocked.query, 60) AS blocked_query,
+    blocking.pid AS blocking_pid,
+    blocking.usename AS blocking_user,
+    LEFT(blocking.query, 60) AS blocking_query,
+    NOW() - blocked.query_start AS blocked_duration
+FROM pg_stat_activity blocked
+JOIN pg_locks blocked_locks ON blocked.pid = blocked_locks.pid
+JOIN pg_locks blocking_locks ON blocked_locks.locktype = blocking_locks.locktype
+    AND blocked_locks.database IS NOT DISTINCT FROM blocking_locks.database
+    AND blocked_locks.relation IS NOT DISTINCT FROM blocking_locks.relation
+    AND blocked_locks.page IS NOT DISTINCT FROM blocking_locks.page
+    AND blocked_locks.tuple IS NOT DISTINCT FROM blocking_locks.tuple
+    AND blocked_locks.virtualxid IS NOT DISTINCT FROM blocking_locks.virtualxid
+    AND blocked_locks.transactionid IS NOT DISTINCT FROM blocking_locks.transactionid
+    AND blocked_locks.classid IS NOT DISTINCT FROM blocking_locks.classid
+    AND blocked_locks.objid IS NOT DISTINCT FROM blocking_locks.objid
+    AND blocked_locks.objsubid IS NOT DISTINCT FROM blocking_locks.objsubid
+    AND blocked_locks.pid != blocking_locks.pid
+JOIN pg_stat_activity blocking ON blocking_locks.pid = blocking.pid
+WHERE NOT blocked_locks.granted
+  AND blocking_locks.granted;</code></pre>
+
+                <h3>Terminating Problem Queries</h3>
+                <pre><code class="language-sql">-- Cancel a query (graceful)
+SELECT pg_cancel_backend(12345);  -- Replace with actual PID
+
+-- Terminate a connection (forceful)
+SELECT pg_terminate_backend(12345);
+
+-- Terminate all connections to a database (except yourself)
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE datname = 'target_database'
+  AND pid != pg_backend_pid();</code></pre>
+
+                <div class="danger-box">
+                    <strong>Caution:</strong> <code>pg_terminate_backend()</code> forcefully closes the connection.
+                    Use <code>pg_cancel_backend()</code> first when possible, as it only cancels the current query.
+                </div>
+            </section>
+
+            <!-- Section 5: Batch Processing -->
+            <section>
+                <h2 id="batch">5. Batch Processing Patterns</h2>
+                <p>When processing large amounts of data, working in batches prevents timeouts and reduces lock contention.</p>
+
+                <h3>Batch Update Pattern</h3>
+                <pre><code class="language-sql">-- Update large table in batches
+CREATE OR REPLACE FUNCTION batch_update_status(
+    p_batch_size INTEGER DEFAULT 1000
+) RETURNS TABLE(batches_processed INTEGER, rows_updated BIGINT) AS $$
+DECLARE
+    v_batches INTEGER := 0;
+    v_total_rows BIGINT := 0;
+    v_rows_affected INTEGER;
+BEGIN
+    LOOP
+        -- Update a batch
+        WITH batch AS (
+            SELECT id FROM orders
+            WHERE status = 'pending'
+              AND created_at < NOW() - INTERVAL '30 days'
+            LIMIT p_batch_size
+            FOR UPDATE SKIP LOCKED  -- Don't wait for locked rows
+        )
+        UPDATE orders o
+        SET status = 'expired',
+            updated_at = NOW()
+        FROM batch b
+        WHERE o.id = b.id;
+
+        GET DIAGNOSTICS v_rows_affected = ROW_COUNT;
+
+        EXIT WHEN v_rows_affected = 0;
+
+        v_batches := v_batches + 1;
+        v_total_rows := v_total_rows + v_rows_affected;
+
+        -- Commit and pause between batches
+        COMMIT;
+        PERFORM pg_sleep(0.1);  -- 100ms pause
+
+        RAISE NOTICE 'Batch %: Updated % rows', v_batches, v_rows_affected;
+    END LOOP;
+
+    RETURN QUERY SELECT v_batches, v_total_rows;
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+
+                <h3>Batch Delete Pattern</h3>
+                <pre><code class="language-sql">-- Delete old records in batches
+CREATE OR REPLACE PROCEDURE cleanup_old_logs(
+    p_days_to_keep INTEGER DEFAULT 90,
+    p_batch_size INTEGER DEFAULT 5000
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    v_deleted INTEGER;
+    v_total INTEGER := 0;
+BEGIN
+    LOOP
+        DELETE FROM audit_logs
+        WHERE id IN (
+            SELECT id FROM audit_logs
+            WHERE created_at < NOW() - (p_days_to_keep || ' days')::INTERVAL
+            LIMIT p_batch_size
+        );
+
+        GET DIAGNOSTICS v_deleted = ROW_COUNT;
+
+        EXIT WHEN v_deleted = 0;
+
+        v_total := v_total + v_deleted;
+
+        COMMIT;  -- Release locks between batches
+
+        RAISE NOTICE 'Deleted % rows (total: %)', v_deleted, v_total;
+    END LOOP;
+
+    RAISE NOTICE 'Cleanup complete. Total rows deleted: %', v_total;
+END;
+$$;
+
+-- Call the procedure
+CALL cleanup_old_logs(90, 10000);</code></pre>
+
+                <h3>Progress Tracking for Long Operations</h3>
+                <pre><code class="language-sql">-- Create a progress tracking table
+CREATE TABLE IF NOT EXISTS batch_job_progress (
+    job_name TEXT PRIMARY KEY,
+    total_items INTEGER,
+    processed_items INTEGER DEFAULT 0,
+    started_at TIMESTAMP DEFAULT NOW(),
+    last_update TIMESTAMP DEFAULT NOW(),
+    status TEXT DEFAULT 'running'
+);
+
+-- Function with progress tracking
+CREATE OR REPLACE FUNCTION process_with_progress(p_job_name TEXT)
+RETURNS VOID AS $$
+DECLARE
+    v_total INTEGER;
+    v_processed INTEGER := 0;
+    v_batch_size INTEGER := 100;
+    r RECORD;
+BEGIN
+    -- Count total items
+    SELECT COUNT(*) INTO v_total FROM items_to_process WHERE processed = false;
+
+    -- Initialize progress
+    INSERT INTO batch_job_progress (job_name, total_items)
+    VALUES (p_job_name, v_total)
+    ON CONFLICT (job_name) DO UPDATE
+    SET total_items = v_total, processed_items = 0,
+        started_at = NOW(), status = 'running';
+
+    -- Process in batches
+    FOR r IN
+        SELECT id FROM items_to_process
+        WHERE processed = false
+        ORDER BY id
+    LOOP
+        -- Process item
+        UPDATE items_to_process SET processed = true WHERE id = r.id;
+
+        v_processed := v_processed + 1;
+
+        -- Update progress every batch_size items
+        IF v_processed % v_batch_size = 0 THEN
+            UPDATE batch_job_progress
+            SET processed_items = v_processed,
+                last_update = NOW()
+            WHERE job_name = p_job_name;
+
+            COMMIT;
+        END IF;
+    END LOOP;
+
+    -- Mark complete
+    UPDATE batch_job_progress
+    SET processed_items = v_processed,
+        status = 'completed',
+        last_update = NOW()
+    WHERE job_name = p_job_name;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Check progress from another session
+SELECT
+    job_name,
+    processed_items || '/' || total_items AS progress,
+    ROUND(100.0 * processed_items / NULLIF(total_items, 0), 1) AS percent_complete,
+    NOW() - started_at AS elapsed_time,
+    status
+FROM batch_job_progress;</code></pre>
+
+                <div class="tip-box">
+                    <strong>Best Practices for Batch Processing:</strong>
+                    <ul>
+                        <li>Always use <code>LIMIT</code> to control batch size</li>
+                        <li>Use <code>FOR UPDATE SKIP LOCKED</code> to avoid deadlocks</li>
+                        <li>COMMIT between batches to release locks</li>
+                        <li>Add small delays between batches to reduce system load</li>
+                        <li>Log progress for long-running operations</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Summary -->
+            <section>
+                <h2 id="summary">Summary</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Key Functions/Commands</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dynamic SQL</td>
+                            <td>EXECUTE, format(), quote_ident()</td>
+                            <td>Runtime query building</td>
+                        </tr>
+                        <tr>
+                            <td>Error Handling</td>
+                            <td>EXCEPTION, RAISE, GET DIAGNOSTICS</td>
+                            <td>Robust error management</td>
+                        </tr>
+                        <tr>
+                            <td>Metadata Queries</td>
+                            <td>information_schema, pg_stat_*</td>
+                            <td>Database introspection</td>
+                        </tr>
+                        <tr>
+                            <td>Monitoring</td>
+                            <td>pg_stat_activity, pg_locks</td>
+                            <td>Performance analysis</td>
+                        </tr>
+                        <tr>
+                            <td>Batch Processing</td>
+                            <td>LIMIT, SKIP LOCKED, COMMIT</td>
+                            <td>Large data operations</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Next:</strong> <a href="03_sql_scripting_and_automation_examples.html">Practice these techniques with hands-on exercises</a></p>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+
+</html>

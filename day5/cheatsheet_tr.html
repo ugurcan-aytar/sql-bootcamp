@@ -534,6 +534,111 @@ pg_basebackup -h localhost -U postgres -D /backup/base -Ft -z -P
             </table>
         </div>
 
+        <!-- SQL Script Yazimi -->
+        <h3 class="section-title">SQL Script Yazimi & Otomasyon (SQL Scripting & Automation)</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>EXECUTE ile Dinamik SQL (Dynamic SQL)</h5>
+                    <pre><code><span class="comment">-- Temel dinamik SQL</span>
+<span class="keyword">EXECUTE</span> <span class="string">'SELECT COUNT(*) FROM '</span> ||
+    <span class="function">quote_ident</span>(table_name)
+<span class="keyword">INTO</span> row_count;
+
+<span class="comment">-- Parametrelerle (guvenli)</span>
+<span class="keyword">EXECUTE</span> <span class="function">format</span>(
+    <span class="string">'SELECT * FROM %I WHERE %I = $1'</span>,
+    p_table, p_column
+) <span class="keyword">INTO</span> result <span class="keyword">USING</span> p_value;
+
+<span class="comment">-- Format belirleyicileri:</span>
+<span class="comment">-- %I = tanimlayici (tirnakli)</span>
+<span class="comment">-- %L = literal deger</span>
+<span class="comment">-- %s = basit metin</span></code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Hata Yonetimi (Error Handling)</h5>
+                    <pre><code><span class="keyword">BEGIN</span>
+    <span class="comment">-- riskli islem</span>
+    <span class="keyword">INSERT INTO</span> ...;
+<span class="keyword">EXCEPTION</span>
+    <span class="keyword">WHEN</span> unique_violation <span class="keyword">THEN</span>
+        <span class="keyword">RAISE NOTICE</span> <span class="string">'Tekrar!'</span>;
+    <span class="keyword">WHEN</span> foreign_key_violation <span class="keyword">THEN</span>
+        <span class="keyword">RAISE NOTICE</span> <span class="string">'FK hatasi'</span>;
+    <span class="keyword">WHEN OTHERS THEN</span>
+        <span class="keyword">RAISE WARNING</span> <span class="string">'Hata: %'</span>,
+            SQLERRM;
+<span class="keyword">END</span>;
+
+<span class="comment">-- Ozel istisna</span>
+<span class="keyword">RAISE EXCEPTION</span> <span class="string">'Hata: %'</span>, msg
+    <span class="keyword">USING</span> ERRCODE = <span class="string">'P0001'</span>;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Yaygin Istisna Turleri (Common Exception Types)</h5>
+            <table>
+                <thead><tr><th>Istisna (Exception)</th><th>SQLSTATE</th><th>Neden (Cause)</th></tr></thead>
+                <tbody>
+                    <tr><td><code>unique_violation</code></td><td>23505</td><td>Tekil anahtar ihlali</td></tr>
+                    <tr><td><code>foreign_key_violation</code></td><td>23503</td><td>FK kisitlamasi basarisiz</td></tr>
+                    <tr><td><code>not_null_violation</code></td><td>23502</td><td>NOT NULL'da NULL</td></tr>
+                    <tr><td><code>check_violation</code></td><td>23514</td><td>CHECK basarisiz</td></tr>
+                    <tr><td><code>division_by_zero</code></td><td>22012</td><td>Sifira bolme</td></tr>
+                    <tr><td><code>OTHERS</code></td><td>-</td><td>Tum hatalari yakalar</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Veritabani Metadata Sorgulari (Database Metadata Queries)</h5>
+            <pre><code><span class="comment">-- Tablo boyutlari</span>
+<span class="keyword">SELECT</span> relname, pg_size_pretty(pg_total_relation_size(relid))
+<span class="keyword">FROM</span> pg_stat_user_tables <span class="keyword">ORDER BY</span> pg_total_relation_size(relid) <span class="keyword">DESC</span>;
+
+<span class="comment">-- Sutun bilgileri</span>
+<span class="keyword">SELECT</span> column_name, data_type, is_nullable
+<span class="keyword">FROM</span> information_schema.columns
+<span class="keyword">WHERE</span> table_name = <span class="string">'customers'</span>;
+
+<span class="comment">-- Yabanci anahtarlar</span>
+<span class="keyword">SELECT</span> tc.table_name, kcu.column_name, ccu.table_name <span class="keyword">AS</span> foreign_table
+<span class="keyword">FROM</span> information_schema.table_constraints tc
+<span class="keyword">JOIN</span> information_schema.key_column_usage kcu <span class="keyword">ON</span> tc.constraint_name = kcu.constraint_name
+<span class="keyword">JOIN</span> information_schema.constraint_column_usage ccu <span class="keyword">ON</span> tc.constraint_name = ccu.constraint_name
+<span class="keyword">WHERE</span> tc.constraint_type = <span class="string">'FOREIGN KEY'</span>;
+
+<span class="comment">-- Kullanilmayan indeksler</span>
+<span class="keyword">SELECT</span> indexrelname, pg_size_pretty(pg_relation_size(indexrelid))
+<span class="keyword">FROM</span> pg_stat_user_indexes <span class="keyword">WHERE</span> idx_scan = 0;</code></pre>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Toplu Islem Kalibi (Batch Processing Pattern)</h5>
+            <pre><code><span class="keyword">LOOP</span>
+    <span class="keyword">WITH</span> batch <span class="keyword">AS</span> (
+        <span class="keyword">SELECT</span> id <span class="keyword">FROM</span> large_table
+        <span class="keyword">WHERE</span> status = <span class="string">'pending'</span>
+        <span class="keyword">LIMIT</span> 1000
+        <span class="keyword">FOR UPDATE SKIP LOCKED</span>
+    )
+    <span class="keyword">UPDATE</span> large_table <span class="keyword">SET</span> status = <span class="string">'done'</span>
+    <span class="keyword">FROM</span> batch <span class="keyword">WHERE</span> large_table.id = batch.id;
+
+    <span class="keyword">GET DIAGNOSTICS</span> rows_affected = ROW_COUNT;
+    <span class="keyword">EXIT WHEN</span> rows_affected = 0;
+
+    <span class="keyword">COMMIT</span>;                  <span class="comment">-- Kilitleri serbest birak</span>
+    <span class="keyword">PERFORM</span> pg_sleep(0.1);   <span class="comment">-- Yuku azalt</span>
+<span class="keyword">END LOOP</span>;</code></pre>
+        </div>
+
         <!-- En Iyi Uygulamalar -->
         <h3 class="section-title">Yonetim En Iyi Uygulamalari (Administration Best Practices)</h3>
 

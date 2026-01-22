@@ -415,6 +415,103 @@ Execution Time: 0.987 ms</code></pre>
 <span class="comment">-- Generates: (region,product), (region), (product), ()</span></code></pre>
         </div>
 
+        <!-- Common SQL Patterns -->
+        <h3 class="section-title">Common SQL Patterns</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Recursive CTEs (Hierarchies)</h5>
+                    <pre><code><span class="keyword">WITH RECURSIVE</span> tree <span class="keyword">AS</span> (
+    <span class="comment">-- Anchor: starting point</span>
+    <span class="keyword">SELECT</span> id, name, parent_id, 1 <span class="keyword">AS</span> lvl
+    <span class="keyword">FROM</span> categories
+    <span class="keyword">WHERE</span> parent_id <span class="keyword">IS NULL</span>
+
+    <span class="keyword">UNION ALL</span>
+
+    <span class="comment">-- Recursive: join to self</span>
+    <span class="keyword">SELECT</span> c.id, c.name, c.parent_id, t.lvl + 1
+    <span class="keyword">FROM</span> categories c
+    <span class="keyword">JOIN</span> tree t <span class="keyword">ON</span> c.parent_id = t.id
+)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> tree;</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Top-N per Group</h5>
+                    <pre><code><span class="comment">-- ROW_NUMBER method</span>
+<span class="keyword">WITH</span> ranked <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> *,
+        <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+            <span class="keyword">PARTITION BY</span> category_id
+            <span class="keyword">ORDER BY</span> price <span class="keyword">DESC</span>
+        ) <span class="keyword">AS</span> rn
+    <span class="keyword">FROM</span> products
+)
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> ranked <span class="keyword">WHERE</span> rn <= 3;
+
+<span class="comment">-- DISTINCT ON (Top-1, PostgreSQL)</span>
+<span class="keyword">SELECT DISTINCT ON</span> (customer_id)
+    * <span class="keyword">FROM</span> orders
+<span class="keyword">ORDER BY</span> customer_id, order_date <span class="keyword">DESC</span>;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Gap and Island (Consecutive Groups)</h5>
+                    <pre><code><span class="comment">-- Find islands (consecutive values)</span>
+<span class="keyword">WITH</span> grouped <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span> id,
+        id - <span class="function">ROW_NUMBER</span>() <span class="keyword">OVER</span> (
+            <span class="keyword">ORDER BY</span> id
+        ) <span class="keyword">AS</span> grp
+    <span class="keyword">FROM</span> order_ids
+)
+<span class="keyword">SELECT</span>
+    <span class="function">MIN</span>(id) <span class="keyword">AS</span> start_id,
+    <span class="function">MAX</span>(id) <span class="keyword">AS</span> end_id
+<span class="keyword">FROM</span> grouped
+<span class="keyword">GROUP BY</span> grp;</code></pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="cheatsheet-card p-3">
+                    <h5>Pivoting Data (Rows to Columns)</h5>
+                    <pre><code><span class="comment">-- Using FILTER clause</span>
+<span class="keyword">SELECT</span>
+    category,
+    <span class="function">SUM</span>(amt) <span class="keyword">FILTER</span> (
+        <span class="keyword">WHERE</span> month = 1
+    ) <span class="keyword">AS</span> jan,
+    <span class="function">SUM</span>(amt) <span class="keyword">FILTER</span> (
+        <span class="keyword">WHERE</span> month = 2
+    ) <span class="keyword">AS</span> feb
+<span class="keyword">FROM</span> sales
+<span class="keyword">GROUP BY</span> category;
+
+<span class="comment">-- Using CASE</span>
+<span class="function">SUM</span>(<span class="keyword">CASE WHEN</span> month=1 <span class="keyword">THEN</span> amt <span class="keyword">END</span>)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="cheatsheet-card p-3">
+            <h5>Date Range Overlap Detection</h5>
+            <pre><code><span class="comment">-- Two ranges overlap if: start1 <= end2 AND end1 >= start2</span>
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> bookings a
+<span class="keyword">JOIN</span> bookings b <span class="keyword">ON</span> a.room_id = b.room_id <span class="keyword">AND</span> a.id < b.id
+<span class="keyword">WHERE</span> a.start_date <= b.end_date <span class="keyword">AND</span> a.end_date >= b.start_date;
+
+<span class="comment">-- Using PostgreSQL daterange type</span>
+<span class="keyword">WHERE</span> daterange(start1, end1) && daterange(start2, end2)  <span class="comment">-- Overlaps</span>
+<span class="keyword">WHERE</span> daterange(start1, end1) @> <span class="string">'2024-06-15'</span>::date      <span class="comment">-- Contains date</span></code></pre>
+        </div>
+
         <!-- Performance Best Practices -->
         <h3 class="section-title">Performance Best Practices</h3>
 

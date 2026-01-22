@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style_bootstrap.html">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/code.css">
+    <link href="https://cdn.prod.website-files.com/5efdb54f07a6812bcd95cc65/6773d0fc3013e060f08d7145_favicon.jpg"
+        rel="shortcut icon" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Day 5: SQL Scripting and Automation - Examples</title>
+    <style>
+        code { white-space: pre-wrap; }
+        .language-switcher {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .language-switcher a {
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .language-switcher a.active {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .language-switcher a:hover:not(.active) {
+            background: #e9ecef;
+        }
+        .exercise-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .solution-box {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        .output-display {
+            background-color: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .toggle-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .toggle-btn:hover {
+            background-color: #218838;
+        }
+        .challenge-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .concept-box {
+            background-color: #e7f3ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index_en.html" class="back-button">&larr; Back to Index</a>
+    <div class="language-switcher">
+        <a href="03_sql_scripting_and_automation_examples.html" class="active">EN</a>
+        <a href="03_sql_scripting_and_automation_examples_tr.html">TR</a>
+    </div>
+    <div class="copy-notification" id="copyNotification">Copied!</div>
+
+    <div id="europeanunion-turkey">
+        <img src="../static/eu.png" alt="">
+    </div>
+    <div id="sanayiteknolojibakan">
+        <img src="../static/sanayitek.png" alt="">
+    </div>
+    <div id="rekabet">
+        <img src="../static/rekabet.png" alt="">
+    </div>
+    <div id="tisk">
+        <img src="../static/tisk.png" alt="">
+    </div>
+    <div id="undp">
+        <img src="../static/undp.png" alt="">
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <section>
+                <h1 id="scripting-examples">SQL Scripting and Automation - Exercises</h1>
+                <p><a href="03_sql_scripting_and_automation.html">&larr; Back to SQL Scripting Lesson</a></p>
+                <p>These exercises help you practice SQL scripting techniques using the bootcamp_db schema.
+                   Focus on building robust, reusable database utilities.</p>
+            </section>
+
+            <!-- Exercise 1: Dynamic SQL -->
+            <section>
+                <h2 id="exercise-1">Exercise 1: Dynamic SQL</h2>
+
+                <div class="concept-box">
+                    <strong>Scenario:</strong> Create flexible functions that can work with different
+                    tables and columns at runtime using the bootcamp_db schema.
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.1: Generic Record Counter</h4>
+                    <p><strong>Goal:</strong> Create a function that counts records in any table with optional filtering.</p>
+                    <p><strong>Task:</strong> Write a function <code>count_records(table_name, where_clause)</code>
+                       that returns the count of records.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Show Solution</button>
+                    <div id="solution1_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION count_records(
+    p_table_name TEXT,
+    p_where_clause TEXT DEFAULT NULL
+) RETURNS BIGINT AS $$
+DECLARE
+    v_count BIGINT;
+    v_sql TEXT;
+BEGIN
+    -- Build base query
+    v_sql := format('SELECT COUNT(*) FROM %I', p_table_name);
+
+    -- Add WHERE clause if provided
+    IF p_where_clause IS NOT NULL AND p_where_clause != '' THEN
+        v_sql := v_sql || ' WHERE ' || p_where_clause;
+    END IF;
+
+    -- Execute and get count
+    EXECUTE v_sql INTO v_count;
+
+    RETURN v_count;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test it
+SELECT count_records('customers');
+SELECT count_records('customers', 'customer_type = ''vip''');
+SELECT count_records('orders', 'status = ''pending'' AND total_amount > 100');
+SELECT count_records('products', 'active = true AND stock_quantity > 0');</code></pre>
+
+                        <div class="output-display">
+count_records('customers')                          -> 150
+count_records('customers', 'customer_type=''vip''') -> 23
+count_records('orders', 'status=''pending''...')    -> 47
+count_records('products', 'active=true...')         -> 89
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.2: Dynamic Column Statistics</h4>
+                    <p><strong>Goal:</strong> Create a function that returns basic statistics for any numeric column.</p>
+                    <p><strong>Task:</strong> Return min, max, avg, and count for a specified column in a table.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Show Solution</button>
+                    <div id="solution1_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION column_stats(
+    p_table TEXT,
+    p_column TEXT
+) RETURNS TABLE(
+    min_value NUMERIC,
+    max_value NUMERIC,
+    avg_value NUMERIC,
+    total_count BIGINT,
+    null_count BIGINT
+) AS $$
+BEGIN
+    RETURN QUERY EXECUTE format($sql$
+        SELECT
+            MIN(%I)::NUMERIC,
+            MAX(%I)::NUMERIC,
+            ROUND(AVG(%I)::NUMERIC, 2),
+            COUNT(*)::BIGINT,
+            COUNT(*) FILTER (WHERE %I IS NULL)::BIGINT
+        FROM %I
+    $sql$, p_column, p_column, p_column, p_column, p_table);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test it
+SELECT * FROM column_stats('products', 'price');
+SELECT * FROM column_stats('orders', 'total_amount');
+SELECT * FROM column_stats('order_lines', 'quantity');</code></pre>
+
+                        <div class="output-display">
+-- column_stats('products', 'price')
+min_value | max_value | avg_value | total_count | null_count
+----------+-----------+-----------+-------------+-----------
+     9.99 |   1999.99 |    249.50 |         120 |          0
+
+-- column_stats('orders', 'total_amount')
+min_value | max_value | avg_value | total_count | null_count
+----------+-----------+-----------+-------------+-----------
+    15.00 |   5420.00 |    342.75 |         500 |          3
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 1.3: Dynamic Table Backup</h4>
+                    <p><strong>Goal:</strong> Create a function that creates a timestamped backup of any table.</p>
+                    <p><strong>Task:</strong> Copy table structure and data to a new table with timestamp suffix.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Show Solution</button>
+                    <div id="solution1_3" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION backup_table(
+    p_source_table TEXT,
+    p_include_data BOOLEAN DEFAULT true
+) RETURNS TEXT AS $$
+DECLARE
+    v_backup_table TEXT;
+    v_timestamp TEXT;
+BEGIN
+    -- Generate timestamp suffix
+    v_timestamp := TO_CHAR(NOW(), 'YYYYMMDD_HH24MISS');
+    v_backup_table := p_source_table || '_backup_' || v_timestamp;
+
+    -- Create table structure
+    EXECUTE format(
+        'CREATE TABLE %I (LIKE %I INCLUDING ALL)',
+        v_backup_table,
+        p_source_table
+    );
+
+    -- Copy data if requested
+    IF p_include_data THEN
+        EXECUTE format(
+            'INSERT INTO %I SELECT * FROM %I',
+            v_backup_table,
+            p_source_table
+        );
+    END IF;
+
+    RAISE NOTICE 'Backup created: %', v_backup_table;
+    RETURN v_backup_table;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a backup with data
+SELECT backup_table('customers');
+
+-- Create structure-only backup
+SELECT backup_table('orders', false);</code></pre>
+
+                        <div class="output-display">
+NOTICE:  Backup created: customers_backup_20240115_143022
+backup_table
+------------------------------------
+customers_backup_20240115_143022
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 2: Error Handling -->
+            <section>
+                <h2 id="exercise-2">Exercise 2: Error Handling</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.1: Safe Customer Insert</h4>
+                    <p><strong>Goal:</strong> Create a function that inserts a customer and handles all possible errors gracefully.</p>
+                    <p><strong>Task:</strong> Return success/failure status with meaningful error messages.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Show Solution</button>
+                    <div id="solution2_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION safe_insert_customer(
+    p_name TEXT,
+    p_email TEXT,
+    p_phone TEXT DEFAULT NULL,
+    p_city TEXT DEFAULT NULL,
+    p_customer_type TEXT DEFAULT 'individual'
+) RETURNS TABLE(
+    success BOOLEAN,
+    customer_id INTEGER,
+    message TEXT
+) AS $$
+DECLARE
+    v_id INTEGER;
+BEGIN
+    -- Validate inputs
+    IF p_name IS NULL OR TRIM(p_name) = '' THEN
+        RETURN QUERY SELECT false, NULL::INTEGER, 'Name is required';
+        RETURN;
+    END IF;
+
+    IF p_email IS NULL OR p_email !~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$' THEN
+        RETURN QUERY SELECT false, NULL::INTEGER, 'Valid email is required';
+        RETURN;
+    END IF;
+
+    -- Attempt insert
+    INSERT INTO customers (name, email, phone, city, customer_type)
+    VALUES (TRIM(p_name), LOWER(TRIM(p_email)), p_phone, p_city, p_customer_type)
+    RETURNING id INTO v_id;
+
+    RETURN QUERY SELECT true, v_id, 'Customer created successfully';
+
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'A customer with this email already exists';
+
+    WHEN check_violation THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Invalid customer_type. Must be: individual, business, or vip';
+
+    WHEN OTHERS THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Unexpected error: ' || SQLERRM;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test various scenarios
+SELECT * FROM safe_insert_customer('John Doe', 'john@example.com');
+SELECT * FROM safe_insert_customer('', 'invalid');
+SELECT * FROM safe_insert_customer('Jane Doe', 'john@example.com');  -- Duplicate
+SELECT * FROM safe_insert_customer('Bob', 'bob@test.com', NULL, NULL, 'invalid_type');</code></pre>
+
+                        <div class="output-display">
+-- Success case
+success | customer_id | message
+--------+-------------+---------------------------
+t       |         151 | Customer created successfully
+
+-- Invalid name
+success | customer_id | message
+--------+-------------+---------------------------
+f       |             | Name is required
+
+-- Duplicate email
+success | customer_id | message
+--------+-------------+------------------------------------------
+f       |             | A customer with this email already exists
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 2.2: Order Processing with Validation</h4>
+                    <p><strong>Goal:</strong> Create a function that processes an order with multiple validation steps.</p>
+                    <p><strong>Task:</strong> Validate customer exists, check product stock, create order with proper error handling.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Show Solution</button>
+                    <div id="solution2_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION process_order(
+    p_customer_id INTEGER,
+    p_product_id INTEGER,
+    p_quantity INTEGER
+) RETURNS TABLE(
+    success BOOLEAN,
+    order_id INTEGER,
+    message TEXT
+) AS $$
+DECLARE
+    v_customer_name TEXT;
+    v_product_name TEXT;
+    v_product_price NUMERIC;
+    v_stock INTEGER;
+    v_order_id INTEGER;
+    v_total NUMERIC;
+BEGIN
+    -- Step 1: Validate customer
+    SELECT name INTO v_customer_name
+    FROM customers WHERE id = p_customer_id;
+
+    IF NOT FOUND THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            format('Customer ID %s not found', p_customer_id);
+        RETURN;
+    END IF;
+
+    -- Step 2: Validate product and check stock
+    SELECT name, price, stock_quantity
+    INTO v_product_name, v_product_price, v_stock
+    FROM products WHERE id = p_product_id AND active = true;
+
+    IF NOT FOUND THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            format('Product ID %s not found or inactive', p_product_id);
+        RETURN;
+    END IF;
+
+    IF v_stock < p_quantity THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            format('Insufficient stock. Available: %s, Requested: %s', v_stock, p_quantity);
+        RETURN;
+    END IF;
+
+    -- Step 3: Calculate total
+    v_total := v_product_price * p_quantity;
+
+    -- Step 4: Create order (in a transaction block)
+    BEGIN
+        -- Create order
+        INSERT INTO orders (customer_id, total_amount, status)
+        VALUES (p_customer_id, v_total, 'pending')
+        RETURNING id INTO v_order_id;
+
+        -- Create order line
+        INSERT INTO order_lines (order_id, product_id, quantity, unit_price)
+        VALUES (v_order_id, p_product_id, p_quantity, v_product_price);
+
+        -- Update stock
+        UPDATE products
+        SET stock_quantity = stock_quantity - p_quantity
+        WHERE id = p_product_id;
+
+        RETURN QUERY SELECT true, v_order_id,
+            format('Order created for %s: %s x %s = $%s',
+                v_customer_name, p_quantity, v_product_name, v_total);
+
+    EXCEPTION WHEN OTHERS THEN
+        RETURN QUERY SELECT false, NULL::INTEGER,
+            'Failed to create order: ' || SQLERRM;
+    END;
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- Test it
+SELECT * FROM process_order(1, 5, 2);     -- Valid order
+SELECT * FROM process_order(9999, 5, 2);  -- Invalid customer
+SELECT * FROM process_order(1, 5, 9999);  -- Insufficient stock</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3: Database Metadata -->
+            <section>
+                <h2 id="exercise-3">Exercise 3: Database Metadata Queries</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.1: Database Size Report</h4>
+                    <p><strong>Goal:</strong> Create a comprehensive database size report.</p>
+                    <p><strong>Task:</strong> Show all tables sorted by size with row counts and index sizes.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Show Solution</button>
+                    <div id="solution3_1" class="solution-box">
+                        <pre><code class="language-sql">-- Comprehensive table size report
+SELECT
+    schemaname AS schema,
+    relname AS table_name,
+    pg_size_pretty(pg_total_relation_size(relid)) AS total_size,
+    pg_size_pretty(pg_relation_size(relid)) AS data_size,
+    pg_size_pretty(pg_indexes_size(relid)) AS index_size,
+    n_live_tup AS row_estimate,
+    CASE
+        WHEN n_live_tup > 0 THEN
+            pg_size_pretty(pg_relation_size(relid) / n_live_tup)
+        ELSE 'N/A'
+    END AS avg_row_size,
+    ROUND(100.0 * pg_indexes_size(relid) / NULLIF(pg_total_relation_size(relid), 0), 1) AS index_pct
+FROM pg_stat_user_tables
+ORDER BY pg_total_relation_size(relid) DESC
+LIMIT 15;</code></pre>
+
+                        <div class="output-display">
+schema | table_name  | total_size | data_size | index_size | row_estimate | avg_row_size | index_pct
+-------+-------------+------------+-----------+------------+--------------+--------------+----------
+public | order_lines |   15 MB    |   10 MB   |    5 MB    |      125000  | 84 bytes     |    33.3
+public | orders      |   12 MB    |    8 MB   |    4 MB    |       50000  | 168 bytes    |    33.3
+public | products    |    2 MB    |  1.5 MB   |  512 KB    |        1200  | 1.3 KB       |    25.0
+public | customers   |    1 MB    |  800 KB   |  256 KB    |         500  | 1.6 KB       |    25.0
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.2: Table Documentation Generator</h4>
+                    <p><strong>Goal:</strong> Generate documentation for a table including columns, constraints, and indexes.</p>
+                    <p><strong>Task:</strong> Create a function that returns complete table documentation.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Show Solution</button>
+                    <div id="solution3_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION document_table(p_table_name TEXT)
+RETURNS TABLE(
+    section TEXT,
+    name TEXT,
+    details TEXT
+) AS $$
+BEGIN
+    -- Table info
+    RETURN QUERY
+    SELECT 'TABLE'::TEXT, p_table_name,
+           pg_size_pretty(pg_total_relation_size(p_table_name::regclass));
+
+    -- Columns
+    RETURN QUERY
+    SELECT
+        'COLUMN'::TEXT,
+        column_name::TEXT,
+        format('%s %s %s',
+            data_type,
+            CASE WHEN is_nullable = 'NO' THEN 'NOT NULL' ELSE '' END,
+            COALESCE('DEFAULT ' || column_default, '')
+        )
+    FROM information_schema.columns
+    WHERE table_name = p_table_name AND table_schema = 'public'
+    ORDER BY ordinal_position;
+
+    -- Primary Key
+    RETURN QUERY
+    SELECT
+        'PRIMARY KEY'::TEXT,
+        tc.constraint_name::TEXT,
+        string_agg(kcu.column_name, ', ')
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    WHERE tc.table_name = p_table_name
+      AND tc.constraint_type = 'PRIMARY KEY'
+    GROUP BY tc.constraint_name;
+
+    -- Foreign Keys
+    RETURN QUERY
+    SELECT
+        'FOREIGN KEY'::TEXT,
+        tc.constraint_name::TEXT,
+        format('%s -> %s.%s',
+            kcu.column_name,
+            ccu.table_name,
+            ccu.column_name)
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage ccu
+        ON tc.constraint_name = ccu.constraint_name
+    WHERE tc.table_name = p_table_name
+      AND tc.constraint_type = 'FOREIGN KEY';
+
+    -- Indexes
+    RETURN QUERY
+    SELECT
+        'INDEX'::TEXT,
+        indexname::TEXT,
+        indexdef
+    FROM pg_indexes
+    WHERE tablename = p_table_name AND schemaname = 'public';
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- Generate documentation
+SELECT * FROM document_table('orders');
+SELECT * FROM document_table('order_lines');</code></pre>
+
+                        <div class="output-display">
+section     | name                  | details
+------------+-----------------------+------------------------------------------
+TABLE       | orders                | 12 MB
+COLUMN      | id                    | integer NOT NULL DEFAULT nextval(...)
+COLUMN      | customer_id           | integer NOT NULL
+COLUMN      | order_date            | timestamp with time zone DEFAULT now()
+COLUMN      | status                | character varying
+COLUMN      | total_amount          | numeric
+PRIMARY KEY | orders_pkey           | id
+FOREIGN KEY | orders_customer_id_fk | customer_id -> customers.id
+INDEX       | orders_pkey           | CREATE UNIQUE INDEX orders_pkey ON...
+INDEX       | idx_orders_customer   | CREATE INDEX idx_orders_customer ON...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 3.3: Find Relationships for a Table</h4>
+                    <p><strong>Goal:</strong> Find all tables that reference or are referenced by a given table.</p>
+                    <p><strong>Task:</strong> Show both incoming and outgoing foreign key relationships.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution3_3')">Show Solution</button>
+                    <div id="solution3_3" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION find_relationships(p_table_name TEXT)
+RETURNS TABLE(
+    direction TEXT,
+    related_table TEXT,
+    local_column TEXT,
+    foreign_column TEXT,
+    constraint_name TEXT
+) AS $$
+BEGIN
+    -- Outgoing: tables this table references
+    RETURN QUERY
+    SELECT
+        'REFERENCES'::TEXT,
+        ccu.table_name::TEXT,
+        kcu.column_name::TEXT,
+        ccu.column_name::TEXT,
+        tc.constraint_name::TEXT
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage ccu
+        ON tc.constraint_name = ccu.constraint_name
+    WHERE tc.table_name = p_table_name
+      AND tc.constraint_type = 'FOREIGN KEY';
+
+    -- Incoming: tables that reference this table
+    RETURN QUERY
+    SELECT
+        'REFERENCED BY'::TEXT,
+        tc.table_name::TEXT,
+        kcu.column_name::TEXT,
+        ccu.column_name::TEXT,
+        tc.constraint_name::TEXT
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+    JOIN information_schema.constraint_column_usage ccu
+        ON tc.constraint_name = ccu.constraint_name
+    WHERE ccu.table_name = p_table_name
+      AND tc.constraint_type = 'FOREIGN KEY';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Find all relationships for customers table
+SELECT * FROM find_relationships('customers');
+SELECT * FROM find_relationships('products');</code></pre>
+
+                        <div class="output-display">
+-- find_relationships('customers')
+direction     | related_table | local_column | foreign_column | constraint_name
+--------------+---------------+--------------+----------------+----------------
+REFERENCED BY | orders        | customer_id  | id             | orders_customer_fk
+
+-- find_relationships('products')
+direction     | related_table | local_column | foreign_column | constraint_name
+--------------+---------------+--------------+----------------+-------------------
+REFERENCES    | categories    | category_id  | id             | products_cat_fk
+REFERENCES    | suppliers     | supplier_id  | id             | products_sup_fk
+REFERENCED BY | order_lines   | product_id   | id             | ol_product_fk
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Monitoring -->
+            <section>
+                <h2 id="exercise-4">Exercise 4: Monitoring Queries</h2>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.1: Active Session Monitor</h4>
+                    <p><strong>Goal:</strong> Create a view that shows active database sessions with useful details.</p>
+                    <p><strong>Task:</strong> Include query duration, state, and truncated query text.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Show Solution</button>
+                    <div id="solution4_1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE VIEW active_sessions AS
+SELECT
+    pid,
+    usename AS username,
+    datname AS database,
+    client_addr AS client_ip,
+    application_name AS app,
+    state,
+    CASE
+        WHEN state = 'active' THEN
+            NOW() - query_start
+        ELSE
+            NOW() - state_change
+    END AS duration,
+    wait_event_type,
+    wait_event,
+    LEFT(query, 100) AS query_preview,
+    CASE
+        WHEN NOW() - query_start > INTERVAL '5 minutes' THEN 'LONG RUNNING'
+        WHEN NOW() - query_start > INTERVAL '1 minute' THEN 'MODERATE'
+        ELSE 'OK'
+    END AS status
+FROM pg_stat_activity
+WHERE pid != pg_backend_pid()
+  AND datname = current_database()
+ORDER BY
+    CASE state WHEN 'active' THEN 0 ELSE 1 END,
+    query_start;
+
+-- Use the view
+SELECT * FROM active_sessions WHERE state = 'active';
+SELECT * FROM active_sessions WHERE status = 'LONG RUNNING';</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>Exercise 4.2: Database Health Check Function</h4>
+                    <p><strong>Goal:</strong> Create a comprehensive health check function.</p>
+                    <p><strong>Task:</strong> Check connections, locks, table bloat, and return a health report.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Show Solution</button>
+                    <div id="solution4_2" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION database_health_check()
+RETURNS TABLE(
+    check_name TEXT,
+    status TEXT,
+    value TEXT,
+    recommendation TEXT
+) AS $$
+DECLARE
+    v_conn_count INTEGER;
+    v_max_conn INTEGER;
+    v_active_queries INTEGER;
+    v_long_queries INTEGER;
+    v_locks INTEGER;
+    v_db_size TEXT;
+BEGIN
+    -- Get max connections setting
+    SELECT setting::INTEGER INTO v_max_conn FROM pg_settings WHERE name = 'max_connections';
+
+    -- Connection count
+    SELECT COUNT(*) INTO v_conn_count FROM pg_stat_activity;
+    RETURN QUERY SELECT
+        'Connection Count'::TEXT,
+        CASE WHEN v_conn_count > v_max_conn * 0.8 THEN 'WARNING' ELSE 'OK' END,
+        format('%s / %s (%s%%)', v_conn_count, v_max_conn,
+            ROUND(100.0 * v_conn_count / v_max_conn)),
+        CASE WHEN v_conn_count > v_max_conn * 0.8
+            THEN 'Consider increasing max_connections or using connection pooling'
+            ELSE 'Connection usage is healthy'
+        END;
+
+    -- Active queries
+    SELECT COUNT(*) INTO v_active_queries
+    FROM pg_stat_activity WHERE state = 'active' AND pid != pg_backend_pid();
+    RETURN QUERY SELECT
+        'Active Queries'::TEXT,
+        CASE WHEN v_active_queries > 50 THEN 'WARNING' ELSE 'OK' END,
+        v_active_queries::TEXT,
+        CASE WHEN v_active_queries > 50
+            THEN 'High number of active queries - check for slow queries'
+            ELSE 'Query load is normal'
+        END;
+
+    -- Long-running queries (> 5 min)
+    SELECT COUNT(*) INTO v_long_queries
+    FROM pg_stat_activity
+    WHERE state = 'active'
+      AND NOW() - query_start > INTERVAL '5 minutes';
+    RETURN QUERY SELECT
+        'Long Running Queries'::TEXT,
+        CASE WHEN v_long_queries > 0 THEN 'WARNING' ELSE 'OK' END,
+        v_long_queries::TEXT,
+        CASE WHEN v_long_queries > 0
+            THEN 'Review and optimize long-running queries'
+            ELSE 'No long-running queries detected'
+        END;
+
+    -- Lock count
+    SELECT COUNT(*) INTO v_locks FROM pg_locks WHERE NOT granted;
+    RETURN QUERY SELECT
+        'Waiting Locks'::TEXT,
+        CASE WHEN v_locks > 10 THEN 'WARNING' ELSE 'OK' END,
+        v_locks::TEXT,
+        CASE WHEN v_locks > 10
+            THEN 'High lock contention - check for blocking queries'
+            ELSE 'Lock situation is healthy'
+        END;
+
+    -- Database size
+    SELECT pg_size_pretty(pg_database_size(current_database())) INTO v_db_size;
+    RETURN QUERY SELECT
+        'Database Size'::TEXT,
+        'INFO'::TEXT,
+        v_db_size,
+        'Monitor growth trends'::TEXT;
+
+END;
+$$ LANGUAGE plpgsql;
+
+-- Run health check
+SELECT * FROM database_health_check();</code></pre>
+
+                        <div class="output-display">
+check_name           | status  | value          | recommendation
+---------------------+---------+----------------+------------------------------------------
+Connection Count     | OK      | 15 / 100 (15%) | Connection usage is healthy
+Active Queries       | OK      | 3              | Query load is normal
+Long Running Queries | OK      | 0              | No long-running queries detected
+Waiting Locks        | OK      | 0              | Lock situation is healthy
+Database Size        | INFO    | 256 MB         | Monitor growth trends
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenges -->
+            <section>
+                <h2 id="challenges">Challenge Exercises</h2>
+
+                <div class="challenge-box">
+                    <h4>Challenge 1: Automated Table Maintenance Script</h4>
+                    <p>Create a procedure that identifies tables needing VACUUM or REINDEX based on dead tuples
+                       and bloat percentage, then performs the maintenance operations in batches.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge1')">Show Solution</button>
+                    <div id="challenge1" class="solution-box">
+                        <pre><code class="language-sql">CREATE OR REPLACE PROCEDURE auto_maintain_tables(
+    p_dead_tuple_threshold INTEGER DEFAULT 10000,
+    p_bloat_threshold NUMERIC DEFAULT 20.0
+)
+LANGUAGE plpgsql AS $$
+DECLARE
+    r RECORD;
+    v_maintained INTEGER := 0;
+BEGIN
+    FOR r IN
+        SELECT
+            schemaname,
+            relname,
+            n_dead_tup,
+            ROUND(100.0 * n_dead_tup / NULLIF(n_live_tup + n_dead_tup, 0), 2) AS dead_pct
+        FROM pg_stat_user_tables
+        WHERE n_dead_tup > p_dead_tuple_threshold
+           OR (n_live_tup > 0 AND
+               100.0 * n_dead_tup / (n_live_tup + n_dead_tup) > p_bloat_threshold)
+        ORDER BY n_dead_tup DESC
+    LOOP
+        RAISE NOTICE 'Vacuuming %.% (% dead tuples, %% bloat)',
+            r.schemaname, r.relname, r.n_dead_tup, r.dead_pct;
+
+        EXECUTE format('VACUUM ANALYZE %I.%I', r.schemaname, r.relname);
+
+        v_maintained := v_maintained + 1;
+
+        -- Pause between tables to reduce load
+        PERFORM pg_sleep(1);
+    END LOOP;
+
+    RAISE NOTICE 'Maintenance complete. Tables processed: %', v_maintained;
+END;
+$$;
+
+-- Run maintenance
+CALL auto_maintain_tables(5000, 15.0);</code></pre>
+                    </div>
+                </div>
+
+                <div class="challenge-box">
+                    <h4>Challenge 2: Query Performance Logger</h4>
+                    <p>Create a system that logs slow queries with their execution plans
+                       for later analysis.</p>
+
+                    <button class="toggle-btn" onclick="toggleSolution('challenge2')">Show Solution</button>
+                    <div id="challenge2" class="solution-box">
+                        <pre><code class="language-sql">-- Create logging table
+CREATE TABLE IF NOT EXISTS slow_query_log (
+    id SERIAL PRIMARY KEY,
+    logged_at TIMESTAMP DEFAULT NOW(),
+    query_text TEXT,
+    duration INTERVAL,
+    username TEXT,
+    database_name TEXT,
+    client_addr INET,
+    rows_affected INTEGER,
+    execution_plan TEXT
+);
+
+-- Function to log and execute a query with timing
+CREATE OR REPLACE FUNCTION log_slow_query(
+    p_query TEXT,
+    p_threshold INTERVAL DEFAULT INTERVAL '1 second'
+) RETURNS TABLE(result_text TEXT) AS $$
+DECLARE
+    v_start TIMESTAMP;
+    v_end TIMESTAMP;
+    v_duration INTERVAL;
+    v_plan TEXT;
+    v_rows INTEGER;
+BEGIN
+    -- Get execution plan
+    EXECUTE 'EXPLAIN ' || p_query INTO v_plan;
+
+    -- Time the query
+    v_start := clock_timestamp();
+    EXECUTE p_query;
+    GET DIAGNOSTICS v_rows = ROW_COUNT;
+    v_end := clock_timestamp();
+
+    v_duration := v_end - v_start;
+
+    -- Log if slow
+    IF v_duration > p_threshold THEN
+        INSERT INTO slow_query_log (
+            query_text, duration, username, database_name,
+            client_addr, rows_affected, execution_plan
+        ) VALUES (
+            p_query, v_duration, current_user, current_database(),
+            inet_client_addr(), v_rows, v_plan
+        );
+
+        RETURN QUERY SELECT format(
+            'Query logged (duration: %s, rows: %s)',
+            v_duration, v_rows
+        );
+    ELSE
+        RETURN QUERY SELECT format(
+            'Query completed (duration: %s, rows: %s)',
+            v_duration, v_rows
+        );
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+-- View recent slow queries
+SELECT
+    logged_at,
+    duration,
+    username,
+    rows_affected,
+    LEFT(query_text, 80) AS query_preview
+FROM slow_query_log
+ORDER BY logged_at DESC
+LIMIT 10;</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="../static/script.js"></script>
+<script>
+    function toggleSolution(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none" || element.style.display === "") {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+    }
+</script>
+
+</html>
