@@ -623,6 +623,11 @@
         <ol type="1">
           <li><strong>Aylik Buyume (Month-over-Month Growth)</strong>:</li>
         </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Satis ekibi gecen ayla karsilastirmali aylik satis performansini gormek istiyor.<br>
+          <strong>🎯 Hedef:</strong> Her ay icin: toplam satis, onceki ayin satisi ve yuzde buyume orani goster.<br>
+          <strong>💡 Kullanilan Teknik:</strong> LAG() ile onceki ayin degerine eris, yuzde hesapla.
+        </div>
         <div class="sourceCode" id="cb7">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    date_trunc(<span class="st">&#39;month&#39;</span>, order_date) <span class="kw">AS</span> <span class="dt">month</span>,</span>
@@ -641,6 +646,12 @@
       <section>
         <ol start="2" type="1">
           <li><strong>Kumulatif Toplamlar (Running Totals) ve Hareketli Ortalamalar (Moving Averages)</strong>:</li>
+        </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Finans ekibi yilbasinda beri toplam geliri ve gunluk dalgalanmalari duzelten 7 gunluk ortalamyi izlemek istiyor.<br>
+          <strong>🎯 Hedef:</strong> Her gun icin: gunluk satis, baslangictan bugune kumulatif toplam, 7 gunluk hareketli ortalama.<br>
+          <strong>💡 Kullanilan Teknik:</strong> SUM() OVER (ORDER BY) kumulatif icin, ROWS BETWEEN 6 PRECEDING AND CURRENT ROW hareketli ort. icin.
+        </div>
           <div class="sourceCode" id="cb8">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    order_date,</span>
@@ -658,6 +669,12 @@
       <section>
         <ol start="3" type="1">
           <li><strong>Yuzdelikler (Percentiles) ve Dagilim Analizi (Distribution Analysis)</strong>:</li>
+        </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Urun ekibi, urunleri kendi kategorilerindeki fiyat konumuna gore segmentlere ayirmak istiyor.<br>
+          <strong>🎯 Hedef:</strong> Her urunu kategorisinde "Budget" (alt %25), "Mid-range" (orta %50) veya "Premium" (ust %25) olarak etiketle.<br>
+          <strong>💡 Kullanilan Teknik:</strong> PERCENT_RANK() ile kategori icinde yuzdelik hesapla, CASE ile segment ata.
+        </div>
           <div class="sourceCode" id="cb9">
             <pre
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -679,6 +696,12 @@
       <section>
         <ol start="4" type="1">
           <li><strong>Musteri Satin Alma Kaliplari (Customer Purchase Patterns)</strong>:</li>
+        </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Pazarlama ekibi musterileri davranislarina gore siniflandirmak istiyor: yeni mi, duzenli mi, geri donen mi?<br>
+          <strong>🎯 Hedef:</strong> Her siparis icin: kacinci siparis, onceki siparisten bu yana gun sayisi, musteri tipi etiketi (New/Returning/Reactivated).<br>
+          <strong>💡 Kullanilan Teknik:</strong> ROW_NUMBER() ile siparis sirasi, LAG(order_date) ile gun farki, CASE ile etiketleme.
+        </div>
           <div class="sourceCode" id="cb10">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>    customer_id,</span>
@@ -699,6 +722,12 @@
       <section>
         <ol start="5" type="1">
           <li><strong>Aykiri Degerleri Belirleme (Outlier Detection)</strong>:</li>
+        </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Veri kalitesi ekibi, kategorisine gore asiri ucuz veya pahali urunleri (veri hatasi olabilecek) tespit etmek istiyor.<br>
+          <strong>🎯 Hedef:</strong> Z-skoru > 2 veya < -2 olan urunleri bul (istatistiksel olarak kategori ortalamasindan 2 standart sapma uzakta).<br>
+          <strong>💡 Kullanilan Teknik:</strong> AVG() ve STDDEV() OVER (PARTITION BY category) ile kategori istatistikleri, z-skor formulu uygula.
+        </div>
 
           <div class="sourceCode" id="cb11">
             <pre
@@ -946,6 +975,12 @@
         <p><strong>Ileri Toplamalar (Advanced Aggregations) ile Pratik Analitik Ornekleri</strong>:</p>
         <ol type="1">
           <li><strong>Birden Fazla Boyuta Gore Satis Analizi (Multi-Dimensional Sales Analysis)</strong>:</li>
+        </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Yonetim kurulu kategori, ay ve bolge kombinasyonlarina gore satislari tek raporda gormek istiyor - hem detayli hem alt toplamli.<br>
+          <strong>🎯 Hedef:</strong> Tek sorguda: kategori×ay×bolge detayi + kategori×ay toplami + kategori×bolge toplami + genel toplam.<br>
+          <strong>💡 Kullanilan Teknik:</strong> GROUPING SETS ile birden fazla gruplama seviyesini tek sorguda uret.
+        </div>
           <div class="sourceCode" id="cb17">
             <pre
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -985,7 +1020,13 @@
       </section>
       <section>
         <ol start="2" type="1">
-          <li><strong>Customer Segmentation Analysis</strong>:</li>
+          <li><strong>Musteri Segmentasyon Analizi (Customer Segmentation Analysis)</strong>:</li>
+        </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> Pazarlama ekibi musterileri harcama davranislarina gore VIP, Regular, Occasional olarak segmentlere ayirmak istiyor.<br>
+          <strong>🎯 Hedef:</strong> Her segment icin: musteri sayisi, ortalama siparis adedi, ortalama harcama, ortalama siparis degeri, ortalama musteri omru.<br>
+          <strong>💡 Kullanilan Teknik:</strong> CTE ile musteri istatistiklerini hesapla, CASE ile segment ata, GROUP BY segment.
+        </div>
           <div class="sourceCode" id="cb18">
             <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">WITH</span> customer_stats <span class="kw">AS</span> (</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
@@ -1027,6 +1068,11 @@
         <ol start="3" type="1">
           <li><strong>Urun Yakinlik Analizi (Pazar Sepeti Analizi)</strong>:</li>
         </ol>
+        <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>📊 Problem:</strong> E-ticaret ekibi "Bu urunu alanlar sunlari da aldi" onerisi icin hangi urunlerin sik birlikte satin alindigini bulmak istiyor.<br>
+          <strong>🎯 Hedef:</strong> En sik birlikte satin alinan urun ciftlerini ve kac sipariste birlikte oldugunu listele.<br>
+          <strong>💡 Kullanilan Teknik:</strong> order_lines tablosunu kendisiyle JOIN et (self-join), ayni siparisteki urun ciftlerini bul, GROUP BY ile say.
+        </div>
         <div class="sourceCode" id="cb19">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">WITH</span> product_pairs <span class="kw">AS</span> (</span>
@@ -1742,6 +1788,17 @@
         <p>Bir ERP veritabani kullanarak ogrendiklerimizi uygulamali bir calismayla hayata gecirelim. Satis verilerini, musteri davranislarini ve urun performansini inceleyecegiz.</p>
         <p><strong>Alistirma 1: Satis Performansi Kontrol Paneli (Dashboard)</strong></p>
         <p>Bu alistirmada, bir satis performansi dashboard'u icin sorgular olusturacagiz.</p>
+        <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>🎯 Ne Ogreneceksiniz:</strong> CTE'ler, Pencere Fonksiyonlari (LAG) ve tarih toplamalari kullanarak kapsamli satis panelleri olusturma<br>
+          <strong>📋 Beklenen Cikti:</strong> Aylik trendler, bolgesel karsilastirmalar, urun performansi ve satis temsilcisi skorkartlari gosteren coklu sonuc setleri<br>
+          <strong>🔢 Adim Adim Yaklasim:</strong>
+          <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+            <li><strong>Sorgu 1 - Aylik Trend:</strong> CTE ile aylik satislari toplayin, sonra LAG() ile onceki yilin ayni ayiyla karsilastirin</li>
+            <li><strong>Sorgu 2 - Bolgesel Satislar:</strong> Siparisleri musteriler ve bolgelerle birlestirin, CASE kullanarak gercek satislari hedeflerle karsilastirin</li>
+            <li><strong>Sorgu 3 - En Iyi Urunler:</strong> Birden fazla CTE kullanin: ilki aylik veriler icin, ikincisi trendler icin FIRST_VALUE/LAST_VALUE ile toplamlar</li>
+            <li><strong>Sorgu 4 - Takim Skorkarti:</strong> Bireysel metrikleri bir CTE'de hesaplayin, takim ortalamalari baskasinda, sonra CROSS JOIN ile karsilastirin</li>
+          </ol>
+        </div>
         <div class="sourceCode" id="cb34">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a><span class="co">-- 1. Monthly sales trend with year-over-year comparison</span></span>
@@ -1944,6 +2001,17 @@
       <section>
         <p><strong>Alistirma 2: Musteri Analitigi (Customer Analytics)</strong></p>
         <p>Bu alistirmada, musteri davranisi ve segmentasyonunu analiz edecegiz.</p>
+        <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>🎯 Ne Ogreneceksiniz:</strong> RFM (Recency, Frequency, Monetary) analizi, kohort analizi ve NTILE ile Pencere Fonksiyonlari kullanarak musteri segmentasyonu<br>
+          <strong>📋 Beklenen Cikti:</strong> RFM puanlari (1-5) ile musteri segmentleri, kohort tutma tablolari ve CLV (Musteri Yasam Boyu Degeri) tahminleri<br>
+          <strong>🔢 Adim Adim Yaklasim:</strong>
+          <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+            <li><strong>RFM Analizi:</strong> Her musteri icin recency (son siparisteki gun sayisi), frequency (siparis sayisi), monetary (toplam harcama) hesaplayin</li>
+            <li><strong>Puan Atama:</strong> NTILE(5) kullanarak musterileri her RFM boyutu icin 5 esit gruba bolin</li>
+            <li><strong>Segmentasyon:</strong> R, F, M puanlarini "Sampiyonlar" (hepsi yuksek), "Risk Altinda" (dusuk recency, yuksek F/M) gibi segmentlere birlestirin</li>
+            <li><strong>Kohort Analizi:</strong> Musterileri ilk satin alma ayina gore gruplayin, sonraki aylarda tutmayi takip edin</li>
+          </ol>
+        </div>
         <div class="sourceCode" id="cb35">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true"></a><span class="co">-- 1. RFM (Recency, Frequency, Monetary) Analysis</span></span>
@@ -2133,6 +2201,17 @@
       <section>
         <p><strong>Alistirma 3: Urun Performansi Analitigi (Product Performance Analytics)</strong></p>
         <p>Bu alistirmada, urun performansini analiz edecek ve firsatlari belirleyecegiz.</p>
+        <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>🎯 Ne Ogreneceksiniz:</strong> ABC analizi, capraz-satis/yukari-satis analizi ve self-join ile pencere fonksiyonlari kullanarak urun benzerlik analizi<br>
+          <strong>📋 Beklenen Cikti:</strong> A/B/C olarak kategorize edilmis urunler, sik birlikte satin alinan urun ciftleri ve kategori performans metrikleri<br>
+          <strong>🔢 Adim Adim Yaklasim:</strong>
+          <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+            <li><strong>ABC Analizi:</strong> Kumulatif gelir yuzdesi hesaplayin, siniflandirin: A (en ust %80), B (sonraki %15), C (kalan %5)</li>
+            <li><strong>Market Sepeti:</strong> Ayni sipariste satin alinan urunleri bulmak icin order_lines tablosunu kendisiyle birlestirin, sikligi hesaplayin</li>
+            <li><strong>Kategori Performansi:</strong> Urunleri kategorileri icinde karsilastirmak icin PERCENT_RANK() kullanin</li>
+            <li><strong>Trend Tespiti:</strong> Tarih filtreleme ve LAG() kullanarak son donem satislarini onceki donemle karsilastirin</li>
+          </ol>
+        </div>
         <div class="sourceCode" id="cb36">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a><span class="co">-- 1. Product Performance Matrix</span></span>
@@ -2336,6 +2415,17 @@
       <section>
         <p><strong>Alistirma 4: Basit Bir Kontrol Paneli (Dashboard) Olusturma</strong></p>
         <p>Bu alistirmada, <a href="https://rawgraphs.io" target="_blank">RAWGraphs.io</a> (ucretsiz, kopyala-yapistir tabanli), Tableau veya Power BI gibi bir aracla gorsellestirilebilecek basit bir dashboard icin veri hazirlayacagiz.</p>
+        <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+          <strong>🎯 Ne Ogreneceksiniz:</strong> Gorsellestirme araclari icin SQL verisi hazirlama, KPI sorgulari olusturma ve grafikler icin cikti formatlama<br>
+          <strong>📋 Beklenen Cikti:</strong> KPI ozetleri, zaman serileri ve kategorik dagilimlar dahil temiz, gorsellestirmeye hazir veri<br>
+          <strong>🔢 Adim Adim Yaklasim:</strong>
+          <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+            <li><strong>KPI Ozeti:</strong> Temel metriklerle (toplam siparis, musteri, gelir, ortalama deger) tek satirlik bir sorgu olusturun</li>
+            <li><strong>Zaman Serisi:</strong> Cizgi grafikler icin verileri ay/hafta bazinda toplayin - donem etiketleri ekleyin</li>
+            <li><strong>Kategori Dagilimi:</strong> Pasta grafikleri ve cubuk grafikler icin kategori/bolge bazinda GROUP BY yapin</li>
+            <li><strong>CSV'ye Aktar:</strong> Sonuclari Neon Console'dan kopyalayin, gorsellestirmeler olusturmak icin RAWGraphs.io'ya yapistirin</li>
+          </ol>
+        </div>
         <div class="sourceCode" id="cb37">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true"></a><span class="co">-- 1. Sales Overview Dashboard</span></span>
