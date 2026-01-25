@@ -1334,9 +1334,9 @@ customer_segments <span class="kw">AS</span> (
         <span class="cf">ELSE</span> <span class="st">'Regular'</span>
     <span class="cf">END</span> <span class="kw">AS</span> segment,
     <span class="fu">COUNT</span>(*) <span class="kw">AS</span> customer_count,
-    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_spent), <span class="dv">2</span>) <span class="kw">AS</span> avg_total_spent,
-    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_orders), <span class="dv">1</span>) <span class="kw">AS</span> avg_orders,
-    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(projected_3yr_value), <span class="dv">2</span>) <span class="kw">AS</span> avg_projected_clv
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_spent)::numeric, <span class="dv">2</span>) <span class="kw">AS</span> avg_total_spent,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_orders)::numeric, <span class="dv">1</span>) <span class="kw">AS</span> avg_orders,
+    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(projected_3yr_value)::numeric, <span class="dv">2</span>) <span class="kw">AS</span> avg_projected_clv
 <span class="kw">FROM</span> customer_segments
 <span class="kw">GROUP BY</span> <span class="dv">1</span>
 <span class="kw">ORDER BY</span> avg_total_spent <span class="kw">DESC</span>;</code></pre>
