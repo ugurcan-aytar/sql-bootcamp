@@ -1942,13 +1942,13 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Visualization Suggestions for Exercise 1:</strong><br>
+          <strong>📊 Visualization with RAWGraphs.io:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>How to use:</strong> Export query results as CSV from Neon Console → Go to <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a> → Paste data → Select chart → Map dimensions</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Query 1 (Monthly Trend):</strong> Line Chart - X: Month, Y: Revenue, Multiple lines per year, show YoY growth as annotation</li>
-            <li><strong>Query 2 (Regional Sales):</strong> Bullet Chart or Bar Chart with target line - X: Region, Y: Actual vs Target</li>
-            <li><strong>Query 3 (Top Products):</strong> Horizontal Bar Chart with trend arrows (↑↓) indicating MoM change</li>
-            <li><strong>Query 4 (Salesperson Performance):</strong> Scatter Plot - X: Order Count, Y: Total Sales, color by performance category</li>
-            <li><strong>Tools:</strong> Metabase, Grafana, Tableau, Power BI, Apache Superset</li>
+            <li><strong>Query 1 (Monthly Trend):</strong> <em>Line Chart</em> → X Axis: month, Y Axis: revenue (multiple series by year)</li>
+            <li><strong>Query 2 (Regional Sales):</strong> <em>Bar Chart</em> or <em>Multi-set Bar Chart</em> → X: region, Y: actual_sales &amp; target</li>
+            <li><strong>Query 3 (Top Products):</strong> <em>Bar Chart (horizontal)</em> → Bars: product_name, Size: revenue</li>
+            <li><strong>Query 4 (Salesperson Performance):</strong> <em>Bubble Chart</em> → X: order_count, Y: total_sales, Size: avg_order_value, Color: performance_category</li>
           </ul>
         </div>
       </section>
@@ -2131,13 +2131,13 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Visualization Suggestions for Exercise 2:</strong><br>
+          <strong>📊 Visualization with RAWGraphs.io:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>How to use:</strong> Export query results as CSV from Neon Console → Go to <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a> → Paste data → Select chart → Map dimensions</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Query 1 (RFM Analysis):</strong> 3D Scatter or Bubble Chart - X: Recency, Y: Frequency, Size: Monetary, Color: Segment</li>
-            <li><strong>Query 2 (Purchase Journey):</strong> Funnel Chart for purchase stages, or Line Chart showing avg days between purchases</li>
-            <li><strong>Query 3 (Cohort Retention):</strong> Heatmap - X: Month after cohort, Y: Cohort month, Color intensity: Retention rate</li>
-            <li><strong>Segment Distribution:</strong> Pie/Donut Chart showing customer count per segment</li>
-            <li><strong>Tools:</strong> Plotly, D3.js, Tableau, Mixpanel, Amplitude</li>
+            <li><strong>Query 1 (RFM Analysis):</strong> <em>Bubble Chart</em> → X: recency, Y: frequency, Size: monetary, Color: customer_segment</li>
+            <li><strong>Query 2 (Purchase Journey):</strong> <em>Bar Chart</em> → Bars: purchase_number, Size: avg_days_since_previous</li>
+            <li><strong>Query 3 (Cohort Retention):</strong> <em>Matrix Plot</em> or <em>Calendar Heatmap</em> → X: month_diff, Y: cohort_month, Color: retention_rate</li>
+            <li><strong>Segment Distribution:</strong> <em>Pie Chart</em> or <em>Treemap</em> → Size: customer_count, Color: customer_segment</li>
           </ul>
         </div>
       </section>
@@ -2334,20 +2334,20 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Visualization Suggestions for Exercise 3:</strong><br>
+          <strong>📊 Visualization with RAWGraphs.io:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>How to use:</strong> Export query results as CSV from Neon Console → Go to <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a> → Paste data → Select chart → Map dimensions</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Query 1 (Performance Matrix):</strong> Scatter Plot / BCG Matrix - X: Revenue percentile, Y: Margin percentile, Color: Category (Star/High Volume/High Margin/Underperformer)</li>
-            <li><strong>Query 2 (Product Affinity):</strong> Network Graph - Nodes: Products, Edges: Co-purchase frequency, or Chord Diagram</li>
-            <li><strong>Query 3 (Category Growth):</strong> Grouped Bar Chart with trend arrows, or Waterfall Chart showing growth contribution</li>
-            <li><strong>Alternative:</strong> Treemap sized by revenue, colored by growth trend</li>
-            <li><strong>Tools:</strong> Plotly, D3.js, Gephi (for network), Tableau</li>
+            <li><strong>Query 1 (Performance Matrix):</strong> <em>Bubble Chart</em> → X: revenue_percentile, Y: margin_percentile, Size: revenue, Color: quadrant (Star/High Volume/High Margin/Underperformer)</li>
+            <li><strong>Query 2 (Product Affinity):</strong> <em>Chord Diagram</em> or <em>Arc Diagram</em> → Source: product_1, Target: product_2, Size: co_purchase_count</li>
+            <li><strong>Query 3 (Category Growth):</strong> <em>Multi-set Bar Chart</em> → Groups: category_name, Bars: first_month_revenue &amp; last_month_revenue</li>
+            <li><strong>Alternative:</strong> <em>Treemap</em> → Hierarchy: category_name, Size: annual_revenue, Color: trend (Growing/Stable/Declining)</li>
           </ul>
         </div>
       </section>
       <section>
         <p><strong>Exercise 4: Creating a Simple Dashboard</strong></p>
-        <p>In this exercise, we’ll prepare data for a simple dashboard that could be visualized with a tool like
-          Metabase,
+        <p>In this exercise, we'll prepare data for a simple dashboard that could be visualized with a tool like
+          <a href="https://rawgraphs.io" target="_blank">RAWGraphs.io</a> (free, copy-paste based),
           Tableau, or Power BI.</p>
         <div class="sourceCode" id="cb37">
           <pre
@@ -2549,15 +2549,15 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Visualization Suggestions for Exercise 4 (Dashboard):</strong><br>
+          <strong>📊 Visualization with RAWGraphs.io:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>How to use:</strong> Export query results as CSV from Neon Console → Go to <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a> → Paste data → Select chart → Map dimensions</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Query 1 (KPIs):</strong> Big Number / KPI Cards - Total Revenue, Total Orders, Unique Customers, Avg Order Value</li>
-            <li><strong>Query 2 (Daily Revenue):</strong> Area/Line Chart - X: Date, Y: Daily Revenue with 7-day moving average overlay</li>
-            <li><strong>Query 3 (Category Distribution):</strong> Donut/Pie Chart or Horizontal Bar Chart showing revenue share</li>
-            <li><strong>Query 4 (Top Products Trend):</strong> Multi-line Chart - X: Month, Y: Revenue, one line per product</li>
-            <li><strong>Query 5 (Performance Matrix):</strong> Scatter Plot quadrant with category labels</li>
-            <li><strong>Dashboard Layout:</strong> KPIs at top, time series in middle, breakdowns at bottom</li>
-            <li><strong>Tools:</strong> Metabase, Apache Superset, Grafana, Tableau, Power BI</li>
+            <li><strong>Query 1 (KPIs):</strong> Display as text/numbers (RAWGraphs is for charts, not KPI cards)</li>
+            <li><strong>Query 2 (Monthly Revenue):</strong> <em>Line Chart</em> or <em>Streamgraph</em> → X: month, Y: monthly_revenue</li>
+            <li><strong>Query 3 (Category Distribution):</strong> <em>Pie Chart</em> or <em>Sunburst Diagram</em> → Arc: category_name, Size: revenue</li>
+            <li><strong>Query 4 (Top Products Trend):</strong> <em>Bumpchart</em> or <em>Line Chart</em> → X: month, Y: monthly_revenue, Group: product_name</li>
+            <li><strong>Query 5 (Performance Matrix):</strong> <em>Bubble Chart</em> → X: revenue, Y: profit_margin, Size: units_sold, Color: quadrant</li>
+            <li><strong>Dashboard Tip:</strong> Create multiple charts in RAWGraphs, export as SVG/PNG, combine in presentation or document</li>
           </ul>
         </div>
 

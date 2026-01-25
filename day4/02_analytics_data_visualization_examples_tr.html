@@ -603,13 +603,12 @@
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Yatay Cubuk Grafik (Horizontal Bar Chart)</li>
-                                <li><strong>X Ekseni:</strong> Satis Tutari (sales)</li>
-                                <li><strong>Y Ekseni:</strong> Ay (month) - kronolojik sirayla</li>
-                                <li><strong>Renk Kodlama:</strong> Siralama fonksiyonuna gore farkli renkler (row_num, rank, dense_rank)</li>
-                                <li><strong>Arac:</strong> Excel, Tableau, Power BI, veya matplotlib/seaborn</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Bar Chart</em> (yatay)</li>
+                                <li><strong>Eslestirme:</strong> Barlar → month, Boyut → sales</li>
+                                <li><strong>Alternatif:</strong> <em>Bumpchart</em> → X: month, Y: row_num/rank/dense_rank (siralama metodlarini karsilastirin)</li>
                             </ul>
                         </div>
                     </div>
@@ -665,14 +664,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Gruplu Cubuk Grafik (Grouped Bar Chart) veya Faceted Bar Chart</li>
-                                <li><strong>X Ekseni:</strong> Urun Adi (product_name)</li>
-                                <li><strong>Y Ekseni:</strong> Toplam Satis (total_sales)</li>
-                                <li><strong>Gruplama:</strong> Kategori Adi (category_name) - her kategori ayri panel veya renk</li>
-                                <li><strong>Siralama:</strong> Her grup icinde satisa gore azalan</li>
-                                <li><strong>Alternatif:</strong> Treemap (her kategori bir alan, icinde urunler)</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Multi-set Bar Chart</em></li>
+                                <li><strong>Eslestirme:</strong> Gruplar → category_name, Barlar → product_name, Boyut → total_sales</li>
+                                <li><strong>Alternatif:</strong> <em>Treemap</em> → Hiyerarsi: category_name > product_name, Boyut: total_sales</li>
                             </ul>
                         </div>
                     </div>
@@ -751,14 +748,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Cizgi Grafik (Line Chart) + Bar Chart Kombinasyonu</li>
-                                <li><strong>X Ekseni:</strong> Ay (month)</li>
-                                <li><strong>Y Ekseni (Sol):</strong> Satis Tutari (sales) - bar olarak</li>
-                                <li><strong>Y Ekseni (Sag):</strong> Yuzde Degisim (pct_change) - cizgi olarak</li>
-                                <li><strong>Renk Kodlama:</strong> Pozitif degisim yesil, negatif kirmizi</li>
-                                <li><strong>Ek:</strong> Trend cizgisi veya referans cizgisi (0% cizgisi)</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Line Chart</em></li>
+                                <li><strong>Eslestirme:</strong> X → month, Y → sales (ve pct_change ayri cizgi olarak)</li>
+                                <li><strong>Alternatif:</strong> <em>Slope Chart</em> aydan aya degisimleri vurgulamak icin</li>
                             </ul>
                         </div>
                     </div>
@@ -810,14 +805,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Cok Katmanli Cizgi Grafik (Multi-Line Chart)</li>
-                                <li><strong>X Ekseni:</strong> Tarih (order_date)</li>
-                                <li><strong>Y Ekseni:</strong> Tutar</li>
-                                <li><strong>Cizgiler:</strong> Gunluk Satis (ince, acik renk), Kumulatif Toplam (kalin, koyu), 7-Gun Hareketli Ortalama (kesikli cizgi)</li>
-                                <li><strong>Not:</strong> Kumulatif toplam icin ikincil Y ekseni kullanilabilir (farkli olcek)</li>
-                                <li><strong>Arac:</strong> Tableau, Power BI, Google Data Studio, D3.js</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Line Chart</em> veya <em>Streamgraph</em></li>
+                                <li><strong>Eslestirme:</strong> X → order_date, Y → daily_sales / running_total / moving_avg_7day</li>
+                                <li><strong>Ipucu:</strong> running_total (farkli olcek) icin ayri grafik olusturun ve sunumda birlestirin</li>
                             </ul>
                         </div>
                     </div>
@@ -877,14 +870,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Isi Haritasi (Heatmap) veya Pivot Tablosu</li>
-                                <li><strong>Satirlar:</strong> Kategori (category)</li>
-                                <li><strong>Sutunlar:</strong> Ay (month)</li>
-                                <li><strong>Degerler:</strong> Toplam Satis (total_sales) - renk yogunlugu ile</li>
-                                <li><strong>Alt Toplamlar:</strong> Kenar satirlari ve sutunlari olarak goster</li>
-                                <li><strong>Alternatif:</strong> Stacked Bar Chart (kategoriler ustuste, aylar X ekseninde)</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Matrix Plot</em> (isi haritasi) veya <em>Stacked Bar Chart</em></li>
+                                <li><strong>Eslestirme:</strong> X → month, Y → category, Renk → total_sales</li>
+                                <li><strong>Alternatif:</strong> <em>Calendar Heatmap</em> zamana dayali gorunum icin</li>
                             </ul>
                         </div>
                     </div>
@@ -927,14 +918,12 @@ ranked_products <span class="kw">AS</span> (
                         </ul>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Gunes Patlamasi Grafigi (Sunburst Chart) veya Agac Haritasi (Treemap)</li>
-                                <li><strong>Hiyerarsi:</strong> Yil > Ceyrek > Ay (icice halkalar veya kutular)</li>
-                                <li><strong>Boyut:</strong> Toplam Satis (total_sales)</li>
-                                <li><strong>Renk:</strong> Siparis Sayisi (order_count) veya hiyerarsi seviyesi</li>
-                                <li><strong>Alternatif:</strong> Drill-down ozelligi olan Bar Chart (yila tikla > ceyrekler gorsun)</li>
-                                <li><strong>Arac:</strong> Power BI, Tableau, D3.js sunburst</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Sunburst Diagram</em> veya <em>Treemap</em></li>
+                                <li><strong>Eslestirme:</strong> Hiyerarsi → year > quarter > month, Boyut → total_sales</li>
+                                <li><strong>Alternatif:</strong> <em>Circle Packing</em> icice hiyerarsik gorunum icin</li>
                             </ul>
                         </div>
                     </div>
@@ -970,14 +959,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Yigilmis Cubuk Grafik (Stacked Bar Chart) veya %100 Yigilmis Bar</li>
-                                <li><strong>X Ekseni:</strong> Ay (month)</li>
-                                <li><strong>Y Ekseni:</strong> Siparis Sayisi veya Yuzde</li>
-                                <li><strong>Renkler:</strong> Status bazinda (yesil=delivered, kirmizi=cancelled, mavi=processing)</li>
-                                <li><strong>Ek Cizgi:</strong> Teslim orani (delivery_rate) ikincil Y ekseninde</li>
-                                <li><strong>Alternatif:</strong> Donut Chart (pasta grafik) aylik durum dagilimi icin</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Stacked Bar Chart</em></li>
+                                <li><strong>Eslestirme:</strong> X → month, Yiginlar → delivered/cancelled/processing</li>
+                                <li><strong>Alternatif:</strong> <em>Streamgraph</em> zamana dayali oranlar icin veya <em>Alluvial Diagram</em> durum akisi icin</li>
                             </ul>
                         </div>
                     </div>
@@ -1036,14 +1023,12 @@ ranked_products <span class="kw">AS</span> (
 <span class="kw">WHERE</span> <span class="fu">ABS</span>((price - avg_price) / <span class="fu">NULLIF</span>(stddev_price, <span class="dv">0</span>)) > <span class="dv">2</span>;</code></pre>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Box Plot (Kutu Grafigi) - aykiri degerleri gostermek icin ideal</li>
-                                <li><strong>X Ekseni:</strong> Kategori (category_name)</li>
-                                <li><strong>Y Ekseni:</strong> Fiyat (price)</li>
-                                <li><strong>Kutu:</strong> Q1, Medyan, Q3 gosterir; biyiklar min/max</li>
-                                <li><strong>Noktalar:</strong> Aykiri degerler (outliers) ayri nokta olarak</li>
-                                <li><strong>Alternatif:</strong> Violin Plot (dagilim sekli icin) veya Histogram (kategori basina)</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Box Plot</em> veya <em>Violin Plot</em></li>
+                                <li><strong>Eslestirme:</strong> Grup → category_name, Deger → price</li>
+                                <li><strong>Alternatif:</strong> <em>Beeswarm Plot</em> bireysel urunleri ve dagilimlari gostermek icin</li>
                             </ul>
                         </div>
                     </div>
@@ -1206,14 +1191,12 @@ retention_data <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil Kullanilir:</strong> Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapistirin → Grafik secin → Boyutlari eslestirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Kohort Isi Haritasi (Cohort Heatmap) - yukaridaki ornekteki gibi</li>
-                                <li><strong>Satirlar:</strong> Kohort Ayi (cohort_month)</li>
-                                <li><strong>Sutunlar:</strong> Kohorttan Sonra Gecen Ay (months_since_cohort: A0, A1, A2...)</li>
-                                <li><strong>Degerler:</strong> Tutma Orani (retention_pct) - renk yogunlugu ile</li>
-                                <li><strong>Renk Skalasi:</strong> Yesil tonlari (koyu=yuksek tutma, acik=dusuk)</li>
-                                <li><strong>Arac:</strong> Amplitude, Mixpanel, veya Python seaborn heatmap</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Matrix Plot</em> (isi haritasi)</li>
+                                <li><strong>Eslestirme:</strong> X → months_since, Y → cohort_month, Renk → retention_pct</li>
+                                <li><strong>Alternatif:</strong> <em>Line Chart</em> her kohort icin tutma oranini zaman icinde gosteren cizgilerle</li>
                             </ul>
                         </div>
                     </div>
@@ -1338,15 +1321,12 @@ customer_segments <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> avg_total_spent <span class="kw">DESC</span>;</code></pre>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi 1:</strong> RFM Segment Scatter Plot (Sacilim Grafigi)</li>
-                                <li><strong>X Ekseni:</strong> Yakinlik (days_since_last) - ters cevirilmis</li>
-                                <li><strong>Y Ekseni:</strong> Siklik (total_orders)</li>
-                                <li><strong>Nokta Boyutu:</strong> Parasal (total_spent)</li>
-                                <li><strong>Renk:</strong> Segment (Sampiyonlar=altin, Risk Altinda=kirmizi)</li>
-                                <li><strong>Grafik Tipi 2:</strong> Segment Dagilimi icin Pasta/Donut Grafik</li>
-                                <li><strong>Alternatif:</strong> CLV dagiliim icin Histogram veya Box Plot</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Bubble Chart</em></li>
+                                <li><strong>Eslestirme:</strong> X → days_since_last, Y → total_orders, Boyut → total_spent, Renk → segment</li>
+                                <li><strong>Alternatif:</strong> <em>Treemap</em> → Hiyerarsi: segment, Boyut: customer_count veya avg_projected_clv</li>
                             </ul>
                         </div>
                     </div>
@@ -1466,14 +1446,12 @@ Ali (CEO)             | 1     | Ali (CEO)
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya yapisitirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Organizasyon Semasi (Org Chart) veya Agac Diyagrami (Tree Diagram)</li>
-                                <li><strong>Kok:</strong> CEO/Ust Yonetici (level=1)</li>
-                                <li><strong>Dallar:</strong> Her seviye bir alt satir, girinti ile seviye goster</li>
-                                <li><strong>Baglanti:</strong> manager_id > id iliskisi ile cizgiler</li>
-                                <li><strong>Renk:</strong> Departmana gore (Satis=mavi, Muhendislik=yesil, vb.)</li>
-                                <li><strong>Arac:</strong> D3.js tree layout, Google Org Chart, Lucidchart, draw.io</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Circular Dendrogram</em> veya <em>Linear Dendrogram</em></li>
+                                <li><strong>Eslestirme:</strong> Hiyerarsi → manager_path (hiyerarsi seviyeleri icin path sutununu kullanin)</li>
+                                <li><strong>Alternatif:</strong> <em>Sunburst Diagram</em> org yapisinin radyal gorunumu icin</li>
                             </ul>
                         </div>
                     </div>
@@ -1557,14 +1535,12 @@ daily_sales <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil Kullanilir:</strong> Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapistirin → Grafik secin → Boyutlari eslestirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Cizgi Grafik (Line Chart) - zaman serisi icin ideal</li>
-                                <li><strong>X Ekseni:</strong> Tarih (date) - kronolojik sira</li>
-                                <li><strong>Y Ekseni:</strong> Satis Tutari (sales)</li>
-                                <li><strong>Cizgiler:</strong> Gunluk satis (ana cizgi) + 7-gun hareketli ortalama (duzgun cizgi, farkli renk)</li>
-                                <li><strong>Bosluklar:</strong> Satisi olmayan gunler 0 olarak gosterilir (cizgi eksene deger)</li>
-                                <li><strong>Arac:</strong> Chart.js, Apache ECharts, Plotly, Tableau</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Line Chart</em> veya <em>Streamgraph</em></li>
+                                <li><strong>Eslestirme:</strong> X → date, Y → sales (ve moving_avg ayri cizgi olarak)</li>
+                                <li><strong>Alternatif:</strong> <em>Horizon Graph</em> kompakt zaman serisi gorunumu icin</li>
                             </ul>
                         </div>
                     </div>
@@ -1610,15 +1586,12 @@ daily_sales <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> week_num;</code></pre>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil Kullanilir:</strong> Neon'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapistirin → Grafik secin → Boyutlari eslestirin</p>
                             <ul class="mb-0">
-                                <li><strong>Grafik Tipi:</strong> Isi Haritasi (Heatmap)</li>
-                                <li><strong>Satirlar:</strong> Hafta Numarasi (week_num)</li>
-                                <li><strong>Sutunlar:</strong> Haftanin Gunleri (Pazar, Pazartesi...)</li>
-                                <li><strong>Degerler:</strong> Satis Tutari - renk yogunlugu ile (koyu=yuksek satis)</li>
-                                <li><strong>Renk Skalasi:</strong> Sirasal renk skalasi (orn: beyaz > mavi > koyu mavi)</li>
-                                <li><strong>Kullanim:</strong> Haftalik kaliplari ve mevsimsellik trendlerini gormek</li>
-                                <li><strong>Arac:</strong> Seaborn heatmap, Plotly, Cal-HeatMap (JavaScript)</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Matrix Plot</em> veya <em>Calendar Heatmap</em></li>
+                                <li><strong>Eslestirme:</strong> X → day_of_week, Y → week_num, Renk → total_sales</li>
+                                <li><strong>Alternatif:</strong> <em>Bar Chart</em> basit haftanin gunu karsilastirmasi icin</li>
                             </ul>
                         </div>
                     </div>
@@ -1687,15 +1660,14 @@ daily_sales <span class="kw">AS</span> (
 }</pre>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Gorsellestirme Onerisi:</strong><br>
+                            <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+                            <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil Kullanilir:</strong> JSON ciktisini CSV'ye donusturun (her kategori bir satir) → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapistirin → Grafik secin → Boyutlari eslestirin</p>
                             <ul class="mb-0">
-                                <li><strong>Format:</strong> JSON ciktisi web panolari icin idealdir</li>
-                                <li><strong>Kullanim:</strong> React/Vue/Angular frontend ile tuketime hazir</li>
-                                <li><strong>Grafik Tipi:</strong> Ic ice veriler icin Treemap veya Sunburst</li>
-                                <li><strong>Dis Halka:</strong> Kategoriler (total_sales boyutunda)</li>
-                                <li><strong>Ic Halka:</strong> Her kategorinin top urunleri</li>
-                                <li><strong>Interaktif:</strong> Tikla-detay (drill-down) ozelligi icin hiyerarsik yapi</li>
-                                <li><strong>Arac:</strong> D3.js, Apache ECharts, Highcharts, Recharts</li>
+                                <li><strong>Grafik Tipi:</strong> <em>Treemap</em> veya <em>Sunburst Diagram</em> hiyerarsik veriler icin</li>
+                                <li><strong>Eslestirme (Treemap):</strong> Hierarchy → kategori, name; Size → total_sales veya sales</li>
+                                <li><strong>Eslestirme (Sunburst):</strong> Hierarchy → name (kategori), name (urun); Size → sales</li>
+                                <li><strong>Alternatif:</strong> <em>Circle Packing</em> ic ice gruplar icin</li>
+                                <li><strong>Not:</strong> JSON'u once duz CSV'ye cevirin (ic ice yapiyi satirlara acin)</li>
                             </ul>
                         </div>
                     </div>

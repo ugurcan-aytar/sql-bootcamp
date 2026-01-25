@@ -602,13 +602,12 @@
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Horizontal Bar Chart</li>
-                                <li><strong>X Axis:</strong> Sales Amount (sales)</li>
-                                <li><strong>Y Axis:</strong> Month (month) - in chronological order</li>
-                                <li><strong>Color Coding:</strong> Different colors for each ranking function (row_num, rank, dense_rank)</li>
-                                <li><strong>Tools:</strong> Excel, Tableau, Power BI, or matplotlib/seaborn</li>
+                                <li><strong>Chart Type:</strong> <em>Bar Chart</em> (horizontal)</li>
+                                <li><strong>Mapping:</strong> Bars → month, Size → sales</li>
+                                <li><strong>Alternative:</strong> <em>Bumpchart</em> → X: month, Y: row_num/rank/dense_rank (compare ranking methods)</li>
                             </ul>
                         </div>
                     </div>
@@ -664,14 +663,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Grouped Bar Chart or Faceted Bar Chart</li>
-                                <li><strong>X Axis:</strong> Product Name (product_name)</li>
-                                <li><strong>Y Axis:</strong> Total Sales (total_sales)</li>
-                                <li><strong>Grouping:</strong> Category Name (category_name) - each category as separate panel or color</li>
-                                <li><strong>Sorting:</strong> Descending by sales within each group</li>
-                                <li><strong>Alternative:</strong> Treemap (each category as an area, products inside)</li>
+                                <li><strong>Chart Type:</strong> <em>Multi-set Bar Chart</em></li>
+                                <li><strong>Mapping:</strong> Groups → category_name, Bars → product_name, Size → total_sales</li>
+                                <li><strong>Alternative:</strong> <em>Treemap</em> → Hierarchy: category_name > product_name, Size: total_sales</li>
                             </ul>
                         </div>
                     </div>
@@ -751,14 +748,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Line Chart + Bar Chart Combination</li>
-                                <li><strong>X Axis:</strong> Month (month)</li>
-                                <li><strong>Y Axis (Left):</strong> Sales Amount (sales) - as bars</li>
-                                <li><strong>Y Axis (Right):</strong> Percent Change (pct_change) - as line</li>
-                                <li><strong>Color Coding:</strong> Positive change green, negative red</li>
-                                <li><strong>Extra:</strong> Trend line or reference line (0% line)</li>
+                                <li><strong>Chart Type:</strong> <em>Line Chart</em></li>
+                                <li><strong>Mapping:</strong> X → month, Y → sales (and pct_change as separate line)</li>
+                                <li><strong>Alternative:</strong> <em>Slope Chart</em> to emphasize month-over-month changes</li>
                             </ul>
                         </div>
                     </div>
@@ -810,14 +805,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Multi-Line Chart</li>
-                                <li><strong>X Axis:</strong> Date (order_date)</li>
-                                <li><strong>Y Axis:</strong> Amount</li>
-                                <li><strong>Lines:</strong> Daily Sales (thin, light color), Running Total (thick, dark), 7-Day Moving Average (dashed, different color)</li>
-                                <li><strong>Note:</strong> Use secondary Y axis for running total (different scale)</li>
-                                <li><strong>Tools:</strong> Tableau, Power BI, Google Data Studio, D3.js</li>
+                                <li><strong>Chart Type:</strong> <em>Line Chart</em> or <em>Streamgraph</em></li>
+                                <li><strong>Mapping:</strong> X → order_date, Y → daily_sales / running_total / moving_avg_7day</li>
+                                <li><strong>Tip:</strong> Create separate charts for running_total (different scale) and overlay in presentation</li>
                             </ul>
                         </div>
                     </div>
@@ -878,14 +871,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Heatmap or Pivot Table</li>
-                                <li><strong>Rows:</strong> Category (category)</li>
-                                <li><strong>Columns:</strong> Month (month)</li>
-                                <li><strong>Values:</strong> Total Sales (total_sales) - with color intensity</li>
-                                <li><strong>Subtotals:</strong> Show as edge rows and columns</li>
-                                <li><strong>Alternative:</strong> Stacked Bar Chart (categories stacked, months on X axis)</li>
+                                <li><strong>Chart Type:</strong> <em>Matrix Plot</em> (heatmap) or <em>Stacked Bar Chart</em></li>
+                                <li><strong>Mapping:</strong> X → month, Y → category, Color → total_sales</li>
+                                <li><strong>Alternative:</strong> <em>Calendar Heatmap</em> for time-based view</li>
                             </ul>
                         </div>
                     </div>
@@ -928,14 +919,12 @@ ranked_products <span class="kw">AS</span> (
                         </ul>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Sunburst Chart or Treemap</li>
-                                <li><strong>Hierarchy:</strong> Year > Quarter > Month (nested rings or boxes)</li>
-                                <li><strong>Size:</strong> Total Sales (total_sales)</li>
-                                <li><strong>Color:</strong> Order Count (order_count) or hierarchy level</li>
-                                <li><strong>Alternative:</strong> Drill-down Bar Chart (click year > see quarters)</li>
-                                <li><strong>Tools:</strong> Power BI, Tableau, D3.js sunburst</li>
+                                <li><strong>Chart Type:</strong> <em>Sunburst Diagram</em> or <em>Treemap</em></li>
+                                <li><strong>Mapping:</strong> Hierarchy → year > quarter > month, Size → total_sales</li>
+                                <li><strong>Alternative:</strong> <em>Circle Packing</em> for nested hierarchical view</li>
                             </ul>
                         </div>
                     </div>
@@ -971,14 +960,12 @@ ranked_products <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Stacked Bar Chart or 100% Stacked Bar</li>
-                                <li><strong>X Axis:</strong> Month (month)</li>
-                                <li><strong>Y Axis:</strong> Order Count or Percentage</li>
-                                <li><strong>Colors:</strong> Status-based (green=delivered, red=cancelled, blue=processing)</li>
-                                <li><strong>Extra Line:</strong> Delivery rate (delivery_rate) on secondary Y axis</li>
-                                <li><strong>Alternative:</strong> Donut Chart for monthly status distribution</li>
+                                <li><strong>Chart Type:</strong> <em>Stacked Bar Chart</em></li>
+                                <li><strong>Mapping:</strong> X → month, Stacks → delivered/cancelled/processing</li>
+                                <li><strong>Alternative:</strong> <em>Streamgraph</em> for time-based proportions or <em>Alluvial Diagram</em> for status flow</li>
                             </ul>
                         </div>
                     </div>
@@ -1038,15 +1025,12 @@ ranked_products <span class="kw">AS</span> (
                     </div>
 
                     <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                        <strong>📊 Visualization Suggestion:</strong><br>
+                        <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                        <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                         <ul class="mb-0">
-                            <li><strong>Chart Type:</strong> Box Plot (ideal for showing distribution and outliers)</li>
-                            <li><strong>X Axis:</strong> Category (category_name)</li>
-                            <li><strong>Y Axis:</strong> Price (price)</li>
-                            <li><strong>Box Shows:</strong> Q1, Median, Q3; Whiskers show min/max within 1.5*IQR</li>
-                            <li><strong>Outliers:</strong> Individual points beyond whiskers (|z_score| > 2)</li>
-                            <li><strong>Alternative:</strong> Violin Plot for distribution shape, or Histogram per category</li>
-                            <li><strong>Tools:</strong> Plotly, Seaborn, Chart.js with boxplot plugin</li>
+                            <li><strong>Chart Type:</strong> <em>Box Plot</em> or <em>Violin Plot</em></li>
+                            <li><strong>Mapping:</strong> Group → category_name, Value → price</li>
+                            <li><strong>Alternative:</strong> <em>Beeswarm Plot</em> to show individual products and distributions</li>
                         </ul>
                     </div>
                 </div>
@@ -1209,15 +1193,12 @@ retention_data <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Heatmap (as shown above)</li>
-                                <li><strong>X Axis:</strong> Months since cohort (M0, M1, M2...)</li>
-                                <li><strong>Y Axis:</strong> Cohort month (Jan 2024, Feb 2024...)</li>
-                                <li><strong>Cell Value:</strong> Retention percentage (retention_pct)</li>
-                                <li><strong>Color Scale:</strong> Green gradient (dark=high retention, light=low)</li>
-                                <li><strong>Alternative:</strong> Line chart with one line per cohort showing retention decay</li>
-                                <li><strong>Tools:</strong> Plotly Heatmap, D3.js, Tableau, Google Sheets conditional formatting</li>
+                                <li><strong>Chart Type:</strong> <em>Matrix Plot</em> (heatmap)</li>
+                                <li><strong>Mapping:</strong> X → months_since, Y → cohort_month, Color → retention_pct</li>
+                                <li><strong>Alternative:</strong> <em>Line Chart</em> with one line per cohort showing retention over time</li>
                             </ul>
                         </div>
                     </div>
@@ -1342,16 +1323,12 @@ customer_segments <span class="kw">AS</span> (
 <span class="kw">ORDER BY</span> avg_total_spent <span class="kw">DESC</span>;</code></pre>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> RFM Scatter Plot or Bubble Chart</li>
-                                <li><strong>X Axis:</strong> Recency (days_since_last - inverted so recent is right)</li>
-                                <li><strong>Y Axis:</strong> Frequency (total_orders)</li>
-                                <li><strong>Bubble Size:</strong> Monetary (total_spent)</li>
-                                <li><strong>Color:</strong> Segment (Champions=gold, Loyal=green, At Risk=orange, Lost=red)</li>
-                                <li><strong>Alternative:</strong> Treemap showing segment sizes by customer count or revenue</li>
-                                <li><strong>Dashboard:</strong> KPI cards showing segment counts + bar chart of avg CLV per segment</li>
-                                <li><strong>Tools:</strong> Plotly, Tableau, Power BI, Metabase</li>
+                                <li><strong>Chart Type:</strong> <em>Bubble Chart</em></li>
+                                <li><strong>Mapping:</strong> X → days_since_last, Y → total_orders, Size → total_spent, Color → segment</li>
+                                <li><strong>Alternative:</strong> <em>Treemap</em> → Hierarchy: segment, Size: customer_count or avg_projected_clv</li>
                             </ul>
                         </div>
                     </div>
@@ -1472,15 +1449,12 @@ Alice (CEO)           | 1     | Alice (CEO)
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Tree Diagram or Org Chart</li>
-                                <li><strong>Root Node:</strong> CEO/Top manager (level 1)</li>
-                                <li><strong>Hierarchy:</strong> Levels expand downward showing reporting structure</li>
-                                <li><strong>Node Label:</strong> Employee name (full_name)</li>
-                                <li><strong>Connections:</strong> Lines connecting managers to direct reports</li>
-                                <li><strong>Alternative:</strong> Sunburst chart (radial tree) or Collapsible Tree for large orgs</li>
-                                <li><strong>Tools:</strong> D3.js Tree Layout, Mermaid.js, OrgChart.js, Lucidchart</li>
+                                <li><strong>Chart Type:</strong> <em>Circular Dendrogram</em> or <em>Linear Dendrogram</em></li>
+                                <li><strong>Mapping:</strong> Hierarchy → manager_path (use the path column for hierarchy levels)</li>
+                                <li><strong>Alternative:</strong> <em>Sunburst Diagram</em> for radial view of org structure</li>
                             </ul>
                         </div>
                     </div>
@@ -1565,15 +1539,12 @@ daily_sales <span class="kw">AS</span> (
                         </div>
 
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-                            <strong>📊 Visualization Suggestion:</strong><br>
+                            <strong>📊 RAWGraphs.io Visualization:</strong><br>
+                            <p style="margin: 5px 0; font-size: 0.9em;">Export CSV from Neon → Paste at <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a></p>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Line Chart with dual axis</li>
-                                <li><strong>X Axis:</strong> Date (continuous time series)</li>
-                                <li><strong>Y Axis (Primary):</strong> Daily Sales (sales) as bars or area</li>
-                                <li><strong>Y Axis (Secondary):</strong> 7-day Moving Average (moving_avg) as smooth line</li>
-                                <li><strong>Color:</strong> Blue bars for daily sales, orange line for moving average</li>
-                                <li><strong>Key Feature:</strong> Gaps filled with 0 ensures continuous X axis</li>
-                                <li><strong>Tools:</strong> Chart.js, Plotly, Google Charts, Apache ECharts</li>
+                                <li><strong>Chart Type:</strong> <em>Line Chart</em> or <em>Streamgraph</em></li>
+                                <li><strong>Mapping:</strong> X → date, Y → sales (and moving_avg as separate line)</li>
+                                <li><strong>Alternative:</strong> <em>Horizon Graph</em> for compact time series view</li>
                             </ul>
                         </div>
                     </div>
@@ -1621,13 +1592,9 @@ daily_sales <span class="kw">AS</span> (
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
                             <strong>📊 Visualization Suggestion:</strong><br>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Heatmap (Calendar Heatmap)</li>
-                                <li><strong>X Axis:</strong> Day of Week (Sunday to Saturday)</li>
-                                <li><strong>Y Axis:</strong> Week Number (or Month)</li>
-                                <li><strong>Cell Value:</strong> Total Sales or Order Count</li>
-                                <li><strong>Color Scale:</strong> Sequential (light=low, dark=high sales)</li>
-                                <li><strong>Alternative:</strong> Bar chart showing sales by day of week</li>
-                                <li><strong>Tools:</strong> Plotly Heatmap, D3.js Calendar, Cal-Heatmap.js, Google Charts</li>
+                                <li><strong>Chart Type:</strong> <em>Matrix Plot</em> or <em>Calendar Heatmap</em></li>
+                                <li><strong>Mapping:</strong> X → day_of_week, Y → week_num, Color → total_sales</li>
+                                <li><strong>Alternative:</strong> <em>Bar Chart</em> for simple day-of-week comparison</li>
                             </ul>
                         </div>
                     </div>
@@ -1698,13 +1665,9 @@ daily_sales <span class="kw">AS</span> (
                         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
                             <strong>📊 Visualization Suggestion:</strong><br>
                             <ul class="mb-0">
-                                <li><strong>Chart Type:</strong> Interactive Dashboard with multiple components</li>
-                                <li><strong>Main Chart:</strong> Treemap or Sunburst (categories → products hierarchy)</li>
-                                <li><strong>Size:</strong> Total sales per category/product</li>
-                                <li><strong>Drill-down:</strong> Click category to see top products</li>
-                                <li><strong>KPI Cards:</strong> Report date, total sales, category count</li>
-                                <li><strong>API Usage:</strong> Feed JSON directly to frontend charting libraries</li>
-                                <li><strong>Tools:</strong> React + Recharts, Vue + ECharts, D3.js, Highcharts</li>
+                                <li><strong>Chart Type:</strong> <em>Sunburst Diagram</em> or <em>Treemap</em></li>
+                                <li><strong>Mapping:</strong> Hierarchy: category → products, Size: total_sales</li>
+                                <li><strong>Note:</strong> JSON output is primarily for APIs; for RAWGraphs, export as flat CSV</li>
                             </ul>
                         </div>
                     </div>
@@ -1884,12 +1847,11 @@ daily_trend <span class="kw">AS</span> (
                             <strong>📊 Visualization Suggestion:</strong><br>
                             <ul class="mb-0">
                                 <li><strong>Dashboard Layout:</strong> Multi-panel executive dashboard</li>
-                                <li><strong>Panel 1 (KPI Cards):</strong> Current vs Previous month with growth % indicator (green/red arrow)</li>
-                                <li><strong>Panel 2 (Horizontal Bar):</strong> Top 5 products by revenue</li>
-                                <li><strong>Panel 3 (Donut/Pie):</strong> Customer segment distribution (VIP, Regular, Occasional)</li>
-                                <li><strong>Panel 4 (Line Chart):</strong> Daily sales trend with 7-day moving average overlay</li>
-                                <li><strong>Interactivity:</strong> Date range filter, drill-down on products</li>
-                                <li><strong>Tools:</strong> Grafana, Superset, Metabase, Tableau, Power BI, or custom React/D3.js dashboard</li>
+                                <li><strong>Monthly Comparison:</strong> <em>Bar Chart</em> → Bars: current_month / previous_month</li>
+                                <li><strong>Top Products:</strong> <em>Bar Chart (horizontal)</em> → Bars: product_name, Size: revenue</li>
+                                <li><strong>Customer Segments:</strong> <em>Pie Chart</em> or <em>Treemap</em> → Size: customer_count, Color: segment</li>
+                                <li><strong>Daily Trend:</strong> <em>Line Chart</em> → X: date, Y: daily_sales / moving_avg</li>
+                                <li><strong>Tip:</strong> Create multiple charts in RAWGraphs, export as SVG/PNG, combine in presentation</li>
                             </ul>
                         </div>
                     </div>

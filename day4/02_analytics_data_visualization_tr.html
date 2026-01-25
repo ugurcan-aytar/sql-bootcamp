@@ -1931,13 +1931,13 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Alistirma 1 icin Gorsellestirme Onerileri:</strong><br>
+          <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil kullanilir:</strong> Sorgu sonuclarini Neon Console'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapisitirin → Grafik secin → Boyutlari eslestirin</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Sorgu 1 (Aylik Trend):</strong> Cizgi Grafik - X: Ay, Y: Gelir, Her yil icin ayri cizgi, YoY buyume anotasyon olarak</li>
-            <li><strong>Sorgu 2 (Bolgel Satislar):</strong> Bullet Chart veya Hedef cizgili Bar Grafik - X: Bolge, Y: Gerceklesen vs Hedef</li>
-            <li><strong>Sorgu 3 (En Iyi Urunler):</strong> Yatay Bar Grafik, trend oklariyla (↑↓) aylik degisimi gosterin</li>
-            <li><strong>Sorgu 4 (Satis Temsilcisi Performansi):</strong> Sacilim Grafigi - X: Siparis Sayisi, Y: Toplam Satis, performans kategorisine gore renk</li>
-            <li><strong>Araclar:</strong> Metabase, Grafana, Tableau, Power BI, Apache Superset</li>
+            <li><strong>Sorgu 1 (Aylik Trend):</strong> <em>Line Chart</em> → X Ekseni: month, Y Ekseni: revenue (yillara gore ayri seriler)</li>
+            <li><strong>Sorgu 2 (Bolgesel Satislar):</strong> <em>Bar Chart</em> veya <em>Multi-set Bar Chart</em> → X: region, Y: actual_sales &amp; target</li>
+            <li><strong>Sorgu 3 (En Iyi Urunler):</strong> <em>Bar Chart (yatay)</em> → Barlar: product_name, Boyut: revenue</li>
+            <li><strong>Sorgu 4 (Satis Temsilcisi Performansi):</strong> <em>Bubble Chart</em> → X: order_count, Y: total_sales, Boyut: avg_order_value, Renk: performance_category</li>
           </ul>
         </div>
       </section>
@@ -2120,13 +2120,13 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Alistirma 2 icin Gorsellestirme Onerileri:</strong><br>
+          <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil kullanilir:</strong> Sorgu sonuclarini Neon Console'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapisitirin → Grafik secin → Boyutlari eslestirin</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Sorgu 1 (RFM Analizi):</strong> 3D Sacilim veya Balon Grafik - X: Recency, Y: Frequency, Boyut: Monetary, Renk: Segment</li>
-            <li><strong>Sorgu 2 (Satin Alma Yolculugu):</strong> Huni Grafik satin alma asamalari icin, veya Cizgi Grafik alisverisler arasi ortalama gun</li>
-            <li><strong>Sorgu 3 (Kohort Tutma):</strong> Isi Haritasi - X: Kohort sonrasi ay, Y: Kohort ayi, Renk yogunlugu: Tutma orani</li>
-            <li><strong>Segment Dagilimi:</strong> Pasta/Donut Grafik segment basina musteri sayisi</li>
-            <li><strong>Araclar:</strong> Plotly, D3.js, Tableau, Mixpanel, Amplitude</li>
+            <li><strong>Sorgu 1 (RFM Analizi):</strong> <em>Bubble Chart</em> → X: recency, Y: frequency, Boyut: monetary, Renk: customer_segment</li>
+            <li><strong>Sorgu 2 (Satin Alma Yolculugu):</strong> <em>Bar Chart</em> → Barlar: purchase_number, Boyut: avg_days_since_previous</li>
+            <li><strong>Sorgu 3 (Kohort Tutma):</strong> <em>Matrix Plot</em> veya <em>Calendar Heatmap</em> → X: month_diff, Y: cohort_month, Renk: retention_rate</li>
+            <li><strong>Segment Dagilimi:</strong> <em>Pie Chart</em> veya <em>Treemap</em> → Boyut: customer_count, Renk: customer_segment</li>
           </ul>
         </div>
       </section>
@@ -2323,19 +2323,19 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Alistirma 3 icin Gorsellestirme Onerileri:</strong><br>
+          <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil kullanilir:</strong> Sorgu sonuclarini Neon Console'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapisitirin → Grafik secin → Boyutlari eslestirin</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Sorgu 1 (Performans Matrisi):</strong> Sacilim Grafigi / BCG Matrisi - X: Gelir yuzdeligi, Y: Marj yuzdeligi, Renk: Kategori (Star/High Volume/High Margin/Underperformer)</li>
-            <li><strong>Sorgu 2 (Urun Yakinligi):</strong> Ag Grafigi - Dugumler: Urunler, Kenarlar: Birlikte satin alma sikligi, veya Chord Diyagrami</li>
-            <li><strong>Sorgu 3 (Kategori Buyumesi):</strong> Gruplu Bar Grafik trend oklariyla, veya Selale Grafik buyume katkilarini gostermek icin</li>
-            <li><strong>Alternatif:</strong> Treemap gelire gore boyutlandirilmis, buyume trendine gore renklendirilmis</li>
-            <li><strong>Araclar:</strong> Plotly, D3.js, Gephi (ag icin), Tableau</li>
+            <li><strong>Sorgu 1 (Performans Matrisi):</strong> <em>Bubble Chart</em> → X: revenue_percentile, Y: margin_percentile, Boyut: revenue, Renk: quadrant (Star/High Volume/High Margin/Underperformer)</li>
+            <li><strong>Sorgu 2 (Urun Yakinligi):</strong> <em>Chord Diagram</em> veya <em>Arc Diagram</em> → Kaynak: product_1, Hedef: product_2, Boyut: co_purchase_count</li>
+            <li><strong>Sorgu 3 (Kategori Buyumesi):</strong> <em>Multi-set Bar Chart</em> → Gruplar: category_name, Barlar: first_month_revenue &amp; last_month_revenue</li>
+            <li><strong>Alternatif:</strong> <em>Treemap</em> → Hiyerarsi: category_name, Boyut: annual_revenue, Renk: trend (Growing/Stable/Declining)</li>
           </ul>
         </div>
       </section>
       <section>
         <p><strong>Alistirma 4: Basit Bir Kontrol Paneli (Dashboard) Olusturma</strong></p>
-        <p>Bu alistirmada, Metabase, Tableau veya Power BI gibi bir aracla gorsellestirilebilecek basit bir dashboard icin veri hazirlayacagiz.</p>
+        <p>Bu alistirmada, <a href="https://rawgraphs.io" target="_blank">RAWGraphs.io</a> (ucretsiz, kopyala-yapistir tabanli), Tableau veya Power BI gibi bir aracla gorsellestirilebilecek basit bir dashboard icin veri hazirlayacagiz.</p>
         <div class="sourceCode" id="cb37">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true"></a><span class="co">-- 1. Sales Overview Dashboard</span></span>
@@ -2536,15 +2536,15 @@
         </div>
 
         <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
-          <strong>📊 Alistirma 4 (Dashboard) icin Gorsellestirme Onerileri:</strong><br>
+          <strong>📊 RAWGraphs.io ile Gorsellestirme:</strong><br>
+          <p style="margin: 10px 0; font-size: 0.9em;"><strong>Nasil kullanilir:</strong> Sorgu sonuclarini Neon Console'dan CSV olarak indirin → <a href="https://rawgraphs.io" target="_blank">rawgraphs.io</a>'ya gidin → Veriyi yapisitirin → Grafik secin → Boyutlari eslestirin</p>
           <ul class="mb-0" style="margin-bottom: 0;">
-            <li><strong>Sorgu 1 (KPI'lar):</strong> Buyuk Sayi / KPI Kartlari - Toplam Gelir, Toplam Siparis, Tekil Musteri, Ort. Siparis Degeri</li>
-            <li><strong>Sorgu 2 (Gunluk Gelir):</strong> Alan/Cizgi Grafik - X: Tarih, Y: Gunluk Gelir, 7 gunluk hareketli ortalama ustunde</li>
-            <li><strong>Sorgu 3 (Kategori Dagilimi):</strong> Donut/Pasta Grafik veya Yatay Bar Grafik gelir payini gosteriyor</li>
-            <li><strong>Sorgu 4 (En Iyi Urunler Trendi):</strong> Coklu Cizgi Grafik - X: Ay, Y: Gelir, her urun icin bir cizgi</li>
-            <li><strong>Sorgu 5 (Performans Matrisi):</strong> Kategori etiketli Sacilim Grafigi kadranti</li>
-            <li><strong>Dashboard Yerlesimi:</strong> KPI'lar ustte, zaman serisi ortada, kirilimlar altta</li>
-            <li><strong>Araclar:</strong> Metabase, Apache Superset, Grafana, Tableau, Power BI</li>
+            <li><strong>Sorgu 1 (KPI'lar):</strong> Metin/sayi olarak gosterin (RAWGraphs grafikler icindir, KPI kartlari icin degil)</li>
+            <li><strong>Sorgu 2 (Aylik Gelir):</strong> <em>Line Chart</em> veya <em>Streamgraph</em> → X: month, Y: monthly_revenue</li>
+            <li><strong>Sorgu 3 (Kategori Dagilimi):</strong> <em>Pie Chart</em> veya <em>Sunburst Diagram</em> → Arc: category_name, Boyut: revenue</li>
+            <li><strong>Sorgu 4 (En Iyi Urunler Trendi):</strong> <em>Bumpchart</em> veya <em>Line Chart</em> → X: month, Y: monthly_revenue, Grup: product_name</li>
+            <li><strong>Sorgu 5 (Performans Matrisi):</strong> <em>Bubble Chart</em> → X: revenue, Y: profit_margin, Boyut: units_sold, Renk: quadrant</li>
+            <li><strong>Dashboard Ipucu:</strong> RAWGraphs'ta birden fazla grafik olusturun, SVG/PNG olarak disari aktarin, sunumda veya dokumanda birlestirin</li>
           </ul>
         </div>
 
