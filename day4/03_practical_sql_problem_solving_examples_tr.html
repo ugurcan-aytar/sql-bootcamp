@@ -144,6 +144,17 @@
                     <p><strong>Gorev:</strong> Her kategoriyi tam hiyerarsik yoluyla gosteren (ornegin,
                        "Elektronik > Telefonlar > Akilli Telefonlar") bir recursive CTE yazin.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Recursive CTE'ler ile ebeveyn-cocuk iliskilerini nasil gezersiniz.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Kategori adi, hiyerarsi seviyesi (1=kok), tam yol metni<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>Capa (Anchor):</strong> Kok kategorileri sec (WHERE parent_id IS NULL), level=1, path=name</li>
+                            <li><strong>Recursive:</strong> Alt kategorileri JOIN et, level'i artir, yolu ' > ' ile birlestir</li>
+                            <li><strong>Son SELECT:</strong> Level'e gore girintili format olustur</li>
+                        </ol>
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution1_1')">Cozumu Goster</button>
                     <div id="solution1_1" class="solution-box">
                         <pre><code class="language-sql">WITH RECURSIVE category_tree AS (
@@ -198,6 +209,17 @@ Giyim                 |     1 | Giyim
                     <p><strong>Gorev:</strong> 'Elektronik' kategorisindeki VE tum alt kategorilerindeki tum urunleri
                        donduren bir sorgu yazin.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Recursive CTE ile tum torunlari toplayip, IN clause ile filtreleme.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Urun ID, adi, fiyati, kategori adi<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE Anchor:</strong> Baslangic kategorisini ada gore sec ('Electronics')</li>
+                            <li><strong>CTE Recursive:</strong> parent_id toplanmis ID'lerle eslesen tum cocuklari bul</li>
+                            <li><strong>Son Sorgu:</strong> products'u JOIN et, WHERE category_id IN (SELECT id FROM CTE)</li>
+                        </ol>
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution1_2')">Cozumu Goster</button>
                     <div id="solution1_2" class="solution-box">
                         <pre><code class="language-sql">-- Once 'Elektronik' altindaki tum kategori ID'lerini al
@@ -231,6 +253,17 @@ ORDER BY c.name, p.name;</code></pre>
                     <h4>Alistirma 1.3: Tarih Serisi Uretme</h4>
                     <p><strong>Hedef:</strong> Siparis olmayan gunleri bulmak icin bir tarih serisi uretin.</p>
                     <p><strong>Gorev:</strong> Recursive CTE kullanarak, Ocak 2024'te siparis olmayan tum gunleri bulun.</p>
+
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Recursive CTE ile tarih dizisi olusturma, LEFT JOIN + WHERE NULL ile bosluk bulma.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Siparissiz tarih, gun adi (Pazartesi, Sali, vb.)<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE 1 (date_series):</strong> 1 Ocak ile basla, her adimda 1 gun ekle, 31 Ocak'a kadar devam et</li>
+                            <li><strong>CTE 2 (order_dates):</strong> Ocak ayindaki DISTINCT siparis tarihlerini al</li>
+                            <li><strong>Son Sorgu:</strong> date_series ile order_dates'i LEFT JOIN et, WHERE siparis_gunu IS NULL</li>
+                        </ol>
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution1_3')">Cozumu Goster</button>
                     <div id="solution1_3" class="solution-box">
@@ -269,6 +302,17 @@ ORDER BY ds.gun;</code></pre>
                     <h4>Alistirma 2.1: Gelire Gore Kategori Basina En Iyi 3 Urun</h4>
                     <p><strong>Hedef:</strong> Toplam gelire gore her kategorideki en cok satan 3 urunu bulun.</p>
                     <p><strong>Gorev:</strong> Urun adi, kategori, toplam gelir ve kategori icindeki siralamayi gosterin.</p>
+
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> ROW_NUMBER() ile PARTITION BY kullanarak gruplar icinde siralama.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Kategori, urun adi, toplam gelir, siparis sayisi, sira (1-3)<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE 1 (product_revenue):</strong> Her urun icin SUM(miktar * fiyat) hesapla, kategori ile birlikte</li>
+                            <li><strong>CTE 2 (ranked):</strong> ROW_NUMBER() OVER (PARTITION BY kategori ORDER BY gelir DESC) ekle</li>
+                            <li><strong>Son Sorgu:</strong> SELECT * FROM ranked WHERE sira <= 3</li>
+                        </ol>
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution2_1')">Cozumu Goster</button>
                     <div id="solution2_1" class="solution-box">
@@ -320,6 +364,17 @@ Elektronik    | Laptop Elite    |    38920.00  |            28  |              2
                     <p><strong>Hedef:</strong> Her musteri icin en son siparisi alin.</p>
                     <p><strong>Gorev:</strong> Musteri adi, son siparis tarihi, siparis toplami ve siparis durumunu gosterin.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Iki yontem - DISTINCT ON (PostgreSQL) vs ROW_NUMBER() (tasinabilir).<br>
+                        <strong>📋 Beklenen Cikti:</strong> Musteri ID, adi, siparis ID, tarih, tutar, durum<br>
+                        <strong>🔢 Adim Adim Yaklasim (DISTINCT ON):</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li>SELECT DISTINCT ON (customer_id) - her musteri icin ilk satiri tutar</li>
+                            <li>ORDER BY customer_id, order_date DESC - "ilk" = en son demek olur</li>
+                        </ol>
+                        <strong>🔢 Alternatif (ROW_NUMBER):</strong> CTE ile rn = ROW_NUMBER() PARTITION BY customer_id ORDER BY date DESC, sonra WHERE rn = 1
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution2_2')">Cozumu Goster</button>
                     <div id="solution2_2" class="solution-box">
                         <pre><code class="language-sql">-- Yontem 1: DISTINCT ON (PostgreSQL'e ozel, cok verimli)
@@ -362,6 +417,17 @@ ORDER BY musteri_adi;</code></pre>
                     <p><strong>Hedef:</strong> Mevcut ayda en cok harcayan 5 musteriyi bulun.</p>
                     <p><strong>Gorev:</strong> Toplam harcama, siparis sayisi ve ortalama siparis degerini dahil edin.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Tarih filtreleme ile toplama ve LIMIT'i birlestirme.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Musteri ID, adi, tipi, siparis sayisi, toplam harcama, ort siparis degeri<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>Tarih Filtresi:</strong> WHERE order_date >= DATE_TRUNC('month', CURRENT_DATE)</li>
+                            <li><strong>Toplama:</strong> GROUP BY musteri, COUNT, SUM, AVG hesapla</li>
+                            <li><strong>Top N:</strong> ORDER BY toplam_harcama DESC LIMIT 5</li>
+                        </ol>
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution2_3')">Cozumu Goster</button>
                     <div id="solution2_3" class="solution-box">
                         <pre><code class="language-sql">SELECT
@@ -394,6 +460,17 @@ LIMIT 5;</code></pre>
                     <h4>Alistirma 3.1: Eksik Siparis ID'lerini Bulma</h4>
                     <p><strong>Hedef:</strong> Siparis ID dizisindeki bosluklari belirleyin (silinen veya basarisiz siparisler).</p>
                     <p><strong>Gorev:</strong> Minimum ve maksimum siparis ID'si arasindaki tum eksik siparis ID'lerini bulun.</p>
+
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Iki bosluk bulma teknigi - LEAD() pencere fonksiyonu vs generate_series().<br>
+                        <strong>📋 Beklenen Cikti:</strong> Bosluk araliklari (baslangic, bitis, adet) veya tek tek eksik ID'ler<br>
+                        <strong>🔢 Yontem 1 (LEAD):</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li>LEAD(id) ile siralamadaki sonraki ID'yi al</li>
+                            <li>WHERE sonraki_id - id > 1 bosluklari bulur</li>
+                        </ol>
+                        <strong>🔢 Yontem 2 (generate_series):</strong> Tam seri olustur, orders ile LEFT JOIN et, WHERE id IS NULL
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_1')">Cozumu Goster</button>
                     <div id="solution3_1" class="solution-box">
@@ -432,6 +509,18 @@ ORDER BY a.id;</code></pre>
                     <h4>Alistirma 3.2: Musteri Basina Ardisik Siparis Serilerini Bulma</h4>
                     <p><strong>Hedef:</strong> Ardisik gunlerde siparis veren musterileri bulun.</p>
                     <p><strong>Gorev:</strong> Her musteri icin ardisik siparis gunleri "adalarini" belirleyin.</p>
+
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Klasik "ada" patterni - tarih - ROW_NUMBER() gruplama hilesi.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Musteri adi, seri baslangic tarihi, seri bitis tarihi, ardisik gun sayisi<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE 1:</strong> Musteri basina DISTINCT siparis gunlerini al</li>
+                            <li><strong>CTE 2:</strong> grp = siparis_gunu - ROW_NUMBER() hesapla (ayni grp = ardisik)</li>
+                            <li><strong>CTE 3:</strong> GROUP BY customer_id, grp → MIN/MAX tarihler, COUNT gun</li>
+                            <li><strong>Filtre:</strong> HAVING COUNT >= 2 (en az 2 ardisik gun)</li>
+                        </ol>
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution3_2')">Cozumu Goster</button>
                     <div id="solution3_2" class="solution-box">
@@ -497,6 +586,17 @@ Mehmet Demir   | 2024-01-20     | 2024-01-22  |             3
                     <p><strong>Hedef:</strong> Her ay icin kategoriye gore satislari gosteren bir pivot tablosu olusturun.</p>
                     <p><strong>Gorev:</strong> Sutunlar aylar (Oca, Sub, Mar...), satirlar kategoriler olmali.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> FILTER ile kosullu toplama (PostgreSQL pivot).<br>
+                        <strong>📋 Beklenen Cikti:</strong> Kategori | Oca | Sub | Mar | ... | Toplam (her kategori bir satir)<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>JOIN'ler:</strong> categories → products → order_lines → orders</li>
+                            <li><strong>Pivot Sutunlari:</strong> SUM(mkt*fiyat) FILTER (WHERE EXTRACT(MONTH) = 1) AS oca, vb.</li>
+                            <li><strong>GROUP BY:</strong> sadece kategori adi (aylar sutun olur, satir degil)</li>
+                        </ol>
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution4_1')">Cozumu Goster</button>
                     <div id="solution4_1" class="solution-box">
                         <pre><code class="language-sql">SELECT
@@ -537,6 +637,17 @@ Ev          |  8,920.00 | 10,150.00 |  9,870.00 |  28,940.00
                     <p><strong>Hedef:</strong> Musteri tipi ve siparis durumuna gore siparis sayisini gosterin.</p>
                     <p><strong>Gorev:</strong> Satirlar musteri tipleri, sutunlar durumlar olan bir capraz tablo olusturun.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Kategorik capraz tablo icin COUNT ile FILTER.<br>
+                        <strong>📋 Beklenen Cikti:</strong> musteri_tipi | beklemede | isleniyor | kargoda | teslim | iptal | toplam<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>JOIN:</strong> customers ile orders</li>
+                            <li><strong>Pivot:</strong> COUNT(*) FILTER (WHERE status = 'pending') AS beklemede, vb.</li>
+                            <li><strong>GROUP BY:</strong> customer_type (satirlar olur)</li>
+                        </ol>
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution4_2')">Cozumu Goster</button>
                     <div id="solution4_2" class="solution-box">
                         <pre><code class="language-sql">SELECT
@@ -576,6 +687,18 @@ vip           |         3 |         5 |       8 |            42 |     0 |       
                     <p><strong>Hedef:</strong> Birden fazla kez girilmis olabilecek musterileri belirleyin.</p>
                     <p><strong>Gorev:</strong> Ayni e-posta veya telefon numarasina sahip musterileri bulun.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> GROUP BY + HAVING COUNT(*) > 1 ile tekrar bulma, buyuk/kucuk harf duyarsiz eslestirme.<br>
+                        <strong>📋 Beklenen Cikti:</strong> E-posta, tekrar sayisi, musteri ID'leri dizisi, isimler dizisi<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>GROUP BY:</strong> LOWER(email) buyuk/kucuk harf duyarsiz eslestirme icin</li>
+                            <li><strong>Filtre:</strong> HAVING COUNT(*) > 1 (sadece tekrar eden gruplar)</li>
+                            <li><strong>Detaylar:</strong> ARRAY_AGG(id), ARRAY_AGG(name) ile tum tekrarlari gor</li>
+                        </ol>
+                        <strong>💡 Bonus:</strong> Bulanik isim eslesme icin pg_trgm SIMILARITY() kullanin
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution5_1')">Cozumu Goster</button>
                     <div id="solution5_1" class="solution-box">
                         <pre><code class="language-sql">-- Tekrar eden e-postalari bul
@@ -604,6 +727,17 @@ ORDER BY sayi DESC;</code></pre>
                     <h4>Alistirma 5.2: Tekrarsiz Musteri Gorunumu Olusturma</h4>
                     <p><strong>Hedef:</strong> Her musteriyi sadece bir kez gosteren bir gorunum olusturun.</p>
                     <p><strong>Gorev:</strong> En cok siparisi olan musteriyi tutun; esitlik durumunda en eskisini tutun.</p>
+
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> ROW_NUMBER() ile oncelik kurallarini kullanarak tekrarlardan bir kayit secme.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Email/telefon kombinasyonuna gore benzersiz musteriler iceren bir VIEW<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE 1:</strong> Musterileri siparislerle JOIN et, musteri basina siparis_sayisi ve toplam_harcama hesapla</li>
+                            <li><strong>CTE 2:</strong> ROW_NUMBER() OVER (PARTITION BY email||phone ORDER BY siparis_sayisi DESC, created_at ASC) ekle</li>
+                            <li><strong>View:</strong> SELECT * WHERE rn = 1 (her tekrar grubundan en iyi kaydi tutar)</li>
+                        </ol>
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution5_2')">Cozumu Goster</button>
                     <div id="solution5_2" class="solution-box">
@@ -662,6 +796,17 @@ WHERE rn = 1;</code></pre>
                     <p><strong>Hedef:</strong> Zamanda cakisan promosyonlari belirleyin (potansiyel cakismalar).</p>
                     <p><strong>Gorev:</strong> Tarih araliklari cakisan tum promosyon ciftlerini bulun.</p>
 
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> Cakisma formulu ile tarih araligi cakisma tespiti.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Promo1 detaylari, Promo2 detaylari, cakisma baslangic tarihi, cakisma bitis tarihi<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>Self-JOIN:</strong> promotions p1 ile p2 JOIN et WHERE p1.id < p2.id (tekrarlari onle)</li>
+                            <li><strong>Cakisma Kontrolu:</strong> WHERE p1.baslangic <= p2.bitis AND p1.bitis >= p2.baslangic</li>
+                            <li><strong>Cakisma Donemi:</strong> GREATEST(p1.baslangic, p2.baslangic) ile LEAST(p1.bitis, p2.bitis)</li>
+                        </ol>
+                    </div>
+
                     <button class="toggle-btn" onclick="toggleSolution('solution6_1')">Cozumu Goster</button>
                     <div id="solution6_1" class="solution-box">
                         <pre><code class="language-sql">SELECT
@@ -687,6 +832,18 @@ ORDER BY cakisma_baslangic;</code></pre>
                     <h4>Alistirma 6.2: Tarih Doldurma ile Gunluk Gelir</h4>
                     <p><strong>Hedef:</strong> Sifir satisli gunler dahil gunluk geliri gosterin.</p>
                     <p><strong>Gorev:</strong> Tam bir tarih serisi uretin ve siparislerle left join yapin.</p>
+
+                    <div style="background-color: #f0f7ff; border-left: 3px solid #4a90d9; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> generate_series() ile tarih araligi, sifir degerli gunleri dahil etmek icin LEFT JOIN, kumulatif SUM.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Tarih, gun adi, siparis sayisi, gelir, kumulatif gelir<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE 1:</strong> generate_series('2024-01-01', '2024-01-31', '1 day') tum tarihleri olusturur</li>
+                            <li><strong>CTE 2:</strong> Siparisleri DATE(order_date) ile topla</li>
+                            <li><strong>Son:</strong> Tarih serisini toplamlarla LEFT JOIN et, null'lari COALESCE ile 0'a cevir</li>
+                            <li><strong>Bonus:</strong> Kumulatif toplam icin SUM() OVER (ORDER BY gun) ekle</li>
+                        </ol>
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('solution6_2')">Cozumu Goster</button>
                     <div id="solution6_2" class="solution-box">
@@ -740,6 +897,19 @@ gun        | gun_adi   | siparisler | gelir     | kumulatif_gelir
                     <h4>Zorluk 1: Kohort Analizi ile Musteri Yasam Boyu Degeri</h4>
                     <p>Ilk alisverislerini yaptiklari aya (kohort) gore gruplanmis musteri yasam boyu degerini hesaplayin.
                        Her kohortin katildiktan sonra 1, 2, 3. aylarda ne kadar harcadigini gosterin.</p>
+
+                    <div style="background-color: #fff8e6; border-left: 3px solid #ffc107; padding: 12px; margin: 10px 0; font-size: 0.9em;">
+                        <strong>🎯 Ne Ogreneceksiniz:</strong> CTE'ler, tarih matematiği ve pivotlama birlestiren kohort analizi.<br>
+                        <strong>📋 Beklenen Cikti:</strong> Kohort ay | Kohort boyutu | Ay 0 gelir | Ay 1 gelir | ... | Toplam deger<br>
+                        <strong>🔢 Adim Adim Yaklasim:</strong>
+                        <ol style="margin: 5px 0 0 0; padding-left: 20px;">
+                            <li><strong>CTE 1 (customer_first_order):</strong> Her musteri icin MIN(order_date) bul → kohort_ay</li>
+                            <li><strong>CTE 2 (customer_orders):</strong> Tum siparisleri kohort ile JOIN et, AGE() ile katilimdan_aylar hesapla</li>
+                            <li><strong>Son:</strong> FILTER ile pivot → SUM() FILTER (WHERE katilimdan_aylar = 0) AS ay_0, vb.</li>
+                            <li><strong>GROUP BY:</strong> kohort_ay ile her kohortin harcama sekillerini gor</li>
+                        </ol>
+                        <strong>💡 Ana Fikir:</strong> Kohort analizi, yeni musterilerin eskilerden daha degerli/degersiz olup olmadigini ortaya cikarir
+                    </div>
 
                     <button class="toggle-btn" onclick="toggleSolution('challenge1')">Cozumu Goster</button>
                     <div id="challenge1" class="solution-box">
