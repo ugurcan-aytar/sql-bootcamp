@@ -265,11 +265,15 @@
             <!-- Ornek Veri Seti -->
             <section>
                 <h3>Ornek Veritabani Semasi (Sample Database Schema)</h3>
-                <p>Asagidaki tablolara sahip bir e-ticaret veritabani kullanacagiz:</p>
+                <p>Asagidaki tablolara sahip bir e-ticaret veritabani kullanacagiz (bootcamp_db.sql):</p>
+
+                <div class="hint-box">
+                    <strong>💡 Ogretmen Notu:</strong> Bu orneklerde kullanilan tablolar <code>bootcamp_db.sql</code> dosyasindaki <strong>public</strong> semasindaki tablolardir. Ogrencilerin tablolari incelemesi icin <code>\d tablename</code> komutunu kullanabilirsiniz.
+                </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>customers (sales semasi)</h5>
+                        <h5>customers (public semasi)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -285,18 +289,18 @@
                                     <td>Birincil Anahtar (Primary Key)</td>
                                 </tr>
                                 <tr>
-                                    <td>email</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(100)</span></td>
-                                    <td>Benzersiz</td>
+                                    <td>name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
+                                    <td>Musteri adi</td>
                                 </tr>
                                 <tr>
-                                    <td>first_name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td>email</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>last_name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td>city</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(100)</span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -305,9 +309,14 @@
                                     <td>FK -> countries</td>
                                 </tr>
                                 <tr>
-                                    <td>is_active</td>
-                                    <td><span class="badge bg-info">BOOLEAN</span></td>
-                                    <td>%90 TRUE</td>
+                                    <td>customer_type</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
+                                    <td>individual, business, vip</td>
+                                </tr>
+                                <tr>
+                                    <td>status</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
+                                    <td>active, inactive, suspended</td>
                                 </tr>
                                 <tr>
                                     <td>created_at</td>
@@ -316,10 +325,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Ornekler icin buyuk tablo</strong></p>
+                        <p><strong>~50 satir - ornek sorgu tablosu</strong></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>orders (sales semasi)</h5>
+                        <h5>orders (public semasi)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -351,18 +360,18 @@
                                 </tr>
                                 <tr>
                                     <td>total_amount</td>
-                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
+                                    <td><span class="badge bg-info">DECIMAL(12,2)</span></td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Ornekler icin buyuk tablo</strong></p>
+                        <p><strong>Ornekler icin ana siparis tablosu</strong></p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>order_lines (sales semasi)</h5>
+                        <h5>order_lines (public semasi)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -399,15 +408,15 @@
                                 </tr>
                                 <tr>
                                     <td>line_total</td>
-                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
-                                    <td>quantity * unit_price</td>
+                                    <td><span class="badge bg-info">DECIMAL(12,2)</span></td>
+                                    <td>GENERATED - quantity * unit_price * (1-discount_percent/100)</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Ornekler icin buyuk tablo</strong></p>
+                        <p><strong>Siparis detay tablosu</strong></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>products (sales semasi)</h5>
+                        <h5>products (public semasi)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -424,7 +433,7 @@
                                 </tr>
                                 <tr>
                                     <td>name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(200)</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -438,13 +447,13 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>is_active</td>
+                                    <td>active</td>
                                     <td><span class="badge bg-info">BOOLEAN</span></td>
-                                    <td>%95 TRUE</td>
+                                    <td>Varsayilan TRUE</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Daha kucuk referans tablosu</strong></p>
+                        <p><strong>Urun referans tablosu</strong></p>
                     </div>
                 </div>
 
@@ -459,12 +468,18 @@
                 <h2>Bolum 1: Yurutme Planlarini (Execution Plans) Okuma</h2>
                 <p>EXPLAIN ciktisini yorumlamayi ve performans sorunlarini (Performance Issues) tanımlamayi ogrenin.</p>
 
+                <div class="hint-box">
+                    <strong>💡 Temel Kavram: Yurutme Plani (Execution Plan) Nedir?</strong><br>
+                    <p>Yurutme plani, veritabaninin sorgunuzu nasil calistirdiginin "haritasi"dir. Bir GPS'in size "500m dumduz git, saga don, 1km git" demesi gibi, yurutme plani da veritabanina "once bu tabloyu tara, sonra su indeksi kullan, sonra birlestir" gibi adimlar gosterir.</p>
+                    <p style="margin-bottom: 0;"><strong>Neden Onemli?</strong> Yavas sorgunun nedenini anlamak icin yurutme planini okumalisiniz. Plan size hangi adimlarin zaman kaybettirdigini gosterir.</p>
+                </div>
+
                 <div class="exercise-box">
                     <h4>Alistirma 1.1: Temel Plan Islemlerini (Basic Plan Operations) Anlama</h4>
                     <p>Asagidaki PostgreSQL EXPLAIN ciktisina gore, islemleri tanimlayin ve performans ozelliklerini tahmin edin:</p>
 
                     <div class="plan-output plan-bad">
-<pre>EXPLAIN SELECT * FROM sales.orders WHERE status = 'processing';
+<pre>EXPLAIN SELECT * FROM orders WHERE status = 'processing';
 
 Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
   Filter: ((status)::text = 'processing'::text)
@@ -561,18 +576,18 @@ Rows Returned: 148,532</pre>
 
                     <pre><code class="sourceCode sql"><span class="kw">SELECT</span> c.email, o.order_date, o.total_amount
 <span class="kw">FROM</span> customers c
-<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
-<span class="kw">WHERE</span> c.country = <span class="st">'Germany'</span>
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">WHERE</span> c.city = <span class="st">'Berlin'</span>
   <span class="kw">AND</span> o.order_date >= <span class="st">'2024-01-01'</span>;</code></pre>
 
                     <div class="plan-output plan-bad">
 <pre>Hash Join  (cost=15234.00..98765.00 rows=25000 width=48)
-  Hash Cond: (o.customer_id = c.customer_id)
+  Hash Cond: (o.customer_id = c.id)
   ->  Seq Scan on orders o  (cost=0.00..45123.00 rows=500000 width=20)
         Filter: (order_date >= '2024-01-01')
   ->  Hash  (cost=12456.00..12456.00 rows=12500 width=36)
         ->  Seq Scan on customers c  (cost=0.00..12456.00 rows=12500 width=36)
-              Filter: (country = 'Germany')
+              Filter: (city = 'Berlin')
 </pre>
                     </div>
 
@@ -590,13 +605,13 @@ Rows Returned: 148,532</pre>
                             <li><span class="badge badge-operation badge-join">Hash Join</span> (Hash Birlestirme) - Daha kucuk sonuctan (Almanya'daki musteriler) bir hash tablosu (Hash Table) olusturur ve bunu daha buyuk sonucla (siparisler) sorgular.</li>
                             <li>Iki sequential scan (Sirali Tarama) tanimlandi:
                                 <ul>
-                                    <li><code>customers</code> - <code>country = 'Germany'</code> ile filtrelenmis - Indeksten (Index) faydalanir</li>
+                                    <li><code>customers</code> - <code>city = 'Berlin'</code> ile filtrelenmis - Indeksten (Index) faydalanir</li>
                                     <li><code>orders</code> - <code>order_date >= '2024-01-01'</code> ile filtrelenmis - Indeksten (Index) faydalanir</li>
                                 </ul>
                             </li>
                             <li>Onerilen indeksler (Recommended Indexes):
-                                <pre><code class="sourceCode sql"><span class="co">-- Musteri ulke filtresi icin indeks (Index for Customer Country Filter)</span>
-<span class="kw">CREATE INDEX</span> idx_customers_country <span class="kw">ON</span> customers (country);
+                                <pre><code class="sourceCode sql"><span class="co">-- Musteri sehir filtresi icin indeks (Index for Customer City Filter)</span>
+<span class="kw">CREATE INDEX</span> idx_customers_city <span class="kw">ON</span> customers (city);
 
 <span class="co">-- Siparis tarih araligi filtresi icin indeks (Index for Order Date Range Filter)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);
@@ -614,6 +629,13 @@ Rows Returned: 148,532</pre>
             <section>
                 <h2>Bolum 2: Indeks Tasarimi (Index Design) Alistirmalari</h2>
                 <p>Farkli sorgu kaliplari (Query Patterns) icin optimal indeksler (Indexes) tasarlamayi pratik yapin.</p>
+
+                <div class="hint-box">
+                    <strong>💡 Temel Kavram: Indeks Tasarimi Neden Onemli?</strong><br>
+                    <p>Dogru indeks, sorgunuzu 1000 kat hizlandirabilir. Yanlis indeks ise hic fark yaratmaz veya yazma islemlerini yavaslatir.</p>
+                    <p><strong>Altin Kural:</strong> Indeks sutun sirasinda <em>esitlik kosullari (=)</em> her zaman <em>aralik kosullarindan (&gt;, &lt;, BETWEEN)</em> once gelmelidir!</p>
+                    <p style="margin-bottom: 0;"><strong>Ornek:</strong> <code>WHERE status = 'shipped' AND order_date > '2024-01-01'</code> icin indeks <code>(status, order_date)</code> seklinde olmali, <code>(order_date, status)</code> degil.</p>
+                </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 2.1: Tek Sutun (Single-Column) vs Bilesik (Composite) Indeks</h4>
@@ -666,7 +688,7 @@ Rows Returned: 148,532</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Takip icin isleniyor durumundaki siparisleri bul</span>
 <span class="kw">SELECT</span> id, customer_id, order_date, total_amount
-<span class="kw">FROM</span> sales.orders
+<span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> status = <span class="st">'processing'</span>
 <span class="kw">ORDER BY</span> order_date;</code></pre>
 
@@ -679,7 +701,7 @@ Rows Returned: 148,532</pre>
                         <p><strong>Optimal Cozum (Optimal Solution):</strong> Kismi indeks (Partial Index) olusturun:</p>
                         <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL kismi indeks (Partial Index)</span>
 <span class="kw">CREATE INDEX</span> idx_orders_processing_date
-<span class="kw">ON</span> sales.orders (order_date)
+<span class="kw">ON</span> orders (order_date)
 <span class="kw">WHERE</span> status = <span class="st">'processing'</span>;</code></pre>
 
                         <p><strong>Faydalar (Benefits):</strong></p>
@@ -804,6 +826,17 @@ Rows Returned: 148,532</pre>
                 <h2>Bolum 3: Performans Icin Sorgu Yeniden Yazma (Query Rewriting for Performance)</h2>
                 <p>Yavas sorgulari optimize edilmis versiyonlara (Optimized Versions) donusturun.</p>
 
+                <div class="hint-box">
+                    <strong>💡 Temel Kavram: Sorgu Yeniden Yazma Neden Gerekli?</strong><br>
+                    <p>Bazen ayni sonucu veren iki sorgu, performans acisindan cok farkli olabilir. Veritabani optimizatoru akilli olsa da, bazi durumlarda sorguyu "el ile" yeniden yazmak buyuk fark yaratir.</p>
+                    <p><strong>3 Altin Kural:</strong></p>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>1. Indeksli sutunlara fonksiyon uygulamayin</strong> - <code>WHERE YEAR(date) = 2024</code> yerine <code>WHERE date >= '2024-01-01' AND date < '2025-01-01'</code></li>
+                        <li><strong>2. Iliskili alt sorgulardan (correlated subquery) kacinin</strong> - Bunlar dis sorgunun her satiri icin tekrar calisir!</li>
+                        <li><strong>3. UNION yerine UNION ALL kullanin</strong> - Tekrar kaldirina ihtiyaciniz yoksa UNION ALL cok daha hizlidir.</li>
+                    </ul>
+                </div>
+
                 <div class="exercise-box">
                     <h4>Alistirma 3.1: Indeksli Sutunlarda Fonksiyonlardan Kacinma (Avoiding Functions on Indexed Columns)</h4>
                     <p>Bu sorgu, <code>order_date</code> uzerinde indeks (Index) olmasina ragmen yavas calisiyor:</p>
@@ -867,15 +900,15 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Yavas: Iliskili alt sorgu (Correlated Subquery) (her musteri icin bir kez calisir)</span>
 <span class="kw">SELECT</span>
-    c.customer_id,
+    c.id,
     c.email,
     (
         <span class="kw">SELECT</span> <span class="fu">MAX</span>(o.order_date)
         <span class="kw">FROM</span> orders o
-        <span class="kw">WHERE</span> o.customer_id = c.customer_id
+        <span class="kw">WHERE</span> o.customer_id = c.id
     ) <span class="kw">AS</span> last_order_date
 <span class="kw">FROM</span> customers c
-<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
+<span class="kw">WHERE</span> c.status = <span class="st">'active'</span>;</code></pre>
 
                     <p><strong>Gorev:</strong> Daha iyi performans icin JOIN kullanarak yeniden yazin (Rewrite Using JOIN).</p>
 
@@ -884,13 +917,13 @@ Index Cond: (order_date >= ... AND ...)</pre>
                         <p><strong>JOIN Kullanilarak Optimize Edilmis Sorgu (Optimized Query Using JOIN):</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Hizli: JOIN ile tek toplama (Single Aggregation with JOIN)</span>
 <span class="kw">SELECT</span>
-    c.customer_id,
+    c.id,
     c.email,
     <span class="fu">MAX</span>(o.order_date) <span class="kw">AS</span> last_order_date
 <span class="kw">FROM</span> customers c
-<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
-<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>
-<span class="kw">GROUP BY</span> c.customer_id, c.email;</code></pre>
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">WHERE</span> c.status = <span class="st">'active'</span>
+<span class="kw">GROUP BY</span> c.id, c.email;</code></pre>
 
                         <p><strong>Window Function (Pencere Fonksiyonu) Kullanan Alternatif (tam siparis detaylarini alin):</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Gercek en son siparisi alin, sadece tarihi degil (Get Actual Latest Order)</span>
@@ -904,14 +937,14 @@ Index Cond: (order_date >= ... AND ...)</pre>
     <span class="kw">FROM</span> orders o
 )
 <span class="kw">SELECT</span>
-    c.customer_id,
+    c.id,
     c.email,
     ro.order_date <span class="kw">AS</span> last_order_date,
     ro.total_amount <span class="kw">AS</span> last_order_amount
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> ranked_orders ro
-    <span class="kw">ON</span> c.customer_id = ro.customer_id <span class="kw">AND</span> ro.rn = <span class="dv">1</span>
-<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
+    <span class="kw">ON</span> c.id = ro.customer_id <span class="kw">AND</span> ro.rn = <span class="dv">1</span>
+<span class="kw">WHERE</span> c.status = <span class="st">'active'</span>;</code></pre>
 
                         <div class="concept-box">
                             <strong>Performans Karsilastirmasi (Performance Comparison):</strong><br>
@@ -929,15 +962,15 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Yaklasim 1: IN alt sorgusu</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
-<span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> orders);
+<span class="kw">WHERE</span> id <span class="kw">IN</span> (<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> orders);
 
 <span class="co">-- Yaklasim 2: EXISTS alt sorgusu</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
-<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.customer_id);
+<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.id);
 
 <span class="co">-- Yaklasim 3: DISTINCT ile JOIN</span>
 <span class="kw">SELECT DISTINCT</span> c.* <span class="kw">FROM</span> customers c
-<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
 
                     <p><strong>Gorev:</strong> Hangi yaklaşimin en iyi oldugunu ve ne zaman oldugunu analiz edin.</p>
 
@@ -977,7 +1010,7 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
 <span class="kw">WHERE</span> <span class="kw">EXISTS</span> (
     <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o
-    <span class="kw">WHERE</span> o.customer_id = c.customer_id
+    <span class="kw">WHERE</span> o.customer_id = c.id
 );</code></pre>
 
                         <p><strong>Tum yaklasimlar icin gerekli indeks:</strong></p>
@@ -994,11 +1027,11 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <p>Aktif ve VIP musterileri birlestirmeniz gerekiyor (VIP ayri bir bayraktir):</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Mevcut yavas sorgu</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_active = <span class="kw">TRUE</span>
+<span class="kw">SELECT</span> id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'active'</span>
 <span class="kw">UNION</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_vip = <span class="kw">TRUE</span>;</code></pre>
+<span class="kw">SELECT</span> id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_type = <span class="st">'vip'</span>;</code></pre>
 
                     <p><strong>Gorev:</strong> Ayni musterinin hem aktif hem de VIP olabilecegini bilerek bu sorguyu optimize edin (ve bu durumda her iki satiri da gormek istiyorsunuz).</p>
 
@@ -1006,11 +1039,11 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <div id="sol3_4" class="solution-content">
                         <p><strong>Optimize Edilmis Sorgu:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Tekrarlar kasitli oldugu icin UNION ALL kullanin</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_active = <span class="kw">TRUE</span>
+<span class="kw">SELECT</span> id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'active'</span>
 <span class="kw">UNION ALL</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_vip = <span class="kw">TRUE</span>;</code></pre>
+<span class="kw">SELECT</span> id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_type = <span class="st">'vip'</span>;</code></pre>
 
                         <table class="comparison-table">
                             <tr>
@@ -1065,10 +1098,10 @@ Index Cond: (order_date >= ... AND ...)</pre>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
     <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> sales.orders o
-<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> o.id = ol.order_id
-<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
-<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
 <span class="kw">WHERE</span> o.order_date >= <span class="st">'2024-01-01'</span>
   <span class="kw">AND</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
@@ -1105,10 +1138,10 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <div id="sol4_1_step3" class="solution-content">
                         <p><strong>orders uzerinde bilesik indeks:</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> sales.orders (order_date, status);</code></pre>
+<span class="kw">ON</span> orders (order_date, status);</code></pre>
                         <p>Veya daha iyi, sadece ihtiyacimiz olan durumlar icin kismi indeks:</p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">ON</span> orders (order_date, status)
 <span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);</code></pre>
                     </div>
 
@@ -1125,7 +1158,7 @@ Index Cond: (order_date >= ... AND ...)</pre>
                         </table>
                         <pre><code class="sourceCode sql"><span class="co">-- order_lines join icin indeks</span>
 <span class="kw">CREATE INDEX</span> idx_order_lines_order_id
-<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">ON</span> order_lines (order_id)
 <span class="kw">INCLUDE</span> (product_id, line_total);</code></pre>
                     </div>
 
@@ -1136,17 +1169,17 @@ Index Cond: (order_date >= ... AND ...)</pre>
                         <p><strong>Tum onerilen indeksler:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- orders filtreleme icin indeks</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">ON</span> orders (order_date, status)
 <span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);
 
 <span class="co">-- order_lines join icin indeks</span>
 <span class="kw">CREATE INDEX</span> idx_order_lines_order_id
-<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">ON</span> order_lines (order_id)
 <span class="kw">INCLUDE</span> (product_id, line_total);
 
 <span class="co">-- products join icin indeks</span>
 <span class="kw">CREATE INDEX</span> idx_products_id_category
-<span class="kw">ON</span> sales.products (id)
+<span class="kw">ON</span> products (id)
 <span class="kw">INCLUDE</span> (category_id);</code></pre>
 
                         <p><strong>Bonus: Sik calisan raporlar icin Materialized View kullanin:</strong></p>
@@ -1157,10 +1190,10 @@ Index Cond: (order_date >= ... AND ...)</pre>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
     <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> sales.orders o
-<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> o.id = ol.order_id
-<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
-<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
 <span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
 
@@ -1266,7 +1299,7 @@ Index Cond: (order_date >= ... AND ...)</pre>
   Filter: (sum(o.total_amount) > 1000)
   Rows Removed by Filter: 12456
   ->  Hash Join  (actual rows=456789)
-        Hash Cond: (o.customer_id = c.customer_id)
+        Hash Cond: (o.customer_id = c.id)
         ->  Seq Scan on orders o  (actual rows=485632)
               Filter: (order_date >= '2024-01-01')
               Rows Removed by Filter: 1514368

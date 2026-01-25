@@ -264,11 +264,15 @@
             <!-- Sample Dataset -->
             <section>
                 <h3>Sample Database Schema</h3>
-                <p>We'll use an e-commerce database with the following tables:</p>
+                <p>We'll use an e-commerce database with the following tables (bootcamp_db.sql):</p>
+
+                <div class="hint-box">
+                    <strong>Instructor Note:</strong> The tables used in these examples are from the <strong>public</strong> schema in <code>bootcamp_db.sql</code>. Students can examine tables using the <code>\d tablename</code> command.
+                </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>customers (sales schema)</h5>
+                        <h5>customers (public schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -284,18 +288,18 @@
                                     <td>Primary Key</td>
                                 </tr>
                                 <tr>
-                                    <td>email</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(100)</span></td>
-                                    <td>Unique</td>
+                                    <td>name</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
+                                    <td>Customer name</td>
                                 </tr>
                                 <tr>
-                                    <td>first_name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td>email</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>last_name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(50)</span></td>
+                                    <td>city</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(100)</span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -304,9 +308,14 @@
                                     <td>FK to countries</td>
                                 </tr>
                                 <tr>
-                                    <td>is_active</td>
-                                    <td><span class="badge bg-info">BOOLEAN</span></td>
-                                    <td>90% TRUE</td>
+                                    <td>customer_type</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
+                                    <td>individual, business, vip</td>
+                                </tr>
+                                <tr>
+                                    <td>status</td>
+                                    <td><span class="badge bg-secondary">VARCHAR(20)</span></td>
+                                    <td>active, inactive, suspended</td>
                                 </tr>
                                 <tr>
                                     <td>created_at</td>
@@ -315,10 +324,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Large table for examples</strong></p>
+                        <p><strong>~50 rows - sample query table</strong></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>orders (sales schema)</h5>
+                        <h5>orders (public schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -350,18 +359,18 @@
                                 </tr>
                                 <tr>
                                     <td>total_amount</td>
-                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
+                                    <td><span class="badge bg-info">DECIMAL(12,2)</span></td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Large table for examples</strong></p>
+                        <p><strong>Main orders table for examples</strong></p>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>order_lines (sales schema)</h5>
+                        <h5>order_lines (public schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -398,15 +407,15 @@
                                 </tr>
                                 <tr>
                                     <td>line_total</td>
-                                    <td><span class="badge bg-info">DECIMAL(10,2)</span></td>
-                                    <td>quantity * unit_price</td>
+                                    <td><span class="badge bg-info">DECIMAL(12,2)</span></td>
+                                    <td>GENERATED - quantity * unit_price * (1-discount_percent/100)</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Large table for examples</strong></p>
+                        <p><strong>Order details table</strong></p>
                     </div>
                     <div class="col-md-6">
-                        <h5>products (sales schema)</h5>
+                        <h5>products (public schema)</h5>
                         <table class="table table-bordered dataset-table">
                             <thead>
                                 <tr>
@@ -423,7 +432,7 @@
                                 </tr>
                                 <tr>
                                     <td>name</td>
-                                    <td><span class="badge bg-secondary">VARCHAR(200)</span></td>
+                                    <td><span class="badge bg-secondary">VARCHAR(255)</span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -437,13 +446,13 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>is_active</td>
+                                    <td>active</td>
                                     <td><span class="badge bg-info">BOOLEAN</span></td>
-                                    <td>95% TRUE</td>
+                                    <td>Default TRUE</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p><strong>Smaller reference table</strong></p>
+                        <p><strong>Product reference table</strong></p>
                     </div>
                 </div>
 
@@ -458,13 +467,19 @@
                 <h2>Part 1: Reading Execution Plans</h2>
                 <p>Learn to interpret EXPLAIN output and identify performance issues.</p>
 
+                <div class="hint-box">
+                    <strong>Key Concept: What is an Execution Plan?</strong><br>
+                    <p>An execution plan is a "roadmap" of how the database executes your query. Just like a GPS tells you "go straight for 500m, turn right, continue for 1km", an execution plan tells the database "first scan this table, then use this index, then join".</p>
+                    <p style="margin-bottom: 0;"><strong>Why It Matters:</strong> To understand why a query is slow, you must read the execution plan. The plan shows you which steps are wasting time.</p>
+                </div>
+
                 <div class="exercise-box">
                     <h4>Exercise 1.1: Understanding Basic Plan Operations</h4>
                     <p>Given the following PostgreSQL EXPLAIN output, identify the operations and estimate
                         performance characteristics:</p>
 
                     <div class="plan-output plan-bad">
-<pre>EXPLAIN SELECT * FROM sales.orders WHERE status = 'processing';
+<pre>EXPLAIN SELECT * FROM orders WHERE status = 'processing';
 
 Seq Scan on orders  (cost=0.00..45123.00 rows=150000 width=52)
   Filter: ((status)::text = 'processing'::text)
@@ -566,18 +581,18 @@ Rows Returned: 148,532</pre>
 
                     <pre><code class="sourceCode sql"><span class="kw">SELECT</span> c.email, o.order_date, o.total_amount
 <span class="kw">FROM</span> customers c
-<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
-<span class="kw">WHERE</span> c.country = <span class="st">'Germany'</span>
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">WHERE</span> c.city = <span class="st">'Berlin'</span>
   <span class="kw">AND</span> o.order_date >= <span class="st">'2024-01-01'</span>;</code></pre>
 
                     <div class="plan-output plan-bad">
 <pre>Hash Join  (cost=15234.00..98765.00 rows=25000 width=48)
-  Hash Cond: (o.customer_id = c.customer_id)
+  Hash Cond: (o.customer_id = c.id)
   ->  Seq Scan on orders o  (cost=0.00..45123.00 rows=500000 width=20)
         Filter: (order_date >= '2024-01-01')
   ->  Hash  (cost=12456.00..12456.00 rows=12500 width=36)
         ->  Seq Scan on customers c  (cost=0.00..12456.00 rows=12500 width=36)
-              Filter: (country = 'Germany')
+              Filter: (city = 'Berlin')
 </pre>
                     </div>
 
@@ -597,15 +612,15 @@ Rows Returned: 148,532</pre>
                                 (orders).</li>
                             <li>Two sequential scans identified:
                                 <ul>
-                                    <li><code>customers</code> filtered by <code>country = 'Germany'</code> - Would
+                                    <li><code>customers</code> filtered by <code>city = 'Berlin'</code> - Would
                                         benefit from index</li>
                                     <li><code>orders</code> filtered by <code>order_date >= '2024-01-01'</code> - Would
                                         benefit from index</li>
                                 </ul>
                             </li>
                             <li>Recommended indexes:
-                                <pre><code class="sourceCode sql"><span class="co">-- Index for customer country filter</span>
-<span class="kw">CREATE INDEX</span> idx_customers_country <span class="kw">ON</span> customers (country);
+                                <pre><code class="sourceCode sql"><span class="co">-- Index for customer city filter</span>
+<span class="kw">CREATE INDEX</span> idx_customers_city <span class="kw">ON</span> customers (city);
 
 <span class="co">-- Index for order date range filter</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date <span class="kw">ON</span> orders (order_date);
@@ -624,6 +639,13 @@ Rows Returned: 148,532</pre>
             <section>
                 <h2>Part 2: Index Design Exercises</h2>
                 <p>Practice designing optimal indexes for different query patterns.</p>
+
+                <div class="hint-box">
+                    <strong>Key Concept: Why is Index Design Important?</strong><br>
+                    <p>The right index can speed up your query by 1000x. The wrong index makes no difference or even slows down writes.</p>
+                    <p><strong>Golden Rule:</strong> In composite index column order, <em>equality conditions (=)</em> should always come before <em>range conditions (&gt;, &lt;, BETWEEN)</em>!</p>
+                    <p style="margin-bottom: 0;"><strong>Example:</strong> For <code>WHERE status = 'shipped' AND order_date > '2024-01-01'</code>, the index should be <code>(status, order_date)</code>, not <code>(order_date, status)</code>.</p>
+                </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 2.1: Single-Column vs Composite Index</h4>
@@ -679,7 +701,7 @@ Rows Returned: 148,532</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Find processing orders for follow-up</span>
 <span class="kw">SELECT</span> id, customer_id, order_date, total_amount
-<span class="kw">FROM</span> sales.orders
+<span class="kw">FROM</span> orders
 <span class="kw">WHERE</span> status = <span class="st">'processing'</span>
 <span class="kw">ORDER BY</span> order_date;</code></pre>
 
@@ -692,7 +714,7 @@ Rows Returned: 148,532</pre>
                         <p><strong>Optimal Solution:</strong> Create a partial index:</p>
                         <pre><code class="sourceCode sql"><span class="co">-- PostgreSQL partial index</span>
 <span class="kw">CREATE INDEX</span> idx_orders_processing_date
-<span class="kw">ON</span> sales.orders (order_date)
+<span class="kw">ON</span> orders (order_date)
 <span class="kw">WHERE</span> status = <span class="st">'processing'</span>;</code></pre>
 
                         <p><strong>Benefits:</strong></p>
@@ -820,6 +842,17 @@ Rows Returned: 148,532</pre>
                 <h2>Part 3: Query Rewriting for Performance</h2>
                 <p>Transform slow queries into optimized versions.</p>
 
+                <div class="hint-box">
+                    <strong>Key Concept: Why Rewrite Queries?</strong><br>
+                    <p>Sometimes two queries that return the same result can have very different performance. While the database optimizer is smart, in some cases "manually" rewriting the query makes a huge difference.</p>
+                    <p><strong>3 Golden Rules:</strong></p>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>1. Don't apply functions to indexed columns</strong> - Instead of <code>WHERE YEAR(date) = 2024</code>, use <code>WHERE date >= '2024-01-01' AND date < '2025-01-01'</code></li>
+                        <li><strong>2. Avoid correlated subqueries</strong> - They run for each row of the outer query!</li>
+                        <li><strong>3. Use UNION ALL instead of UNION</strong> - If you don't need duplicate removal, UNION ALL is much faster.</li>
+                    </ul>
+                </div>
+
                 <div class="exercise-box">
                     <h4>Exercise 3.1: Avoiding Functions on Indexed Columns</h4>
                     <p>This query runs slowly despite having an index on <code>order_date</code>:</p>
@@ -883,15 +916,15 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Slow: Correlated subquery (runs once per customer)</span>
 <span class="kw">SELECT</span>
-    c.customer_id,
+    c.id,
     c.email,
     (
         <span class="kw">SELECT</span> <span class="fu">MAX</span>(o.order_date)
         <span class="kw">FROM</span> orders o
-        <span class="kw">WHERE</span> o.customer_id = c.customer_id
+        <span class="kw">WHERE</span> o.customer_id = c.id
     ) <span class="kw">AS</span> last_order_date
 <span class="kw">FROM</span> customers c
-<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
+<span class="kw">WHERE</span> c.status = <span class="st">'active'</span>;</code></pre>
 
                     <p><strong>Task:</strong> Rewrite using a JOIN for better performance.</p>
 
@@ -900,13 +933,13 @@ Index Cond: (order_date >= ... AND ...)</pre>
                         <p><strong>Optimized Query using JOIN:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Fast: Single aggregation with JOIN</span>
 <span class="kw">SELECT</span>
-    c.customer_id,
+    c.id,
     c.email,
     <span class="fu">MAX</span>(o.order_date) <span class="kw">AS</span> last_order_date
 <span class="kw">FROM</span> customers c
-<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id
-<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>
-<span class="kw">GROUP BY</span> c.customer_id, c.email;</code></pre>
+<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id
+<span class="kw">WHERE</span> c.status = <span class="st">'active'</span>
+<span class="kw">GROUP BY</span> c.id, c.email;</code></pre>
 
                         <p><strong>Alternative using Window Function (get full order details):</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Get the actual most recent order, not just the date</span>
@@ -920,14 +953,14 @@ Index Cond: (order_date >= ... AND ...)</pre>
     <span class="kw">FROM</span> orders o
 )
 <span class="kw">SELECT</span>
-    c.customer_id,
+    c.id,
     c.email,
     ro.order_date <span class="kw">AS</span> last_order_date,
     ro.total_amount <span class="kw">AS</span> last_order_amount
 <span class="kw">FROM</span> customers c
 <span class="kw">LEFT JOIN</span> ranked_orders ro
-    <span class="kw">ON</span> c.customer_id = ro.customer_id <span class="kw">AND</span> ro.rn = <span class="dv">1</span>
-<span class="kw">WHERE</span> c.is_active = <span class="kw">TRUE</span>;</code></pre>
+    <span class="kw">ON</span> c.id = ro.customer_id <span class="kw">AND</span> ro.rn = <span class="dv">1</span>
+<span class="kw">WHERE</span> c.status = <span class="st">'active'</span>;</code></pre>
 
                         <div class="concept-box">
                             <strong>Performance Comparison:</strong><br>
@@ -946,15 +979,15 @@ Index Cond: (order_date >= ... AND ...)</pre>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Approach 1: IN subquery</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers
-<span class="kw">WHERE</span> customer_id <span class="kw">IN</span> (<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> orders);
+<span class="kw">WHERE</span> id <span class="kw">IN</span> (<span class="kw">SELECT</span> customer_id <span class="kw">FROM</span> orders);
 
 <span class="co">-- Approach 2: EXISTS subquery</span>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
-<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.customer_id);
+<span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o <span class="kw">WHERE</span> o.customer_id = c.id);
 
 <span class="co">-- Approach 3: JOIN with DISTINCT</span>
 <span class="kw">SELECT DISTINCT</span> c.* <span class="kw">FROM</span> customers c
-<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.customer_id = o.customer_id;</code></pre>
+<span class="kw">JOIN</span> orders o <span class="kw">ON</span> c.id = o.customer_id;</code></pre>
 
                     <p><strong>Task:</strong> Analyze which approach is best and when.</p>
 
@@ -994,7 +1027,7 @@ Index Cond: (order_date >= ... AND ...)</pre>
 <span class="kw">SELECT</span> * <span class="kw">FROM</span> customers c
 <span class="kw">WHERE</span> <span class="kw">EXISTS</span> (
     <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">FROM</span> orders o
-    <span class="kw">WHERE</span> o.customer_id = c.customer_id
+    <span class="kw">WHERE</span> o.customer_id = c.id
 );</code></pre>
 
                         <p><strong>Required index for all approaches:</strong></p>
@@ -1012,11 +1045,11 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <p>You need to combine active and VIP customers (VIP is a separate flag):</p>
 
                     <pre><code class="sourceCode sql"><span class="co">-- Current slow query</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_active = <span class="kw">TRUE</span>
+<span class="kw">SELECT</span> id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'active'</span>
 <span class="kw">UNION</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_vip = <span class="kw">TRUE</span>;</code></pre>
+<span class="kw">SELECT</span> id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_type = <span class="st">'vip'</span>;</code></pre>
 
                     <p><strong>Task:</strong> Optimize this query knowing that the same customer can be both active
                         AND VIP (and you want to see both rows in that case).</p>
@@ -1025,11 +1058,11 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <div id="sol3_4" class="solution-content">
                         <p><strong>Optimized Query:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Use UNION ALL since duplicates are intentional</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_active = <span class="kw">TRUE</span>
+<span class="kw">SELECT</span> id, email, <span class="st">'active'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> status = <span class="st">'active'</span>
 <span class="kw">UNION ALL</span>
-<span class="kw">SELECT</span> customer_id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
-<span class="kw">FROM</span> customers <span class="kw">WHERE</span> is_vip = <span class="kw">TRUE</span>;</code></pre>
+<span class="kw">SELECT</span> id, email, <span class="st">'vip'</span> <span class="kw">AS</span> source
+<span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_type = <span class="st">'vip'</span>;</code></pre>
 
                         <table class="comparison-table">
                             <tr>
@@ -1086,10 +1119,10 @@ Index Cond: (order_date >= ... AND ...)</pre>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
     <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> sales.orders o
-<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> o.id = ol.order_id
-<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
-<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
 <span class="kw">WHERE</span> o.order_date >= <span class="st">'2024-01-01'</span>
   <span class="kw">AND</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date)
@@ -1126,10 +1159,10 @@ Index Cond: (order_date >= ... AND ...)</pre>
                     <div id="sol4_1_step3" class="solution-content">
                         <p><strong>A composite index on orders:</strong></p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> sales.orders (order_date, status);</code></pre>
+<span class="kw">ON</span> orders (order_date, status);</code></pre>
                         <p>Or even better, a partial index for just the statuses we need:</p>
                         <pre><code class="sourceCode sql"><span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">ON</span> orders (order_date, status)
 <span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);</code></pre>
                     </div>
 
@@ -1146,7 +1179,7 @@ Index Cond: (order_date >= ... AND ...)</pre>
                         </table>
                         <pre><code class="sourceCode sql"><span class="co">-- Index for order_lines join</span>
 <span class="kw">CREATE INDEX</span> idx_order_lines_order_id
-<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">ON</span> order_lines (order_id)
 <span class="kw">INCLUDE</span> (product_id, line_total);</code></pre>
                     </div>
 
@@ -1157,17 +1190,17 @@ Index Cond: (order_date >= ... AND ...)</pre>
                         <p><strong>All recommended indexes:</strong></p>
                         <pre><code class="sourceCode sql"><span class="co">-- Index for orders filtering</span>
 <span class="kw">CREATE INDEX</span> idx_orders_date_status
-<span class="kw">ON</span> sales.orders (order_date, status)
+<span class="kw">ON</span> orders (order_date, status)
 <span class="kw">WHERE</span> status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>);
 
 <span class="co">-- Index for order_lines join</span>
 <span class="kw">CREATE INDEX</span> idx_order_lines_order_id
-<span class="kw">ON</span> sales.order_lines (order_id)
+<span class="kw">ON</span> order_lines (order_id)
 <span class="kw">INCLUDE</span> (product_id, line_total);
 
 <span class="co">-- Index for products join</span>
 <span class="kw">CREATE INDEX</span> idx_products_id_category
-<span class="kw">ON</span> sales.products (id)
+<span class="kw">ON</span> products (id)
 <span class="kw">INCLUDE</span> (category_id);</code></pre>
 
                         <p><strong>Bonus: For reports that run frequently, use a Materialized View:</strong></p>
@@ -1178,10 +1211,10 @@ Index Cond: (order_date >= ... AND ...)</pre>
     <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date) <span class="kw">AS</span> month,
     <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,
     <span class="fu">SUM</span>(ol.line_total) <span class="kw">AS</span> revenue
-<span class="kw">FROM</span> sales.orders o
-<span class="kw">JOIN</span> sales.order_lines ol <span class="kw">ON</span> o.id = ol.order_id
-<span class="kw">JOIN</span> sales.products p <span class="kw">ON</span> ol.product_id = p.id
-<span class="kw">JOIN</span> sales.categories c <span class="kw">ON</span> p.category_id = c.id
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> order_lines ol <span class="kw">ON</span> o.id = ol.order_id
+<span class="kw">JOIN</span> products p <span class="kw">ON</span> ol.product_id = p.id
+<span class="kw">JOIN</span> categories c <span class="kw">ON</span> p.category_id = c.id
 <span class="kw">WHERE</span> o.status <span class="kw">IN</span> (<span class="st">'delivered'</span>, <span class="st">'shipped'</span>)
 <span class="kw">GROUP BY</span> c.name, <span class="fu">DATE_TRUNC</span>(<span class="st">'month'</span>, o.order_date);
 
@@ -1287,7 +1320,7 @@ Index Cond: (order_date >= ... AND ...)</pre>
   Filter: (sum(o.total_amount) > 1000)
   Rows Removed by Filter: 12456
   ->  Hash Join  (actual rows=456789)
-        Hash Cond: (o.customer_id = c.customer_id)
+        Hash Cond: (o.customer_id = c.id)
         ->  Seq Scan on orders o  (actual rows=485632)
               Filter: (order_date >= '2024-01-01')
               Rows Removed by Filter: 1514368

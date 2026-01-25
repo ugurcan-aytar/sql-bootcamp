@@ -348,6 +348,12 @@
       </section>
       <section>
         <h3 id="understanding-the-query-optimizer">Understanding the Query Optimizer</h3>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>Key Concept: What is a Query Optimizer?</strong><br>
+          <p style="margin-bottom: 0;">Think of the query optimizer as the "brain" of the database. When you write a SQL query, the optimizer considers multiple ways to execute it and chooses the fastest/least resource-intensive path. It's like a GPS navigation system finding the shortest route to your destination.</p>
+        </div>
+
         <p>Every major relational database system includes a sophisticated component called the <strong>query
             optimizer</strong> (or query planner). Its job is to find the most efficient way to execute a given SQL
           query.
@@ -402,6 +408,12 @@
       </section>
       <section>
         <h4 id="analyzing-execution-plans-explain">Analyzing Execution Plans (EXPLAIN)</h4>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>Key Concept: What is EXPLAIN?</strong><br>
+          <p style="margin-bottom: 0;">The <code>EXPLAIN</code> command is like an "X-ray" of your query. It shows you how the database plans to execute your query without actually running it - which tables it will scan, which indexes it will use, and how much work it estimates. This is the first step in understanding why a query is slow.</p>
+        </div>
+
         <p>Most databases provide a command, commonly <code>EXPLAIN</code> (or variations), to show the execution plan
           chosen by the optimizer for a given query <em>without actually executing it</em>.</p>
         <p><strong>Database Statistics</strong>: Regularly updating database statistics is crucial. Most databases
@@ -490,6 +502,13 @@
       </section>
       <section>
         <h3 id="indexing-strategies">Indexing Strategies</h3>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>Key Concept: What is an Index?</strong><br>
+          <p>An index works like the index at the back of a book. Instead of reading every page to find a topic, you look up the topic in the index and go directly to the relevant page. Database indexes work the same way - instead of scanning every row, the database uses the index to jump directly to matching rows.</p>
+          <p style="margin-bottom: 0;"><strong>Example:</strong> In a table with 1 million rows, searching for <code>email = 'ali@example.com'</code> without an index scans 1 million rows. With an index, it finds the row in just a few steps!</p>
+        </div>
+
         <p>Indexes are data structures that allow the database to find rows matching specific criteria much faster than
           scanning the entire table. Choosing the right indexes is often the single most effective way to improve query
           performance.</p>
@@ -499,6 +518,9 @@
             <ol type="1">
               <li>
                 <p><strong>B-Tree Indexes (Balanced Tree)</strong>:</p>
+                <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffecb5; border-radius: 8px; padding: 10px; margin: 10px 0; font-size: 0.9em;">
+                  <strong>What is B-Tree?</strong> A "Balanced Tree" structure where data is stored in sorted order. Think of it like a phone book - names are sorted A-Z, making lookups very fast.
+                </div>
                 <ul>
                   <li>The default index type in most RDBMS.</li>
                   <li>Excellent for equality (<code>=</code>), range (<code>&lt;</code>, <code>&gt;</code>,
@@ -519,6 +541,9 @@
             <ol type="1" start="2">
               <li>
                 <p><strong>Hash Indexes</strong>:</p>
+                <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffecb5; border-radius: 8px; padding: 10px; margin: 10px 0; font-size: 0.9em;">
+                  <strong>What is Hash Index?</strong> Uses a mathematical "hash function" to convert data into an address. Think of a dictionary - if you know the exact word, you jump directly to it. But you can't easily find "all words starting with A".
+                </div>
                 <ul>
                   <li>Optimized <em>only</em> for equality comparisons (<code>=</code>).</li>
                   <li>Very fast for lookups based on exact matches.</li>
@@ -667,6 +692,12 @@
       </section>
       <section>
         <h3 id="common-query-optimization-techniques">Common Query Optimization Techniques</h3>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>Instructor Note: The Optimization Mindset</strong><br>
+          <p style="margin-bottom: 0;">Query optimization is based on the principle of "minimum work for maximum results." Tell your students to think: "How much work does the database have to do to execute this query?" Every unnecessary row read, every unnecessary sort, every unnecessary calculation wastes time. The goal: minimum work, maximum speed!</p>
+        </div>
+
         <p>Besides indexing, how you write your queries can significantly impact performance.</p>
         <div class="row">
           <div class="col-12 col-md-8">

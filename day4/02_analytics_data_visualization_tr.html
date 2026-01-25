@@ -342,6 +342,10 @@
         <h2 id="session-2-analytics-and-data-visualization-2.5-hours">Analitik (Analytics) ve Veri Gorsellestirme (Data Visualization)</h2>
         <h3 id="introduction-to-analytics-with-postgresql">PostgreSQL ile Analitige (Analytics) Giris</h3>
         <p>PostgreSQL, dogrudan veritabani icinde veri analitigi (data analytics) icin guclu yetenekler sunar. Genellikle "veritabani-ici analitik (in-database analytics)" olarak adlandirilan bu yaklasim, veri hareketini azaltarak ve PostgreSQL'in optimizasyon yeteneklerinden yararlanarak onemli performans avantajlari saglayabilir.</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: Veritabani-Ici Analitik (In-Database Analytics) Nedir?</strong><br>
+          <p style="margin-bottom: 0;">Geleneksel yaklasimda veriler once veritabanindan disari aktarilir, sonra Python veya Excel gibi araclarda analiz edilir. Veritabani-ici analitik ise bu islemi dogrudan veritabaninda yapar. Bu yaklasim buyuk veri setlerinde cok daha hizlidir cunku veriyi tasimak yerine sorguyu veriye goturursunuz. Dusunun: 10 milyon satir veriyi bilgisayariniza indirmek yerine, veritabanina "bu verilerin ortalamasini hesapla" demeniz yeterlidir.</p>
+        </div>
       </section>
       <section>
         <p><strong>Veritabani-Ici Analitigin (In-Database Analytics) Faydalari</strong>:</p>
@@ -387,6 +391,14 @@
       <section>
         <h3 id="window-functions-for-analytics">Analitik (Analytics) icin Pencere Fonksiyonlari (Window Functions)</h3>
         <p>Pencere fonksiyonlari (Window Functions), mevcut satirla iliskili bir dizi tablo satiri uzerinde hesaplamalar yapar; toplama fonksiyonlarina (aggregate functions) benzer ancak satirlari tek bir cikti satirinda gruplamaz.</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: Pencere Fonksiyonlari (Window Functions) Nedir?</strong><br>
+          <p style="margin-bottom: 0;">Pencere fonksiyonlari, GROUP BY'dan farkli olarak satirlari birlestirmez - her satir sonuc setinde kalir. "Pencere" kelimesi, fonksiyonun bakacagi satir grubunu (pencereyi) tanimlar. Ornegin: "Her kategorideki urunlerin fiyat siralamasini gormek istiyorum ama tum urun detaylarini da korumak istiyorum." Bu durumda GROUP BY kullanamazsiniz cunku satirlari birlestirir. Pencere fonksiyonlari ise her urun satirini korurken, o urunun kategori icindeki sirasini hesaplar.</p>
+        </div>
+        <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📚 Terim: PARTITION BY vs GROUP BY</strong><br>
+          <p style="margin-bottom: 0;"><strong>PARTITION BY:</strong> Satirlari gruplar AMA birlestirmez. Her satir sonucta gorunur.<br><strong>GROUP BY:</strong> Satirlari gruplar VE birlestirir. Her grup icin tek bir satir uretir.<br><em>Ipucu: PARTITION BY'i "hesaplama icin gruplama" olarak dusunun, GROUP BY'i ise "sonuc icin birlestirme" olarak.</em></p>
+        </div>
         <p><strong>Temel Pencere Fonksiyonu (Window Function) Sozdizimi</strong>:</p>
         <div class="sourceCode" id="cb2">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -406,6 +418,14 @@
         <ol type="1">
           <li><strong>Siralama Fonksiyonlari (Ranking Functions)</strong>:</li>
         </ol>
+        <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📚 ROW_NUMBER vs RANK vs DENSE_RANK Farklari</strong><br>
+          <p style="margin-bottom: 0;">Ornek: 3 urun ayni fiyata sahipse (esitlik durumu):<br>
+          • <strong>ROW_NUMBER:</strong> 1, 2, 3 (esitlikleri yok sayar, her zaman benzersiz numara verir)<br>
+          • <strong>RANK:</strong> 1, 1, 1, 4 (esit olanlara ayni siralama verir, sonra bosluk birakir)<br>
+          • <strong>DENSE_RANK:</strong> 1, 1, 1, 2 (esit olanlara ayni siralama verir, bosluk birakmaz)<br>
+          <em>Kullanim: "En iyi 3 urunu getir" diyorsaniz ve esitlik varsa, DENSE_RANK daha adildir.</em></p>
+        </div>
         <div class="sourceCode" id="cb3">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">-- ROW_NUMBER(): Unique sequential number</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -414,7 +434,7 @@
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>    price,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id <span class="kw">ORDER</span> <span class="kw">BY</span> price <span class="kw">DESC</span>) <span class="kw">AS</span> price_rank</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    product;</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    products;</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="co">-- RANK(): Rank with gaps for ties</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -423,7 +443,7 @@
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    price,</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id <span class="kw">ORDER</span> <span class="kw">BY</span> price <span class="kw">DESC</span>) <span class="kw">AS</span> price_rank</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    product;</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    products;</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a><span class="co">-- DENSE_RANK(): Rank without gaps</span></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -432,7 +452,7 @@
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>    price,</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a>    <span class="fu">DENSE_RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id <span class="kw">ORDER</span> <span class="kw">BY</span> price <span class="kw">DESC</span>) <span class="kw">AS</span> price_rank</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a>    product;</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true"></a>    products;</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true"></a></span>
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true"></a><span class="co">-- PERCENT_RANK(): Relative rank (0 to 1)</span></span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -441,7 +461,7 @@
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true"></a>    price,</span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true"></a>    <span class="fu">PERCENT_RANK</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id <span class="kw">ORDER</span> <span class="kw">BY</span> price) <span class="kw">AS</span> price_percentile</span>
 <span id="cb3-34"><a href="#cb3-34" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a>    product;</span></code></pre>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true"></a>    products;</span></code></pre>
         </div>
       </section>
       <section>
@@ -457,7 +477,7 @@
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    amount,</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    <span class="fu">SUM</span>(amount) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> order_id) <span class="kw">AS</span> order_total</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    order_item;</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>    order_lines;</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a><span class="co">-- AVG() as a window function</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -467,7 +487,7 @@
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    <span class="fu">AVG</span>(price) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id) <span class="kw">AS</span> category_avg_price,</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>    price <span class="op">-</span> <span class="fu">AVG</span>(price) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id) <span class="kw">AS</span> price_diff_from_avg</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>    product;</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>    products;</span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a><span class="co">-- COUNT() as a window function</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -542,6 +562,19 @@
       <section>
         <p><strong>Pencere Cerceve Ifadeleri (Window Frame Clauses)</strong>:</p>
         <p>Cerceve ifadesi (frame clause), pencere fonksiyonu hesaplamasinda mevcut satira gore hangi satirlarin dahil edilecegini tanimlar.</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: LAG ve LEAD Fonksiyonlari</strong><br>
+          <p style="margin-bottom: 0;"><strong>LAG:</strong> Onceki satirin degerine erisir (geriye bakar)<br><strong>LEAD:</strong> Sonraki satirin degerine erisir (ileriye bakar)<br>Ornek kullanim: "Bu ayki satis gecen aydan ne kadar farkli?" sorusunu cevaplamak icin LAG kullanirsiniz - mevcut satirdaki satisi, onceki satirdaki (gecen ay) satisla karsilastirirsiniz.</p>
+        </div>
+        <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📚 Terim: Window Frame (Pencere Cercevesi)</strong><br>
+          <p style="margin-bottom: 0;">Cerceve, hesaplamaya dahil edilecek satirlarin "penceresi"ni tanimlar:<br>
+          • <strong>UNBOUNDED PRECEDING:</strong> Pencerenin basindan itibaren (ilk satir)<br>
+          • <strong>CURRENT ROW:</strong> Mevcut satir<br>
+          • <strong>UNBOUNDED FOLLOWING:</strong> Pencerenin sonuna kadar (son satir)<br>
+          • <strong>n PRECEDING/FOLLOWING:</strong> n satir oncesi/sonrasi<br>
+          <em>Ornek: "Son 7 gunun hareketli ortalamasi" icin ROWS BETWEEN 6 PRECEDING AND CURRENT ROW kullanirsiniz.</em></p>
+        </div>
         <div class="sourceCode" id="cb6">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">-- Default frame (depends on presence of ORDER BY)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
@@ -637,9 +670,9 @@
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>        <span class="cf">ELSE</span> <span class="st">&#39;Premium&#39;</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    <span class="cf">END</span> <span class="kw">AS</span> price_segment</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    product p</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    products p</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id;</span></code></pre>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id;</span></code></pre>
           </div>
         </ol>
       </section>
@@ -672,17 +705,17 @@
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">WITH</span> product_stats <span class="kw">AS</span> (</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>        category_id,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>        product_id,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>        products_id,</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>        price,</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>        <span class="fu">AVG</span>(price) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id) <span class="kw">AS</span> avg_price,</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>        <span class="fu">STDDEV</span>(price) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> category_id) <span class="kw">AS</span> stddev_price</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>        product</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>        products</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>)</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true"></a>    p.category_id,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    c.category_name,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a>    p.product_id,</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true"></a>    c.name,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true"></a>    p.id,</span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true"></a>    p.price,</span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true"></a>    p.avg_price,</span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true"></a>    p.stddev_price,</span>
@@ -690,7 +723,7 @@
 <span id="cb11-19"><a href="#cb11-19" aria-hidden="true"></a><span class="kw">FROM</span></span>
 <span id="cb11-20"><a href="#cb11-20" aria-hidden="true"></a>    product_stats p</span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true"></a><span class="kw">WHERE</span></span>
 <span id="cb11-24"><a href="#cb11-24" aria-hidden="true"></a>    <span class="fu">ABS</span>((p.price <span class="op">-</span> p.avg_price) <span class="op">/</span> <span class="fu">NULLIF</span>(p.stddev_price, <span class="dv">0</span>)) <span class="op">&gt;</span> <span class="dv">2</span>;</span></code></pre>
           </div>
@@ -699,6 +732,15 @@
       <section>
         <h3 id="advanced-aggregation-techniques">Ileri Toplama Teknikleri (Advanced Aggregation Techniques)</h3>
         <p>PostgreSQL, SUM, COUNT ve AVG gibi temel fonksiyonlarin otesinde ileri toplama (advanced aggregation) yetenekleri sunar.</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: Istatistiksel Fonksiyonlar</strong><br>
+          <p style="margin-bottom: 0;">PostgreSQL, Python'daki istatistik kutuphanelerinde bulunan birçok fonksiyonu dogrudan SQL'de sunar:<br>
+          • <strong>STDDEV:</strong> Standart sapma - verilerin ortalamadan ne kadar yayildigini gosterir<br>
+          • <strong>VAR_SAMP:</strong> Varyans - standart sapmanin karesi<br>
+          • <strong>CORR:</strong> Korelasyon katsayisi (-1 ile 1 arasi) - iki degisken arasindaki iliski<br>
+          • <strong>REGR_SLOPE/INTERCEPT:</strong> Dogrusal regresyon parametreleri<br>
+          <em>Bu fonksiyonlar sayesinde karmasik istatistiksel analizleri veriyi disari aktarmadan yapabilirsiniz.</em></p>
+        </div>
         <p><strong>Istatistiksel Toplamalar (Statistical Aggregations)</strong>:</p>
         <div class="sourceCode" id="cb12">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co">-- Basic statistics</span></span>
@@ -712,7 +754,7 @@
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>    <span class="fu">MAX</span>(price) <span class="kw">AS</span> max_price,</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>    <span class="fu">MAX</span>(price) <span class="op">-</span> <span class="fu">MIN</span>(price) <span class="kw">AS</span> price_range</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>    product</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>    products</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>    category_id;</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a></span>
@@ -720,14 +762,14 @@
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a>    <span class="fu">CORR</span>(price, weight) <span class="kw">AS</span> price_weight_correlation</span>
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a>    product;</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a>    products;</span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a></span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true"></a><span class="co">-- Regression slope and intercept</span></span>
 <span id="cb12-23"><a href="#cb12-23" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true"></a>    <span class="fu">REGR_SLOPE</span>(price, weight) <span class="kw">AS</span> slope,</span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true"></a>    <span class="fu">REGR_INTERCEPT</span>(price, weight) <span class="kw">AS</span> intercept</span>
 <span id="cb12-26"><a href="#cb12-26" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true"></a>    product;</span></code></pre>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true"></a>    products;</span></code></pre>
         </div>
       </section>
       <section>
@@ -741,7 +783,7 @@
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> price <span class="op">&gt;=</span> <span class="dv">50</span> <span class="kw">AND</span> price <span class="op">&lt;</span> <span class="dv">200</span>) <span class="kw">AS</span> midrange_products,</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> price <span class="op">&gt;=</span> <span class="dv">200</span>) <span class="kw">AS</span> premium_products</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>    product</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>    products</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>    category_id;</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a></span>
@@ -762,7 +804,7 @@
 <span id="cb13-27"><a href="#cb13-27" aria-hidden="true"></a>        <span class="dv">2</span></span>
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true"></a>    ) <span class="kw">AS</span> premium_percentage</span>
 <span id="cb13-29"><a href="#cb13-29" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true"></a>    product</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true"></a>    products</span>
 <span id="cb13-31"><a href="#cb13-31" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true"></a>    category_id;</span></code></pre>
         </div>
@@ -776,7 +818,7 @@
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    ARRAY_AGG(product_id) <span class="kw">AS</span> product_ids,</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>    ARRAY_AGG(name <span class="kw">ORDER</span> <span class="kw">BY</span> price <span class="kw">DESC</span>) <span class="kw">AS</span> products_by_price</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    product</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    products</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>    category_id;</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a></span>
@@ -785,9 +827,9 @@
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>    order_id,</span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a>    STRING_AGG(p.name, <span class="st">&#39;, &#39;</span> <span class="kw">ORDER</span> <span class="kw">BY</span> oi.price <span class="kw">DESC</span>) <span class="kw">AS</span> ordered_products</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true"></a>    order_id;</span></code></pre>
         </div>
@@ -806,7 +848,7 @@
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>        )</span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>    ) <span class="kw">AS</span> products</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>    product</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>    products</span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a>    category_id;</span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true"></a></span>
@@ -814,7 +856,7 @@
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true"></a>    order_id,</span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true"></a>    JSONB_OBJECT_AGG(</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true"></a>        p.product_id,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true"></a>        p.id,</span>
 <span id="cb15-21"><a href="#cb15-21" aria-hidden="true"></a>        JSON_BUILD_OBJECT(</span>
 <span id="cb15-22"><a href="#cb15-22" aria-hidden="true"></a>            <span class="st">&#39;name&#39;</span>, p.name,</span>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true"></a>            <span class="st">&#39;quantity&#39;</span>, oi.quantity,</span>
@@ -822,15 +864,23 @@
 <span id="cb15-25"><a href="#cb15-25" aria-hidden="true"></a>        )</span>
 <span id="cb15-26"><a href="#cb15-26" aria-hidden="true"></a>    ) <span class="kw">AS</span> order_items</span>
 <span id="cb15-27"><a href="#cb15-27" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb15-31"><a href="#cb15-31" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb15-32"><a href="#cb15-32" aria-hidden="true"></a>    order_id;</span></code></pre>
         </div>
       </section>
       <section>
         <p><strong>GROUPING SETS, ROLLUP ve CUBE ile Ozel Toplamalar (Custom Aggregations)</strong>:</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: GROUPING SETS, ROLLUP ve CUBE</strong><br>
+          <p style="margin-bottom: 0;">Bu uc yapiyi Excel'deki pivot tablolar gibi dusunebilirsiniz:<br>
+          • <strong>GROUPING SETS:</strong> Birden fazla GROUP BY sorgusunu tek sorguda birlestirmenizi saglar<br>
+          • <strong>ROLLUP:</strong> Hiyerarsik alt toplamlar uretir (kategori → alt kategori → urun sirasi gibi)<br>
+          • <strong>CUBE:</strong> Tum olasi kombinasyonlarin toplamlarini uretir<br>
+          <em>Ornek: ROLLUP(yil, ay) kullandiginizda hem aylik, hem yillik, hem de genel toplami tek sorguda alirsiniz!</em></p>
+        </div>
         <div class="sourceCode" id="cb16">
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">-- GROUPING SETS: Multiple grouping sets in one query</span></span>
@@ -840,9 +890,9 @@
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> product_count,</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    <span class="fu">AVG</span>(price) <span class="kw">AS</span> avg_price</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    product p</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    products p</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a><span class="kw">JOIN</span></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a>    supplier s <span class="kw">ON</span> p.supplier_id <span class="op">=</span> s.supplier_id</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
@@ -879,13 +929,13 @@
 <span id="cb16-44"><a href="#cb16-44" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(<span class="fu">TO_CHAR</span>(order_date, <span class="st">&#39;MM&#39;</span>), <span class="st">&#39;All Months&#39;</span>) <span class="kw">AS</span> <span class="dt">month</span>,</span>
 <span id="cb16-45"><a href="#cb16-45" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> sales</span>
 <span id="cb16-46"><a href="#cb16-46" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb16-48"><a href="#cb16-48" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb16-50"><a href="#cb16-50" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb16-52"><a href="#cb16-52" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb16-53"><a href="#cb16-53" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb16-54"><a href="#cb16-54" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb16-55"><a href="#cb16-55" aria-hidden="true"></a>    <span class="kw">CUBE</span> (category_name, <span class="fu">TO_CHAR</span>(order_date, <span class="st">&#39;YYYY&#39;</span>), <span class="fu">TO_CHAR</span>(order_date, <span class="st">&#39;MM&#39;</span>))</span>
 <span id="cb16-56"><a href="#cb16-56" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
@@ -899,31 +949,31 @@
           <div class="sourceCode" id="cb17">
             <pre
               class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">SELECT</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(c.category_name, <span class="st">&#39;All Categories&#39;</span>) <span class="kw">AS</span> <span class="kw">category</span>,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(c.name, <span class="st">&#39;All Categories&#39;</span>) <span class="kw">AS</span> <span class="kw">category</span>,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>), <span class="st">&#39;All Time&#39;</span>) <span class="kw">AS</span> <span class="dt">month</span>,</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>    <span class="fu">COALESCE</span>(r.region_name, <span class="st">&#39;All Regions&#39;</span>) <span class="kw">AS</span> region,</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> sales,</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.customer_id) <span class="kw">AS</span> customers,</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="op">/</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.customer_id) <span class="kw">AS</span> avg_per_customer</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true"></a><span class="kw">JOIN</span></span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true"></a>    customer cu <span class="kw">ON</span> o.customer_id <span class="op">=</span> cu.customer_id</span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true"></a><span class="kw">JOIN</span></span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true"></a>    region r <span class="kw">ON</span> cu.region_id <span class="op">=</span> r.region_id</span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true"></a>    <span class="fu">GROUPING</span> SETS (</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true"></a>        (c.category_name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>), r.region_name),</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true"></a>        (c.category_name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>)),</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true"></a>        (c.category_name, r.region_name),</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true"></a>        (c.name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>), r.region_name),</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true"></a>        (c.name, <span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>)),</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true"></a>        (c.name, r.region_name),</span>
 <span id="cb17-25"><a href="#cb17-25" aria-hidden="true"></a>        (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>), r.region_name),</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true"></a>        (c.category_name),</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true"></a>        (c.name),</span>
 <span id="cb17-27"><a href="#cb17-27" aria-hidden="true"></a>        (<span class="fu">TO_CHAR</span>(o.order_date, <span class="st">&#39;YYYY-MM&#39;</span>)),</span>
 <span id="cb17-28"><a href="#cb17-28" aria-hidden="true"></a>        (r.region_name),</span>
 <span id="cb17-29"><a href="#cb17-29" aria-hidden="true"></a>        ()</span>
@@ -981,17 +1031,17 @@
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">WITH</span> product_pairs <span class="kw">AS</span> (</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>        oi1.product_id <span class="kw">AS</span> product1,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>        oi2.product_id <span class="kw">AS</span> product2,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi1.order_id) <span class="kw">AS</span> order_count</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>        ol1.product_id <span class="kw">AS</span> product1,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>        ol2.product_id <span class="kw">AS</span> product2,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol1.order_id) <span class="kw">AS</span> order_count</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>        order_item oi1</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>        order_lines ol1</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a>        order_item oi2 <span class="kw">ON</span> oi1.order_id <span class="op">=</span> oi2.order_id <span class="kw">AND</span> oi1.product_id <span class="op">&lt;</span> oi2.product_id</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a>        order_lines ol2 <span class="kw">ON</span> ol1.order_id <span class="op">=</span> ol2.order_id <span class="kw">AND</span> ol1.product_id <span class="op">&lt;</span> ol2.product_id</span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true"></a>        oi1.product_id, oi2.product_id</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true"></a>        ol1.product_id, ol2.product_id</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true"></a>    <span class="kw">HAVING</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi1.order_id) <span class="op">&gt;=</span> <span class="dv">5</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol1.order_id) <span class="op">&gt;=</span> <span class="dv">5</span></span>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true"></a>)</span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true"></a>    p1.name <span class="kw">AS</span> product1,</span>
@@ -1006,9 +1056,9 @@
 <span id="cb19-25"><a href="#cb19-25" aria-hidden="true"></a><span class="kw">FROM</span></span>
 <span id="cb19-26"><a href="#cb19-26" aria-hidden="true"></a>    product_pairs pp</span>
 <span id="cb19-27"><a href="#cb19-27" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true"></a>    product p1 <span class="kw">ON</span> pp.product1 <span class="op">=</span> p1.product_id</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true"></a>    products p1 <span class="kw">ON</span> pp.product1 <span class="op">=</span> p1.id</span>
 <span id="cb19-29"><a href="#cb19-29" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true"></a>    product p2 <span class="kw">ON</span> pp.product2 <span class="op">=</span> p2.product_id</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true"></a>    products p2 <span class="kw">ON</span> pp.product2 <span class="op">=</span> p2.id</span>
 <span id="cb19-31"><a href="#cb19-31" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb19-32"><a href="#cb19-32" aria-hidden="true"></a>    pp.order_count <span class="kw">DESC</span>;</span></code></pre>
         </div>
@@ -1017,6 +1067,15 @@
         <h3 id="common-table-expressions-ctes-for-complex-analytics">Karmasik Analitik (Analytics) icin Ortak Tablo Ifadeleri (Common Table Expressions - CTE'ler)
         </h3>
         <p>Ortak Tablo Ifadeleri (Common Table Expressions - CTE'ler), daha buyuk bir sorguda kullanilmak uzere yardimci ifadeler yazmanin bir yolunu saglar ve karmasik analitik sorgularini daha okunabilir ve bakimi kolay hale getirir.</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: CTE (Common Table Expressions) Nedir?</strong><br>
+          <p style="margin-bottom: 0;">CTE'yi bir "gecici isimli alt sorgu" olarak dusunebilirsiniz. WITH anahtar kelimesiyle baslar ve karmasik sorgularinizi parcalara ayirmanizi saglar. Her parca bir CTE olur ve sonraki CTE'ler veya ana sorgu bu parcalari kullanabilir.<br>
+          <em>Avantajlari: (1) Okunabilirlik - karmasik sorgular adim adim yazilir, (2) Yeniden kullanilabilirlik - ayni CTE'yi sorgu icinde birden fazla kez kullanabilirsiniz, (3) Bakim kolayligi - her CTE bagimsiz olarak test edilebilir.</em></p>
+        </div>
+        <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📚 Terim: Recursive CTE (Ozyinelemeli CTE)</strong><br>
+          <p style="margin-bottom: 0;">Recursive CTE, kendini cagiran bir CTE'dir. Hiyerarsik verilerde (organizasyon semaları, kategori agaclari) cok faydalidir. "Bir yoneticinin tum alt kademelerini bul" gibi sorulari tek sorguda cevaplayabilir.</p>
+        </div>
         <p><strong>Temel CTE Sozdizimi (Basic CTE Syntax)</strong>:</p>
         <div class="sourceCode" id="cb20">
           <pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">WITH</span> cte_name <span class="kw">AS</span> (</span>
@@ -1308,6 +1367,14 @@
       <section>
         <h3 id="data-visualization-with-postgresql">PostgreSQL ile Veri Gorsellestirme (Data Visualization)</h3>
         <p>PostgreSQL'in kendisi gorsellestirme (visualization) yetenekleri saglamasa da, gorsellestirme araclari icin veri hazirlayabilir veya SQL sonuclarini kullanarak temel gorsellestirmeler olusturabilirsiniz. Burada, gorsellestirme icin veri hazirlama ve PostgreSQL'e gorsellestirme araclari baglama seceneklerini inceleyecegiz.</p>
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: Veri Gorsellestirme icin SQL</strong><br>
+          <p style="margin-bottom: 0;">Gorsellestirme araclari (Tableau, Power BI, Metabase, Python matplotlib/seaborn) ham veriyle degil, onceden hazirlanmis, toplanmis veriyle en iyi calisir. SQL'de veriyi dogru formata getirmek, gorsellestirme surecini kolaylastirir ve performansi arttirir. Her grafik tipi icin farkli bir veri formati gerekir:<br>
+          • <strong>Zaman serisi grafigi:</strong> Tarih + deger<br>
+          • <strong>Pasta grafigi:</strong> Kategori + yuzde<br>
+          • <strong>Cubuk grafigi:</strong> Kategori + deger<br>
+          • <strong>Harita:</strong> Konum (lat/lon) + deger</p>
+        </div>
         <p><strong>Gorsellestirme (Visualization) icin Veri Hazirlama</strong>:</p>
         <ol type="1">
           <li><strong>Dogru Seviyede Veri Toplama (Aggregation)</strong>:</li>
@@ -1328,27 +1395,27 @@
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true"></a><span class="co">-- Monthly sales by category for bar chart</span></span>
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb26-14"><a href="#cb26-14" aria-hidden="true"></a>    DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date) <span class="kw">AS</span> <span class="dt">month</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true"></a>    c.category_name,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true"></a>    c.name,</span>
 <span id="cb26-16"><a href="#cb26-16" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> sales</span>
 <span id="cb26-17"><a href="#cb26-17" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb26-19"><a href="#cb26-19" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb26-21"><a href="#cb26-21" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb26-23"><a href="#cb26-23" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb26-25"><a href="#cb26-25" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true"></a>    DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date), c.category_name</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true"></a>    DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date), c.name</span>
 <span id="cb26-27"><a href="#cb26-27" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true"></a>    <span class="dt">month</span>, c.category_name;</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true"></a>    <span class="dt">month</span>, c.name;</span>
 <span id="cb26-29"><a href="#cb26-29" aria-hidden="true"></a></span>
 <span id="cb26-30"><a href="#cb26-30" aria-hidden="true"></a><span class="co">-- Regional sales for map visualization</span></span>
 <span id="cb26-31"><a href="#cb26-31" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb26-32"><a href="#cb26-32" aria-hidden="true"></a>    r.region_name,</span>
 <span id="cb26-33"><a href="#cb26-33" aria-hidden="true"></a>    r.latitude,</span>
 <span id="cb26-34"><a href="#cb26-34" aria-hidden="true"></a>    r.longitude,</span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,</span>
 <span id="cb26-36"><a href="#cb26-36" aria-hidden="true"></a>    <span class="fu">SUM</span>(o.amount) <span class="kw">AS</span> total_sales</span>
 <span id="cb26-37"><a href="#cb26-37" aria-hidden="true"></a><span class="kw">FROM</span></span>
 <span id="cb26-38"><a href="#cb26-38" aria-hidden="true"></a>    orders o</span>
@@ -1368,18 +1435,18 @@
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="kw">WITH</span> category_sales <span class="kw">AS</span> (</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a>        c.category_name,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true"></a>        c.name,</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> sales</span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true"></a>        order_item oi</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true"></a>        order_lines ol</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true"></a>        orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true"></a>        orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb27-9"><a href="#cb27-9" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true"></a>        product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true"></a>        products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true"></a>        <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true"></a>        categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true"></a>        c.category_name</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true"></a>        c.name</span>
 <span id="cb27-15"><a href="#cb27-15" aria-hidden="true"></a>)</span>
 <span id="cb27-16"><a href="#cb27-16" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb27-17"><a href="#cb27-17" aria-hidden="true"></a>    category_name,</span>
@@ -1418,23 +1485,23 @@
           <pre
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true"></a><span class="co">-- Product co-purchase network</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true"></a><span class="kw">SELECT</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a>    p1.product_id <span class="kw">AS</span> source_id,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true"></a>    p1.id <span class="kw">AS</span> source_id,</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true"></a>    p1.name <span class="kw">AS</span> source_name,</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true"></a>    p2.product_id <span class="kw">AS</span> target_id,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true"></a>    p2.id <span class="kw">AS</span> target_id,</span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true"></a>    p2.name <span class="kw">AS</span> target_name,</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi1.order_id) <span class="kw">AS</span> weight</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol1.order_id) <span class="kw">AS</span> weight</span>
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true"></a>    order_item oi1</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true"></a>    order_lines ol1</span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true"></a>    order_item oi2 <span class="kw">ON</span> oi1.order_id <span class="op">=</span> oi2.order_id <span class="kw">AND</span> oi1.product_id <span class="op">&lt;</span> oi2.product_id</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true"></a>    order_lines ol2 <span class="kw">ON</span> ol1.order_id <span class="op">=</span> ol2.order_id <span class="kw">AND</span> ol1.product_id <span class="op">&lt;</span> ol2.product_id</span>
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true"></a>    product p1 <span class="kw">ON</span> oi1.product_id <span class="op">=</span> p1.product_id</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true"></a>    products p1 <span class="kw">ON</span> ol1.product_id <span class="op">=</span> p1.id</span>
 <span id="cb29-14"><a href="#cb29-14" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true"></a>    product p2 <span class="kw">ON</span> oi2.product_id <span class="op">=</span> p2.product_id</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true"></a>    products p2 <span class="kw">ON</span> ol2.product_id <span class="op">=</span> p2.id</span>
 <span id="cb29-16"><a href="#cb29-16" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true"></a>    p1.product_id, p1.name, p2.product_id, p2.name</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true"></a>    p1.id, p1.name, p2.id, p2.name</span>
 <span id="cb29-18"><a href="#cb29-18" aria-hidden="true"></a><span class="kw">HAVING</span></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi1.order_id) <span class="op">&gt;=</span> <span class="dv">5</span>;</span></code></pre>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol1.order_id) <span class="op">&gt;=</span> <span class="dv">5</span>;</span></code></pre>
         </div>
       </section>
       <section>
@@ -1540,7 +1607,7 @@
 <span id="cb32-12"><a href="#cb32-12" aria-hidden="true"></a><span class="co">-- Top customers</span></span>
 <span id="cb32-13"><a href="#cb32-13" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb32-14"><a href="#cb32-14" aria-hidden="true"></a>    c.name <span class="kw">AS</span> customer_name,</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true"></a>    <span class="fu">COUNT</span>(o.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true"></a>    <span class="fu">COUNT</span>(o.id) <span class="kw">AS</span> order_count,</span>
 <span id="cb32-16"><a href="#cb32-16" aria-hidden="true"></a>    <span class="fu">SUM</span>(o.amount) <span class="kw">AS</span> total_spent</span>
 <span id="cb32-17"><a href="#cb32-17" aria-hidden="true"></a><span class="kw">FROM</span></span>
 <span id="cb32-18"><a href="#cb32-18" aria-hidden="true"></a>    orders o</span>
@@ -1554,18 +1621,18 @@
 <span id="cb32-26"><a href="#cb32-26" aria-hidden="true"></a></span>
 <span id="cb32-27"><a href="#cb32-27" aria-hidden="true"></a><span class="co">-- Sales by category</span></span>
 <span id="cb32-28"><a href="#cb32-28" aria-hidden="true"></a><span class="kw">SELECT</span></span>
-<span id="cb32-29"><a href="#cb32-29" aria-hidden="true"></a>    cat.category_name,</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true"></a>    cat.name,</span>
 <span id="cb32-30"><a href="#cb32-30" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> sales</span>
 <span id="cb32-31"><a href="#cb32-31" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb32-32"><a href="#cb32-32" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb32-33"><a href="#cb32-33" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb32-34"><a href="#cb32-34" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb32-35"><a href="#cb32-35" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb32-36"><a href="#cb32-36" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb32-37"><a href="#cb32-37" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb32-38"><a href="#cb32-38" aria-hidden="true"></a>    <span class="kw">category</span> cat <span class="kw">ON</span> p.category_id <span class="op">=</span> cat.category_id</span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true"></a>    categories cat <span class="kw">ON</span> p.category_id <span class="op">=</span> cat.id</span>
 <span id="cb32-39"><a href="#cb32-39" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb32-40"><a href="#cb32-40" aria-hidden="true"></a>    cat.category_name</span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true"></a>    cat.name</span>
 <span id="cb32-41"><a href="#cb32-41" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb32-42"><a href="#cb32-42" aria-hidden="true"></a>    sales <span class="kw">DESC</span>;</span>
 <span id="cb32-43"><a href="#cb32-43" aria-hidden="true"></a></span>
@@ -1574,7 +1641,7 @@
 <span id="cb32-46"><a href="#cb32-46" aria-hidden="true"></a>    r.region_name,</span>
 <span id="cb32-47"><a href="#cb32-47" aria-hidden="true"></a>    r.latitude,</span>
 <span id="cb32-48"><a href="#cb32-48" aria-hidden="true"></a>    r.longitude,</span>
-<span id="cb32-49"><a href="#cb32-49" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,</span>
 <span id="cb32-50"><a href="#cb32-50" aria-hidden="true"></a>    <span class="fu">SUM</span>(o.amount) <span class="kw">AS</span> total_sales</span>
 <span id="cb32-51"><a href="#cb32-51" aria-hidden="true"></a><span class="kw">FROM</span></span>
 <span id="cb32-52"><a href="#cb32-52" aria-hidden="true"></a>    orders o</span>
@@ -1637,18 +1704,18 @@
 <span id="cb33-42"><a href="#cb33-42" aria-hidden="true"></a><span class="co"># Query category sales data</span></span>
 <span id="cb33-43"><a href="#cb33-43" aria-hidden="true"></a>query <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
 <span id="cb33-44"><a href="#cb33-44" aria-hidden="true"></a><span class="st">SELECT</span></span>
-<span id="cb33-45"><a href="#cb33-45" aria-hidden="true"></a><span class="st">    c.category_name,</span></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true"></a><span class="st">    c.name,</span></span>
 <span id="cb33-46"><a href="#cb33-46" aria-hidden="true"></a><span class="st">    SUM(oi.quantity * oi.price) AS sales</span></span>
 <span id="cb33-47"><a href="#cb33-47" aria-hidden="true"></a><span class="st">FROM</span></span>
-<span id="cb33-48"><a href="#cb33-48" aria-hidden="true"></a><span class="st">    order_item oi</span></span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true"></a><span class="st">    order_lines ol</span></span>
 <span id="cb33-49"><a href="#cb33-49" aria-hidden="true"></a><span class="st">JOIN</span></span>
-<span id="cb33-50"><a href="#cb33-50" aria-hidden="true"></a><span class="st">    orders o ON oi.order_id = o.order_id</span></span>
+<span id="cb33-50"><a href="#cb33-50" aria-hidden="true"></a><span class="st">    orders o ON ol.order_id = o.id</span></span>
 <span id="cb33-51"><a href="#cb33-51" aria-hidden="true"></a><span class="st">JOIN</span></span>
-<span id="cb33-52"><a href="#cb33-52" aria-hidden="true"></a><span class="st">    product p ON oi.product_id = p.product_id</span></span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true"></a><span class="st">    products p ON ol.product_id = p.id</span></span>
 <span id="cb33-53"><a href="#cb33-53" aria-hidden="true"></a><span class="st">JOIN</span></span>
-<span id="cb33-54"><a href="#cb33-54" aria-hidden="true"></a><span class="st">    category c ON p.category_id = c.category_id</span></span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true"></a><span class="st">    categories c ON p.category_id = c.id</span></span>
 <span id="cb33-55"><a href="#cb33-55" aria-hidden="true"></a><span class="st">GROUP BY</span></span>
-<span id="cb33-56"><a href="#cb33-56" aria-hidden="true"></a><span class="st">    c.category_name</span></span>
+<span id="cb33-56"><a href="#cb33-56" aria-hidden="true"></a><span class="st">    c.name</span></span>
 <span id="cb33-57"><a href="#cb33-57" aria-hidden="true"></a><span class="st">ORDER BY</span></span>
 <span id="cb33-58"><a href="#cb33-58" aria-hidden="true"></a><span class="st">    sales DESC</span></span>
 <span id="cb33-59"><a href="#cb33-59" aria-hidden="true"></a><span class="st">&quot;&quot;&quot;</span></span>
@@ -1756,26 +1823,26 @@
 <span id="cb34-77"><a href="#cb34-77" aria-hidden="true"></a><span class="co">-- 3. Top-selling products with trend indicators</span></span>
 <span id="cb34-78"><a href="#cb34-78" aria-hidden="true"></a><span class="kw">WITH</span> product_sales <span class="kw">AS</span> (</span>
 <span id="cb34-79"><a href="#cb34-79" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb34-80"><a href="#cb34-80" aria-hidden="true"></a>        p.product_id,</span>
+<span id="cb34-80"><a href="#cb34-80" aria-hidden="true"></a>        p.id,</span>
 <span id="cb34-81"><a href="#cb34-81" aria-hidden="true"></a>        p.name <span class="kw">AS</span> product_name,</span>
 <span id="cb34-82"><a href="#cb34-82" aria-hidden="true"></a>        DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date) <span class="kw">AS</span> <span class="dt">month</span>,</span>
 <span id="cb34-83"><a href="#cb34-83" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity) <span class="kw">AS</span> units_sold,</span>
 <span id="cb34-84"><a href="#cb34-84" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> revenue</span>
 <span id="cb34-85"><a href="#cb34-85" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb34-86"><a href="#cb34-86" aria-hidden="true"></a>        order_item oi</span>
+<span id="cb34-86"><a href="#cb34-86" aria-hidden="true"></a>        order_lines ol</span>
 <span id="cb34-87"><a href="#cb34-87" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb34-88"><a href="#cb34-88" aria-hidden="true"></a>        orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb34-88"><a href="#cb34-88" aria-hidden="true"></a>        orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb34-89"><a href="#cb34-89" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb34-90"><a href="#cb34-90" aria-hidden="true"></a>        product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb34-90"><a href="#cb34-90" aria-hidden="true"></a>        products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb34-91"><a href="#cb34-91" aria-hidden="true"></a>    <span class="kw">WHERE</span></span>
 <span id="cb34-92"><a href="#cb34-92" aria-hidden="true"></a>        o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;6 months&#39;</span></span>
 <span id="cb34-93"><a href="#cb34-93" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb34-94"><a href="#cb34-94" aria-hidden="true"></a>        p.product_id, p.name, DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date)</span>
+<span id="cb34-94"><a href="#cb34-94" aria-hidden="true"></a>        p.id, p.name, DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date)</span>
 <span id="cb34-95"><a href="#cb34-95" aria-hidden="true"></a>),</span>
 <span id="cb34-96"><a href="#cb34-96" aria-hidden="true"></a>product_totals <span class="kw">AS</span> (</span>
 <span id="cb34-97"><a href="#cb34-97" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb34-98"><a href="#cb34-98" aria-hidden="true"></a>        product_id,</span>
-<span id="cb34-99"><a href="#cb34-99" aria-hidden="true"></a>        product_name,</span>
+<span id="cb34-98"><a href="#cb34-98" aria-hidden="true"></a>        products_id,</span>
+<span id="cb34-99"><a href="#cb34-99" aria-hidden="true"></a>        products_name,</span>
 <span id="cb34-100"><a href="#cb34-100" aria-hidden="true"></a>        <span class="fu">SUM</span>(units_sold) <span class="kw">AS</span> total_units,</span>
 <span id="cb34-101"><a href="#cb34-101" aria-hidden="true"></a>        <span class="fu">SUM</span>(revenue) <span class="kw">AS</span> total_revenue,</span>
 <span id="cb34-102"><a href="#cb34-102" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> <span class="dt">month</span>) <span class="kw">AS</span> months_with_sales,</span>
@@ -1789,9 +1856,9 @@
 <span id="cb34-110"><a href="#cb34-110" aria-hidden="true"></a>            <span class="kw">RANGE</span> <span class="kw">BETWEEN</span> <span class="kw">UNBOUNDED</span> <span class="kw">PRECEDING</span> <span class="kw">AND</span> <span class="kw">UNBOUNDED</span> <span class="kw">FOLLOWING</span></span>
 <span id="cb34-111"><a href="#cb34-111" aria-hidden="true"></a>        ) <span class="kw">AS</span> last_month_units</span>
 <span id="cb34-112"><a href="#cb34-112" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb34-113"><a href="#cb34-113" aria-hidden="true"></a>        product_sales</span>
+<span id="cb34-113"><a href="#cb34-113" aria-hidden="true"></a>        products_sales</span>
 <span id="cb34-114"><a href="#cb34-114" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb34-115"><a href="#cb34-115" aria-hidden="true"></a>        product_id, product_name, <span class="dt">month</span>, units_sold</span>
+<span id="cb34-115"><a href="#cb34-115" aria-hidden="true"></a>        products_id, product_name, <span class="dt">month</span>, units_sold</span>
 <span id="cb34-116"><a href="#cb34-116" aria-hidden="true"></a>)</span>
 <span id="cb34-117"><a href="#cb34-117" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb34-118"><a href="#cb34-118" aria-hidden="true"></a>    product_name,</span>
@@ -1816,7 +1883,7 @@
 <span id="cb34-137"><a href="#cb34-137" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
 <span id="cb34-138"><a href="#cb34-138" aria-hidden="true"></a>        e.employee_id,</span>
 <span id="cb34-139"><a href="#cb34-139" aria-hidden="true"></a>        e.first_name <span class="op">||</span> <span class="st">&#39; &#39;</span> <span class="op">||</span> e.last_name <span class="kw">AS</span> salesperson_name,</span>
-<span id="cb34-140"><a href="#cb34-140" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> orders_closed,</span>
+<span id="cb34-140"><a href="#cb34-140" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> orders_closed,</span>
 <span id="cb34-141"><a href="#cb34-141" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.customer_id) <span class="kw">AS</span> customers_served,</span>
 <span id="cb34-142"><a href="#cb34-142" aria-hidden="true"></a>        <span class="fu">SUM</span>(o.amount) <span class="kw">AS</span> total_sales,</span>
 <span id="cb34-143"><a href="#cb34-143" aria-hidden="true"></a>        <span class="fu">AVG</span>(o.amount) <span class="kw">AS</span> avg_order_value,</span>
@@ -1862,6 +1929,17 @@
 <span id="cb34-183"><a href="#cb34-183" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb34-184"><a href="#cb34-184" aria-hidden="true"></a>    sp.total_sales <span class="kw">DESC</span>;</span></code></pre>
         </div>
+
+        <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📊 Alistirma 1 icin Gorsellestirme Onerileri:</strong><br>
+          <ul class="mb-0" style="margin-bottom: 0;">
+            <li><strong>Sorgu 1 (Aylik Trend):</strong> Cizgi Grafik - X: Ay, Y: Gelir, Her yil icin ayri cizgi, YoY buyume anotasyon olarak</li>
+            <li><strong>Sorgu 2 (Bolgel Satislar):</strong> Bullet Chart veya Hedef cizgili Bar Grafik - X: Bolge, Y: Gerceklesen vs Hedef</li>
+            <li><strong>Sorgu 3 (En Iyi Urunler):</strong> Yatay Bar Grafik, trend oklariyla (↑↓) aylik degisimi gosterin</li>
+            <li><strong>Sorgu 4 (Satis Temsilcisi Performansi):</strong> Sacilim Grafigi - X: Siparis Sayisi, Y: Toplam Satis, performans kategorisine gore renk</li>
+            <li><strong>Araclar:</strong> Metabase, Grafana, Tableau, Power BI, Apache Superset</li>
+          </ul>
+        </div>
       </section>
       <section>
         <p><strong>Alistirma 2: Musteri Analitigi (Customer Analytics)</strong></p>
@@ -1874,7 +1952,7 @@
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true"></a>        c.customer_id,</span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true"></a>        c.name <span class="kw">AS</span> customer_name,</span>
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true"></a>        <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="fu">MAX</span>(o.order_date) <span class="kw">AS</span> recency,</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true"></a>        <span class="fu">COUNT</span>(o.order_id) <span class="kw">AS</span> frequency,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true"></a>        <span class="fu">COUNT</span>(o.id) <span class="kw">AS</span> frequency,</span>
 <span id="cb35-8"><a href="#cb35-8" aria-hidden="true"></a>        <span class="fu">SUM</span>(o.amount) <span class="kw">AS</span> monetary</span>
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true"></a>        customer c</span>
@@ -1933,7 +2011,7 @@
 <span id="cb35-63"><a href="#cb35-63" aria-hidden="true"></a><span class="cf">    SELECT</span></span>
 <span id="cb35-64"><a href="#cb35-64" aria-hidden="true"></a>        c.customer_id,</span></span>
 <span id="cb35-65"><a href="#cb35-65" aria-hidden="true"></a>        c.name AS customer_name,</span></span>
-<span id="cb35-66"><a href="#cb35-66" aria-hidden="true"></a>        o.order_id,</span></span>
+<span id="cb35-66"><a href="#cb35-66" aria-hidden="true"></a>        o.id,</span></span>
 <span id="cb35-67"><a href="#cb35-67" aria-hidden="true"></a>        o.order_date,</span></span>
 <span id="cb35-68"><a href="#cb35-68" aria-hidden="true"></a>        o.amount,</span></span>
 <span id="cb35-69"><a href="#cb35-69" aria-hidden="true"></a>        <span class="fu">ROW_NUMBER()</span> <span class="cf">OVER (PARTITION BY</span> c.customer_id ORDER BY o.order_date) <span class="cf">AS</span> purchase_number,</span></span>
@@ -2040,6 +2118,17 @@
 <span id="cb35-170"><a href="#cb35-170" aria-hidden="true"></a>ORDER BY</span>
 <span id="cb35-171"><a href="#cb35-171" aria-hidden="true"></a>    r.cohort_month, r.month_diff;</span></span></code>
         </div>
+
+        <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📊 Alistirma 2 icin Gorsellestirme Onerileri:</strong><br>
+          <ul class="mb-0" style="margin-bottom: 0;">
+            <li><strong>Sorgu 1 (RFM Analizi):</strong> 3D Sacilim veya Balon Grafik - X: Recency, Y: Frequency, Boyut: Monetary, Renk: Segment</li>
+            <li><strong>Sorgu 2 (Satin Alma Yolculugu):</strong> Huni Grafik satin alma asamalari icin, veya Cizgi Grafik alisverisler arasi ortalama gun</li>
+            <li><strong>Sorgu 3 (Kohort Tutma):</strong> Isi Haritasi - X: Kohort sonrasi ay, Y: Kohort ayi, Renk yogunlugu: Tutma orani</li>
+            <li><strong>Segment Dagilimi:</strong> Pasta/Donut Grafik segment basina musteri sayisi</li>
+            <li><strong>Araclar:</strong> Plotly, D3.js, Tableau, Mixpanel, Amplitude</li>
+          </ul>
+        </div>
       </section>
       <section>
         <p><strong>Alistirma 3: Urun Performansi Analitigi (Product Performance Analytics)</strong></p>
@@ -2049,32 +2138,32 @@
             class="sourceCode sql"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a><span class="co">-- 1. Product Performance Matrix</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true"></a><span class="kw">WITH</span> product_metrics <span class="kw">AS</span> (</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true"></a>        p.product_id,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true"></a>        p.id,</span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true"></a>        p.name <span class="kw">AS</span> product_name,</span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true"></a>        p.category_id,</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true"></a>        c.category_name,</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true"></a>        c.name,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol.order_id) <span class="kw">AS</span> order_count,</span>
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity) <span class="kw">AS</span> units_sold,</span>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> revenue,</span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> (oi.price <span class="op">-</span> p.<span class="kw">cost</span>)) <span class="kw">AS</span> profit,</span>
 <span id="cb36-12"><a href="#cb36-12" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> (oi.price <span class="op">-</span> p.<span class="kw">cost</span>)) <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price), <span class="dv">0</span>) <span class="op">*</span> <span class="dv">100</span> <span class="kw">AS</span> profit_margin</span>
 <span id="cb36-13"><a href="#cb36-13" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true"></a>        product p</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true"></a>        products p</span>
 <span id="cb36-15"><a href="#cb36-15" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true"></a>        <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true"></a>        categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb36-17"><a href="#cb36-17" aria-hidden="true"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true"></a>        order_item oi <span class="kw">ON</span> p.product_id <span class="op">=</span> oi.product_id</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true"></a>        order_lines ol <span class="kw">ON</span> p.product_id <span class="op">=</span> ol.product_id</span>
 <span id="cb36-19"><a href="#cb36-19" aria-hidden="true"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true"></a>        orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true"></a>        orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb36-21"><a href="#cb36-21" aria-hidden="true"></a>    <span class="kw">WHERE</span></span>
 <span id="cb36-22"><a href="#cb36-22" aria-hidden="true"></a>        o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb36-23"><a href="#cb36-23" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true"></a>        p.product_id, p.name, p.category_id, c.category_name</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true"></a>        p.id, p.name, p.category_id, c.name</span>
 <span id="cb36-25"><a href="#cb36-25" aria-hidden="true"></a>),</span>
 <span id="cb36-26"><a href="#cb36-26" aria-hidden="true"></a>product_rankings <span class="kw">AS</span> (</span>
 <span id="cb36-27"><a href="#cb36-27" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb36-28"><a href="#cb36-28" aria-hidden="true"></a>        product_id,</span>
-<span id="cb36-29"><a href="#cb36-29" aria-hidden="true"></a>        product_name,</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true"></a>        products_id,</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true"></a>        products_name,</span>
 <span id="cb36-30"><a href="#cb36-30" aria-hidden="true"></a>        category_id,</span>
 <span id="cb36-31"><a href="#cb36-31" aria-hidden="true"></a>        category_name,</span>
 <span id="cb36-32"><a href="#cb36-32" aria-hidden="true"></a>        order_count,</span>
@@ -2085,7 +2174,7 @@
 <span id="cb36-37"><a href="#cb36-37" aria-hidden="true"></a>        <span class="fu">PERCENT_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> revenue) <span class="kw">AS</span> revenue_percentile,</span>
 <span id="cb36-38"><a href="#cb36-38" aria-hidden="true"></a>        <span class="fu">PERCENT_RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> profit_margin) <span class="kw">AS</span> margin_percentile</span>
 <span id="cb36-39"><a href="#cb36-39" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb36-40"><a href="#cb36-40" aria-hidden="true"></a>        product_metrics</span>
+<span id="cb36-40"><a href="#cb36-40" aria-hidden="true"></a>        products_metrics</span>
 <span id="cb36-41"><a href="#cb36-41" aria-hidden="true"></a>)</span>
 <span id="cb36-42"><a href="#cb36-42" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb36-43"><a href="#cb36-43" aria-hidden="true"></a>    product_id,</span>
@@ -2116,30 +2205,30 @@
 <span id="cb36-68"><a href="#cb36-68" aria-hidden="true"></a><span class="co">-- 2. Product Affinity Analysis (Market Basket)</span></span>
 <span id="cb36-69"><a href="#cb36-69" aria-hidden="true"></a><span class="kw">WITH</span> product_pairs <span class="kw">AS</span> (</span>
 <span id="cb36-70"><a href="#cb36-70" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb36-71"><a href="#cb36-71" aria-hidden="true"></a>        oi1.product_id <span class="kw">AS</span> product1_id,</span>
+<span id="cb36-71"><a href="#cb36-71" aria-hidden="true"></a>        ol1.product_id <span class="kw">AS</span> product1_id,</span>
 <span id="cb36-72"><a href="#cb36-72" aria-hidden="true"></a>        p1.name <span class="kw">AS</span> product1_name,</span>
-<span id="cb36-73"><a href="#cb36-73" aria-hidden="true"></a>        oi2.product_id <span class="kw">AS</span> product2_id,</span>
+<span id="cb36-73"><a href="#cb36-73" aria-hidden="true"></a>        ol2.product_id <span class="kw">AS</span> product2_id,</span>
 <span id="cb36-74"><a href="#cb36-74" aria-hidden="true"></a>        p2.name <span class="kw">AS</span> product2_name,</span>
-<span id="cb36-75"><a href="#cb36-75" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi1.order_id) <span class="kw">AS</span> co_occurrence_count</span>
+<span id="cb36-75"><a href="#cb36-75" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol1.order_id) <span class="kw">AS</span> co_occurrence_count</span>
 <span id="cb36-76"><a href="#cb36-76" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb36-77"><a href="#cb36-77" aria-hidden="true"></a>        order_item oi1</span>
+<span id="cb36-77"><a href="#cb36-77" aria-hidden="true"></a>        order_lines ol1</span>
 <span id="cb36-78"><a href="#cb36-78" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-79"><a href="#cb36-79" aria-hidden="true"></a>        order_item oi2 <span class="kw">ON</span> oi1.order_id <span class="op">=</span> oi2.order_id <span class="kw">AND</span> oi1.product_id <span class="op">&lt;</span> oi2.product_id</span>
+<span id="cb36-79"><a href="#cb36-79" aria-hidden="true"></a>        order_lines ol2 <span class="kw">ON</span> ol1.order_id <span class="op">=</span> ol2.order_id <span class="kw">AND</span> ol1.product_id <span class="op">&lt;</span> ol2.product_id</span>
 <span id="cb36-80"><a href="#cb36-80" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-81"><a href="#cb36-81" aria-hidden="true"></a>        product p1 <span class="kw">ON</span> oi1.product_id <span class="op">=</span> p1.product_id</span>
+<span id="cb36-81"><a href="#cb36-81" aria-hidden="true"></a>        products p1 <span class="kw">ON</span> ol1.product_id <span class="op">=</span> p1.id</span>
 <span id="cb36-82"><a href="#cb36-82" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-83"><a href="#cb36-83" aria-hidden="true"></a>        product p2 <span class="kw">ON</span> oi2.product_id <span class="op">=</span> p2.product_id</span>
+<span id="cb36-83"><a href="#cb36-83" aria-hidden="true"></a>        products p2 <span class="kw">ON</span> ol2.product_id <span class="op">=</span> p2.id</span>
 <span id="cb36-84"><a href="#cb36-84" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb36-85"><a href="#cb36-85" aria-hidden="true"></a>        oi1.product_id, p1.name, oi2.product_id, p2.name</span>
+<span id="cb36-85"><a href="#cb36-85" aria-hidden="true"></a>        ol1.product_id, p1.name, ol2.product_id, p2.name</span>
 <span id="cb36-86"><a href="#cb36-86" aria-hidden="true"></a>    <span class="kw">HAVING</span></span>
-<span id="cb36-87"><a href="#cb36-87" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi1.order_id) <span class="op">&gt;=</span> <span class="dv">3</span></span>
+<span id="cb36-87"><a href="#cb36-87" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol1.order_id) <span class="op">&gt;=</span> <span class="dv">3</span></span>
 <span id="cb36-88"><a href="#cb36-88" aria-hidden="true"></a>),</span>
 <span id="cb36-89"><a href="#cb36-89" aria-hidden="true"></a>product_counts <span class="kw">AS</span> (</span>
 <span id="cb36-90"><a href="#cb36-90" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
 <span id="cb36-91"><a href="#cb36-91" aria-hidden="true"></a>        product_id,</span>
 <span id="cb36-92"><a href="#cb36-92" aria-hidden="true"></a>        <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> order_id) <span class="kw">AS</span> order_count</span>
 <span id="cb36-93"><a href="#cb36-93" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb36-94"><a href="#cb36-94" aria-hidden="true"></a>        order_item</span>
+<span id="cb36-94"><a href="#cb36-94" aria-hidden="true"></a>        order_lines</span>
 <span id="cb36-95"><a href="#cb36-95" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
 <span id="cb36-96"><a href="#cb36-96" aria-hidden="true"></a>        product_id</span>
 <span id="cb36-97"><a href="#cb36-97" aria-hidden="true"></a>),</span>
@@ -2174,22 +2263,22 @@
 <span id="cb36-126"><a href="#cb36-126" aria-hidden="true"></a><span class="kw">WITH</span> monthly_category_sales <span class="kw">AS</span> (</span>
 <span id="cb36-127"><a href="#cb36-127" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
 <span id="cb36-128"><a href="#cb36-128" aria-hidden="true"></a>        DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date) <span class="kw">AS</span> <span class="dt">month</span>,</span>
-<span id="cb36-129"><a href="#cb36-129" aria-hidden="true"></a>        c.category_id,</span>
-<span id="cb36-130"><a href="#cb36-130" aria-hidden="true"></a>        c.category_name,</span>
+<span id="cb36-129"><a href="#cb36-129" aria-hidden="true"></a>        c.id,</span>
+<span id="cb36-130"><a href="#cb36-130" aria-hidden="true"></a>        c.name,</span>
 <span id="cb36-131"><a href="#cb36-131" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity) <span class="kw">AS</span> units_sold,</span>
 <span id="cb36-132"><a href="#cb36-132" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> revenue</span>
 <span id="cb36-133"><a href="#cb36-133" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb36-134"><a href="#cb36-134" aria-hidden="true"></a>        order_item oi</span>
+<span id="cb36-134"><a href="#cb36-134" aria-hidden="true"></a>        order_lines ol</span>
 <span id="cb36-135"><a href="#cb36-135" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-136"><a href="#cb36-136" aria-hidden="true"></a>        orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb36-136"><a href="#cb36-136" aria-hidden="true"></a>        orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb36-137"><a href="#cb36-137" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-138"><a href="#cb36-138" aria-hidden="true"></a>        product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb36-138"><a href="#cb36-138" aria-hidden="true"></a>        products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb36-139"><a href="#cb36-139" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb36-140"><a href="#cb36-140" aria-hidden="true"></a>        <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb36-140"><a href="#cb36-140" aria-hidden="true"></a>        categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb36-141"><a href="#cb36-141" aria-hidden="true"></a>    <span class="kw">WHERE</span></span>
 <span id="cb36-142"><a href="#cb36-142" aria-hidden="true"></a>        o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb36-143"><a href="#cb36-143" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb36-144"><a href="#cb36-144" aria-hidden="true"></a>        DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date), c.category_id, c.category_name</span>
+<span id="cb36-144"><a href="#cb36-144" aria-hidden="true"></a>        DATE_TRUNC(<span class="st">&#39;month&#39;</span>, o.order_date), c.id, c.name</span>
 <span id="cb36-145"><a href="#cb36-145" aria-hidden="true"></a>),</span>
 <span id="cb36-146"><a href="#cb36-146" aria-hidden="true"></a>category_growth <span class="kw">AS</span> (</span>
 <span id="cb36-147"><a href="#cb36-147" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
@@ -2232,6 +2321,17 @@
 <span id="cb36-184"><a href="#cb36-184" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb36-185"><a href="#cb36-185" aria-hidden="true"></a>    annual_revenue <span class="kw">DESC</span>;</span></code></pre>
         </div>
+
+        <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📊 Alistirma 3 icin Gorsellestirme Onerileri:</strong><br>
+          <ul class="mb-0" style="margin-bottom: 0;">
+            <li><strong>Sorgu 1 (Performans Matrisi):</strong> Sacilim Grafigi / BCG Matrisi - X: Gelir yuzdeligi, Y: Marj yuzdeligi, Renk: Kategori (Star/High Volume/High Margin/Underperformer)</li>
+            <li><strong>Sorgu 2 (Urun Yakinligi):</strong> Ag Grafigi - Dugumler: Urunler, Kenarlar: Birlikte satin alma sikligi, veya Chord Diyagrami</li>
+            <li><strong>Sorgu 3 (Kategori Buyumesi):</strong> Gruplu Bar Grafik trend oklariyla, veya Selale Grafik buyume katkilarini gostermek icin</li>
+            <li><strong>Alternatif:</strong> Treemap gelire gore boyutlandirilmis, buyume trendine gore renklendirilmis</li>
+            <li><strong>Araclar:</strong> Plotly, D3.js, Gephi (ag icin), Tableau</li>
+          </ul>
+        </div>
       </section>
       <section>
         <p><strong>Alistirma 4: Basit Bir Kontrol Paneli (Dashboard) Olusturma</strong></p>
@@ -2268,25 +2368,25 @@
 <span id="cb37-28"><a href="#cb37-28" aria-hidden="true"></a></span>
 <span id="cb37-29"><a href="#cb37-29" aria-hidden="true"></a><span class="co">-- Revenue by category for pie chart</span></span>
 <span id="cb37-30"><a href="#cb37-30" aria-hidden="true"></a><span class="kw">SELECT</span></span>
-<span id="cb37-31"><a href="#cb37-31" aria-hidden="true"></a>    c.category_name,</span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true"></a>    c.name,</span>
 <span id="cb37-32"><a href="#cb37-32" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price), <span class="dv">2</span>) <span class="kw">AS</span> revenue,</span>
 <span id="cb37-33"><a href="#cb37-33" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="op">*</span> <span class="fl">100.0</span> <span class="op">/</span> (</span>
-<span id="cb37-34"><a href="#cb37-34" aria-hidden="true"></a>        <span class="kw">SELECT</span> <span class="fu">SUM</span>(quantity <span class="op">*</span> price) <span class="kw">FROM</span> order_item</span>
-<span id="cb37-35"><a href="#cb37-35" aria-hidden="true"></a>        <span class="kw">JOIN</span> orders o <span class="kw">ON</span> order_item.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true"></a>        <span class="kw">SELECT</span> <span class="fu">SUM</span>(quantity <span class="op">*</span> unit_price) <span class="kw">FROM</span> order_lines</span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true"></a>        <span class="kw">JOIN</span> orders o <span class="kw">ON</span> order_lines.order_id <span class="op">=</span> o.id</span>
 <span id="cb37-36"><a href="#cb37-36" aria-hidden="true"></a>        <span class="kw">WHERE</span> o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb37-37"><a href="#cb37-37" aria-hidden="true"></a>    ), <span class="dv">2</span>) <span class="kw">AS</span> percentage</span>
 <span id="cb37-38"><a href="#cb37-38" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb37-39"><a href="#cb37-39" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb37-40"><a href="#cb37-40" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-41"><a href="#cb37-41" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb37-41"><a href="#cb37-41" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb37-42"><a href="#cb37-42" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-43"><a href="#cb37-43" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb37-43"><a href="#cb37-43" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb37-44"><a href="#cb37-44" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-45"><a href="#cb37-45" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb37-45"><a href="#cb37-45" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb37-46"><a href="#cb37-46" aria-hidden="true"></a><span class="kw">WHERE</span></span>
 <span id="cb37-47"><a href="#cb37-47" aria-hidden="true"></a>    o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb37-48"><a href="#cb37-48" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb37-49"><a href="#cb37-49" aria-hidden="true"></a>    c.category_name</span>
+<span id="cb37-49"><a href="#cb37-49" aria-hidden="true"></a>    c.name</span>
 <span id="cb37-50"><a href="#cb37-50" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb37-51"><a href="#cb37-51" aria-hidden="true"></a>    revenue <span class="kw">DESC</span>;</span>
 <span id="cb37-52"><a href="#cb37-52" aria-hidden="true"></a></span>
@@ -2295,7 +2395,7 @@
 <span id="cb37-55"><a href="#cb37-55" aria-hidden="true"></a>    r.region_name,</span>
 <span id="cb37-56"><a href="#cb37-56" aria-hidden="true"></a>    r.latitude,</span>
 <span id="cb37-57"><a href="#cb37-57" aria-hidden="true"></a>    r.longitude,</span>
-<span id="cb37-58"><a href="#cb37-58" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb37-58"><a href="#cb37-58" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,</span>
 <span id="cb37-59"><a href="#cb37-59" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(o.amount), <span class="dv">2</span>) <span class="kw">AS</span> revenue</span>
 <span id="cb37-60"><a href="#cb37-60" aria-hidden="true"></a><span class="kw">FROM</span></span>
 <span id="cb37-61"><a href="#cb37-61" aria-hidden="true"></a>    orders o</span>
@@ -2313,7 +2413,7 @@
 <span id="cb37-73"><a href="#cb37-73" aria-hidden="true"></a><span class="co">-- Top 10 customers for bar chart</span></span>
 <span id="cb37-74"><a href="#cb37-74" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb37-75"><a href="#cb37-75" aria-hidden="true"></a>    c.name <span class="kw">AS</span> customer_name,</span>
-<span id="cb37-76"><a href="#cb37-76" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb37-76"><a href="#cb37-76" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> o.id) <span class="kw">AS</span> order_count,</span>
 <span id="cb37-77"><a href="#cb37-77" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(o.amount), <span class="dv">2</span>) <span class="kw">AS</span> total_spent,</span>
 <span id="cb37-78"><a href="#cb37-78" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(o.amount), <span class="dv">2</span>) <span class="kw">AS</span> avg_order_value</span>
 <span id="cb37-79"><a href="#cb37-79" aria-hidden="true"></a><span class="kw">FROM</span></span>
@@ -2332,24 +2432,24 @@
 <span id="cb37-92"><a href="#cb37-92" aria-hidden="true"></a><span class="co">-- Top 10 products by revenue</span></span>
 <span id="cb37-93"><a href="#cb37-93" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb37-94"><a href="#cb37-94" aria-hidden="true"></a>    p.name <span class="kw">AS</span> product_name,</span>
-<span id="cb37-95"><a href="#cb37-95" aria-hidden="true"></a>    c.category_name,</span>
-<span id="cb37-96"><a href="#cb37-96" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> oi.order_id) <span class="kw">AS</span> order_count,</span>
+<span id="cb37-95"><a href="#cb37-95" aria-hidden="true"></a>    c.name,</span>
+<span id="cb37-96"><a href="#cb37-96" aria-hidden="true"></a>    <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> ol.order_id) <span class="kw">AS</span> order_count,</span>
 <span id="cb37-97"><a href="#cb37-97" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity) <span class="kw">AS</span> units_sold,</span>
 <span id="cb37-98"><a href="#cb37-98" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price), <span class="dv">2</span>) <span class="kw">AS</span> revenue,</span>
 <span id="cb37-99"><a href="#cb37-99" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> (oi.price <span class="op">-</span> p.<span class="kw">cost</span>)), <span class="dv">2</span>) <span class="kw">AS</span> profit,</span>
 <span id="cb37-100"><a href="#cb37-100" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> (oi.price <span class="op">-</span> p.<span class="kw">cost</span>)) <span class="op">*</span> <span class="fl">100.0</span> <span class="op">/</span> <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price), <span class="dv">2</span>) <span class="kw">AS</span> profit_margin</span>
 <span id="cb37-101"><a href="#cb37-101" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb37-102"><a href="#cb37-102" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb37-102"><a href="#cb37-102" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb37-103"><a href="#cb37-103" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-104"><a href="#cb37-104" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb37-104"><a href="#cb37-104" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb37-105"><a href="#cb37-105" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-106"><a href="#cb37-106" aria-hidden="true"></a>    product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb37-106"><a href="#cb37-106" aria-hidden="true"></a>    products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb37-107"><a href="#cb37-107" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-108"><a href="#cb37-108" aria-hidden="true"></a>    <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb37-108"><a href="#cb37-108" aria-hidden="true"></a>    categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb37-109"><a href="#cb37-109" aria-hidden="true"></a><span class="kw">WHERE</span></span>
 <span id="cb37-110"><a href="#cb37-110" aria-hidden="true"></a>    o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb37-111"><a href="#cb37-111" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb37-112"><a href="#cb37-112" aria-hidden="true"></a>    p.product_id, p.name, c.category_name</span>
+<span id="cb37-112"><a href="#cb37-112" aria-hidden="true"></a>    p.id, p.name, c.name</span>
 <span id="cb37-113"><a href="#cb37-113" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb37-114"><a href="#cb37-114" aria-hidden="true"></a>    revenue <span class="kw">DESC</span></span>
 <span id="cb37-115"><a href="#cb37-115" aria-hidden="true"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span>
@@ -2357,18 +2457,18 @@
 <span id="cb37-117"><a href="#cb37-117" aria-hidden="true"></a><span class="co">-- Monthly trend for top 5 products</span></span>
 <span id="cb37-118"><a href="#cb37-118" aria-hidden="true"></a><span class="kw">WITH</span> top_products <span class="kw">AS</span> (</span>
 <span id="cb37-119"><a href="#cb37-119" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb37-120"><a href="#cb37-120" aria-hidden="true"></a>        p.product_id,</span>
+<span id="cb37-120"><a href="#cb37-120" aria-hidden="true"></a>        p.id,</span>
 <span id="cb37-121"><a href="#cb37-121" aria-hidden="true"></a>        p.name <span class="kw">AS</span> product_name</span>
 <span id="cb37-122"><a href="#cb37-122" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb37-123"><a href="#cb37-123" aria-hidden="true"></a>        order_item oi</span>
+<span id="cb37-123"><a href="#cb37-123" aria-hidden="true"></a>        order_lines ol</span>
 <span id="cb37-124"><a href="#cb37-124" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb37-125"><a href="#cb37-125" aria-hidden="true"></a>        orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb37-125"><a href="#cb37-125" aria-hidden="true"></a>        orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb37-126"><a href="#cb37-126" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb37-127"><a href="#cb37-127" aria-hidden="true"></a>        product p <span class="kw">ON</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb37-127"><a href="#cb37-127" aria-hidden="true"></a>        products p <span class="kw">ON</span> ol.product_id <span class="op">=</span> p.id</span>
 <span id="cb37-128"><a href="#cb37-128" aria-hidden="true"></a>    <span class="kw">WHERE</span></span>
 <span id="cb37-129"><a href="#cb37-129" aria-hidden="true"></a>        o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb37-130"><a href="#cb37-130" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb37-131"><a href="#cb37-131" aria-hidden="true"></a>        p.product_id, p.name</span>
+<span id="cb37-131"><a href="#cb37-131" aria-hidden="true"></a>        p.id, p.name</span>
 <span id="cb37-132"><a href="#cb37-132" aria-hidden="true"></a>    <span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb37-133"><a href="#cb37-133" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">DESC</span></span>
 <span id="cb37-134"><a href="#cb37-134" aria-hidden="true"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span></span>
@@ -2379,11 +2479,11 @@
 <span id="cb37-139"><a href="#cb37-139" aria-hidden="true"></a>    <span class="fu">SUM</span>(oi.quantity) <span class="kw">AS</span> units_sold,</span>
 <span id="cb37-140"><a href="#cb37-140" aria-hidden="true"></a>    <span class="fu">ROUND</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price), <span class="dv">2</span>) <span class="kw">AS</span> revenue</span>
 <span id="cb37-141"><a href="#cb37-141" aria-hidden="true"></a><span class="kw">FROM</span></span>
-<span id="cb37-142"><a href="#cb37-142" aria-hidden="true"></a>    order_item oi</span>
+<span id="cb37-142"><a href="#cb37-142" aria-hidden="true"></a>    order_lines ol</span>
 <span id="cb37-143"><a href="#cb37-143" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-144"><a href="#cb37-144" aria-hidden="true"></a>    orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb37-144"><a href="#cb37-144" aria-hidden="true"></a>    orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb37-145"><a href="#cb37-145" aria-hidden="true"></a><span class="kw">JOIN</span></span>
-<span id="cb37-146"><a href="#cb37-146" aria-hidden="true"></a>    top_products tp <span class="kw">ON</span> oi.product_id <span class="op">=</span> tp.product_id</span>
+<span id="cb37-146"><a href="#cb37-146" aria-hidden="true"></a>    top_products tp <span class="kw">ON</span> ol.product_id <span class="op">=</span> tp.product_id</span>
 <span id="cb37-147"><a href="#cb37-147" aria-hidden="true"></a><span class="kw">WHERE</span></span>
 <span id="cb37-148"><a href="#cb37-148" aria-hidden="true"></a>    o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb37-149"><a href="#cb37-149" aria-hidden="true"></a><span class="kw">GROUP</span> <span class="kw">BY</span></span>
@@ -2394,23 +2494,23 @@
 <span id="cb37-154"><a href="#cb37-154" aria-hidden="true"></a><span class="co">-- Product performance matrix</span></span>
 <span id="cb37-155"><a href="#cb37-155" aria-hidden="true"></a><span class="kw">WITH</span> product_metrics <span class="kw">AS</span> (</span>
 <span id="cb37-156"><a href="#cb37-156" aria-hidden="true"></a>    <span class="kw">SELECT</span></span>
-<span id="cb37-157"><a href="#cb37-157" aria-hidden="true"></a>        p.product_id,</span>
+<span id="cb37-157"><a href="#cb37-157" aria-hidden="true"></a>        p.id,</span>
 <span id="cb37-158"><a href="#cb37-158" aria-hidden="true"></a>        p.name <span class="kw">AS</span> product_name,</span>
-<span id="cb37-159"><a href="#cb37-159" aria-hidden="true"></a>        c.category_name,</span>
+<span id="cb37-159"><a href="#cb37-159" aria-hidden="true"></a>        c.name,</span>
 <span id="cb37-160"><a href="#cb37-160" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price) <span class="kw">AS</span> revenue,</span>
 <span id="cb37-161"><a href="#cb37-161" aria-hidden="true"></a>        <span class="fu">SUM</span>(oi.quantity <span class="op">*</span> (oi.price <span class="op">-</span> p.<span class="kw">cost</span>)) <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">SUM</span>(oi.quantity <span class="op">*</span> oi.price), <span class="dv">0</span>) <span class="op">*</span> <span class="dv">100</span> <span class="kw">AS</span> profit_margin</span>
 <span id="cb37-162"><a href="#cb37-162" aria-hidden="true"></a>    <span class="kw">FROM</span></span>
-<span id="cb37-163"><a href="#cb37-163" aria-hidden="true"></a>        product p</span>
+<span id="cb37-163"><a href="#cb37-163" aria-hidden="true"></a>        products p</span>
 <span id="cb37-164"><a href="#cb37-164" aria-hidden="true"></a>    <span class="kw">JOIN</span></span>
-<span id="cb37-165"><a href="#cb37-165" aria-hidden="true"></a>        <span class="kw">category</span> c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.category_id</span>
+<span id="cb37-165"><a href="#cb37-165" aria-hidden="true"></a>        categories c <span class="kw">ON</span> p.category_id <span class="op">=</span> c.id</span>
 <span id="cb37-166"><a href="#cb37-166" aria-hidden="true"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
-<span id="cb37-167"><a href="#cb37-167" aria-hidden="true"></a>        order_item oi <span class="kw">ON</span> p.product_id <span class="op">=</span> oi.product_id</span>
+<span id="cb37-167"><a href="#cb37-167" aria-hidden="true"></a>        order_lines ol <span class="kw">ON</span> p.product_id <span class="op">=</span> ol.product_id</span>
 <span id="cb37-168"><a href="#cb37-168" aria-hidden="true"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span></span>
-<span id="cb37-169"><a href="#cb37-169" aria-hidden="true"></a>        orders o <span class="kw">ON</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb37-169"><a href="#cb37-169" aria-hidden="true"></a>        orders o <span class="kw">ON</span> ol.order_id <span class="op">=</span> o.id</span>
 <span id="cb37-170"><a href="#cb37-170" aria-hidden="true"></a>    <span class="kw">WHERE</span></span>
 <span id="cb37-171"><a href="#cb37-171" aria-hidden="true"></a>        o.order_date <span class="op">&gt;=</span> <span class="fu">CURRENT_DATE</span> <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">&#39;12 months&#39;</span></span>
 <span id="cb37-172"><a href="#cb37-172" aria-hidden="true"></a>    <span class="kw">GROUP</span> <span class="kw">BY</span></span>
-<span id="cb37-173"><a href="#cb37-173" aria-hidden="true"></a>        p.product_id, p.name, c.category_name</span>
+<span id="cb37-173"><a href="#cb37-173" aria-hidden="true"></a>        p.id, p.name, c.name</span>
 <span id="cb37-174"><a href="#cb37-174" aria-hidden="true"></a>)</span>
 <span id="cb37-175"><a href="#cb37-175" aria-hidden="true"></a><span class="kw">SELECT</span></span>
 <span id="cb37-176"><a href="#cb37-176" aria-hidden="true"></a>    product_name,</span>
@@ -2434,6 +2534,20 @@
 <span id="cb37-194"><a href="#cb37-194" aria-hidden="true"></a><span class="kw">ORDER</span> <span class="kw">BY</span></span>
 <span id="cb37-195"><a href="#cb37-195" aria-hidden="true"></a>    revenue <span class="kw">DESC</span>, profit_margin <span class="kw">DESC</span>;</span></code></pre>
         </div>
+
+        <div style="background-color: #f3e5f5; border: 1px solid #ce93d8; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>📊 Alistirma 4 (Dashboard) icin Gorsellestirme Onerileri:</strong><br>
+          <ul class="mb-0" style="margin-bottom: 0;">
+            <li><strong>Sorgu 1 (KPI'lar):</strong> Buyuk Sayi / KPI Kartlari - Toplam Gelir, Toplam Siparis, Tekil Musteri, Ort. Siparis Degeri</li>
+            <li><strong>Sorgu 2 (Gunluk Gelir):</strong> Alan/Cizgi Grafik - X: Tarih, Y: Gunluk Gelir, 7 gunluk hareketli ortalama ustunde</li>
+            <li><strong>Sorgu 3 (Kategori Dagilimi):</strong> Donut/Pasta Grafik veya Yatay Bar Grafik gelir payini gosteriyor</li>
+            <li><strong>Sorgu 4 (En Iyi Urunler Trendi):</strong> Coklu Cizgi Grafik - X: Ay, Y: Gelir, her urun icin bir cizgi</li>
+            <li><strong>Sorgu 5 (Performans Matrisi):</strong> Kategori etiketli Sacilim Grafigi kadranti</li>
+            <li><strong>Dashboard Yerlesimi:</strong> KPI'lar ustte, zaman serisi ortada, kirilimlar altta</li>
+            <li><strong>Araclar:</strong> Metabase, Apache Superset, Grafana, Tableau, Power BI</li>
+          </ul>
+        </div>
+
         <p>Bu alistirmalar, bir ERP veritabanindan degerli is igoruleri cikarilmak icin PostgreSQL'in analitik yeteneklerinin nasil kullanilacagini gostermektedir. Sorgular dogrudan gorsellestirme araclariyla dashboard'lar olusturmak icin kullanilabilir veya ozellestirilmis araclarda daha fazla analiz icin CSV/JSON formatinda disari aktarilabilir.</p>
       </section>
       <section>

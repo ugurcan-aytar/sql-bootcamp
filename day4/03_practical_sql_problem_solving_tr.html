@@ -115,6 +115,12 @@
             <!-- Bolum 1: Recursive CTE'ler -->
             <section>
                 <h2 id="recursive-ctes">1. Hiyerarsik Veriler icin Recursive CTE'ler</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Temel Kavram: Recursive CTE Nedir?</strong><br>
+                    <p style="margin-bottom: 0;">Recursive CTE, kendisine referans veren bir CTE'dir. Normal CTE'ler sadece bir kez calisirken, recursive CTE'ler bir sonlandirma kosulu saglanana kadar tekrar tekrar calisir. Bu, agac yapili veya hiyerarsik verileri (ornegin, calisan-yonetici iliskisi, kategori agaclari) tek bir sorguyla gezmemizi saglar.</p>
+                </div>
+
                 <p>Recursive (Ozyinelemeli) Ortak Tablo Ifadeleri (CTE), organizasyon semalari,
                    kategori agaclari veya malzeme listeleri gibi hiyerarsik veya agac yapili verileri
                    sorgulamaniza olanak tanir.</p>
@@ -125,6 +131,15 @@
                     <li><strong>Capa Uyesi (Anchor Member):</strong> Baslangic noktasi (temel durum)</li>
                     <li><strong>Recursive Uye:</strong> Onceki sonuclar uzerine insa etmek icin CTE'nin kendisine referans verir</li>
                 </ol>
+
+                <div class="warning-box">
+                    <strong>📚 Terimler:</strong><br>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Anchor Member (Capa Uyesi):</strong> Recursive CTE'nin baslangic noktasi. Hiyerarside en ustteki elemanlari (ornegin, yoneticisi olmayan CEO) secen sorgu.</li>
+                        <li><strong>Recursive Member (Recursive Uye):</strong> CTE'nin kendisine referans veren ve her iterasyonda bir sonraki seviyeyi bulan sorgu.</li>
+                        <li><strong>UNION ALL:</strong> Anchor ve recursive sonuclarini birlestiren operaror. Recursive CTE'lerde zorunludur.</li>
+                    </ul>
+                </div>
 
                 <pre><code class="language-sql">-- Temel recursive CTE yapisi
 WITH RECURSIVE cte_adi AS (
@@ -236,6 +251,12 @@ SELECT dt FROM date_range;</code></pre>
             <!-- Bolum 2: Grup Basina En Iyi N -->
             <section>
                 <h2 id="top-n-per-group">2. Grup Basina En Iyi N Sorgulari</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Temel Kavram: Top-N Per Group</strong><br>
+                    <p style="margin-bottom: 0;">"Grup basina en iyi N" problemi, her kategoriden en iyi 3 urun, her musterinin son 5 siparisi gibi senaryolarda karsimiza cikar. Bu, teknik mulakatlarda en sik sorulan SQL sorularindan biridir. Uc farkli yaklasim vardir: ROW_NUMBER() (en esnek), DISTINCT ON (PostgreSQL'e ozel, sadece top-1), ve LATERAL JOIN (indeks dostu).</p>
+                </div>
+
                 <p>Yaygin bir gereksinim, her grup icindeki en iyi N kaydi bulmaktir (ornegin,
                    kategori basina en iyi 3 urun, musteri basina son 5 siparis).</p>
 
@@ -263,6 +284,12 @@ WHERE rank_in_category <= 3
 ORDER BY category, rank_in_category;</code></pre>
 
                 <h3>Yontem 2: DISTINCT ON (PostgreSQL'e ozel)</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Terim: DISTINCT ON</strong><br>
+                    <p style="margin-bottom: 0;">DISTINCT ON, PostgreSQL'e ozel bir ozelliktir. Normal DISTINCT tum sutunlara bakarken, DISTINCT ON sadece belirtilen sutunlara gore benzersizlik saglar. Her grup icin ORDER BY'a gore ilk satiri dondurur. Sadece "Top-1" senaryolari icin uygundur.</p>
+                </div>
+
                 <p>Grup basina En Iyi 1 icin daha basit sozdizimi:</p>
 
                 <pre><code class="language-sql">-- Musteri basina en son siparis (En Iyi 1)
@@ -280,6 +307,12 @@ ORDER BY customer_id, order_date DESC;</code></pre>
                 </div>
 
                 <h3>Yontem 3: LATERAL JOIN</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Terim: LATERAL JOIN</strong><br>
+                    <p style="margin-bottom: 0;">LATERAL, bir alt sorgunun ayni FROM yan tumcesindeki diger tablolara referans vermesine izin verir. Normal alt sorgular bunu yapamaz. Her sol tablo satiri icin alt sorgu yeniden calistirilir. Bu, indeksleri verimli kullanmasini saglar ve buyuk veri kumelerinde ROW_NUMBER()'dan daha hizli olabilir.</p>
+                </div>
+
                 <p>FROM yan tumcesinde iliskili alt sorgulara izin veren guclu yaklasim:</p>
 
                 <pre><code class="language-sql">-- LATERAL kullanarak musteri basina en iyi 3 siparis
@@ -335,6 +368,12 @@ ORDER BY c.id, top_orders.total_amount DESC;</code></pre>
             <!-- Bolum 3: Bosluk ve Ada Problemleri -->
             <section>
                 <h2 id="gap-island">3. Bosluk ve Ada Problemleri</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Temel Kavram: Gap and Island Problemi</strong><br>
+                    <p style="margin-bottom: 0;">Bu klasik SQL problemi, bir dizideki "bosluklar" (eksik degerler) ve "adalar" (ardisik deger gruplari) bulmakla ilgilidir. Ornegin: 1,2,3,5,6,10 dizisinde 4,7,8,9 bosluklar; {1,2,3}, {5,6}, {10} ise adalardir. Cozum icin anahtar teknik: <code>deger - ROW_NUMBER()</code> farki ardisik degerler icin ayni kalir, boslukta degisir.</p>
+                </div>
+
                 <p>Bosluk ve Ada problemleri, verilerde ardisik dizileri (adalar) veya eksik degerleri (bosluklar)
                    bulmayiicerir. Bunlar klasik SQL mulakat sorularidir.</p>
 
@@ -411,6 +450,12 @@ FARK: 0  0  0  1  1   4  4  4  6  (ardisik degerleri gruplar)
             <!-- Bolum 4: Veri Pivotlama -->
             <section>
                 <h2 id="pivoting">4. Veri Pivotlama (Satirdan Sutuna)</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Temel Kavram: Data Pivoting</strong><br>
+                    <p style="margin-bottom: 0;">Pivotlama, satir verilerini sutunlara donusturme islemidir. Ornegin, aylik satis verileri satirlarda iken bunlari Ocak, Subat, Mart... gibi sutunlara cevirmek. Excel'deki Pivot Table'a benzer. SQL'de iki yontem vardir: (1) CASE + SUM/COUNT (tum veritabanlarinda calisir), (2) FILTER yan tumcesi (PostgreSQL'e ozel, daha temiz sozdizimi).</p>
+                </div>
+
                 <p>Pivotlama, satir verilerini sutunlara donusturur, ozet raporlari ve
                    capraz tablolar olusturmak icin kullanislidir.</p>
 
@@ -431,6 +476,12 @@ GROUP BY EXTRACT(YEAR FROM order_date)
 ORDER BY yil;</code></pre>
 
                 <h3>Yontem 2: FILTER Yan Tumcesi (PostgreSQL 9.4+)</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Terim: FILTER Clause</strong><br>
+                    <p style="margin-bottom: 0;">FILTER yan tumcesi, bir toplama fonksiyonuna (SUM, COUNT, AVG vb.) kosullu filtreleme eklemenizi saglar. <code>SUM(amount) FILTER (WHERE type = 'A')</code> seklinde kullanilir. CASE WHEN'e alternatiftir ancak daha okunabilir ve daha az hata egilimlidir. PostgreSQL 9.4+ ve SQL:2003 standardinda mevcuttur.</p>
+                </div>
+
                 <p>FILTER yan tumcesini kullanarak daha temiz sozdizimi:</p>
 
                 <pre><code class="language-sql">-- Musteri tipine gore kategori bazinda satislar
@@ -452,6 +503,12 @@ ORDER BY toplam_satis DESC;</code></pre>
             <!-- Bolum 5: Tekrar Edenleri Kaldirma -->
             <section>
                 <h2 id="deduplication">5. Tekrar Edenleri Kaldirma Kaliplari</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Temel Kavram: Deduplication (Tekrar Kaldirma)</strong><br>
+                    <p style="margin-bottom: 0;">Tekrar eden kayitlar veri kalitesi sorunlarindan biridir. Tekrarlari bulmak icin <code>GROUP BY + HAVING COUNT(*) > 1</code>, silmek icin <code>ROW_NUMBER() OVER (PARTITION BY ...)</code> kullanilir. Kritik kural: Silmeden once her zaman SELECT ile nelerin etkilenecegini gorun ve hangi kaydin tutulacagina (en eski, en yeni, en eksiksiz) karar verin.</p>
+                </div>
+
                 <p>Tekrar eden kayitlari bulma ve isleme, yaygin bir veri kalitesi gorevidir.</p>
 
                 <h3>Tekrar Edenleri Bulma</h3>
@@ -512,6 +569,12 @@ WHERE id IN (
             <!-- Bolum 6: Tarih Araligi Islemleri -->
             <section>
                 <h2 id="date-ranges">6. Tarih Araligi ve Cakisma Tespiti</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Temel Kavram: Date Range Overlap</strong><br>
+                    <p style="margin-bottom: 0;">Tarih araligi cakismasi, iki donem arasinda ortak zaman olup olmadigini belirler. Rezervasyon sistemleri, kampanya yonetimi, proje zamanlamasi gibi alanlarda kritiktir. Cakisma formulu: <code>A_baslangic <= B_bitis AND A_bitis >= B_baslangic</code>. PostgreSQL'de <code>DATERANGE</code> tipi ve <code>&&</code> (cakisir), <code>@></code> (icerir) operatorleri bu islemi kolaylastirir.</p>
+                </div>
+
                 <p>Tarih araliklariyla calismak ve cakismalari tespit etmek, zamanlama,
                    rezervasyon sistemleri ve gecerlilik donemleri icin yaygindir.</p>
 
@@ -548,6 +611,12 @@ WHERE a.start_date <= b.end_date
                 </div>
 
                 <h3>PostgreSQL Aralik Tiplerini Kullanma</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Terim: PostgreSQL Range Types</strong><br>
+                    <p style="margin-bottom: 0;">PostgreSQL, aralik verileri icin yerlesik tipler sunar: <code>int4range</code>, <code>int8range</code>, <code>numrange</code>, <code>tsrange</code> (timestamp), <code>tstzrange</code> (timestamp with timezone), <code>daterange</code>. Aralik operatorleri: <code>&&</code> (cakisir mi?), <code>@></code> (icerir mi?), <code>&lt;@</code> (icinde mi?), <code>*</code> (kesisim), <code>+</code> (birlesim). Bu operatorler cakisma sorgularini dramatik sekilde basitlestirir.</p>
+                </div>
+
                 <p>PostgreSQL, daha zarif aralik islemleri icin yerlesik aralik tiplerine sahiptir:</p>
 
                 <pre><code class="language-sql">-- daterange tipini kullanma

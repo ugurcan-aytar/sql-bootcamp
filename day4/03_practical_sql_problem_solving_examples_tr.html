@@ -129,6 +129,10 @@
             <section>
                 <h2 id="exercise-1">Alistirma 1: Recursive CTE'ler</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Pratik Ipucu:</strong> Recursive CTE'ler hiyerarsik verileri (agac yapilari) tek sorguda gezmenizi saglar. Her zaman sonlandirma kosulu eklemeyi unutmayin - aksi halde sonsuz dongu olusur! En yaygin kullanim: <code>WHERE parent_id IS NULL</code> ile kokten basla, <code>JOIN CTE ON parent_id = id</code> ile cocuklari bul.
+                </div>
+
                 <div class="concept-box">
                     <strong>Senaryo:</strong> Categories tablosu, bir hiyerarsi olusturan kendi kendine referans
                     veren parent_id sutununa sahiptir (ornegin, Elektronik > Telefonlar > Akilli Telefonlar).
@@ -257,6 +261,10 @@ ORDER BY ds.gun;</code></pre>
             <section>
                 <h2 id="exercise-2">Alistirma 2: Grup Basina En Iyi N</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Pratik Ipucu:</strong> Top-N sorgularinda yaklasim secimi onemlidir. <strong>Top-1</strong> icin DISTINCT ON en hizlidir. <strong>Top-N (N>1)</strong> icin ROW_NUMBER() + CTE kullanin. Buyuk veri kumelerinde LATERAL JOIN indeksleri daha iyi kullanabilir. Her zaman <code>PARTITION BY</code> ve <code>ORDER BY</code> kombinasyonunu dogru yapin!
+                </div>
+
                 <div class="exercise-box">
                     <h4>Alistirma 2.1: Gelire Gore Kategori Basina En Iyi 3 Urun</h4>
                     <p><strong>Hedef:</strong> Toplam gelire gore her kategorideki en cok satan 3 urunu bulun.</p>
@@ -378,6 +386,10 @@ LIMIT 5;</code></pre>
             <section>
                 <h2 id="exercise-3">Alistirma 3: Bosluk ve Ada Problemleri</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Pratik Ipucu:</strong> Gap-Island problemlerinin anahtari: <code>deger - ROW_NUMBER()</code> farki ardisik degerler icin sabit kalir. Bosluklar icin <code>LEAD()</code> ile sonraki degeri bulun ve farki kontrol edin. Adalar icin bu farki <code>GROUP BY</code>'da kullanin. Bu kalip tarihler, ID'ler, tum siralama verileri icin calisir!
+                </div>
+
                 <div class="exercise-box">
                     <h4>Alistirma 3.1: Eksik Siparis ID'lerini Bulma</h4>
                     <p><strong>Hedef:</strong> Siparis ID dizisindeki bosluklari belirleyin (silinen veya basarisiz siparisler).</p>
@@ -476,6 +488,10 @@ Mehmet Demir   | 2024-01-20     | 2024-01-22  |             3
             <section>
                 <h2 id="exercise-4">Alistirma 4: Veri Pivotlama</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Pratik Ipucu:</strong> Pivotlama satirlari sutunlara cevirir (Excel Pivot Table gibi). PostgreSQL'de <code>FILTER</code> yan tumcesi en temiz yaklasimdir: <code>SUM(x) FILTER (WHERE ay = 1)</code>. Diger veritabanlarinda CASE WHEN kullanin. Sutun sayisi onceden bilinmelidir - dinamik pivot icin crosstab() veya uygulama katmani gerekir.
+                </div>
+
                 <div class="exercise-box">
                     <h4>Alistirma 4.1: Kategoriye Gore Aylik Satislar</h4>
                     <p><strong>Hedef:</strong> Her ay icin kategoriye gore satislari gosteren bir pivot tablosu olusturun.</p>
@@ -550,6 +566,10 @@ vip           |         3 |         5 |       8 |            42 |     0 |       
             <!-- Alistirma 5: Tekrar Kaldirma -->
             <section>
                 <h2 id="exercise-5">Alistirma 5: Tekrar Edenleri Kaldirma</h2>
+
+                <div class="concept-box" style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>⚠️ Onemli Uyari:</strong> Tekrar silme islemleri geri alinamaz! Her zaman once <code>SELECT</code> ile etkilenecekleri gorun, transaction kullanin (<code>BEGIN; ... ROLLBACK/COMMIT;</code>), ve hangi kaydin tutulacagini (en eski, en yeni, en eksiksiz) net tanimlayin. ROW_NUMBER() ile rn > 1 olanlari silin.
+                </div>
 
                 <div class="exercise-box">
                     <h4>Alistirma 5.1: Tekrar Eden Musteri Girisleri Bulma</h4>
@@ -633,6 +653,10 @@ WHERE rn = 1;</code></pre>
             <section>
                 <h2 id="exercise-6">Alistirma 6: Tarih Araligi Islemleri</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Pratik Ipucu:</strong> Cakisma formulu: <code>A.baslangic <= B.bitis AND A.bitis >= B.baslangic</code>. PostgreSQL'de <code>DATERANGE</code> tipi ve <code>&&</code> operatoru bu islemi kolaylastirir. Siparisiz gunleri bulmak icin <code>generate_series()</code> ile tarih serisi uretin ve LEFT JOIN kullanin.
+                </div>
+
                 <div class="exercise-box">
                     <h4>Alistirma 6.1: Cakisan Promosyonlari Bulma</h4>
                     <p><strong>Hedef:</strong> Zamanda cakisan promosyonlari belirleyin (potansiyel cakismalar).</p>
@@ -707,6 +731,10 @@ gun        | gun_adi   | siparisler | gelir     | kumulatif_gelir
             <!-- Zorluklar -->
             <section>
                 <h2 id="challenges">Zorluk Alistirmalari</h2>
+
+                <div class="concept-box" style="background-color: #d4edda; border: 1px solid #28a745; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>🎯 Zorluk Seviyesi:</strong> Bu alistirmalar, ogrendiginiz tum kaliplari (Recursive CTE, Window Functions, Pivoting, Date Ranges) birlestirmenizi gerektirir. Kohort analizi, e-ticaret ve SaaS sektorlerinde en onemli analitik metriklerden biridir. Adim adim dusunun: once kohort ay, sonra siparis ay, sonra fark, sonra pivot!
+                </div>
 
                 <div class="challenge-box">
                     <h4>Zorluk 1: Kohort Analizi ile Musteri Yasam Boyu Degeri</h4>

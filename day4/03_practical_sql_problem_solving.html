@@ -115,6 +115,12 @@
             <!-- Section 1: Recursive CTEs -->
             <section>
                 <h2 id="recursive-ctes">1. Recursive CTEs for Hierarchical Data</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Key Concept: What is a Recursive CTE?</strong><br>
+                    <p style="margin-bottom: 0;">A Recursive CTE is a CTE that references itself. While normal CTEs run only once, recursive CTEs execute repeatedly until a termination condition is met. This allows us to traverse tree-structured or hierarchical data (e.g., employee-manager relationships, category trees) in a single query.</p>
+                </div>
+
                 <p>Recursive Common Table Expressions (CTEs) allow you to query hierarchical or tree-structured data,
                    such as organizational charts, category trees, or bill of materials.</p>
 
@@ -124,6 +130,15 @@
                     <li><strong>Anchor Member:</strong> The starting point (base case)</li>
                     <li><strong>Recursive Member:</strong> References the CTE itself to build upon previous results</li>
                 </ol>
+
+                <div class="warning-box">
+                    <strong>📚 Terminology:</strong><br>
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Anchor Member:</strong> The starting point of a recursive CTE. A query that selects the topmost elements in the hierarchy (e.g., CEO with no manager).</li>
+                        <li><strong>Recursive Member:</strong> The query that references the CTE itself and finds the next level in each iteration.</li>
+                        <li><strong>UNION ALL:</strong> The operator that combines anchor and recursive results. It's mandatory in recursive CTEs.</li>
+                    </ul>
+                </div>
 
                 <pre><code class="language-sql">-- Basic recursive CTE structure
 WITH RECURSIVE cte_name AS (
@@ -234,6 +249,12 @@ SELECT dt FROM date_range;</code></pre>
             <!-- Section 2: Top-N per Group -->
             <section>
                 <h2 id="top-n-per-group">2. Top-N per Group Queries</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Key Concept: Top-N Per Group</strong><br>
+                    <p style="margin-bottom: 0;">The "top-N per group" problem appears in scenarios like getting top 3 products per category, or last 5 orders per customer. This is one of the most frequently asked SQL interview questions. Three approaches exist: ROW_NUMBER() (most flexible), DISTINCT ON (PostgreSQL-specific, top-1 only), and LATERAL JOIN (index-friendly).</p>
+                </div>
+
                 <p>A common requirement is to find the top N records within each group (e.g., top 3 products
                    per category, latest 5 orders per customer).</p>
 
@@ -261,6 +282,12 @@ WHERE rank_in_category <= 3
 ORDER BY category, rank_in_category;</code></pre>
 
                 <h3>Method 2: DISTINCT ON (PostgreSQL-specific)</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Term: DISTINCT ON</strong><br>
+                    <p style="margin-bottom: 0;">DISTINCT ON is a PostgreSQL-specific feature. While regular DISTINCT looks at all columns, DISTINCT ON provides uniqueness based only on specified columns. It returns the first row per group according to ORDER BY. Suitable only for "Top-1" scenarios.</p>
+                </div>
+
                 <p>Simpler syntax for Top-1 per group:</p>
 
                 <pre><code class="language-sql">-- Most recent order per customer (Top-1)
@@ -278,6 +305,12 @@ ORDER BY customer_id, order_date DESC;</code></pre>
                 </div>
 
                 <h3>Method 3: LATERAL JOIN</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Term: LATERAL JOIN</strong><br>
+                    <p style="margin-bottom: 0;">LATERAL allows a subquery to reference other tables in the same FROM clause. Normal subqueries cannot do this. The subquery is re-executed for each row of the left table. This enables efficient index usage and can be faster than ROW_NUMBER() on large datasets.</p>
+                </div>
+
                 <p>Powerful approach that allows correlated subqueries in FROM clause:</p>
 
                 <pre><code class="language-sql">-- Top 3 orders per customer using LATERAL
@@ -333,6 +366,12 @@ ORDER BY c.id, top_orders.total_amount DESC;</code></pre>
             <!-- Section 3: Gap and Island Problems -->
             <section>
                 <h2 id="gap-island">3. Gap and Island Problems</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Key Concept: Gap and Island Problem</strong><br>
+                    <p style="margin-bottom: 0;">This classic SQL problem is about finding "gaps" (missing values) and "islands" (groups of consecutive values) in a sequence. For example: in sequence 1,2,3,5,6,10, numbers 4,7,8,9 are gaps; {1,2,3}, {5,6}, {10} are islands. The key technique: <code>value - ROW_NUMBER()</code> difference remains the same for consecutive values but changes at gaps.</p>
+                </div>
+
                 <p>Gap and Island problems involve finding consecutive sequences (islands) or missing values (gaps)
                    in data. These are classic SQL interview questions.</p>
 
@@ -430,6 +469,12 @@ ORDER BY period_start;</code></pre>
             <!-- Section 4: Data Pivoting -->
             <section>
                 <h2 id="pivoting">4. Data Pivoting (Rows to Columns)</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Key Concept: Data Pivoting</strong><br>
+                    <p style="margin-bottom: 0;">Pivoting is the process of transforming row data into columns. For example, converting monthly sales data from rows into columns like Jan, Feb, Mar... Similar to Excel's Pivot Table. Two methods in SQL: (1) CASE + SUM/COUNT (works in all databases), (2) FILTER clause (PostgreSQL-specific, cleaner syntax).</p>
+                </div>
+
                 <p>Pivoting transforms row data into columns, useful for creating summary reports and
                    cross-tabulations.</p>
 
@@ -450,6 +495,12 @@ GROUP BY EXTRACT(YEAR FROM order_date)
 ORDER BY year;</code></pre>
 
                 <h3>Method 2: FILTER Clause (PostgreSQL 9.4+)</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Term: FILTER Clause</strong><br>
+                    <p style="margin-bottom: 0;">The FILTER clause allows you to add conditional filtering to aggregate functions (SUM, COUNT, AVG, etc.). Used as <code>SUM(amount) FILTER (WHERE type = 'A')</code>. It's an alternative to CASE WHEN but more readable and less error-prone. Available in PostgreSQL 9.4+ and SQL:2003 standard.</p>
+                </div>
+
                 <p>Cleaner syntax using the FILTER clause:</p>
 
                 <pre><code class="language-sql">-- Sales by category per customer type
@@ -528,6 +579,12 @@ ORDER BY product, quarter;</code></pre>
             <!-- Section 5: Deduplication -->
             <section>
                 <h2 id="deduplication">5. Deduplication Patterns</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Key Concept: Deduplication</strong><br>
+                    <p style="margin-bottom: 0;">Duplicate records are a common data quality issue. Use <code>GROUP BY + HAVING COUNT(*) > 1</code> to find duplicates, and <code>ROW_NUMBER() OVER (PARTITION BY ...)</code> to delete them. Critical rule: Always run a SELECT first to see what will be affected, and decide which record to keep (oldest, newest, most complete).</p>
+                </div>
+
                 <p>Finding and handling duplicate records is a common data quality task.</p>
 
                 <h3>Finding Duplicates</h3>
@@ -601,6 +658,12 @@ ORDER BY email, created_at DESC;  -- Keep most recent</code></pre>
             <!-- Section 6: Date Range Operations -->
             <section>
                 <h2 id="date-ranges">6. Date Range and Overlap Detection</h2>
+
+                <div class="pattern-box">
+                    <strong>💡 Key Concept: Date Range Overlap</strong><br>
+                    <p style="margin-bottom: 0;">Date range overlap determines whether two periods share common time. Critical in booking systems, campaign management, project scheduling. Overlap formula: <code>A_start <= B_end AND A_end >= B_start</code>. PostgreSQL's <code>DATERANGE</code> type and operators like <code>&&</code> (overlaps) and <code>@></code> (contains) simplify these operations.</p>
+                </div>
+
                 <p>Working with date ranges and detecting overlaps is common in scheduling,
                    booking systems, and validity periods.</p>
 
@@ -637,6 +700,12 @@ WHERE a.start_date <= b.end_date
                 </div>
 
                 <h3>Using PostgreSQL Range Types</h3>
+
+                <div class="warning-box">
+                    <strong>📚 Term: PostgreSQL Range Types</strong><br>
+                    <p style="margin-bottom: 0;">PostgreSQL provides built-in types for range data: <code>int4range</code>, <code>int8range</code>, <code>numrange</code>, <code>tsrange</code> (timestamp), <code>tstzrange</code> (timestamp with timezone), <code>daterange</code>. Range operators: <code>&&</code> (overlaps?), <code>@></code> (contains?), <code>&lt;@</code> (contained by?), <code>*</code> (intersection), <code>+</code> (union). These operators dramatically simplify overlap queries.</p>
+                </div>
+
                 <p>PostgreSQL has built-in range types for more elegant range operations:</p>
 
                 <pre><code class="language-sql">-- Using daterange type

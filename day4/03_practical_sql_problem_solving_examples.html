@@ -129,6 +129,10 @@
             <section>
                 <h2 id="exercise-1">Exercise 1: Recursive CTEs</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Practical Tip:</strong> Recursive CTEs let you traverse hierarchical data (tree structures) in a single query. Always remember to include a termination condition - otherwise you'll create an infinite loop! Most common pattern: Start from root with <code>WHERE parent_id IS NULL</code>, find children with <code>JOIN CTE ON parent_id = id</code>.
+                </div>
+
                 <div class="concept-box">
                     <strong>Scenario:</strong> The categories table has a self-referencing parent_id column
                     that creates a hierarchy (e.g., Electronics > Phones > Smartphones).
@@ -257,6 +261,10 @@ ORDER BY ds.day;</code></pre>
             <section>
                 <h2 id="exercise-2">Exercise 2: Top-N per Group</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Practical Tip:</strong> For Top-N queries, approach selection matters. For <strong>Top-1</strong>, DISTINCT ON is fastest. For <strong>Top-N (N>1)</strong>, use ROW_NUMBER() + CTE. On large datasets, LATERAL JOIN can use indexes more effectively. Always ensure your <code>PARTITION BY</code> and <code>ORDER BY</code> combination is correct!
+                </div>
+
                 <div class="exercise-box">
                     <h4>Exercise 2.1: Top 3 Products per Category by Revenue</h4>
                     <p><strong>Goal:</strong> Find the top 3 best-selling products in each category by total revenue.</p>
@@ -381,6 +389,10 @@ LIMIT 5;</code></pre>
             <!-- Exercise 3: Gap and Island -->
             <section>
                 <h2 id="exercise-3">Exercise 3: Gap and Island Problems</h2>
+
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Practical Tip:</strong> The key to Gap-Island problems: <code>value - ROW_NUMBER()</code> difference stays constant for consecutive values. For gaps, use <code>LEAD()</code> to find the next value and check the difference. For islands, use this difference in <code>GROUP BY</code>. This pattern works for dates, IDs, and all sequential data!
+                </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 3.1: Find Missing Order IDs</h4>
@@ -529,6 +541,10 @@ ORDER BY p.name, pe.period_start;</code></pre>
             <section>
                 <h2 id="exercise-4">Exercise 4: Data Pivoting</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Practical Tip:</strong> Pivoting converts rows to columns (like Excel Pivot Table). In PostgreSQL, the <code>FILTER</code> clause is the cleanest approach: <code>SUM(x) FILTER (WHERE month = 1)</code>. In other databases, use CASE WHEN. Column count must be known in advance - for dynamic pivots, use crosstab() or application layer.
+                </div>
+
                 <div class="exercise-box">
                     <h4>Exercise 4.1: Monthly Sales by Category</h4>
                     <p><strong>Goal:</strong> Create a pivot table showing sales by category for each month.</p>
@@ -603,6 +619,10 @@ vip           |       3 |          5 |       8 |        42 |         0 |        
             <!-- Exercise 5: Deduplication -->
             <section>
                 <h2 id="exercise-5">Exercise 5: Deduplication</h2>
+
+                <div class="concept-box" style="background-color: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>⚠️ Important Warning:</strong> Deduplication operations cannot be undone! Always run <code>SELECT</code> first to see what will be affected, use transactions (<code>BEGIN; ... ROLLBACK/COMMIT;</code>), and clearly define which record to keep (oldest, newest, most complete). Delete rows where ROW_NUMBER() rn > 1.
+                </div>
 
                 <div class="exercise-box">
                     <h4>Exercise 5.1: Find Duplicate Customer Entries</h4>
@@ -701,6 +721,10 @@ WHERE rn = 1;</code></pre>
             <section>
                 <h2 id="exercise-6">Exercise 6: Date Range Operations</h2>
 
+                <div class="concept-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>💡 Practical Tip:</strong> Overlap formula: <code>A.start <= B.end AND A.end >= B.start</code>. PostgreSQL's <code>DATERANGE</code> type and <code>&&</code> operator simplify this. To find days without orders, use <code>generate_series()</code> to create a date series and LEFT JOIN with your data.
+                </div>
+
                 <div class="exercise-box">
                     <h4>Exercise 6.1: Find Overlapping Promotions</h4>
                     <p><strong>Goal:</strong> Identify promotions that overlap in time (potential conflicts).</p>
@@ -784,6 +808,10 @@ day        | day_name  | orders | revenue  | cumulative_revenue
             <!-- Challenges -->
             <section>
                 <h2 id="challenges">Challenge Exercises</h2>
+
+                <div class="concept-box" style="background-color: #d4edda; border: 1px solid #28a745; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <strong>🎯 Challenge Level:</strong> These exercises require you to combine all the patterns you've learned (Recursive CTE, Window Functions, Pivoting, Date Ranges). Cohort analysis is one of the most important analytical metrics in e-commerce and SaaS industries. Think step by step: first cohort month, then order month, then difference, then pivot!
+                </div>
 
                 <div class="challenge-box">
                     <h4>Challenge 1: Customer Lifetime Value with Cohort Analysis</h4>

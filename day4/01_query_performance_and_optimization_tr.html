@@ -346,6 +346,12 @@
       </section>
       <section>
         <h3 id="understanding-the-query-optimizer">Sorgu Optimizatorunu (Query Optimizer) Anlamak</h3>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: Sorgu Optimizatoru Nedir?</strong><br>
+          <p style="margin-bottom: 0;">Sorgu optimizatoru, veritabaninin "beyni" gibi dusunulebilir. Siz bir SQL sorgusu yazdiginizda, optimizator bu sorguyu yerine getirmenin birden fazla yolunu dusunur ve en hizli/en az kaynak kullanan yolu secer. Bir navigasyon uygulamasinin size en kisa yolu gostermesi gibi, optimizator da verilerinize en hizli ulasim yolunu bulur.</p>
+        </div>
+
         <p>Her buyuk iliskisel veritabani sistemi, <strong>sorgu optimizatoru (Query Optimizer)</strong> (veya sorgu planlayicisi (Query Planner)) olarak adlandirilan sofistike bir bilesen icerir. Gorevi, belirli bir SQL sorgusunu yurutmenin en verimli yolunu bulmaktir.
         </p>
         <div class="row">
@@ -380,6 +386,12 @@
       </section>
       <section>
         <h4 id="analyzing-execution-plans-explain">Yurutme Planlarini (Execution Plans) Analiz Etme (EXPLAIN)</h4>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: EXPLAIN Nedir?</strong><br>
+          <p style="margin-bottom: 0;"><code>EXPLAIN</code> komutu, veritabaninin sorgunuzu nasil calistirmayi planladigini gosteren bir "rontgen" gibidir. Sorguyu gercekten calistirmadan, hangi tablolari tarayacagini, hangi indeksleri kullanacagini ve ne kadar kaynak tuketecegini tahmin eder. Bu, yavas sorgularin nedenini anlamanin ilk adimidir.</p>
+        </div>
+
         <p>Cogu veritabani, belirli bir sorgu icin optimizator tarafindan secilen yurutme planini (Execution Plan) <em>aslinda yurutmeden</em> gostermek icin genellikle <code>EXPLAIN</code> (veya varyasyonlari) adinda bir komut saglar.</p>
         <p><strong>Veritabani Istatistikleri (Database Statistics)</strong>: Veritabani istatistiklerini duzenli olarak guncellemek cok onemlidir. Cogu veritabani otomatik istatistik toplama mekanizmalarina sahiptir, ancak onemli veri degisikliklerinden sonra manuel guncellemeler (PostgreSQL/Oracle'da <code>ANALYZE</code> (Analiz), SQL Server'da <code>UPDATE STATISTICS</code>, MySQL'de <code>ANALYZE TABLE</code>) gerekli olabilir.
         </p>
@@ -444,6 +456,13 @@
       </section>
       <section>
         <h3 id="indexing-strategies">Indeksleme Stratejileri (Indexing Strategies)</h3>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Temel Kavram: Indeks Nedir?</strong><br>
+          <p>Bir indeks, kitabin sonundaki "dizin" (index) gibi dusunulebilir. Bir konuyu bulmak icin tum kitabi okumak yerine, dizine bakip ilgili sayfaya gidersiniz. Veritabanlarinda indeksler ayni mantikla calisir - tum tabloyu taramak yerine, aranilan veriyi hizlica bulmanizi saglar.</p>
+          <p style="margin-bottom: 0;"><strong>Ornek:</strong> 1 milyon satirlik bir tabloda <code>email = 'ali@example.com'</code> aradiginizda, indeks olmadan 1 milyon satir taranir. Indeksle sadece birkaç adimda dogru satir bulunur!</p>
+        </div>
+
         <p>Indeksler (Indexes), veritabaninin tum tabloyu taramaktan cok daha hizli bir sekilde belirli kriterlere uyan satirlari bulmasina olanak taniyan veri yapilaridir. Dogru indeksleri secmek genellikle sorgu performansini iyilestirmenin en etkili tek yoludur.</p>
         <p><strong>Yaygin Indeks Turleri (Common Index Types)</strong>:</p>
         <div class="row">
@@ -451,6 +470,9 @@
             <ol type="1">
               <li>
                 <p><strong>B-Tree Indeksleri (B-Tree Indexes / Dengeli Agac)</strong>:</p>
+                <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffecb5; border-radius: 8px; padding: 10px; margin: 10px 0; font-size: 0.9em;">
+                  <strong>📖 B-Tree Nedir?</strong> "Balanced Tree" (Dengeli Agac) yapisinda veriler siralanmis sekilde saklanir. Telefon rehberi gibi dusunun - isimler A'dan Z'ye siralanmistir ve arama cok hizlidir.
+                </div>
                 <ul>
                   <li>Cogu RDBMS'de varsayilan indeks turudur.</li>
                   <li>Esitlik (Equality) (<code>=</code>), aralik (Range) (<code>&lt;</code>, <code>&gt;</code>, <code>BETWEEN</code>) ve onek (Prefix) (<code>LIKE 'abc%'</code>) aramalari icin mukemmeldir.
@@ -470,6 +492,9 @@
             <ol type="1" start="2">
               <li>
                 <p><strong>Hash Indeksleri (Hash Indexes)</strong>:</p>
+                <div class="hint-box" style="background-color: #fff3cd; border: 1px solid #ffecb5; border-radius: 8px; padding: 10px; margin: 10px 0; font-size: 0.9em;">
+                  <strong>📖 Hash Indeks Nedir?</strong> Veriyi bir "hash fonksiyonu" ile matematiksel olarak bir adrese donusturur. Sozluk gibi dusunun - kelimeyi biliyorsaniz, dogrudan o sayfaya atlayabilirsiniz. Ancak "A ile baslayan tum kelimeler" diyemezsiniz.
+                </div>
                 <ul>
                   <li><em>Yalnizca</em> esitlik karsilastirmalari (Equality Comparisons) (<code>=</code>) icin optimize edilmistir.</li>
                   <li>Tam eslesmelere (Exact Matches) dayali aramalar icin cok hizlidir.</li>
@@ -585,6 +610,12 @@
       </section>
       <section>
         <h3 id="common-query-optimization-techniques">Yaygin Sorgu Optimizasyon Teknikleri (Common Query Optimization Techniques)</h3>
+
+        <div class="hint-box" style="background-color: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px; padding: 15px; margin: 15px 0;">
+          <strong>💡 Ogretmen Notu: Optimizasyon Zihniyeti</strong><br>
+          <p style="margin-bottom: 0;">Sorgu optimizasyonu "en az is ile en cok sonuc" prensibine dayanir. Ogrencilere soyle dusunmelerini soyleyin: "Veritabani bu sorguyu yerine getirmek icin ne kadar is yapmak zorunda?" Her gereksiz satir okuma, her gereksiz siralama, her gereksiz hesaplama zaman kaybettir. Amac: minimum is, maksimum hiz!</p>
+        </div>
+
         <p>Indekslemenin yanisira, sorgularinizi nasil yazdiginiz performansi onemli olcude etkileyebilir.</p>
         <div class="row">
           <div class="col-12 col-md-8">
